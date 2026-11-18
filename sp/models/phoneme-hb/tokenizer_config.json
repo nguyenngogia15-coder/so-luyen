@@ -1,0 +1,232 @@
+{
+  "added_tokens_decoder": {
+    "0": {
+      "content": "AA",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "1": {
+      "content": "AE",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "2": {
+      "content": "AH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "3": {
+      "content": "AO",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "4": {
+      "content": "AW",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "5": {
+      "content": "AY",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "7": {
+      "content": "CH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "9": {
+      "content": "DH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "10": {
+      "content": "EH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "11": {
+      "content": "ER",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "12": {
+      "content": "EY",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "15": {
+      "content": "HH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "16": {
+      "content": "IH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "17": {
+      "content": "IY",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "18": {
+      "content": "JH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "23": {
+      "content": "NG",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "24": {
+      "content": "OW",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "25": {
+      "content": "OY",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "29": {
+      "content": "SH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "31": {
+      "content": "TH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "32": {
+      "content": "UH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "33": {
+      "content": "UW",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "38": {
+      "content": "ZH",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "39": {
+      "content": "[UNK]",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "40": {
+      "content": "[PAD]",
+      "lstrip": true,
+      "normalized": false,
+      "rstrip": true,
+      "single_word": false,
+      "special": false
+    },
+    "41": {
+      "content": "<s>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "42": {
+      "content": "</s>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    }
+  },
+  "backend": "custom",
+  "bos_token": "<s>",
+  "do_lower_case": false,
+  "eos_token": "</s>",
+  "model_max_length": 1000000000000000019884624838656,
+  "pad_token": "[PAD]",
+  "processor_class": "Wav2Vec2Processor",
+  "replace_word_delimiter_char": " ",
+  "target_lang": null,
+  "tokenizer_class": "Wav2Vec2CTCTokenizer",
+  "unk_token": "[UNK]",
+  "word_delimiter_token": "None"
+}

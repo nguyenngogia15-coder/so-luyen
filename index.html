@@ -1260,7 +1260,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
   });
 
   /* Chọn hạng model theo việc: top = chấm/sửa bài viết, tạo bài đọc; lite = tra từ, sổ từ vựng, phân tích câu ngắn; còn lại = mid */
-  const TOP = /giám khảo IELTS Writing|bài đọc luyện IELTS Academic Reading GỐC|Viết một bài đọc IELTS Academic GỐC|Bạn soạn bài luyện IELTS Reading|sửa bài cho một sinh viên|bài gần nhất của một học sinh/;
+  const TOP = /giám khảo IELTS Writing|giám khảo IELTS Speaking|bài đọc luyện IELTS Academic Reading GỐC|Viết một bài đọc IELTS Academic GỐC|Bạn soạn bài luyện IELTS Reading|sửa bài cho một sinh viên|bài gần nhất của một học sinh/;
   const LITE = /Tra nghĩa từ|vocabulary notebook|^Từ\/cụm tiếng Anh|ghi chép từ vựng|flashcards|Chọn 12 từ|Phân tích câu|paraphrase|You classify grammar|Giải thích ngắn|nâng cấp từ vựng|Sổ từ vựng IELTS/;
   const pickTier = (input, opts) => {
     if (opts.modelTier === "complex") return "top";
@@ -11575,6 +11575,1080 @@ async function connectClaude() {
   render();
 }
 window.__bootApp = boot;
+</script>
+<style>
+.sp-recbox{gap:10px;align-items:center}
+.sp-rec.on{background:var(--coral);color:var(--coral-ink,#fff);animation:sp-pulse 1.2s ease-in-out infinite}
+@keyframes sp-pulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--coral) 25%,transparent)}}
+.sp-lvl{width:120px;height:10px;border:2px solid var(--edge);background:var(--surface);overflow:hidden}
+.sp-lvl i{display:block;height:100%;width:0;background:var(--mint);transition:width .06s}
+.sp-words{line-height:2.1;margin:0;font-size:1.08rem}
+.sp-wd{border:0;background:none;padding:1px 3px;font:inherit;cursor:pointer;border-bottom:3px solid transparent;color:var(--ink)}
+.sp-wd.good{border-color:var(--good)}.sp-wd.warn{border-color:var(--warn);background:var(--warn-soft)}.sp-wd.bad{border-color:var(--bad);background:var(--bad-soft)}
+.sp-wd.muted{cursor:default;color:var(--muted)}
+.sp-ipa,.sp-ipa-big{font-family:"Charis SIL","Doulos SIL","Noto Sans","Segoe UI",sans-serif;font-size:1.05rem}
+.sp-ipa-big{font-size:1.3rem;color:var(--muted)}
+.sp-ph{padding:0 1px;border-bottom:3px solid transparent}
+.sp-ph.good{border-color:var(--good)}.sp-ph.warn{border-color:var(--warn)}.sp-ph.bad{border-color:var(--bad);color:var(--bad);font-weight:700}
+.sp-detail{border-top:2px dashed var(--line);padding-top:8px}
+.sp-w{font-size:1.15rem}
+.sp-big{font-size:2rem;font-weight:800;font-family:var(--font-head,inherit)}
+.sp-wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.sp-wbtn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:8px 10px;border:2px solid var(--edge);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;text-align:left}
+.sp-wbtn.on{background:var(--yel);color:#111}
+.sp-wbtn.on .muted{color:#333}
+.sp-pair{display:inline-flex;gap:4px;align-items:center}
+.sp-say-in{border:0;background:none;cursor:pointer;padding:0 2px;font-size:.9em}
+.sp-phr{gap:2px}
+.sp-locked{opacity:.55;cursor:not-allowed}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.statgrid>div{display:flex;flex-direction:column;gap:2px;border:2px solid var(--line);padding:8px 10px;background:var(--surface)}
+.sp-checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.sp-checks li{padding:4px 8px;border-left:4px solid var(--good);background:var(--good-soft)}
+.sp-checks li.no{border-color:var(--bad);background:var(--bad-soft)}
+.sp-crit{border:2px solid var(--line);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.sp-hrow{display:flex;gap:12px;align-items:center;padding:10px 12px;border:2px solid var(--edge);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;text-align:left}
+.sp-hb{font-size:1.3rem;min-width:44px}
+.sp-ipa-t{text-transform:none;font-family:"Charis SIL","Doulos SIL","Noto Sans","Segoe UI",sans-serif;letter-spacing:0}
+.bottomnav{grid-template-columns:repeat(8,minmax(0,1fr))!important;padding-left:2px!important;padding-right:2px!important}
+.bottomnav a{font-size:.58rem!important;letter-spacing:-.01em}
+.bottomnav a[aria-current="page"] svg{padding:2px 0!important;width:20px!important}
+</style>
+<script>
+/* ===== Bộ nhận diện giọng nói chạy ngay trên máy (không gọi AI) =====
+   - Whisper base.en: chép lời khi luyện nói tự do
+   - HuBERT âm vị (Peacockery/hubert-base-phoneme-en, Apache-2.0): chấm từng âm theo GOP
+   - Từ điển CMU (giọng Mỹ) */
+const SP = { T: null, man: null, asr: null, ph: null, loading: {}, prog: {}, lex: null, stage: "" };
+const spBase = () => new URL("sp/", location.href).href;
+function spManifest() { return SP.man ||= fetch(spBase() + "manifest.json").then(r => { if (!r.ok) throw new Error("manifest " + r.status); return r.json(); }).catch(e => { SP.man = null; throw e; }); }
+const spDB = (() => { let p; return () => p ||= new Promise(res => { try { const r = indexedDB.open("solt-models", 1); r.onupgradeneeded = () => r.result.createObjectStore("chunks"); r.onsuccess = () => res(r.result); r.onerror = () => res(null); } catch { res(null); } }); })();
+async function spIdb(op, key, val) {
+  const db = await spDB(); if (!db) return null;
+  return new Promise(res => { try { const tx = db.transaction("chunks", op === "get" ? "readonly" : "readwrite"); const st = tx.objectStore("chunks"); const r = op === "get" ? st.get(key) : st.put(val, key); r.onsuccess = () => res(op === "get" ? r.result || null : true); r.onerror = () => res(null); } catch { res(null); } });
+}
+async function spFetchPart(path) {
+  const hit = await spIdb("get", path); if (hit) return new Uint8Array(hit);
+  const r = await fetch(spBase() + path); if (!r.ok) throw new Error("Tải " + path + " lỗi " + r.status);
+  const b = await r.arrayBuffer(); spIdb("put", path, b); return new Uint8Array(b);
+}
+async function spAssemble(key, group) {
+  const m = (await spManifest())[key]; if (!m) throw new Error("Thiếu " + key);
+  const out = new Uint8Array(m.size); let o = 0;
+  for (const p of m.parts) { const b = await spFetchPart(p); out.set(b, o); o += b.length; const g = SP.prog[group] ||= { got: 0 }; g.got += b.length; SP.onProg?.(); }
+  return out;
+}
+const SP_KEYS = { asr: ["whisper-base.en/onnx/encoder_model_quantized.onnx", "whisper-base.en/onnx/decoder_model_merged_quantized.onnx"], ph: ["phoneme-hb/onnx/model.onnx"] };
+async function spTotal(keys) { const m = await spManifest(); return keys.reduce((a, k) => a + (m[k]?.size || 0), 0); }
+async function spLib() {
+  if (SP.T) return SP.T;
+  const T = await import(spBase() + "lib/transformers.min.js");
+  T.env.allowRemoteModels = false; T.env.allowLocalModels = true; T.env.localModelPath = spBase() + "models/"; T.env.useBrowserCache = false; T.env.useCustomCache = true;
+  T.env.customCache = { match: async key => { const k = String(key).split("/models/").pop(); const man = await spManifest(); if (!man[k]) return undefined; const u8 = await spAssemble(k, SP.curGroup || "asr"); return new Response(u8, { headers: { "content-length": String(u8.length) } }); }, put: async () => {} };
+  const w = T.env.backends.onnx.wasm; w.wasmPaths = spBase() + "lib/"; w.numThreads = 1; w.proxy = false;
+  w.wasmBinary = (await spAssemble("ort.wasm", "lib")).buffer;
+  return SP.T = T;
+}
+/* which: "asr" (Whisper) hoặc "ph" (âm vị) */
+function spLoad(which) {
+  return SP.loading[which] ||= (async () => {
+    SP.prog[which] = { got: 0, total: await spTotal(SP_KEYS[which]) };
+    if (!SP.T) SP.prog.lib = { got: 0, total: await spTotal(["ort.wasm"]) };
+    SP.stage = SP.T ? "" : "Đang tải thư viện chạy mô hình"; const T = await spLib(); SP.curGroup = which;
+    SP.stage = which === "asr" ? "Đang khởi động bộ chép lời" : "Đang khởi động bộ chấm phát âm";
+    const timeout = (p, ms, msg) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms))]);
+    if (which === "asr") SP.asr = await timeout(T.pipeline("automatic-speech-recognition", "whisper-base.en", { dtype: { encoder_model: "q8", decoder_model_merged: "q8" }, device: "wasm" }), 300000, "Khởi động bộ chép lời quá 5 phút (máy có thể thiếu bộ nhớ)");
+    else SP.ph = await timeout(T.AutoModelForCTC.from_pretrained("phoneme-hb", { dtype: "fp32", device: "wasm" }), 300000, "Khởi động bộ chấm phát âm quá 5 phút");
+    SP.stage = ""; return true;
+  })().catch(e => { delete SP.loading[which]; SP.stage = ""; throw e; });
+}
+const spReady = need => need.every(k => k === "asr" ? !!SP.asr : !!SP.ph);
+async function spCached(need) {
+  try {
+    const man = await spManifest(), db = await spDB(); if (!db) return false;
+    const keys = await new Promise(res => { try { const r = db.transaction("chunks").objectStore("chunks").getAllKeys(); r.onsuccess = () => res(new Set(r.result)); r.onerror = () => res(new Set()); } catch { res(new Set()); } });
+    return ["ort.wasm", ...need.flatMap(k => SP_KEYS[k])].every(k => man[k]?.parts.every(p => keys.has(p)));
+  } catch { return false; }
+}
+/* Âm thanh: blob → Float32Array 16 kHz mono */
+async function spDecode(blob) {
+  const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC();
+  const buf = await ac.decodeAudioData(await blob.arrayBuffer()); try { ac.close(); } catch {}
+  const len = Math.ceil(buf.duration * 16000); const off = new OfflineAudioContext(1, Math.max(1, len), 16000);
+  const src = off.createBufferSource(); src.buffer = buf; src.connect(off.destination); src.start();
+  const r = await off.startRendering(); return r.getChannelData(0).slice();
+}
+/* Khoảng ngừng theo năng lượng âm (khung 10 ms) */
+function spPauses(a) {
+  const hop = 160, fr = []; for (let i = 0; i + hop <= a.length; i += hop) { let s = 0; for (let j = i; j < i + hop; j++) s += a[j] * a[j]; fr.push(Math.sqrt(s / hop)); }
+  const sorted = fr.slice().sort((x, y) => x - y), noise = sorted[Math.floor(sorted.length * 0.1)] || 0, peak = sorted[Math.floor(sorted.length * 0.95)] || 0;
+  const thr = Math.max(noise * 2.5, peak * 0.08, 0.004);
+  const voiced = fr.map(v => v > thr); const first = voiced.indexOf(true), last = voiced.lastIndexOf(true);
+  if (first < 0) return { speech: 0, total: a.length / 16000, pauses: [], start: 0, end: 0, level: peak };
+  const pauses = []; let run = 0;
+  for (let i = first; i <= last; i++) { if (!voiced[i]) run++; else { if (run * 0.01 >= 0.35) pauses.push({ at: (i - run) * 0.01, len: run * 0.01 }); run = 0; } }
+  return { speech: voiced.slice(first, last + 1).filter(Boolean).length * 0.01, total: a.length / 16000, start: first * 0.01, end: (last + 1) * 0.01, pauses, level: peak };
+}
+function spTrim(a) { const z = spPauses(a); if (!z.speech) return a; const s = Math.max(0, Math.floor((z.start - 0.25) * 16000)), e = Math.min(a.length, Math.ceil((z.end + 0.25) * 16000)); return a.slice(s, e); }
+async function spTranscribe(a) {
+  await spLoad("asr");
+  const out = await SP.asr(a, { return_timestamps: "word", chunk_length_s: 30, stride_length_s: 5 });
+  return { text: String(out.text || "").trim(), words: (out.chunks || []).map(c => ({ w: String(c.text).trim(), s: c.timestamp?.[0] ?? null, e: c.timestamp?.[1] ?? null })).filter(x => x.w) };
+}
+
+/* ----- Âm vị (ARPAbet, giọng Mỹ) ----- */
+const ARPA = ["AA", "AE", "AH", "AO", "AW", "AY", "B", "CH", "D", "DH", "EH", "ER", "EY", "F", "G", "HH", "IH", "IY", "JH", "K", "L", "M", "N", "NG", "OW", "OY", "P", "R", "S", "SH", "T", "TH", "UH", "UW", "V", "W", "Y", "Z", "ZH"];
+const A2I = Object.fromEntries(ARPA.map((a, i) => [a, i])), NPH = ARPA.length, NC = NPH + 1; /* lớp cuối = khoảng trống CTC */
+const A_IPA = { AA: "ɑː", AE: "æ", AH: "ʌ", AH0: "ə", AO: "ɔː", AW: "aʊ", AY: "aɪ", EH: "e", ER: "ɜːr", ER0: "ər", EY: "eɪ", IH: "ɪ", IY: "iː", OW: "oʊ", OY: "ɔɪ", UH: "ʊ", UW: "uː", B: "b", CH: "tʃ", D: "d", DH: "ð", F: "f", G: "ɡ", HH: "h", JH: "dʒ", K: "k", L: "l", M: "m", N: "n", NG: "ŋ", P: "p", R: "r", S: "s", SH: "ʃ", T: "t", TH: "θ", V: "v", W: "w", Y: "j", Z: "z", ZH: "ʒ" };
+const isVowel = p => /^(AA|AE|AH|AO|AW|AY|EH|ER|EY|IH|IY|OW|OY|UH|UW)/.test(p);
+const phBase = p => String(p).replace(/\d/g, "");
+const phIpa = p => A_IPA[p] || A_IPA[phBase(p)] || "?";
+const ONSETS = new Set("pl pr bl br tr dr kl kr ɡl ɡr fl fr θr ʃr sp st sk sm sn sl sw spl spr str skr skw tw dw kw ɡw pj bj kj fj mj hj vj".split(" "));
+/* Phiên âm IPA có dấu trọng âm đặt trước âm tiết */
+function arpaIpa(phs) { return arpaIpaArr(phs).join(""); }
+function arpaIpaArr(phs) {
+  const sy = phs.map(phIpa), out = sy.slice(), cons = i => !isVowel(phs[i]);
+  for (let i = 0; i < phs.length; i++) {
+    const m = /([12])$/.exec(phs[i]); if (!m || phs.filter(isVowel).length < 2) continue;
+    let s = i; while (s > 0 && cons(s - 1)) s--;
+    let k = s; while (k < i && !(i - k === 1 || ONSETS.has(sy.slice(k, i).join("")))) k++;
+    out[k] = (m[1] === "1" ? "ˈ" : "ˌ") + out[k];
+  }
+  return out;
+}
+async function spLex() { return SP.lex ||= fetch(spBase() + "cmu.json").then(r => { if (!r.ok) throw new Error("cmu"); return r.json(); }).then(d => SP.lexData = d).catch(e => { SP.lex = null; throw e; }); }
+const spKey = w => String(w).toLowerCase().replace(/[’‘]/g, "'").replace(/^[^a-z]+|[^a-z']+$/g, "");
+function spWordPh(lex, w) { const k = spKey(w); const v = (SP.over && SP.over[k]) || lex[k] || lex[k.replace(/'s$/, "")] && lex[k.replace(/'s$/, "")] + " Z"; return v ? v.split(" ") : null; }
+/* Câu → [{w, ph:[ARPA có số trọng âm]}], từ không có trong từ điển: ph = null */
+async function spExpected(text) {
+  const lex = await spLex();
+  const words = String(text).replace(/[“”"]/g, "").replace(/(\w)-(\w)/g, "$1 $2").split(/\s+/).map(w => w.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g, "")).filter(Boolean);
+  return words.map(w => ({ w, ph: spWordPh(lex, w) }));
+}
+/* Mô hình → log xác suất [F × 40] (39 âm + khoảng trống), nhiệt độ 2 cho điểm mượt hơn */
+async function spLogp(a) {
+  await spLoad("ph");
+  const T = SP.T, win = 16000 * 20, frames = [];
+  for (let o = 0; o < a.length; o += win) {
+    const seg = a.subarray(o, Math.min(a.length, o + win)); if (seg.length < 1600) break;
+    let m = 0; for (const v of seg) m += v; m /= seg.length; let sd = 0; for (const v of seg) sd += (v - m) ** 2; sd = Math.sqrt(sd / seg.length) + 1e-7;
+    const x = new Float32Array(seg.length); for (let i = 0; i < seg.length; i++) x[i] = (seg[i] - m) / sd;
+    const { logits } = await SP.ph({ input_values: new T.Tensor("float32", x, [1, x.length]) });
+    const [, F, V] = logits.dims, d = logits.data;
+    for (let f = 0; f < F; f++) {
+      const row = new Float32Array(NC); let mx = -Infinity; for (let v = 0; v < V; v++) mx = Math.max(mx, d[f * V + v] / 2);
+      let z = 0; const e = new Float64Array(V); for (let v = 0; v < V; v++) { e[v] = Math.exp(d[f * V + v] / 2 - mx); z += e[v]; }
+      let bl = 0; for (let v = 0; v < V; v++) { if (v < NPH) row[v] = Math.log(e[v] / z + 1e-10); else bl += e[v] / z; }
+      row[NPH] = Math.log(bl + 1e-10); frames.push(row);
+    }
+  }
+  return frames;
+}
+/* Căn chỉnh CTC cưỡng bức: mỗi âm mong đợi → dãy khung */
+function spAlign(L, seq) {
+  const F = L.length, S = [NPH]; for (const p of seq) S.push(p, NPH);
+  const n = S.length, NEG = -1e30; if (!F || F < seq.length) return seq.map(() => []);
+  let D = new Float64Array(n).fill(NEG); const B = Array.from({ length: F }, () => new Int8Array(n));
+  D[0] = L[0][S[0]]; if (n > 1) D[1] = L[0][S[1]];
+  for (let t = 1; t < F; t++) {
+    const N = new Float64Array(n).fill(NEG), row = L[t];
+    for (let s = 0; s < n; s++) {
+      let best = D[s], k = 0;
+      if (s >= 1 && D[s - 1] > best) { best = D[s - 1]; k = 1; }
+      if (s >= 2 && S[s] !== NPH && S[s] !== S[s - 2] && D[s - 2] > best) { best = D[s - 2]; k = 2; }
+      N[s] = best + row[S[s]]; B[t][s] = k;
+    }
+    D = N;
+  }
+  let s = n > 1 && D[n - 2] > D[n - 1] ? n - 2 : n - 1; const segs = seq.map(() => []);
+  for (let t = F - 1; t >= 0; t--) { if (s % 2 === 1) segs[(s - 1) / 2].unshift(t); s -= B[t][s]; }
+  return segs;
+}
+const PH_FUNC = new Set("a an the and but or of to for from at in on as is are was were be been am do does did have has had can could will would shall should must that than them their there you your he she we they his her our it its this some by with".split(" "));
+/* Âm được chấp nhận thêm: dạng yếu của từ chức năng, /i/ cuối từ (happy) */
+function phAlts(word, p, j, n) {
+  const b = phBase(p), out = [];
+  if (PH_FUNC.has(spKey(word)) && isVowel(b)) out.push("AH", "IH", "ER");
+  if (PH_FUNC.has(spKey(word)) && b === "R") out.push("ER");
+  if (b === "IY" && /0$/.test(p) && j === n - 1) out.push("IH");
+  if (b === "AH" && /0$/.test(p)) out.push("IH", "UH");
+  if (b === "IH" && /0$/.test(p)) out.push("AH");
+  return out.map(x => A2I[x]);
+}
+const phScore = g => Math.max(0, Math.min(100, Math.round((g + 4) / 3.7 * 100)));
+/* Chấm: exp = [{w, ph}] → mỗi từ có điểm, mỗi âm có điểm và "nghe giống" */
+function spGOP(L, exp) {
+  const seq = [], own = [];
+  exp.forEach((w, k) => (w.ph || []).forEach((p, j) => { seq.push(A2I[phBase(p)]); own.push([k, j]); }));
+  const segs = spAlign(L, seq);
+  const words = exp.map(w => ({ w: w.w, ph: w.ph, ipa: w.ph ? arpaIpa(w.ph) : "", arr: w.ph ? arpaIpaArr(w.ph) : [], phones: [], score: null }));
+  seq.forEach((p, i) => {
+    const fr = segs[i], [k, j] = own[i], ex = exp[k].ph[j]; let g = -12, alt = null;
+    if (fr.length) {
+      let sum = 0; const acc = new Float64Array(NPH);
+      for (const t of fr) { const r = L[t]; let mx = -Infinity; for (let v = 0; v < NPH; v++) mx = Math.max(mx, r[v]); let z = 0; for (let v = 0; v < NPH; v++) z += Math.exp(r[v] - mx); const nb = mx + Math.log(z); sum += r[p] - nb; for (let v = 0; v < NPH; v++) acc[v] += r[v] - nb; }
+      g = sum / fr.length; for (const q of phAlts(exp[k].w, ex, j, exp[k].ph.length)) g = Math.max(g, acc[q] / fr.length);
+      let bi = -1, bv = -Infinity; const okSet = new Set([p, ...phAlts(exp[k].w, ex, j, exp[k].ph.length)]); for (let v = 0; v < NPH; v++) if (!okSet.has(v) && acc[v] > bv) { bv = acc[v]; bi = v; }
+      if (bv / fr.length > g + 0.3) alt = ARPA[bi];
+    }
+    words[k].phones.push({ p: ex, ipa: phIpa(ex), show: words[k].arr[j], g: +g.toFixed(2), s: phScore(g), heard: alt, miss: !fr.length || (g < -6 && !alt), last: j === exp[k].ph.length - 1 });
+  });
+  for (const w of words) if (w.phones.length) w.score = Math.round(w.phones.reduce((a, x) => a + x.s, 0) / w.phones.length);
+  const sc = words.filter(w => w.score != null);
+  return { words, score: sc.length ? Math.round(sc.reduce((a, w) => a + w.score * w.phones.length, 0) / sc.reduce((a, w) => a + w.phones.length, 0)) : null };
+}
+/* Chấm một câu/từ đọc theo mẫu */
+async function spCheckText(blob, text, say) {
+  say?.("Đang nghe…");
+  const raw = await spDecode(blob), z = spPauses(raw);
+  if (!z.speech || z.speech < 0.15) throw { vn: "Không nghe thấy tiếng nói. Nói to, rõ và gần micro hơn nhé." };
+  const a = spTrim(raw), exp = await spExpected(text);
+  if (!exp.some(x => x.ph)) throw { vn: "Chưa có phiên âm cho câu này." };
+  say?.("Đang chấm từng âm…");
+  const r = spGOP(await spLogp(a), exp); r.dur = +(a.length / 16000).toFixed(1); r.level = z.level; return r;
+}
+/* Lời khuyên tiếng Việt cho một âm sai */
+const PH_TIP = {
+  "TH>S": "/θ/ đọc thành /s/: đặt đầu lưỡi giữa hai hàm răng rồi thổi hơi.", "TH>T": "/θ/ đọc thành /t/: lưỡi nằm giữa hai răng và thổi hơi liên tục, không bật như /t/.", "TH>F": "/θ/ đọc thành /f/: dùng đầu lưỡi, không dùng môi dưới.",
+  "DH>D": "/ð/ đọc thành /d/: đưa đầu lưỡi ra giữa hai răng, rung cổ họng.", "DH>Z": "/ð/ đọc thành /z/: đưa đầu lưỡi ra giữa hai răng.",
+  "IY>IH": "/iː/ đọc ngắn thành /ɪ/: kéo dài, căng môi như đang cười.", "IH>IY": "/ɪ/ đọc dài thành /iː/: đọc ngắn, thả lỏng miệng.",
+  "AE>EH": "/æ/ đọc thành /e/: há miệng rộng hơn, hạ hàm dưới.", "EH>AE": "/e/ đọc thành /æ/: miệng mở vừa thôi, không hạ hàm nhiều.",
+  "SH>S": "/ʃ/ đọc thành /s/: chu môi, lưỡi lùi về sau.", "S>SH": "/s/ đọc thành /ʃ/: không chu môi, lưỡi sát răng trên.",
+  "V>B": "/v/ đọc thành /b/: răng trên chạm môi dưới, rung.", "V>W": "/v/ đọc thành /w/: răng trên chạm nhẹ môi dưới.", "W>V": "/w/ đọc thành /v/: chu tròn môi, răng không chạm môi.",
+  "Z>S": "/z/ đọc thành /s/: cho cổ họng rung (tiếng zzz như ong).", "L>N": "/l/ đọc thành /n/: đầu lưỡi chạm lợi, hơi đi hai bên lưỡi.", "N>L": "/n/ đọc thành /l/: cho hơi đi ra mũi.",
+  "R>L": "/r/ đọc thành /l/: cong đầu lưỡi về sau, không chạm vòm miệng.", "L>R": "/l/ đọc thành /r/: chạm đầu lưỡi vào lợi trên.",
+  "UW>UH": "/uː/ đọc ngắn: kéo dài, chu tròn môi.", "UH>UW": "/ʊ/ đọc dài: đọc ngắn, môi thả lỏng.", "AA>AH": "/ɑː/ đọc ngắn thành /ʌ/: há rộng miệng, kéo dài.", "AH>AA": "/ʌ/ đọc thành /ɑː/: đọc ngắn, miệng mở vừa.",
+  "P>B": "/p/ đọc thành /b/: bật hơi mạnh, không rung cổ họng.", "T>D": "/t/ đọc thành /d/: bật hơi mạnh, không rung.", "K>G": "/k/ đọc thành /ɡ/: bật hơi mạnh.", "CH>SH": "/tʃ/ đọc thành /ʃ/: chặn lưỡi ở lợi trước rồi bật ra.", "JH>Z": "/dʒ/ đọc thành /z/: chặn lưỡi rồi bật, chu môi.",
+  "EY>EH": "/eɪ/ thiếu đuôi /ɪ/: trượt từ “ê” sang “i”.", "OW>AO": "/oʊ/ thiếu đuôi /ʊ/: trượt từ “ô” sang “u”, môi tròn dần.", "AY>AA": "/aɪ/ thiếu đuôi: trượt từ “a” sang “i”.", "NG>N": "/ŋ/ đọc thành /n/: cuống lưỡi chạm ngạc mềm như “ng”."
+};
+function phTip(x) {
+  const b = phBase(x.p);
+  if (x.miss) return x.last && !isVowel(x.p) ? `Thiếu âm cuối /${phIpa(x.p)}/: người Việt hay nuốt âm cuối, hãy bật nhẹ âm này ra.` : `Âm /${phIpa(x.p)}/ gần như không nghe thấy.`;
+  if (x.heard) return PH_TIP[b + ">" + x.heard] || `Âm /${phIpa(x.p)}/ nghe giống /${phIpa(x.heard)}/.`;
+  return x.last && !isVowel(x.p) ? `Âm cuối /${phIpa(x.p)}/ còn yếu, đọc rõ hơn.` : `Âm /${phIpa(x.p)}/ chưa rõ.`;
+}
+
+/* ===== Lộ trình phát âm IPA (giọng Mỹ): 8 chặng, mỗi bài: hiểu → nghe chọn → đọc từ → đọc câu ===== */
+const PR_STAGES = [
+  { id: "v1", name: "Nguyên âm ngắn và dài", sub: "Cặp âm người Việt hay đọc giống nhau", lessons: [
+    { id: "ih-iy", t: "/ɪ/ ship và /iː/ sheep", ph: ["IH", "IY"],
+      how: "Hai âm khác nhau ở độ căng chứ không chỉ ở độ dài. /iː/: kéo hai khóe môi sang ngang như đang cười, lưỡi nâng cao, cơ miệng căng, kéo dài. /ɪ/: thả lỏng hoàn toàn, miệng hé hơn một chút, đọc gọn như tiếng “i” bị cắt ngắn, hơi ngả về “ê”.",
+      img: "/iː/ là nụ cười chụp ảnh “cheese”. /ɪ/ là cái ngáp lười: môi không buồn kéo.",
+      trap: "Đọc cả hai thành “i” tiếng Việt, nên ship nghe như sheep, live nghe như leave.",
+      pairs: [["ship", "sheep"], ["sit", "seat"], ["live", "leave"], ["fill", "feel"], ["hit", "heat"]],
+      words: ["ship", "sheep", "sit", "seat", "live", "leave", "big", "green", "busy", "people"],
+      sents: ["Please sit in the seat near the window.", "The big ship is full of sheep.", "We need to leave the city this evening."] },
+    { id: "uh-uw", t: "/ʊ/ full và /uː/ fool", ph: ["UH", "UW"],
+      how: "/uː/: chu tròn môi về trước như thổi nến, lưỡi lùi sau và nâng cao, kéo dài. /ʊ/: môi tròn nhẹ, thả lỏng, đọc ngắn, gần giữa “u” và “ư”.",
+      img: "/uː/ là tiếng “uuu” của bóng ma. /ʊ/ là tiếng “ủa” hụt hơi, ngắn và lười.",
+      trap: "Kéo dài /ʊ/ thành “u”, nên good nghe như “gút”, full nghe như fool.",
+      pairs: [["full", "fool"], ["pull", "pool"], ["look", "Luke"], ["could", "cooed"]],
+      words: ["full", "fool", "good", "food", "book", "school", "put", "move", "would", "true"],
+      sents: ["Could you put the book on the table?", "The food at my school is good.", "I would like a cool glass of juice."] },
+    { id: "eh-ae", t: "/e/ bed và /æ/ bad", ph: ["EH", "AE"],
+      how: "/e/: miệng mở vừa, lưỡi ở giữa, giống “e” tiếng Việt. /æ/: hạ hẳn hàm dưới, há miệng rộng, kéo môi sang ngang, âm nằm giữa “e” và “a”.",
+      img: "/æ/ là tiếng kêu khi thấy con gián: “ẹ-a!”, miệng há to và méo sang ngang.",
+      trap: "Đọc /æ/ thành “e” hoặc “a”, nên bad nghe như bed, man nghe như men.",
+      pairs: [["bed", "bad"], ["men", "man"], ["pen", "pan"], ["said", "sad"], ["head", "had"]],
+      words: ["bed", "bad", "men", "man", "ten", "cat", "black", "many", "family", "happy"],
+      sents: ["My dad has a black cat and a bad back.", "Ten men sat on the bench.", "That family is happy and relaxed."] },
+    { id: "ah-aa", t: "/ʌ/ cup và /ɑː/ hot", ph: ["AH", "AA"],
+      how: "/ʌ/: miệng mở vừa, lưỡi ở giữa, đọc ngắn và gọn, rất giống “â” tiếng Việt. /ɑː/ (giọng Mỹ, có cả trong hot, stop): há rộng miệng như khi khám họng, lưỡi hạ thấp và lùi sau, kéo dài “a”.",
+      img: "/ɑː/ là “Aaa” khi bác sĩ khám họng. /ʌ/ là tiếng “ừ, ậm” ngắn gọn.",
+      trap: "Đọc /ʌ/ thành “a”, nên cup nghe như cop; hoặc đọc hot thành “hót” với “o” tròn môi.",
+      pairs: [["cup", "cop"], ["hut", "hot"], ["luck", "lock"], ["duck", "dock"], ["nut", "not"]],
+      words: ["cup", "hot", "luck", "stop", "love", "box", "money", "father", "some", "job"],
+      sents: ["I love a hot cup of coffee.", "Stop the bus at the bottom of the hill.", "My mother got a job in another country."] },
+    { id: "schwa-er", t: "Âm /ə/ và /ɜːr/", ph: ["AH", "ER"],
+      how: "/ə/ là âm phổ biến nhất tiếng Anh: miệng và lưỡi thả lỏng hoàn toàn, phát ra tiếng “ơ” rất nhẹ và ngắn, chỉ nằm ở âm tiết KHÔNG nhấn. /ɜːr/ (giọng Mỹ): “ơ” dài, đầu lưỡi cong nhẹ về sau như chuẩn bị đọc /r/.",
+      img: "/ə/ là tiếng thở dài “ờ” lúc mệt. /ɜːr/ là tiếng “ơơơr” của động cơ xe máy.",
+      trap: "Đọc mọi nguyên âm theo mặt chữ (about thành “a-bao”, teacher thành “ti-chơ” mà không cong lưỡi).",
+      pairs: [["bird", "bud"], ["heard", "hard"], ["work", "walk"], ["firm", "farm"]],
+      words: ["about", "banana", "teacher", "doctor", "bird", "work", "learn", "her", "early", "person"],
+      sents: ["The teacher learned about the problem early.", "Her first word was a bird.", "A person can work for a better future."] }
+  ] },
+  { id: "v2", name: "Nguyên âm đôi", sub: "Trượt từ âm này sang âm kia trong một hơi", lessons: [
+    { id: "ey", t: "/eɪ/ day và /e/ dead", ph: ["EY"],
+      how: "/eɪ/ là nguyên âm đôi: bắt đầu ở “ê”, rồi trượt nhẹ lên “i” trong cùng một hơi. Phần đầu dài và rõ, phần đuôi ngắn nhưng phải có.",
+      img: "/eɪ/ giống tiếng “ây” khi gọi bạn: “Ây, chờ đã!”.",
+      trap: "Bỏ đuôi /ɪ/, nên late nghe như let, pain nghe như pen.",
+      pairs: [["late", "let"], ["pain", "pen"], ["date", "debt"], ["wait", "wet"]],
+      words: ["day", "make", "great", "eight", "late", "rain", "take", "change", "station", "favorite"],
+      sents: ["The train was late again today.", "They make a great cake every Sunday.", "Wait at the station until eight."] },
+    { id: "ay-aw", t: "/aɪ/ time và /aʊ/ house", ph: ["AY", "AW"],
+      how: "/aɪ/: há miệng “a” rồi trượt lên “i”. /aʊ/: há miệng “a” rồi khép tròn môi sang “u”. Cả hai đều bắt đầu bằng miệng mở rộng.",
+      img: "/aɪ/ là “ai?” khi có ai gõ cửa. /aʊ/ là “ao” khi bị dẫm vào chân.",
+      trap: "Đọc /aɪ/ ở cuối từ quá ngắn hoặc bỏ âm cuối phía sau: time thành “tai”, nice thành “nai”.",
+      pairs: [["buy", "bow"], ["tie", "town"], ["mice", "mouse"], ["right", "round"]],
+      words: ["time", "light", "nice", "price", "my", "house", "now", "about", "town", "found"],
+      sents: ["I like to ride my bike at night.", "How about a house in town?", "I found a nice place downtown."] },
+    { id: "ow-oy", t: "/oʊ/ go, /ɔɪ/ boy và /ɔː/ law", ph: ["OW", "OY", "AO"],
+      how: "/oʊ/: bắt đầu “ô” rồi khép môi tròn hơn sang “u”. /ɔɪ/: “o” rồi trượt sang “i”. /ɔː/: một âm “o” mở, môi tròn vừa, không trượt.",
+      img: "/oʊ/ là “ô-u” khi ngạc nhiên. /ɔɪ/ là tiếng “oi” khi đau. /ɔː/ là “o” dài khi ngáp.",
+      trap: "Đọc /oʊ/ thành “ô” đơn, nên coat gần với caught, low gần với law.",
+      pairs: [["coat", "caught"], ["low", "law"], ["boat", "bought"], ["toy", "tie"]],
+      words: ["go", "home", "know", "phone", "boy", "enjoy", "noise", "law", "walk", "always"],
+      sents: ["I always walk home from school.", "The boy enjoys his new toy.", "Do you know the phone number?"] },
+    { id: "vowel-r", t: "Nguyên âm có /r/: car, door, here, hair", ph: ["R"],
+      how: "Giọng Mỹ đọc rõ âm /r/ sau nguyên âm: đọc nguyên âm, rồi cong đầu lưỡi về sau (không chạm vòm miệng). car /kɑːr/, door /dɔːr/, here /hɪr/, hair /her/.",
+      img: "Cong lưỡi như khi giả tiếng gầm “grrr” của chó.",
+      trap: "Bỏ hẳn /r/ (car thành “ca”) hoặc rung lưỡi như “r” tiếng Việt.",
+      pairs: [["car", "cot"], ["four", "foe"], ["hair", "head"], ["here", "he"]],
+      words: ["car", "far", "start", "door", "four", "more", "here", "near", "hair", "where"],
+      sents: ["Where did you park the car?", "There are four doors here.", "Start near the corner store."] }
+  ] },
+  { id: "c1", name: "Phụ âm cặp", sub: "Có rung hay không rung, có bật hơi hay không", lessons: [
+    { id: "p-b", t: "/p/ và /b/", ph: ["P", "B"],
+      how: "Cả hai mím hai môi rồi bật ra. /p/: bật mạnh, có luồng hơi (đặt tờ giấy trước miệng sẽ lay), cổ họng không rung. /b/: bật nhẹ, cổ họng rung.",
+      img: "/p/ là thổi tắt nến “phù”. /b/ là tiếng bong bóng vỡ “bụp”.",
+      trap: "/p/ đầu từ không bật hơi nên nghe như /b/; nuốt /p/ /b/ ở cuối từ (stop, job).",
+      pairs: [["pin", "bin"], ["pack", "back"], ["cap", "cab"], ["rope", "robe"]],
+      words: ["pen", "people", "happy", "stop", "map", "bad", "baby", "job", "rubber", "club"],
+      sents: ["Put the pen back in the bag.", "The baby is happy and playing.", "Pick up the map at the club."] },
+    { id: "t-d", t: "/t/ và /d/", ph: ["T", "D"],
+      how: "Đầu lưỡi chạm lợi trên (phần gồ sau răng cửa), không chạm răng như “t” tiếng Việt. /t/: bật hơi mạnh, không rung. /d/: bật nhẹ, có rung.",
+      img: "Chạm lưỡi vào “bậc thềm” ngay sau răng cửa trên, rồi búng ra.",
+      trap: "Đọc /d/ thành “đ” tiếng Việt; nuốt /t/ /d/ cuối từ (eat, need).",
+      pairs: [["time", "dime"], ["tie", "die"], ["seat", "seed"], ["bat", "bad"]],
+      words: ["ten", "time", "eat", "student", "write", "day", "dog", "need", "good", "played"],
+      sents: ["The student needs to eat at ten.", "My dog waited outside all day.", "Write it down and read it later."] },
+    { id: "k-g", t: "/k/ và /ɡ/", ph: ["K", "G"],
+      how: "Cuống lưỡi nâng chạm ngạc mềm phía sau, rồi bật ra. /k/: bật hơi mạnh, không rung. /ɡ/: có rung.",
+      img: "/k/ là tiếng ho khan nhẹ “khụ”. /ɡ/ là tiếng uống nước “ực”.",
+      trap: "Nuốt /k/ /ɡ/ cuối từ: book thành “búc” không bật, big thành “bích”.",
+      pairs: [["coat", "goat"], ["back", "bag"], ["pick", "pig"], ["duck", "dug"]],
+      words: ["cat", "key", "book", "school", "like", "go", "game", "big", "dog", "again"],
+      sents: ["I like to read a good book.", "Go back and get your bag.", "The big dog keeps running in the garden."] },
+    { id: "f-v", t: "/f/ và /v/", ph: ["F", "V"],
+      how: "Răng trên chạm nhẹ môi dưới, thổi hơi qua khe. /f/: không rung. /v/: có rung, nghe tiếng “vvv” như máy cạo râu.",
+      img: "Cắn nhẹ môi dưới như đang cố nhịn cười.",
+      trap: "Đọc /v/ thành /b/ hoặc /w/; nuốt /f/ /v/ cuối từ (life, five, love).",
+      pairs: [["fan", "van"], ["fast", "vast"], ["leaf", "leave"], ["safe", "save"]],
+      words: ["fan", "coffee", "life", "phone", "laugh", "very", "visit", "love", "five", "every"],
+      sents: ["I drink coffee every morning.", "We visit our family five times a year.", "I love my life very much."] },
+    { id: "s-z", t: "/s/ và /z/", ph: ["S", "Z"],
+      how: "Đầu lưỡi gần lợi trên, răng gần khép, thổi hơi qua khe hẹp. /s/: tiếng xì không rung. /z/: có rung, như tiếng ong “zzz”.",
+      img: "/s/ là lốp xe xì hơi. /z/ là con ong bay qua tai.",
+      trap: "Đọc /z/ thành /s/ hoặc “d” tiếng Việt (is thành “ít”, zoo thành “du”); bỏ /s/ /z/ cuối từ.",
+      pairs: [["sip", "zip"], ["bus", "buzz"], ["price", "prize"], ["race", "raise"]],
+      words: ["see", "bus", "city", "class", "nice", "zoo", "easy", "is", "music", "because"],
+      sents: ["This bus is easy to use.", "Sam sings his favorite music at the zoo.", "It is nice because the city is quiet."] },
+    { id: "sh-ch", t: "/ʃ/ she, /tʃ/ chair, /dʒ/ job", ph: ["SH", "CH", "JH", "ZH"],
+      how: "/ʃ/: chu môi về trước, lưỡi lùi hơn /s/, thổi hơi “suỵt”. /tʃ/: chặn lưỡi ở lợi trên rồi bật thành /ʃ/. /dʒ/: như /tʃ/ nhưng có rung. /ʒ/ (usually, television): như /ʃ/ có rung.",
+      img: "/ʃ/ là “suỵt” bảo im lặng. /tʃ/ là tiếng hắt xì “tchù”. /dʒ/ là tiếng “dzô” khi cụng ly.",
+      trap: "Đọc /ʃ/ thành /s/ (she thành “si”); đọc /dʒ/ thành “gi” mềm; bỏ /tʃ/ cuối từ (watch).",
+      pairs: [["she", "see"], ["shoe", "sue"], ["chip", "ship"], ["cheap", "jeep"]],
+      words: ["she", "shop", "station", "wash", "chair", "teacher", "watch", "job", "orange", "usually"],
+      sents: ["She usually shops at the station.", "The teacher bought a cheap chair.", "Change the channel and watch the news."] }
+  ] },
+  { id: "c2", name: "Âm khó với người Việt", sub: "Tiếng Việt không có hoặc dễ lẫn", lessons: [
+    { id: "th", t: "/θ/ think và /ð/ this", ph: ["TH", "DH"],
+      how: "Đưa đầu lưỡi ra giữa hai hàm răng (thè nhẹ ra ngoài một chút), thổi hơi qua khe giữa lưỡi và răng trên. /θ/: không rung, chỉ có hơi. /ð/: có rung.",
+      img: "Thè lưỡi như con rắn rồi thổi. Soi gương: phải thấy đầu lưỡi.",
+      trap: "Đọc /θ/ thành “th” tiếng Việt, /t/ hoặc /s/ (think thành “tinh/sinh”); đọc /ð/ thành “đ” (this thành “đít”).",
+      pairs: [["think", "sink"], ["thin", "tin"], ["three", "tree"], ["then", "den"], ["they", "day"]],
+      words: ["think", "three", "thank", "month", "bath", "this", "that", "mother", "weather", "with"],
+      sents: ["I think these three things are worth it.", "Thank you for the birthday gift.", "My mother and father like this weather."] },
+    { id: "r-l", t: "/r/ và /l/", ph: ["R", "L"],
+      how: "/r/: cong đầu lưỡi về sau, KHÔNG chạm vòm miệng, môi hơi tròn, không rung lưỡi. /l/: đầu lưỡi chạm lợi trên, hơi đi ra hai bên lưỡi. /l/ cuối từ (feel, school): cuống lưỡi nâng lên, nghe như “âu” nhẹ.",
+      img: "/r/ là lưỡi cong như móc câu treo lơ lửng. /l/ là lưỡi dán vào nóc nhà.",
+      trap: "Rung lưỡi /r/ như tiếng Việt miền Nam; bỏ /l/ cuối từ (school thành “sờ-cu”).",
+      pairs: [["right", "light"], ["read", "lead"], ["rock", "lock"], ["pray", "play"]],
+      words: ["red", "right", "very", "carry", "library", "leg", "hello", "feel", "school", "really"],
+      sents: ["I really like reading in the library.", "Turn right at the red light.", "Lily feels well after a long walk."] },
+    { id: "w-v", t: "/w/ và /v/", ph: ["W", "V"],
+      how: "/w/: chu tròn môi rồi mở nhanh sang nguyên âm sau, răng KHÔNG chạm môi, như “qu/oa” tiếng Việt. /v/: răng trên chạm môi dưới, có rung.",
+      img: "/w/ là chu môi hôn gió rồi mở ra. /v/ là cắn môi dưới rồi rung.",
+      trap: "Đọc /v/ thành /w/ hoặc ngược lại: west nghe như vest, wine như vine.",
+      pairs: [["west", "vest"], ["wine", "vine"], ["wet", "vet"], ["worse", "verse"]],
+      words: ["we", "water", "one", "quick", "away", "very", "voice", "every", "seven", "travel"],
+      sents: ["We want very warm water.", "Seven women travel every week.", "Will you wait for a while?"] },
+    { id: "nasal", t: "Âm mũi /m/ /n/ /ŋ/ ở cuối từ", ph: ["M", "N", "NG"],
+      how: "/m/: mím môi, hơi ra mũi. /n/: đầu lưỡi chạm lợi, hơi ra mũi. /ŋ/: cuống lưỡi chạm ngạc mềm như “ng”, không bật thêm /ɡ/. Ở cuối từ phải giữ âm đủ lâu cho người nghe nhận ra.",
+      img: "Bịt mũi lại: nếu âm tắt luôn là bạn đọc đúng âm mũi.",
+      trap: "Nhầm /n/ với /ŋ/ ở cuối từ (thin và thing), hoặc lẫn /n/ với /l/.",
+      pairs: [["thin", "thing"], ["ran", "rang"], ["sun", "sung"], ["win", "wing"]],
+      words: ["home", "time", "summer", "ten", "sun", "dinner", "sing", "long", "thinking", "morning"],
+      sents: ["I'm thinking of going home this morning.", "We sing a long song in summer.", "Ten men are running in the sun."] },
+    { id: "h-y", t: "/h/ và /j/ (you)", ph: ["HH", "Y"],
+      how: "/h/: thở hơi nhẹ từ cổ họng, miệng đặt sẵn vị trí nguyên âm sau, không khàn như “h” tiếng Việt. /j/: lưỡi nâng gần ngạc cứng như /iː/ rồi trượt nhanh sang nguyên âm sau, như “d” miền Nam (dạ).",
+      img: "/h/ là hà hơi lên kính để lau. /j/ là tiếng “dạ” miền Nam.",
+      trap: "Bỏ /h/ (hat thành “át”) hoặc bỏ /j/ (use thành “u”, year thành “ia”).",
+      pairs: [["hat", "at"], ["heat", "eat"], ["year", "ear"], ["yes", "less"]],
+      words: ["hat", "house", "behind", "who", "happy", "yes", "you", "use", "music", "year"],
+      sents: ["Who is behind the house?", "Yes, you can use my music player.", "Happy new year to you."] }
+  ] },
+  { id: "f1", name: "Âm cuối", sub: "Lỗi số một của người Việt: nuốt âm cuối", lessons: [
+    { id: "final-stop", t: "Âm cuối /t/ /d/ /k/ /p/", ph: ["T", "D", "K", "P"],
+      how: "Tiếng Việt đóng âm cuối “t, p, c” mà không bật ra. Tiếng Anh cần nghe thấy âm cuối: chặn đúng chỗ rồi thả nhẹ một chút hơi. Không cần bật thật mạnh, nhưng không được im hẳn.",
+      img: "Âm cuối như dấu chấm câu: thiếu nó, người nghe không biết câu đã xong chưa.",
+      trap: "Nuốt hẳn âm cuối: cat, cap, cab nghe giống hệt nhau; need nghe như knee.",
+      pairs: [["cat", "cap"], ["need", "knee"], ["seat", "seed"], ["back", "bat"]],
+      words: ["cat", "eat", "need", "good", "book", "like", "stop", "help", "bread", "street"],
+      sents: ["I need a good book about art.", "Help me stop the cat.", "We like fresh bread and hot soup."] },
+    { id: "final-s", t: "Đuôi -s, -es: /s/ /z/ /ɪz/", ph: ["S", "Z"],
+      how: "Quy tắc theo âm cuối của từ gốc: sau âm không rung (p, t, k, f, θ) đọc /s/ (cats, books); sau âm rung và nguyên âm đọc /z/ (dogs, plays); sau s, z, ʃ, tʃ, dʒ đọc /ɪz/ (buses, watches).",
+      img: "Cổ họng đang rung thì cứ rung tiếp sang /z/; đang im thì giữ im với /s/.",
+      trap: "Bỏ hẳn đuôi -s (two book), hoặc đọc mọi đuôi -s thành “xờ” tách rời.",
+      pairs: [["cat", "cats"], ["dog", "dogs"], ["bus", "buses"], ["play", "plays"]],
+      words: ["cats", "books", "stops", "dogs", "plays", "friends", "buses", "watches", "changes", "months"],
+      sents: ["My friends like dogs and cats.", "She watches films and plays games.", "The buses stop every ten minutes."] },
+    { id: "final-ed", t: "Đuôi -ed: /t/ /d/ /ɪd/", ph: ["T", "D"],
+      how: "Sau âm không rung (p, k, f, s, ʃ, tʃ) đọc /t/ (walked, watched); sau âm rung và nguyên âm đọc /d/ (played, lived); sau /t/ /d/ đọc /ɪd/ (wanted, needed). Phần lớn KHÔNG thêm âm tiết.",
+      img: "-ed chỉ là một chấm âm nhỏ dính vào từ, không phải một chữ “ét” riêng.",
+      trap: "Đọc mọi -ed thành “ét” (walked thành “wóc-két”), hoặc bỏ hẳn nên mất thì quá khứ.",
+      pairs: [["walk", "walked"], ["play", "played"], ["want", "wanted"], ["stop", "stopped"]],
+      words: ["walked", "watched", "stopped", "played", "lived", "cleaned", "wanted", "needed", "visited", "started"],
+      sents: ["I walked home and watched a film.", "We played football and stayed late.", "She wanted to visit her family."] },
+    { id: "final-other", t: "Âm cuối khó: /l/ /ʃ/ /tʃ/ /dʒ/ /v/ /z/", ph: ["L", "SH", "CH", "JH", "V", "Z"],
+      how: "Những âm này tiếng Việt không có ở cuối từ nên rất dễ bị bỏ. Giữ khẩu hình đến hết từ: school giữ lưỡi /l/, wash giữ hơi /ʃ/, page giữ /dʒ/, five giữ /v/.",
+      img: "Đọc từ như kéo khóa áo: phải kéo đến tận cùng.",
+      trap: "school thành “sờ-cu”, page thành “pây”, five thành “phai”.",
+      pairs: [["fill", "fit"], ["wash", "watch"], ["age", "eight"], ["five", "fight"]],
+      words: ["school", "feel", "wash", "fish", "watch", "page", "large", "five", "love", "size"],
+      sents: ["I feel well after school.", "Wash the fish and watch the time.", "This large page is five pages long."] }
+  ] },
+  { id: "cl", name: "Cụm phụ âm", sub: "Hai, ba phụ âm đứng liền, không chen âm ơ", lessons: [
+    { id: "cl-start", t: "Cụm đầu từ: pl, br, tr, st, str, spr", ph: ["S", "T", "R", "L", "P"],
+      how: "Đọc các phụ âm dính liền trong một nhịp, không chen nguyên âm. street là /striːt/ một âm tiết, không phải “xờ-tờ-rít”.",
+      img: "Cụm phụ âm như toa tàu nối liền: chạy một mạch, không dừng giữa các toa.",
+      trap: "Chen âm “ơ” giữa các phụ âm (school thành “sờ-cun”, play thành “pờ-lây”).",
+      pairs: [["play", "pray"], ["fly", "fry"], ["sport", "port"], ["tree", "three"]],
+      words: ["play", "bring", "travel", "study", "street", "spring", "smile", "snow", "school", "plan"],
+      sents: ["I study English every spring.", "Bring your friend to the street party.", "Students travel to school by train."] },
+    { id: "cl-end", t: "Cụm cuối từ: -st, -nd, -nts, -ks, -sts", ph: ["S", "T", "D", "K"],
+      how: "Cụm cuối từ phải đọc đủ từng âm, thường âm cuối nhẹ hơn. asked /æskt/, months /mʌnθs/, texts /teksts/. Đọc chậm trước, rồi nhanh dần.",
+      img: "Như tháo dây giày: kéo đủ từng vòng, không giật đứt.",
+      trap: "Chỉ giữ một phụ âm (first thành “phớt”, friends thành “phren”).",
+      pairs: [["fast", "fat"], ["hand", "had"], ["six", "sick"], ["test", "Tess"]],
+      words: ["first", "best", "hand", "friends", "next", "asked", "months", "texts", "tests", "students"],
+      sents: ["My best friends asked me first.", "The students passed the tests last month.", "Send the next six texts."] }
+  ] },
+  { id: "st", name: "Trọng âm từ", sub: "Âm tiết mạnh nghe to, cao và dài hơn", lessons: [
+    { id: "stress-2", t: "Từ hai âm tiết: danh từ và động từ", ph: [],
+      how: "Âm tiết được nhấn đọc to hơn, cao hơn và dài hơn; âm tiết không nhấn thường co lại thành /ə/. Nhiều từ hai âm tiết: danh từ, tính từ nhấn đầu (ˈpresent, ˈrecord); động từ nhấn sau (preˈsent, reˈcord).",
+      img: "Trọng âm như nhịp trống “BÙM-cha”: danh từ “BÙM-cha”, động từ “cha-BÙM”.",
+      trap: "Đọc mọi âm tiết đều nhau như tiếng Việt, nên người nghe khó nhận ra từ.",
+      pairs: [["present", "prevent"], ["desert", "dessert"], ["record", "reward"]],
+      words: ["present", "record", "student", "teacher", "happy", "began", "relax", "decide", "explain", "become"],
+      sents: ["The teacher decided to explain it again.", "Relax and enjoy the present moment.", "My student became very happy."] },
+    { id: "stress-suffix", t: "Đuôi quyết định trọng âm", ph: [],
+      how: "Một số đuôi kéo trọng âm về âm tiết ngay trước nó: -tion, -sion, -ic, -ical, -ity, -ian (eduˈcation, eˈconomic, uniˈversity). Đuôi -ology, -ography nhấn trước đuôi (bi-ˈology).",
+      img: "Đuôi -tion như nam châm hút trọng âm về sát nó.",
+      trap: "Nhấn theo thói quen ở âm tiết đầu: ˈeducation, ˈeconomic.",
+      pairs: [["economy", "economic"], ["photograph", "photography"], ["public", "publicity"]],
+      words: ["education", "information", "economic", "scientific", "university", "possibility", "musician", "biology", "photography", "decision"],
+      sents: ["Education is important for the economy.", "The university gave us more information.", "Her decision was very scientific."] }
+  ] },
+  { id: "cs", name: "Đọc câu tự nhiên", sub: "Âm yếu, nối âm, nhịp câu", lessons: [
+    { id: "weak", t: "Âm yếu: to, for, of, can, and", ph: [],
+      how: "Từ chức năng (to, for, of, a, the, can, and, at) thường đọc yếu: nguyên âm co thành /ə/, đọc nhanh và nhẹ. to /tə/, for /fər/, of /əv/, can /kən/, and /ən/.",
+      img: "Từ nội dung là núi, từ chức năng là thung lũng: lên xuống tạo nhịp.",
+      trap: "Đọc từ nào cũng to và rõ như nhau, nên câu nghe cứng và chậm.",
+      pairs: [],
+      words: ["to", "for", "of", "can", "and", "at", "from", "some", "was", "are"],
+      sents: ["I want to go for a walk.", "A cup of tea and a piece of cake.", "We can meet at the station at five."] },
+    { id: "linking", t: "Nối âm: phụ âm cuối + nguyên âm đầu", ph: [],
+      how: "Khi từ trước kết thúc bằng phụ âm và từ sau bắt đầu bằng nguyên âm, phụ âm “nhảy sang” từ sau: pick it up nghe như “pi-ki-tup”, turn off nghe như “tur-noff”.",
+      img: "Các từ như hạt cườm xâu chuỗi, không phải viên bi rời.",
+      trap: "Ngắt từng từ một, nên vừa chậm vừa thiếu âm cuối.",
+      pairs: [],
+      words: ["pick", "turn", "come", "look", "get", "find", "an", "it", "up", "out"],
+      sents: ["Pick it up and put it on.", "Turn off the light in an hour.", "Come in and look around."] },
+    { id: "rhythm", t: "Nhịp câu và ngữ điệu", ph: [],
+      how: "Nhấn vào từ mang nghĩa (danh từ, động từ chính, tính từ), lướt qua từ chức năng. Câu hỏi Yes/No lên giọng ở cuối; câu hỏi Wh- và câu kể xuống giọng.",
+      img: "Đọc như rap: phách mạnh rơi vào từ quan trọng.",
+      trap: "Đọc đều đều, câu hỏi nào cũng lên giọng.",
+      pairs: [],
+      words: ["really", "important", "question", "answer", "interesting", "understand", "remember", "different", "together", "tomorrow"],
+      sents: ["What do you usually do on weekends?", "Do you think it is really important?", "I don't remember the answer to that question."] }
+  ] }
+];
+const PR_LESSONS = PR_STAGES.flatMap(s => s.lessons.map(l => ({ ...l, stage: s.id })));
+const PR_LEX = { live: "L IH1 V", read: "R IY1 D", record: "R EH1 K ER0 D", present: "P R EH1 Z AH0 N T" };
+const PR_PASS = { word: 70, sent: 65, target: 50, quiz: 6 };
+
+/* ===== Lộ trình Speaking: mỗi bài có bản chất, khung trả lời, cụm hay, bài mẫu band 7 và bài luyện máy tự kiểm tra (không gọi AI) ===== */
+const RX = {
+  reason: /\b(because|since|as|so that|reason|that's why|which is why|due to)\b/i,
+  example: /\b(for example|for instance|like when|such as|e\.g\.|one time|last (week|month|year|time)|when i was)\b/i,
+  opener: /\b(well|actually|to be honest|honestly|i'd say|i would say|i guess|i suppose|definitely|absolutely|not really|oh,? )\b/i,
+  linker: /\b(and also|also|besides|plus|apart from that|on top of that|what's more|so|but|although|however|because)\b/gi,
+  buy: /\b(that's (a|an) (good|interesting|difficult|tricky) question|let me (think|see)|i've never (really )?thought about|it's hard to say|how can i put it|what i mean is)\b/i,
+  past: /\b(was|were|did|had|used to|went|got|made|\w+ed)\b/i,
+  future: /\b(will|going to|gonna|would like|'d like|hope to|plan to|in the future)\b/i,
+  contrast: /\b(on the other hand|however|whereas|while|although|but|compared (with|to)|in contrast|unlike)\b/i,
+  opinion: /\b(i think|i believe|in my opinion|personally|from my point of view|i'd say|it seems to me|i feel)\b/i,
+  general: /\b(generally|in general|tend to|most people|many people|nowadays|these days|on the whole)\b/i,
+  predict: /\b(will probably|is likely to|are likely to|in the future|i expect|i imagine|might|may well)\b/i,
+  feeling: /\b(felt|feel|happy|excited|proud|nervous|surprised|relieved|grateful|amazed|disappointed)\b/i
+};
+const SP_PATH = [
+  { id: "p1-are", part: 1, t: "Part 1: Trả lời + Lý do + Ví dụ",
+    idea: "Part 1 là những câu hỏi đời thường. Giám khảo không chấm đúng sai về nội dung, mà nghe bạn có *nói thêm được* hay không. Câu trả lời một chữ (“Yes, I do.”) làm mất điểm Fluency vì không có gì để nghe. Công thức an toàn là A-R-E: *Answer* trả lời thẳng, *Reason* nêu lý do, *Example* thêm một ví dụ hoặc chi tiết cá nhân. Ba câu là đủ, khoảng 20–30 giây.",
+    frame: ["Answer: trả lời thẳng vào câu hỏi trong một câu.", "Reason: because / since / the main reason is…", "Example: for example / like when… / last weekend I…"],
+    phrases: ["The main reason is that…", "For example, last weekend I…", "That's why I…", "I'd say it's mainly because…"],
+    model: { q: "Do you like reading books?", a: "Yes, I'd say I'm quite a big reader. The main reason is that books help me switch off after a long day of classes. For example, last weekend I finished a short novel about a family in Japan, and I couldn't put it down." },
+    practice: { qs: ["Do you like cooking?", "Do you prefer mornings or evenings?", "What do you usually do on weekends?"], min: 12, words: 30, need: [["Có lý do (because, since…)", "reason"], ["Có ví dụ (for example, last week…)", "example"]] } },
+  { id: "markers", part: 1, t: "Mở đầu tự nhiên và từ nối khi nói",
+    idea: "Người bản xứ hiếm khi trả lời bằng một câu “sách vở” hoàn chỉnh ngay lập tức. Họ mở đầu bằng *Well, Actually, To be honest* để có nửa giây suy nghĩ, rồi nối ý bằng *and also, plus, but, so*. Những từ này không phải từ đệm vô nghĩa như “ừm, à”: chúng cho giám khảo thấy bạn đang dẫn dắt ý, nên được tính vào Fluency and Coherence.",
+    frame: ["Mở đầu: Well, … / Actually, … / To be honest, …", "Ý chính, rồi nối thêm: and also… / plus… / but… / so…"],
+    phrases: ["Well, it depends on…", "Actually, I'm not really into…", "To be honest, I…", "Plus, …", "On top of that, …"],
+    model: { q: "Do you enjoy using public transport?", a: "Well, to be honest, it depends on the time of day. In the morning the buses in my city are really crowded, so I usually ride my motorbike instead. But on weekends I actually enjoy taking the bus, because I can relax and look out of the window. Plus, it's much cheaper than taking a taxi." },
+    practice: { qs: ["Do you like the area where you live?", "Do you enjoy shopping?", "Do you often use social media?"], min: 12, words: 30, need: [["Có câu mở đầu (Well, Actually, To be honest…)", "opener"], ["Có ít nhất 2 từ nối (and also, plus, so, but…)", "linker2"]] } },
+  { id: "buy-time", part: 1, t: "Câu giờ khôn ngoan khi bí ý",
+    idea: "Im lặng 3 giây là thứ làm điểm Fluency tụt nhanh nhất. Khi gặp câu hỏi lạ, hãy *nói trong lúc nghĩ*: dùng một câu câu giờ có nghĩa (“That's an interesting question…”) hoặc nhắc lại câu hỏi bằng từ của mình. Mỗi câu trả lời chỉ dùng một câu câu giờ, đừng lạm dụng.",
+    frame: ["Câu giờ: That's an interesting question… / Let me think…", "Nhắc lại ý câu hỏi bằng từ của mình.", "Trả lời + lý do như bình thường."],
+    phrases: ["That's an interesting question. I've never really thought about it, but…", "Let me see… I suppose…", "It's hard to say, but I think…", "How can I put it… it's a bit like…"],
+    model: { q: "Do you like looking at the sky?", a: "That's an interesting question. I've never really thought about it, but I suppose I do. When I'm stressed about exams, I sometimes go up to the roof of my building and just watch the clouds for a few minutes. It sounds silly, but it really calms me down." },
+    practice: { qs: ["Do you like collecting things?", "Have you ever lost something important?", "Do you prefer handwriting or typing?"], min: 12, words: 30, need: [["Có câu câu giờ (Let me think, That's an interesting question…)", "buy"]], longMax: 2 } },
+  { id: "p1-tense", part: 1, t: "Part 1: Dùng đúng thì theo câu hỏi",
+    idea: "Câu hỏi Part 1 thường nhảy giữa hiện tại (“Do you…?”), quá khứ (“Did you… when you were a child?”) và tương lai (“Will you…?”). Giám khảo nghe bạn có *đổi thì theo câu hỏi* hay không, đây là điểm Grammar dễ lấy. Mẹo: nghe động từ trong câu hỏi (do, did, will) rồi trả lời đúng thì đó.",
+    frame: ["Did…? → trả lời bằng quá khứ: I went / I used to…", "Will…? / Would you like…? → will, I'd like to, I'm planning to…", "Do…? → hiện tại đơn cho thói quen."],
+    phrases: ["When I was a kid, I used to…", "Back then, I…", "I'm planning to…", "I'd love to… someday."],
+    model: { q: "Did you play sports when you were a child?", a: "Yes, I did. When I was in primary school, I used to play badminton with my dad almost every evening in front of our house. We didn't have a proper net, so we just used a piece of string. I haven't played much since I started university, but I'd love to get back into it." },
+    practice: { qs: ["Did you have a favorite toy when you were a child?", "What did you do last weekend?", "Will you travel somewhere next summer?"], min: 12, words: 30, need: [["Có động từ quá khứ (was, went, used to…)", "past"], ["Có thì tương lai (will, going to, I'd like…)", "future"]], tip: "Trả lời cả ba câu trong một lần ghi âm cũng được: câu 1–2 dùng quá khứ, câu 3 dùng tương lai." } },
+  { id: "p2-plan", part: 2, t: "Part 2: Lập dàn ý trong 1 phút",
+    idea: "Part 2 cho bạn 1 phút chuẩn bị và giấy bút. Đừng viết câu: chỉ ghi *4–6 từ khóa*, mỗi gợi ý trên thẻ một từ khóa, cộng thêm một chi tiết “có hình ảnh” (màu sắc, âm thanh, cảm xúc). Khi nói, đi lần lượt theo gợi ý trên thẻ: thẻ chính là dàn ý có sẵn. Mục tiêu đầu tiên là nói được *trọn 1 phút* không bị tắc.",
+    frame: ["Câu mở: I'd like to talk about…", "Gợi ý 1 → 2 → 3, mỗi gợi ý 2–3 câu.", "Gợi ý cuối “and explain…”: nói cảm xúc, ý nghĩa.", "Câu kết: So that's why…"],
+    phrases: ["I'd like to talk about…", "As for (where/when)…", "What I remember most is…", "So that's why it means so much to me."],
+    model: { q: "Describe a place in your city that you enjoy visiting.", a: "I'd like to talk about a small bookshop café near my university. It's on a quiet street, hidden behind a row of tall trees, so a lot of people walk past without noticing it. Inside, there are old wooden shelves full of second-hand books, and you can read anything you like while you drink your coffee. I usually go there with my best friend on Saturday mornings, when it's not too crowded. What I enjoy most is the atmosphere. There's soft music, the smell of coffee and old paper, and everyone is just quietly reading. It feels like time slows down. In a city as noisy as mine, that's quite rare. So that's why I keep going back there whenever I need a break from studying." },
+    practice: { qs: ["Describe a gift you gave to someone.", "Describe a teacher who helped you.", "Describe a place you visited that you liked."], min: 60, words: 100, prep: 60, need: [["Có chi tiết cảm xúc (felt, happy, proud…)", "feeling"]] } },
+  { id: "p2-long", part: 2, t: "Part 2: Nói đủ 2 phút",
+    idea: "Band 6 trở lên cần nói *gần đủ 2 phút*. Bí quyết không phải là nói nhanh, mà là có đủ chất liệu: với mỗi gợi ý, trả lời thêm câu hỏi *who, where, when, what happened, how did you feel*. Kể như kể chuyện cho bạn nghe, dùng thì quá khứ cho sự việc đã xảy ra. Nếu hết ý, thêm một so sánh “trước và sau” hoặc một bài học rút ra.",
+    frame: ["Bối cảnh: who, where, when.", "Diễn biến: what happened, chi tiết cụ thể.", "Cảm xúc lúc đó và bây giờ.", "Bài học hoặc so sánh trước–sau."],
+    phrases: ["It all started when…", "At first I thought…, but then…", "Looking back, I realize…", "If I compare it with…"],
+    model: { q: "Describe a time you helped someone.", a: "I'd like to talk about the time I helped my younger cousin prepare for her high school entrance exam. It was about two years ago, during my summer holiday. My aunt was worried because my cousin was really weak at maths, and she couldn't afford a private tutor. So I offered to teach her for free, three evenings a week. At first it was quite frustrating. She was shy and wouldn't ask questions, and I realized I was explaining things too fast. So I changed my approach. I started using real examples, like calculating discounts when we went shopping, and suddenly she became much more interested. By the end of the summer, she could solve problems that she used to skip completely. When she passed the exam with a good score, she called me straight away, and honestly, I felt prouder than when I passed my own exams. Looking back, that experience taught me a lot about patience. It's also one of the reasons I enjoy explaining things to my classmates now." },
+    practice: { qs: ["Describe a time you helped someone.", "Describe a difficult decision you made.", "Describe a trip that you remember well."], min: 90, words: 150, prep: 60, wpm: 90, longMax: 5, need: [["Có quá khứ (was, went, decided…)", "past"], ["Có cảm xúc", "feeling"]] } },
+  { id: "p3-opinion", part: 3, t: "Part 3: Quan điểm, lý do và mặt trái",
+    idea: "Part 3 hỏi về xã hội, không hỏi về bạn. Câu trả lời tốt có bốn nhịp: *nêu quan điểm* rõ ràng, *giải thích lý do*, *ví dụ chung* (không cần chuyện cá nhân), và *nhìn mặt kia* (on the other hand…). Nhịp thứ tư là thứ phân biệt band 6 với band 7: nó cho thấy bạn suy nghĩ hai chiều.",
+    frame: ["Quan điểm: I think / In my opinion…", "Lý do: because / mainly because…", "Ví dụ chung: For example, in Vietnam…", "Mặt kia: On the other hand / That said…"],
+    phrases: ["In my opinion, …", "The main reason is…", "Take Vietnam, for example: …", "On the other hand, …", "That said, …"],
+    model: { q: "Is it better to learn a skill from a teacher or by yourself online?", a: "In my opinion, it really depends on the skill, but for most practical skills a teacher is still better. The main reason is that a teacher can spot your mistakes immediately. For example, if you're learning to swim or to play the guitar, a small mistake in technique can become a bad habit that's very hard to fix later. On the other hand, online learning is much more flexible and cheaper, so for things like basic coding or design software, I think learning by yourself is perfectly fine." },
+    practice: { qs: ["Do you think children should learn to cook at school?", "Is it better to live in a city or in the countryside?", "Should university education be free?"], min: 30, words: 60, need: [["Có quan điểm (I think, in my opinion…)", "opinion"], ["Có mặt trái (on the other hand, however…)", "contrast"], ["Có lý do", "reason"]] } },
+  { id: "p3-general", part: 3, t: "Part 3: Nói khái quát và dự đoán",
+    idea: "Nhiều câu Part 3 hỏi “Why do people…?”, “How will… change in the future?”. Đừng trả lời bằng chuyện riêng của bạn. Hãy *khái quát* (people tend to…, generally…) và *dự đoán có mức độ* (will probably, is likely to, might). Dùng từ chỉ mức độ chắc chắn giúp câu nói nghe chín chắn và tự nhiên hơn.",
+    frame: ["Khái quát: Generally, people tend to…", "Giải thích nguyên nhân xã hội.", "Dự đoán: In the future, … will probably / might…"],
+    phrases: ["Generally speaking, …", "People tend to…", "This is largely because…", "In the future, it's likely that…", "I imagine that…"],
+    model: { q: "How will the way people shop change in the future?", a: "Generally speaking, people tend to choose whatever is most convenient, so I think online shopping will keep growing. This is largely because delivery is getting faster and cheaper, even in smaller towns in Vietnam. In the future, I imagine we might even try clothes on virtually before buying them. That said, I don't think physical shops will disappear completely, because people still enjoy shopping as a social activity, especially with friends and family." },
+    practice: { qs: ["Why do people like to travel?", "How will schools change in the future?", "Why are many young people moving to big cities?"], min: 30, words: 60, need: [["Có khái quát (generally, tend to, most people…)", "general"], ["Có dự đoán (will probably, might, likely…)", "predict"]] } },
+  { id: "fluency", part: 0, t: "Trôi chảy: nói theo cụm, bớt “ừm”",
+    idea: "Người nghe thấy bạn trôi chảy không phải vì bạn nói nhanh, mà vì bạn nói *theo cụm ý* (chunk) rồi mới ngừng ngắn ở chỗ hợp lý, như ngắt hơi khi đọc thơ. Cách luyện: học thuộc cụm từ thay vì từ lẻ (“I'm really into…”, “It depends on…”), và thay “ừm, à” bằng từ nối có nghĩa. Tốc độ 110–150 từ mỗi phút là vừa đẹp.",
+    frame: ["Mỗi cụm 4–8 từ nói liền một hơi.", "Ngừng ngắn ở dấu phẩy, dấu chấm, không ngừng giữa cụm.", "Thay “ừm” bằng: well, you know, I mean (tối đa vài lần)."],
+    phrases: ["I'm really into…", "It depends on…", "The thing is, …", "What I like most about it is…", "As far as I know, …"],
+    model: { q: "What kind of music do you like?", a: "I'm really into acoustic music, you know, just a voice and a guitar. The thing is, I listen to music mostly when I'm studying, so I need something calm. What I like most about it is that it feels very personal, as if the singer is sitting right next to you." },
+    practice: { qs: ["What kind of music do you like?", "What do you like about your hometown?", "Describe your daily routine."], min: 20, words: 40, wpm: 100, longMax: 2, chunk: 5, fillers: 3, need: [] } },
+  { id: "pron-feat", part: 0, t: "Phát âm khi nói: từ khóa và âm cuối",
+    idea: "Tiêu chí Pronunciation không chỉ chấm từng âm, mà chấm *người nghe có dễ hiểu không*. Hai việc mang lại nhiều điểm nhất: *nhấn đúng từ khóa* trong câu (danh từ, động từ, tính từ quan trọng) và *giữ âm cuối* khi nói nhanh (đặc biệt -s, -ed, -t). Bài này luyện bằng cách đọc to bài mẫu: máy chấm từng âm như ở lộ trình IPA.",
+    frame: ["Gạch chân 1–2 từ khóa mỗi câu, đọc to và dài hơn.", "Giữ âm cuối của từ khóa, nối âm với từ sau nếu bắt đầu bằng nguyên âm."],
+    phrases: [],
+    model: { q: "Đọc to đoạn sau", a: "I usually spend my weekends with my family. We often cook a big lunch together, and then we watch a film or go for a walk in the park near our house." },
+    practice: { read: true, need: [] } }
+];
+/* Ngân hàng đề Speaking (tự soạn theo dạng IELTS), mỗi câu có trả lời mẫu band 7 */
+const SP_BANK = {
+  p1: [
+    { topic: "Hometown", qs: [
+      ["Where is your hometown?", "I'm from Da Nang, a coastal city in the middle of Vietnam. It's famous for its beaches and bridges, and it's much more relaxed than Hanoi or Ho Chi Minh City."],
+      ["What do you like most about it?", "Definitely the beach. You can go for a swim before work and still be on time, which is something I really miss now that I study in a bigger city."],
+      ["Has your hometown changed much in recent years?", "Yes, quite a lot. There are many more hotels and tall buildings now, mainly because of tourism. It's more modern, but it's also more crowded than when I was a kid."],
+      ["Would you like to live there in the future?", "Probably, yes. I'd like to get some experience in a big city first, but in the long run I'd love to settle back home near my family."]] },
+    { topic: "Study", qs: [
+      ["What do you study?", "I'm studying geotechnical engineering, which is basically about how soil and rock behave under buildings and roads. It sounds a bit unusual, but it's actually really practical."],
+      ["Why did you choose this subject?", "Mainly because I've always liked seeing how big structures are built. My uncle is a civil engineer, and when I was a kid he used to take me to construction sites."],
+      ["What is the most difficult part of your studies?", "I'd say the maths. Some of the theory involves quite heavy calculations, so I have to spend a lot of time practising, especially before exams."],
+      ["Do you prefer studying alone or with others?", "It depends. For understanding new theory, I prefer studying alone because I can go at my own pace. But before exams I like studying in a group, since we can test each other."]] },
+    { topic: "Free time", qs: [
+      ["What do you do in your free time?", "I usually play badminton with my classmates or watch films online. On weekends I sometimes go to a café just to read and relax."],
+      ["Do you prefer spending free time alone or with friends?", "With friends, mostly. I spend so much time studying alone that I really need some social time to recharge."],
+      ["Has the way you spend free time changed since you were a child?", "Yes, definitely. As a child I spent most of my free time playing outside with neighbors, whereas now I spend much more time on my phone, which isn't always a good thing."],
+      ["Is there a hobby you would like to try?", "I'd love to learn to play the guitar. I've watched a few tutorials, but I've never had the time to practise properly."]] },
+    { topic: "Food", qs: [
+      ["What kind of food do you like?", "I'm a big fan of noodle soups, especially bun bo Hue. I like spicy food in general, and on cold days nothing beats a hot bowl of noodles."],
+      ["Do you often cook at home?", "Not as often as I'd like. During the semester I usually eat at the canteen because it's cheap and quick, but on weekends I try to cook simple dishes like fried rice."],
+      ["Is there any food you didn't like as a child but like now?", "Yes, bitter melon. When I was little I couldn't stand the taste, but now I actually enjoy it, especially in soup. I guess my taste has changed."],
+      ["Do people in your country eat out a lot?", "Yes, very much. Street food is everywhere and it's cheap, so many people have breakfast or dinner outside almost every day."]] },
+    { topic: "Weather", qs: [
+      ["What's the weather like where you live?", "Ho Chi Minh City is hot all year round. There are basically two seasons: the dry season and the rainy season, when there are heavy storms almost every afternoon."],
+      ["What kind of weather do you like best?", "I prefer cool, sunny weather, like the weather in Da Lat. It's perfect for walking around without getting sweaty."],
+      ["Does the weather affect your mood?", "Definitely. When it rains for several days in a row, I feel a bit lazy and low. But a sunny morning makes me much more productive."],
+      ["Has the weather in your area changed in recent years?", "I think so. The summers seem to be getting hotter, and the floods during the rainy season are more serious than they used to be."]] },
+    { topic: "Mobile phones", qs: [
+      ["How often do you use your phone?", "Honestly, almost all the time. I use it for studying, messaging my family and listening to music, so it's hard to put it down."],
+      ["What do you mostly use it for?", "Mainly for communication and studying. I use some apps to practise English and to read lecture notes on the bus."],
+      ["Could you live without your phone for a day?", "I could, but it would be difficult. I'd probably miss important messages from my classmates, because we organize everything in group chats."],
+      ["Do you think people spend too much time on their phones?", "Yes, I do. You often see a whole family at a restaurant, and everyone is looking at their screen instead of talking to each other."]] },
+    { topic: "Friends", qs: [
+      ["Do you have many friends?", "I have a lot of classmates, but only a few close friends. I'd rather have three friends I can really trust than thirty I barely know."],
+      ["How do you usually spend time with your friends?", "We usually meet up at a café or play sports together. During exam season we also study together in the library."],
+      ["Is it easy to make friends at university?", "It's quite easy at the beginning, because everyone is new and looking for friends. Keeping those friendships is harder, since everyone gets busy."],
+      ["What makes someone a good friend?", "I think honesty is the most important thing. A good friend tells you the truth, even when it's not what you want to hear."]] },
+    { topic: "Sleep", qs: [
+      ["How many hours do you usually sleep?", "Around six or seven hours, which is probably not enough. During exams it drops to about five, and I really feel it the next day."],
+      ["Do you like taking naps?", "Yes, a short nap after lunch is very common in Vietnam, and I find twenty minutes really helps me focus in the afternoon."],
+      ["What do you do if you can't sleep?", "I usually put my phone away and read something boring, like an old textbook. It works surprisingly well."],
+      ["Did you sleep more when you were a child?", "Definitely. My parents were strict about bedtime, so I had to be in bed by nine. Now nobody tells me when to sleep, which is both good and bad."]] },
+    { topic: "Shopping", qs: [
+      ["Do you enjoy shopping?", "Not really. I find crowded shopping malls quite tiring, so I only go when I need something specific."],
+      ["Do you prefer shopping online or in shops?", "Online, mostly, because it saves time and it's often cheaper. But for clothes and shoes I prefer going to a shop, since I need to try them on."],
+      ["What was the last thing you bought?", "The last thing I bought was a pair of running shoes. My old ones were completely worn out, and I wanted to start jogging again."],
+      ["Do you think advertising makes people buy things they don't need?", "Yes, I think so. Social media ads are very clever, and sometimes I add things to my cart just because an influencer used them."]] },
+    { topic: "Transport", qs: [
+      ["How do you usually get to school or work?", "I ride a motorbike, like most people in my city. It takes about twenty minutes, depending on the traffic."],
+      ["Do you like using public transport?", "It depends. The new metro line is clean and fast, so I enjoy taking it, but the buses can be quite crowded at rush hour."],
+      ["Would you like to buy a car in the future?", "Maybe, but not soon. Cars are very expensive in Vietnam, and parking in the city center is a nightmare."],
+      ["Has transport in your city improved recently?", "Yes, a little. The metro has made a real difference for people living along the route, although traffic jams are still a big problem."]] },
+    { topic: "Music", qs: [
+      ["What kind of music do you like?", "I like acoustic and indie music, mostly. I listen to it when I study, because it's calm and doesn't distract me."],
+      ["Did you learn to play an instrument as a child?", "I took piano lessons for about a year when I was nine, but I gave up because I didn't like practising. I regret that now."],
+      ["Do you prefer listening to music alone or with others?", "Alone, usually with headphones. But I really enjoy live music with friends, like small concerts at a café."],
+      ["How has technology changed the way people listen to music?", "Completely. Nowadays almost everyone streams music on their phone, whereas my parents used to buy CDs and cassettes."]] },
+    { topic: "Reading", qs: [
+      ["Do you like reading?", "Yes, I do, although I don't read as much as I'd like. I mostly read non-fiction, like books about science and history."],
+      ["Do you prefer paper books or e-books?", "Paper books, definitely. I like the feeling of turning the pages, and I don't get as tired as when I read on a screen."],
+      ["What was the last book you read?", "The last one was a book about habits. It explains how small daily changes can lead to big results, and it actually helped me plan my study schedule."],
+      ["Did you read a lot as a child?", "Yes, I read lots of comics. My friends and I used to swap them at school, which was a cheap way to read more."]] },
+    { topic: "Daily routine", qs: [
+      ["What is your daily routine like?", "On weekdays I get up at around six, have a quick breakfast and go to class. In the afternoon I study in the library, and I usually do some exercise in the evening."],
+      ["Which part of the day do you like most?", "The early evening. Classes are over, the weather is cooler, and I can finally relax or play sports with friends."],
+      ["Do you think it's important to have a routine?", "Yes, especially for students. Having a routine means I don't waste energy deciding what to do next, so I get more done."],
+      ["Would you like to change anything in your routine?", "I'd like to go to bed earlier. I often stay up late scrolling on my phone, and then I feel tired the next morning."]] },
+    { topic: "Holidays", qs: [
+      ["What is the most important holiday in your country?", "Definitely Tet, the Lunar New Year. It's the time when everyone goes back to their hometown to be with their family."],
+      ["What do you usually do during Tet?", "I help my parents clean and decorate the house, and then we visit relatives and give lucky money to the children. And of course, we eat a lot."],
+      ["Did you enjoy holidays more as a child?", "Yes, because as a child I received lucky money and had no responsibilities. Now I have to help with the preparations, but I enjoy it in a different way."],
+      ["Do you prefer relaxing holidays or active ones?", "I prefer active ones, like hiking or exploring a new city. Lying on a beach for a whole week would bore me."]] }
+  ],
+  p2: [
+    { card: "Describe a skill you would like to learn.", pts: ["what the skill is", "why you want to learn it", "how you would learn it", "and explain how this skill would help you"],
+      a: "I'd like to talk about a skill I really want to learn, which is public speaking. At the moment, I'm fine talking to friends, but as soon as I have to present in front of the class, my hands start shaking and I forget half of what I prepared. The main reason I want to learn it is that I'm studying engineering, and I've realized that engineers present their ideas all the time, to clients, to managers and to colleagues. A great design is useless if you can't explain it clearly. As for how I'd learn it, I think the best way is through practice rather than theory. I'd like to join a public speaking club at my university, where members give short speeches every week and get feedback. I'd also record myself and watch the videos, even though that's a bit embarrassing. I believe this skill would help me in so many ways. It would make me more confident in job interviews, and it would also help me in daily life, for example when I need to persuade someone or explain a problem calmly.",
+      p3: [["Which skills are most important for young people today?", "I'd say communication and the ability to learn quickly. Technology changes so fast that the specific skills you learn at university may be out of date in a few years, so knowing how to learn new things is probably more valuable than any single skill."],
+        ["Do you think schools teach enough practical skills?", "Not really, at least in Vietnam. Schools focus a lot on theory and exams, whereas practical skills like managing money or cooking are mostly left to families. That said, some schools are starting to offer more life-skills classes, which is a good sign."],
+        ["Is it easier to learn a skill when you are young?", "Generally, yes. Children tend to be less afraid of making mistakes, so they practise more freely. On the other hand, adults are usually more motivated and disciplined, so they can learn efficiently if they really want to."]] },
+    { card: "Describe a person who has influenced you.", pts: ["who this person is", "how you know them", "what they have done", "and explain how they have influenced you"],
+      a: "The person I'd like to talk about is my high school physics teacher, Mr Minh. He taught me for three years, from grade ten to grade twelve, and to be honest, before I met him, physics was my worst subject. What made him special was the way he taught. Instead of making us memorize formulas, he always started with a real question, like why a bridge doesn't fall down or why a phone screen cracks. Then he let us discuss it before showing us the theory. He also stayed after class almost every day to help students who were struggling, without asking for any extra money. He influenced me in two big ways. First, he's the reason I chose engineering, because he showed me that science is about solving real problems. Second, he changed my attitude to difficulties. He used to say that being confused is the first step to understanding something. Whenever I get stuck on a hard problem now, I remember that, and it helps me keep going instead of giving up.",
+      p3: [["Who has more influence on children: parents or teachers?", "I think parents have more influence, mainly because children spend most of their time at home and copy their parents' behavior without realizing it. Teachers can still have a huge impact, especially on a child's interests and ambitions, as my physics teacher did for me."],
+        ["Do you think celebrities are good role models?", "Some are, but many aren't. The problem is that young people often admire celebrities for their money or appearance rather than their values. On the other hand, there are celebrities who use their fame to support good causes, and they can be very positive role models."],
+        ["How do young people choose who to follow on social media?", "Generally, they follow people who entertain them or who share their interests. I imagine algorithms play a big part too, because the apps keep recommending similar accounts, so young people don't always choose consciously."]] },
+    { card: "Describe a time you used technology to solve a problem.", pts: ["what the problem was", "what technology you used", "how you used it", "and explain how you felt about the result"],
+      a: "I'd like to describe a time when I used a simple spreadsheet to solve a problem in my class. I'm the class monitor, and last semester we had a real mess with our group project. There were around forty students and eight groups, and nobody knew who was doing which task or what the deadlines were. People kept sending messages in the group chat, and important information just got lost. So I created a shared online spreadsheet. Each group had its own tab, with a list of tasks, the person responsible, the deadline and a status column. I also added colors, so that overdue tasks turned red automatically. Then I asked every group leader to update it twice a week. At first some people complained that it was extra work, but after a couple of weeks everyone could see the benefits. Our lecturer even asked me to share the template with other classes. I felt really satisfied, because it was such a simple tool, but it made everyone's life easier and reduced a lot of stress before the deadline.",
+      p3: [["Has technology made people's lives easier?", "On the whole, yes. Things like online banking and navigation apps save us a huge amount of time. However, technology also creates new problems, such as information overload and the feeling that we always have to be available."],
+        ["Are older people less comfortable with technology?", "Generally, they tend to be, mainly because they didn't grow up with it. But I think the gap is closing. My grandparents use video calls every week now, because it's the easiest way to see their grandchildren."],
+        ["Will technology replace teachers in the future?", "I don't think it will replace them completely. Technology will probably take over things like grading and explaining basic facts, but students still need teachers to motivate them and to guide their thinking."]] },
+    { card: "Describe a memorable trip you have taken.", pts: ["where you went", "who you went with", "what you did there", "and explain why it was memorable"],
+      a: "I'd like to talk about a trip to Ha Giang, in the far north of Vietnam, which I took with three close friends after our first-year exams. We'd been planning it for months, so we were incredibly excited. We traveled by overnight bus, and then rented motorbikes to ride along the famous mountain roads. For four days, we rode through some of the most beautiful landscapes I've ever seen: huge limestone mountains, deep valleys and terraced fields that looked like giant staircases. We stayed in homestays run by local families, and in the evenings they cooked for us and even taught us a few words of their language. What made it so memorable wasn't just the scenery, though. On the second day, one of our motorbikes broke down in the middle of nowhere, and a local farmer stopped, fixed it with a piece of wire and refused to take any money. That kindness really stayed with me. Looking back, it was the first big trip I organized without my parents, so it also made me feel much more independent.",
+      p3: [["Why do people like to travel?", "Generally, people travel to escape their daily routine and experience something new. I think social media also plays a role nowadays, because people like sharing photos of beautiful places."],
+        ["Is tourism always good for a local area?", "Not always. Tourism brings jobs and money, but it can also damage the environment and push up prices for local people. Places like Ha Giang need careful planning so that they don't lose what makes them special."],
+        ["How might travel change in the future?", "I imagine people will travel more sustainably, for example by choosing trains over planes for shorter trips. Virtual reality might also let people preview destinations, although I don't think it will ever replace the real experience."]] },
+    { card: "Describe a book or film that made you think.", pts: ["what it was", "when you read or watched it", "what it was about", "and explain why it made you think"],
+      a: "The film I'd like to talk about is a documentary about plastic pollution in the ocean. I watched it about a year ago, during a lazy Sunday afternoon, and to be honest, I only chose it because it was short. The documentary followed a team of scientists who sailed across the Pacific, collecting samples of seawater. What shocked me was that almost every sample contained tiny pieces of plastic, even in places thousands of kilometers from land. They also showed seabirds whose stomachs were full of plastic, which was really hard to watch. It made me think because I realized how much plastic I personally used without even noticing: plastic cups for my morning coffee, plastic bags, food delivery boxes. After that, I started carrying my own water bottle and saying no to plastic straws. It's a small change, of course, but the film made me realize that environmental problems aren't just something governments should deal with. Every individual habit adds up.",
+      p3: [["Do you think films can change people's behavior?", "Yes, I think they can, at least in the short term. A powerful film creates strong emotions, which can push people to act. However, the effect often fades unless people make a conscious decision to change their habits."],
+        ["Why do some people prefer reading books to watching films?", "Mainly because books leave more room for imagination. When you read, you create the characters and places in your own mind, whereas a film gives you someone else's version."],
+        ["Should schools teach students to analyze films?", "I think it would be useful. Young people watch so much video content now that learning to think critically about it is almost as important as learning to analyze written texts."]] },
+    { card: "Describe a place where you like to study.", pts: ["where it is", "what it looks like", "how often you go there", "and explain why you like studying there"],
+      a: "I'd like to talk about the self-study area on the top floor of my university library. It's a large, bright room with huge windows on one side, so you can see the whole campus and the trees outside. There are long wooden tables, comfortable chairs and, most importantly, plenty of power sockets, which is rare in older buildings. I go there at least four times a week, usually in the afternoon after my classes, and almost every day during exam season. I like it for several reasons. First, it's very quiet. There's an unwritten rule that nobody talks, and everyone respects it. Second, being surrounded by other students who are working hard motivates me. If I study at home, I get distracted by my phone or my bed, but in the library I feel a bit embarrassed to waste time. And finally, the view helps me relax. Whenever I get tired of calculations, I just look out of the window for a minute, and then I'm ready to continue.",
+      p3: [["Is it better to study alone or in a group?", "I think it depends on the task. Studying alone is better for concentrating and understanding new material, whereas group study is useful for reviewing and explaining ideas to each other."],
+        ["How has technology changed the way students study?", "Enormously. Students can now find lectures and explanations online for almost any topic. The downside is that the same devices are full of distractions, so self-discipline has become more important than ever."],
+        ["Should libraries still exist in the digital age?", "Yes, definitely. Libraries aren't just about books anymore; they provide quiet spaces, internet access and a sense of community, especially for students who don't have a good place to study at home."]] },
+    { card: "Describe a goal you hope to achieve in the future.", pts: ["what the goal is", "when you set this goal", "what you need to do to achieve it", "and explain why it is important to you"],
+      a: "One goal I really hope to achieve is to do a master's degree and eventually contribute to research in my field, which is geotechnical engineering. I set this goal about a year ago, when I joined a small research group led by one of my lecturers. Before that, I thought research was something only very senior people did, but working with the group showed me that even students can make a real contribution. To achieve it, there are several things I need to do. First, I need to keep my grades high, because graduate programs are quite competitive. Second, I need to improve my English, especially my academic writing and speaking, since most research papers are in English and I'd like to present at conferences one day. That's actually one of the main reasons I'm preparing for IELTS now. It's important to me because I want my work to have a real impact. In a country like Vietnam, with so much construction and so many natural hazards like landslides, good research can genuinely protect people's lives.",
+      p3: [["Is it important for young people to set goals?", "Yes, I think so. Goals give young people direction and help them make better decisions about how to spend their time. That said, goals should be flexible, because people's interests often change as they grow up."],
+        ["Why do some people fail to achieve their goals?", "Generally, it's because their goals are too vague or too big. If you break a big goal into small, specific steps, it becomes much easier to make steady progress."],
+        ["Do you think success depends more on hard work or luck?", "I'd say mainly hard work, although luck plays a part. Hard work puts you in a position to take advantage of lucky opportunities when they come along."]] },
+    { card: "Describe a time you had to make a difficult decision.", pts: ["what the decision was", "when you made it", "what options you had", "and explain why it was difficult"],
+      a: "I'd like to talk about a decision I made at the end of high school, which was choosing my university major. It was probably the most difficult decision I've made so far. My parents really wanted me to study medicine, because they believe it's a stable and respected career. On the other hand, I was much more interested in engineering, especially anything related to construction and the environment. So I had two options: follow my parents' advice, or choose what I was genuinely passionate about. It was difficult for several reasons. First, I didn't want to disappoint my parents, who had sacrificed a lot for my education. Second, I wasn't completely sure that I'd be successful in engineering. In the end, I talked to my uncle, who's an engineer, and he helped me explain my reasons to my parents. They weren't happy at first, but when they saw how motivated I was, they accepted it. Looking back, I'm glad I followed my interests, because I really enjoy what I'm studying now.",
+      p3: [["Should parents choose careers for their children?", "I don't think so. Parents can give advice based on their experience, but in the end it's the child who has to do the job for decades, so the final decision should be theirs."],
+        ["Do young people today have more choices than in the past?", "Definitely. There are many new types of jobs that didn't exist twenty years ago, like content creation or data science. However, having so many choices can also make decisions more stressful."],
+        ["How do people usually make important decisions?", "Most people tend to ask for advice from family and friends, and then go with their gut feeling. More careful people might list the pros and cons, but I think emotions still play a big role."]] }
+  ]
+};
+
+/* ===== Giao diện Phát âm + Speaking cho bản web ngoài (chấm phát âm chạy trên máy; chỉ "Thi thử" mới gọi AI) ===== */
+SP.over = PR_LEX;
+const SPEAKS = []; let speaksLoaded = false;
+async function loadSpeaks() { if (speaksLoaded) return; speaksLoaded = true; try { const l = await store.list("speaks"); SPEAKS.splice(0, SPEAKS.length, ...l.sort((a, b) => (b.created || 0) - (a.created || 0))); render(); } catch (e) { console.warn(e); } }
+const ipaT = t => String(t).split(/(\/[^/\s][^/]*\/)/).map((x, i) => i % 2 ? h("span", { class: "sp-ipa-t" }, x) : x);
+const spMd = s => esc(String(s || "")).replace(/\*([^*]+)\*/g, "<b>$1</b>");
+
+/* ----- Giọng đọc mẫu: gói Kokoro thu sẵn (voice/sp), thiếu thì giọng máy ----- */
+const SPV = { idx: null, shards: {}, audio: null };
+const spvKey = t => String(t || "").replace(/\s+/g, " ").trim().toLowerCase();
+function spvIndex() { return SPV.idx ||= fetch("voice/sp/index.json").then(r => { if (!r.ok) throw new Error(); return r.json(); }).catch(() => ({})); }
+function spvShard(i) { return SPV.shards[i] ||= fetch("voice/sp/" + String(i).padStart(2, "0") + ".mp3").then(r => { if (!r.ok) throw new Error(); return r.arrayBuffer(); }).catch(e => { delete SPV.shards[i]; throw e; }); }
+async function spSay(text, rate) {
+  try { VP.audio?.pause(); SPV.audio?.pause(); speechSynthesis.cancel(); } catch {}
+  try {
+    const e = (await spvIndex())[spvKey(text)];
+    if (e) { const ab = await spvShard(e[0]); const url = URL.createObjectURL(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" })); const a = SPV.audio = new Audio(url); a.playbackRate = rate || 1; a.onended = () => URL.revokeObjectURL(url); await a.play(); return; }
+  } catch {}
+  try { const u = new SpeechSynthesisUtterance(text); u.lang = "en-US"; u.rate = (rate || 1) * 0.95; const v = speechSynthesis.getVoices().find(x => /en-US/i.test(x.lang)); if (v) u.voice = v; speechSynthesis.speak(u); } catch {}
+}
+const sayBtn = (text, label, cls) => h("button", { type: "button", class: cls || "btn btn-quiet sp-say", title: "Nghe mẫu", "aria-label": "Nghe: " + text, onclick: e => { e.stopPropagation(); spSay(text); } }, label || "🔊");
+
+/* ----- Ghi âm bằng micro ----- */
+function recBox(onBlob, opts = {}) {
+  const info = h("span", { class: "small muted" }), lvl = h("i"), meter = h("div", { class: "sp-lvl", hidden: true }, lvl);
+  let rec = null, stream = null, tick = null, ac = null, raf = 0;
+  const stop = () => { try { rec?.state === "recording" && rec.stop(); } catch {} };
+  const btn = h("button", { class: "btn btn-primary sp-rec", type: "button", onclick: async () => {
+    if (rec) return stop();
+    try {
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") throw new Error("nomic");
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      rec = new MediaRecorder(stream); const parts = []; rec.ondataavailable = e => e.data.size && parts.push(e.data);
+      try { ac = new (window.AudioContext || window.webkitAudioContext)(); const an = ac.createAnalyser(); an.fftSize = 512; ac.createMediaStreamSource(stream).connect(an); const buf = new Uint8Array(an.fftSize);
+        const loop = () => { an.getByteTimeDomainData(buf); let m = 0; for (const v of buf) m = Math.max(m, Math.abs(v - 128)); lvl.style.width = Math.min(100, m / 64 * 100) + "%"; raf = requestAnimationFrame(loop); }; loop(); meter.hidden = false; } catch {}
+      rec.onstop = () => { clearInterval(tick); cancelAnimationFrame(raf); meter.hidden = true; try { ac?.close(); } catch {} stream.getTracks().forEach(t => t.stop()); const b = new Blob(parts, { type: rec.mimeType || "audio/webm" }); rec = null; btn.classList.remove("on"); btn.textContent = opts.label || "● Ghi âm"; info.textContent = "Đang xử lý…";
+        Promise.resolve(onBlob(b, t => info.textContent = t)).then(() => { info.textContent = ""; }, e => { console.warn(e); info.textContent = e?.vn || "Lỗi: " + (e?.message || e); }); };
+      const t0 = Date.now(); rec.start(); btn.classList.add("on"); btn.textContent = "■ Dừng (0:00)"; info.textContent = opts.hint || "";
+      tick = setInterval(() => { if (!document.body.contains(btn)) { stop(); return clearInterval(tick); } const s = Math.floor((Date.now() - t0) / 1000); btn.textContent = `■ Dừng (${mmss(s)})`; if (opts.max && s >= opts.max) stop(); }, 300);
+    } catch (e) { info.textContent = e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro. Bấm biểu tượng ổ khóa cạnh địa chỉ trang → cho phép Micro, rồi thử lại." : "Máy hoặc trình duyệt này chưa ghi âm được. Thử Chrome hoặc Edge bản mới."; }
+  } }, opts.label || "● Ghi âm");
+  return h("div", { class: "row sp-recbox" }, btn, meter, info);
+}
+/* ----- Thẻ tải bộ nhận diện ----- */
+function spModelCard(need) {
+  if (spReady(need)) return null;
+  const mb = need.includes("asr") ? (need.includes("ph") ? 220 : 100) : 140;
+  const bar = h("div", { class: "meter" }, h("i", { style: "width:0%" })), txt = h("span", { class: "small" }), t0 = Date.now();
+  const upd = () => { let g = 0, t = 0; for (const k of ["lib", ...need]) { const p = SP.prog[k]; if (p) { g += p.got; t += p.total || 0; } } bar.firstChild.style.width = (t ? Math.min(100, g / t * 100) : 0) + "%";
+    const sec = Math.round((Date.now() - t0) / 1000); txt.textContent = t && g >= t ? `${SP.stage || "Đang khởi động"}… (${sec} giây, lần đầu có thể mất 1 phút)` : t ? `Đang tải ${Math.round(g / 1048576)}/${Math.round(t / 1048576)} MB…` : "Đang chuẩn bị…"; };
+  const wrap = h("div", { class: "note warn stack", style: "gap:6px" });
+  const btn = h("button", { class: "btn btn-primary", type: "button", onclick: async () => { btn.disabled = true; SP.onProg = upd; upd(); const iv = setInterval(upd, 800);
+    try { for (const k of need) await spLoad(k); clearInterval(iv); render(); } catch (e) { clearInterval(iv); console.warn(e); txt.textContent = "Lỗi: " + (e?.message || e) + ". Tải lại trang rồi thử lại."; btn.disabled = false; } } }, `Bật bộ chấm (tải ${mb} MB lần đầu)`);
+  wrap.append(h("span", { class: "small" }, h("b", null, "Bộ chấm phát âm chạy ngay trên máy bạn, "), "không gửi giọng nói đi đâu và không tốn lượt AI. Lần đầu cần tải mô hình (nên dùng Wi-Fi), sau đó máy nhớ để dùng tiếp."), h("div", { class: "row" }, btn, txt), bar);
+  if (need.some(k => SP.loading[k])) { btn.disabled = true; SP.onProg = upd; const iv = setInterval(() => { upd(); if (!document.body.contains(wrap)) clearInterval(iv); }, 800); Promise.all(need.map(k => SP.loading[k] || spLoad(k))).then(() => document.body.contains(wrap) && render(), () => {}); }
+  else spCached(need).then(ok => { if (ok && document.body.contains(btn) && !btn.disabled) { txt.textContent = "Đã có sẵn trên máy, đang bật…"; btn.click(); } });
+  return wrap;
+}
+/* ----- Hiển thị kết quả chấm ----- */
+const scCls = s => s == null ? "" : s >= 80 ? "good" : s >= 60 ? "warn" : "bad";
+const scoreChip = (s, pre) => h("span", { class: "chip " + scCls(s) }, (pre || "") + (s == null ? "—" : s + "/100"));
+function phoneLine(w) {
+  return h("span", { class: "sp-ipa" }, "/", w.phones.map(x => h("span", { class: "sp-ph " + scCls(x.s), title: `/${x.ipa}/ ${x.s}/100` + (x.heard ? ` · nghe giống /${phIpa(x.heard)}/` : "") }, x.show || x.ipa)), "/");
+}
+function wordDetail(w) {
+  const bad = w.phones.filter(x => x.s < 50);
+  return h("div", { class: "sp-detail stack", style: "gap:6px" },
+    h("div", { class: "row", style: "gap:10px;align-items:center" }, h("b", { class: "sp-w" }, w.w), phoneLine(w), scoreChip(w.score), sayBtn(w.w)),
+    bad.length ? h("ul", { class: "gex" }, [...new Set(bad.map(phTip))].map(t => h("li", null, t))) : h("p", { class: "small", style: "margin:0;color:var(--good,#1a7f37)" }, "Từ này đọc tốt."));
+}
+function resultView(r, opts = {}) {
+  const det = h("div");
+  const show = w => det.replaceChildren(wordDetail(w));
+  const words = h("p", { class: "sp-words" }, r.words.map(w => { if (w.score == null) return [h("span", { class: "sp-wd muted" }, w.w), " "]; const n = h("button", { type: "button", class: "sp-wd " + scCls(w.score), onclick: () => show(w) }, w.w); return [n, " "]; }));
+  const worst = r.words.filter(w => w.score != null).sort((a, b) => a.score - b.score)[0]; if (worst) show(worst);
+  return h("div", { class: "stack sp-res", style: "gap:8px" }, h("div", { class: "row" }, h("span", { class: "eyebrow" }, opts.label || "Kết quả"), scoreChip(r.score)), words,
+    h("p", { class: "small muted", style: "margin:0" }, "Xanh: tốt · Vàng: tạm · Đỏ: cần sửa. Bấm vào từ để xem từng âm."), det);
+}
+function pronStat(words) {
+  P.pron ||= {}; for (const w of words) for (const x of w.phones || []) { const b = phBase(x.p), s = P.pron[b] ||= [0, 0]; s[0]++; if (x.s < 50) s[1]++; }
+  saveProfile();
+}
+
+/* =================== LỘ TRÌNH PHÁT ÂM =================== */
+const prSt = id => (P.pr ||= {})[id] ||= { quiz: 0, w: {}, s: {} };
+function prWordPass(l, st) { const ws = l.words, got = ws.map(w => st.w[w] ?? null); return { n: got.filter(x => x != null).length, avg: got.every(x => x != null) ? Math.round(got.reduce((a, b) => a + b, 0) / ws.length) : null }; }
+function prSentPass(l, st) { const got = l.sents.map((_, i) => st.s[i] ?? null); return { n: got.filter(x => x != null).length, avg: got.every(x => x != null) ? Math.round(got.reduce((a, b) => a + b, 0) / got.length) : null }; }
+function prDone(l) { const st = (P.pr || {})[l.id]; return !!st?.done; }
+function prCheckDone(l) {
+  const st = prSt(l.id); if (st.done) return;
+  const w = prWordPass(l, st), s = prSentPass(l, st), quizOk = !l.pairs.length || st.quiz >= PR_PASS.quiz;
+  if (quizOk && w.avg != null && w.avg >= PR_PASS.word && s.avg != null && s.avg >= PR_PASS.sent) { st.done = today(); award("speaking", 40); addAct("speaking", 10); toast("Hoàn thành bài! Bài tiếp theo đã mở khóa."); }
+  saveProfile();
+}
+const prUnlocked = l => { const i = PR_LESSONS.findIndex(x => x.id === l.id); return i === 0 || prDone(PR_LESSONS[i - 1]) || prDone(l); };
+function pagePron() {
+  const done = PR_LESSONS.filter(prDone).length, next = PR_LESSONS.find(l => !prDone(l));
+  const weak = Object.entries(P.pron || {}).filter(([, v]) => v[0] >= 6 && v[1] / v[0] > 0.35).sort((a, b) => b[1][1] / b[1][0] - a[1][1] / a[1][0]).slice(0, 6);
+  return h("div", { class: "stack", style: "gap:18px" },
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Phát âm"), h("h1", null, "Lộ trình phát âm IPA"),
+      h("p", { class: "muted", style: "max-width:66ch" }, `${PR_LESSONS.length} bài, đi từ nguyên âm, phụ âm, âm cuối tới đọc câu tự nhiên (giọng Mỹ). Mỗi bài: hiểu cách đặt miệng → nghe và chọn → đọc từng từ → đọc cả câu. Máy chấm từng âm ngay trên máy bạn. Đạt ${PR_PASS.word} điểm phần từ và ${PR_PASS.sent} điểm phần câu là mở khóa bài sau.`),
+      h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${done / PR_LESSONS.length * 100}%` })), h("span", { class: "small muted" }, `${done}/${PR_LESSONS.length} bài`), next ? h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, done ? "Học tiếp" : "Bắt đầu") : null, h("a", { class: "btn", href: "#ipa-chart" }, "Bảng 44 âm"))),
+    weak.length ? h("section", { class: "card stack", style: "gap:6px" }, h("h2", null, "Âm bạn hay sai"), h("div", { class: "row", style: "gap:6px" }, weak.map(([b, v]) => h("span", { class: "chip bad" }, `/${phIpa(b)}/ sai ${Math.round(v[1] / v[0] * 100)}%`)))) : null,
+    PR_STAGES.map((s, si) => { const ls = s.lessons, dn = ls.filter(prDone).length;
+      return h("section", { class: "stack", style: "gap:10px" },
+        h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", null, `Chặng ${si + 1}: ${s.name}`), h("span", { class: "small muted" }, s.sub)), h("span", { class: "small muted" }, `${dn}/${ls.length}`)),
+        h("div", { class: "grid3" }, ls.map(l => { const st = (P.pr || {})[l.id], open = prUnlocked(l), i = PR_LESSONS.findIndex(x => x.id === l.id);
+          const inner = [h("span", { class: "num" }, open ? i + 1 : "🔒"), h("div", { class: "stack", style: "gap:4px" }, h("h3", null, ipaT(l.t)), h("span", { class: "small muted" }, l.img),
+            h("div", { class: "row" }, st?.done ? h("span", { class: "chip good" }, "Đã đạt") : open ? h("span", { class: "chip" }, st && (Object.keys(st.w).length || st.quiz) ? "Đang học" : "Chưa học") : h("span", { class: "chip" }, "Khóa")))];
+          return open ? h("a", { class: "card lesson-card", href: "#pr-" + l.id }, inner) : h("div", { class: "card lesson-card sp-locked", title: "Hoàn thành bài trước để mở" }, inner); }))); }));
+}
+function pagePrLesson(l) {
+  if (!prUnlocked(l)) return h("div", { class: "stack", style: "gap:12px" }, h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình"), h("p", { class: "note warn" }, "Bài này chưa mở. Hoàn thành bài trước (đạt cả phần từ và phần câu) để mở khóa."));
+  const st = prSt(l.id), i = PR_LESSONS.indexOf(l), nx = PR_LESSONS[i + 1];
+  const W = UI.prW && UI.prW.id === l.id ? UI.prW : (UI.prW = { id: l.id, word: l.words[0], sent: 0, res: null, sres: null, q: null });
+  const ipaOf = w => { const ph = SP.lexData && spWordPh(SP.lexData, w); return ph ? "/" + arpaIpa(ph) + "/" : ""; };
+  if (!SP.lexData) spLex().then(() => document.querySelector(".sp-lesson") && render(), () => {});
+  /* 1. Hiểu */
+  const s1 = h("section", { class: "card stack", style: "gap:10px" }, secH(1, "Hiểu cách phát âm"),
+    h("p", { style: "margin:0" }, l.how), h("p", { class: "gnote", style: "margin:0" }, h("b", null, "Hình ảnh để nhớ: "), l.img), h("p", { class: "gnote gwarn", style: "margin:0" }, h("b", null, "Người Việt hay sai: "), l.trap),
+    l.pairs.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Cặp từ dễ nhầm, bấm để nghe"), h("div", { class: "row", style: "gap:8px" }, l.pairs.map(([a, b]) => h("span", { class: "sp-pair" }, sayBtn(a, a, "opt"), h("span", { class: "muted" }, "–"), sayBtn(b, b, "opt"))))) : null);
+  /* 2. Nghe và chọn */
+  let s2 = null;
+  if (l.pairs.length) {
+    const Q = W.q ||= { n: 0, ok: 0, cur: null, picked: null };
+    const next = () => { const pair = l.pairs[Math.floor(Math.random() * l.pairs.length)]; Q.cur = { pair, w: pair[Math.random() < 0.5 ? 0 : 1] }; Q.picked = null; render(); setTimeout(() => spSay(Q.cur.w), 60); };
+    const body = !Q.cur ? h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: next }, Q.n ? "Làm lại" : "Bắt đầu nghe"), h("span", { class: "small muted" }, `Máy đọc một từ, bạn chọn từ nghe được. Đúng ${PR_PASS.quiz}/8 là đạt.`))
+      : h("div", { class: "stack", style: "gap:8px" }, h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(Q.cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, `Câu ${Math.min(8, Q.n + (Q.picked ? 0 : 1))}/8 · đúng ${Q.ok}`)),
+        h("div", { class: "opts" }, Q.cur.pair.map(x => h("button", { type: "button", class: "opt" + (Q.picked ? (x === Q.cur.w ? " right" : x === Q.picked ? " wrong" : "") : ""), disabled: Q.picked || null, onclick: () => { Q.picked = x; Q.n++; if (x === Q.cur.w) Q.ok++; if (Q.n >= 8) { st.quiz = Math.max(st.quiz || 0, Q.ok); prCheckDone(l); } render(); } }, x))),
+        Q.picked ? h("div", { class: "row" }, h("span", { class: "small" }, Q.picked === Q.cur.w ? "Đúng." : `Từ vừa đọc là “${Q.cur.w}”.`), Q.n < 8 ? h("button", { class: "btn btn-primary", type: "button", onclick: next }, "Câu tiếp ›") : h("button", { class: "btn", type: "button", onclick: () => { W.q = { n: 0, ok: 0, cur: null, picked: null }; render(); } }, `Xong: ${Q.ok}/8 · làm lại`)) : null);
+    s2 = h("section", { class: "card stack", style: "gap:10px" }, secH(2, "Nghe và chọn", st.quiz >= PR_PASS.quiz ? `Đã đạt (${st.quiz}/8)` : `Cần đúng ${PR_PASS.quiz}/8`), body);
+  }
+  /* 3. Đọc từ */
+  const wp = prWordPass(l, st), cur = W.word;
+  const judgeW = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, cur, say); const w = r.words[0]; if (!w || w.score == null) throw { vn: "Máy chưa nghe rõ từ này." };
+    const tgt = w.phones.filter(x => l.ph.includes(phBase(x.p))), tOk = tgt.every(x => x.s >= PR_PASS.target), sc = tOk ? w.score : Math.min(w.score, PR_PASS.word - 1);
+    st.w[cur] = Math.max(st.w[cur] ?? 0, sc); pronStat([w]); W.res = { word: cur, r, tOk, sc }; award("speaking", 2); prCheckDone(l); render(); };
+  const s3 = h("section", { class: "card stack", style: "gap:10px" }, secH(l.pairs.length ? 3 : 2, "Đọc từng từ", wp.avg != null ? `Trung bình ${wp.avg}/100 · cần ${PR_PASS.word}` : `Đã đọc ${wp.n}/${l.words.length} từ · cần trung bình ${PR_PASS.word}`),
+    h("div", { class: "sp-wgrid" }, l.words.map(w => { const b = st.w[w]; return h("button", { type: "button", class: "sp-wbtn" + (w === cur ? " on" : ""), onclick: () => { W.word = w; W.res = null; render(); } }, h("b", null, w), h("span", { class: "small muted" }, ipaOf(w)), b != null ? scoreChip(b) : h("span", { class: "chip" }, "chưa đọc")); })),
+    h("div", { class: "task-box stack", style: "gap:8px" },
+      h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "sp-big" }, cur), h("span", { class: "sp-ipa-big" }, ipaOf(cur)), sayBtn(cur, "🔊 Nghe mẫu", "btn"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => spSay(cur, 0.7) }, "🐢 Chậm")),
+      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeW, { max: 5, hint: "Đọc to, rõ một lần rồi bấm Dừng." }) : null,
+      W.res && W.res.word === cur ? h("div", { class: "stack", style: "gap:6px" }, wordDetail(W.res.r.words[0]), !W.res.tOk && l.ph.length ? h("p", { class: "note warn small", style: "margin:0" }, `Âm trọng tâm của bài chưa đạt (dưới ${PR_PASS.target}), nên lần này tính tối đa ${PR_PASS.word - 1} điểm.`) : null,
+        h("div", { class: "row" }, (() => { const k = l.words.indexOf(cur), n = l.words.find((w, j) => j > k && st.w[w] == null) || l.words[(k + 1) % l.words.length]; return h("button", { class: "btn", type: "button", onclick: () => { W.word = n; W.res = null; render(); } }, "Từ tiếp ›"); })())) : null));
+  /* 4. Đọc câu */
+  const sp2 = prSentPass(l, st), si = W.sent, sent = l.sents[si];
+  const judgeS = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, sent, say); st.s[si] = Math.max(st.s[si] ?? 0, r.score ?? 0); pronStat(r.words); W.sres = { i: si, r }; award("speaking", 4); prCheckDone(l); render(); };
+  const s4 = h("section", { class: "card stack", style: "gap:10px" }, secH(l.pairs.length ? 4 : 3, "Đọc cả câu", sp2.avg != null ? `Trung bình ${sp2.avg}/100 · cần ${PR_PASS.sent}` : `Đã đọc ${sp2.n}/${l.sents.length} câu · cần trung bình ${PR_PASS.sent}`),
+    h("div", { class: "row", style: "gap:6px" }, l.sents.map((s, k) => h("button", { type: "button", class: "opt", "aria-pressed": String(k === si), onclick: () => { W.sent = k; W.sres = null; render(); } }, `Câu ${k + 1}`, st.s[k] != null ? " · " + st.s[k] : ""))),
+    h("div", { class: "task-box stack", style: "gap:8px" }, h("p", { class: "prompt", style: "font-size:1.2rem;margin:0" }, sent),
+      h("div", { class: "row" }, sayBtn(sent, "🔊 Nghe mẫu", "btn"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => spSay(sent, 0.75) }, "🐢 Chậm")),
+      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeS, { max: 15, hint: "Đọc cả câu một hơi tự nhiên rồi bấm Dừng." }) : null,
+      W.sres && W.sres.i === si ? resultView(W.sres.r, { label: "Cả câu" }) : null));
+  return h("div", { class: "stack sp-lesson", style: "gap:16px" },
+    h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình"), h("span", { class: "small muted" }, `Bài ${i + 1}/${PR_LESSONS.length}`)),
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, PR_STAGES.find(s => s.id === l.stage).name), h("h1", null, ipaT(l.t)),
+      st.done ? h("p", { class: "note", style: "margin:0" }, "Đã đạt bài này. ", nx ? h("a", { href: "#pr-" + nx.id }, "Sang bài tiếp: " + nx.t + " ›") : "Bạn đã xong cả lộ trình!") : null),
+    s1, s2, s3, s4);
+}
+
+/* =================== SPEAKING =================== */
+function fluencyOf(tr, pz) {
+  const ws = tr.words.filter(w => /[A-Za-z]/.test(w.w)), n = ws.length;
+  const first = ws[0]?.s ?? pz.start, last = ws[n - 1]?.e ?? pz.end, span = Math.max(0.5, (last ?? 0) - (first ?? 0));
+  const gaps = []; for (let i = 1; i < n; i++) { const g = (ws[i].s ?? 0) - (ws[i - 1].e ?? 0); if (g >= 0.5) gaps.push({ i, len: +g.toFixed(1) }); }
+  const fill = (tr.text.match(/\b(um+|uh+|er+m?|ah+|hmm+)\b/gi) || []).length;
+  let rep = 0; for (let i = 1; i < n; i++) if (ws[i].w.toLowerCase().replace(/[^a-z']/g, "") === ws[i - 1].w.toLowerCase().replace(/[^a-z']/g, "")) rep++;
+  const runs = []; let r = 1; for (let i = 1; i < n; i++) { if (gaps.some(g => g.i === i)) { runs.push(r); r = 1; } else r++; } if (n) runs.push(r);
+  return { words: n, dur: +pz.total.toFixed(1), span: +span.toFixed(1), wpm: Math.round(n / span * 60), pauses: gaps.length, long: gaps.filter(g => g.len >= 1).length, longest: gaps.reduce((a, g) => Math.max(a, g.len), 0), fillers: fill, reps: rep, run: runs.length ? +(n / runs.length).toFixed(1) : 0, gaps };
+}
+async function spAnalyze(blob, say) {
+  say?.("Đang chuẩn bị bộ chấm…"); await spLoad("asr"); await spLoad("ph");
+  const a = await spDecode(blob), pz = spPauses(a); if (pz.speech < 1) throw { vn: "Câu trả lời quá ngắn hoặc không có tiếng." };
+  say?.("Đang chép lời… câu dài có thể mất 1 phút");
+  const tr = await spTranscribe(a); if (!tr.text || !/[A-Za-z]/.test(tr.text)) throw { vn: "Không nghe ra lời nói. Thử nói to, gần micro hơn." };
+  const fl = fluencyOf(tr, pz);
+  say?.("Đang chấm phát âm từng âm…");
+  const r = spGOP(await spLogp(a), await spExpected(tr.text));
+  const bad = r.words.filter(w => w.score != null && w.score < 60).sort((x, y) => x.score - y.score).slice(0, 8).map(w => ({ w: w.w, ipa: w.ipa, score: w.score, tips: [...new Set(w.phones.filter(x => x.s < 50).map(phTip))].slice(0, 2) }));
+  const by = {}; for (const w of r.words) for (const x of w.phones) if (x.s < 50) { const k = x.miss && x.last ? `thiếu âm cuối /${x.ipa}/` : x.heard ? `/${x.ipa}/ → /${phIpa(x.heard)}/` : `/${x.ipa}/ yếu`; by[k] = (by[k] || 0) + 1; }
+  pronStat(r.words);
+  return { text: tr.text, fl, pron: { score: r.score, words: r.words, bad, top: Object.entries(by).sort((x, y) => y[1] - x[1]).slice(0, 6) } };
+}
+function metricsView(an, checks) {
+  const m = an.fl;
+  return h("div", { class: "stack", style: "gap:8px" },
+    h("span", { class: "eyebrow" }, "Máy chép lại lời bạn (bấm từ đỏ để xem lỗi âm)"), resultView({ words: an.pron.words, score: an.pron.score }, { label: "Lời bạn nói" }),
+    h("div", { class: "statgrid" }, [["Thời lượng", m.dur + " giây"], ["Số từ", m.words], ["Tốc độ", m.wpm + " từ/phút"], ["Ngừng ≥1 giây", m.long + " lần"], ["Từ mỗi cụm nói liền", m.run], ["Phát âm", (an.pron.score ?? "—") + "/100"]].map(([k, v]) => h("div", null, h("span", { class: "small muted" }, k), h("b", null, String(v))))),
+    checks ? h("ul", { class: "sp-checks" }, checks.map(([ok, t]) => h("li", { class: ok ? "ok" : "no" }, (ok ? "✓ " : "✗ ") + t))) : null);
+}
+function spChecks(l, an) {
+  const p = l.practice, m = an.fl, t = an.text, out = [];
+  if (p.min) out.push([m.span >= p.min * 0.9, `Nói đủ ${p.min} giây (bạn nói ${Math.round(m.span)} giây)`]);
+  if (p.words) out.push([m.words >= p.words, `Ít nhất ${p.words} từ (bạn nói ${m.words} từ)`]);
+  if (p.wpm) out.push([m.wpm >= p.wpm, `Tốc độ từ ${p.wpm} từ/phút (bạn: ${m.wpm})`]);
+  if (p.longMax != null) out.push([m.long <= p.longMax, `Ngừng dài (≥1 giây) không quá ${p.longMax} lần (bạn: ${m.long})`]);
+  if (p.chunk) out.push([m.run >= p.chunk, `Trung bình từ ${p.chunk} từ mỗi cụm nói liền (bạn: ${m.run})`]);
+  if (p.fillers != null) out.push([m.fillers <= p.fillers, `Từ đệm “ừm, à” không quá ${p.fillers} lần (bạn: ${m.fillers})`]);
+  for (const [label, k] of p.need || []) out.push([k === "linker2" ? (t.match(RX.linker) || []).length >= 2 : RX[k].test(t), label]);
+  return out;
+}
+const splSt = id => (P.spl ||= {})[id] ||= {};
+function pageSpeak() {
+  loadSpeaks();
+  const tab = UI.spTab ||= "path";
+  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["path", "Lộ trình"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
+  return h("div", { class: "stack", style: "gap:18px" },
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Speaking"), h("h1", null, "Nói, ghi âm và được chấm"),
+      h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
+    tab === "path" ? spPathTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
+}
+function spPathTab() {
+  const dn = SP_PATH.filter(l => splSt(l.id).done).length;
+  return h("div", { class: "stack", style: "gap:12px" }, h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${dn / SP_PATH.length * 100}%` })), h("span", { class: "small muted" }, `${dn}/${SP_PATH.length} bài đạt`)),
+    h("div", { class: "grid3" }, SP_PATH.map((l, i) => h("a", { class: "card lesson-card", href: "#sl-" + l.id }, h("span", { class: "num" }, i + 1), h("div", { class: "stack", style: "gap:4px" }, h("h3", null, l.t), h("span", { class: "small muted" }, l.part ? "Part " + l.part : "Kỹ năng chung"), h("div", { class: "row" }, splSt(l.id).done ? h("span", { class: "chip good" }, "Đã đạt") : h("span", { class: "chip" }, "Chưa đạt")))))));
+}
+function pageSpLesson(l) {
+  const st = splSt(l.id), i = SP_PATH.indexOf(l), p = l.practice;
+  const S = UI.slS && UI.slS.id === l.id ? UI.slS : (UI.slS = { id: l.id, q: 0, an: null, rd: null });
+  const prep = p.prep ? (() => { const t = h("span", { class: "timer" }, mmss(p.prep)); let iv = null; return h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { if (iv) return; let left = p.prep; iv = setInterval(() => { if (!document.body.contains(t)) return clearInterval(iv); left--; t.textContent = mmss(Math.max(0, left)); if (left <= 0) { clearInterval(iv); toast("Hết thời gian chuẩn bị. Bắt đầu nói!"); } }, 1000); } }, `Bắt đầu ${p.prep / 60} phút chuẩn bị`), t, h("span", { class: "small muted" }, "Ghi 4–6 từ khóa ra giấy, rồi bấm Ghi âm.")); })() : null;
+  let practice;
+  if (p.read) {
+    const judge = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, l.model.a, say); S.rd = r; pronStat(r.words); if ((r.score ?? 0) >= PR_PASS.sent && !st.done) { st.done = today(); award("speaking", 30); addAct("speaking", 5); toast("Đạt bài này!"); } saveProfile(); render(); };
+    practice = h("div", { class: "task-box stack", style: "gap:8px" }, h("p", { class: "prompt", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe mẫu", "btn")), spModelCard(["ph"]), spReady(["ph"]) ? recBox(judge, { max: 40 }) : null, S.rd ? resultView(S.rd, { label: `Cần ${PR_PASS.sent} điểm` }) : null);
+  } else {
+    const q = p.qs[S.q];
+    const judge = async (blob, say) => { const an = await spAnalyze(blob, say); const ch = spChecks(l, an); S.an = { q: S.q, an, ch }; if (ch.every(x => x[0]) && !st.done) { st.done = today(); award("speaking", 30); addAct("speaking", 5); toast("Đạt bài này!"); } st.last = { q, text: an.text, wpm: an.fl.wpm, pron: an.pron.score }; saveProfile(); render(); };
+    practice = h("div", { class: "task-box stack", style: "gap:8px" },
+      h("div", { class: "row", style: "gap:6px" }, p.qs.map((x, k) => h("button", { type: "button", class: "opt", "aria-pressed": String(k === S.q), onclick: () => { S.q = k; S.an = null; render(); } }, "Câu " + (k + 1)))),
+      h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, q), h("div", { class: "row" }, sayBtn(q, "🔊 Nghe câu hỏi", "btn")),
+      p.tip ? h("p", { class: "small muted", style: "margin:0" }, p.tip) : null,
+      h("p", { class: "small", style: "margin:0" }, h("b", null, "Để đạt: "), spChecks(l, { fl: { span: 0, words: 0, wpm: 0, long: 0, run: 0, fillers: 0 }, text: "" }).map(x => x[1].replace(/\s*\(bạn[^)]*\)/, "")).join(" · ")),
+      prep, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(judge, { max: (p.min || 30) * 2 + 30, hint: "Nói xong bấm Dừng." }) : null,
+      S.an && S.an.q === S.q ? metricsView(S.an.an, S.an.ch) : null);
+  }
+  return h("div", { class: "stack", style: "gap:16px" },
+    h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#speak" }, "‹ Speaking"), h("span", { class: "small muted" }, `Bài ${i + 1}/${SP_PATH.length}`)),
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, l.part ? "Speaking Part " + l.part : "Speaking"), h("h1", null, l.t), st.done ? h("p", { class: "note", style: "margin:0" }, "Đã đạt bài này. ", SP_PATH[i + 1] ? h("a", { href: "#sl-" + SP_PATH[i + 1].id }, "Bài tiếp ›") : null) : null),
+    h("section", { class: "card stack", style: "gap:10px" }, secH(1, "Bản chất"), h("p", { style: "margin:0", html: spMd(l.idea) }),
+      l.frame.length ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, "Khung trả lời"), h("ol", { class: "gex" }, l.frame.map(x => h("li", null, x)))) : null,
+      l.phrases.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Cụm nên dùng"), h("div", { class: "row", style: "gap:6px" }, l.phrases.map(x => h("span", { class: "chip acc sp-phr" }, x, " ", sayBtn(x, "🔊", "sp-say-in"))))) : null),
+    h("section", { class: "card stack", style: "gap:8px" }, secH(2, "Bài mẫu band 7"), h("p", { class: "prompt", style: "margin:0" }, l.model.q), h("p", { class: "model-text", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe bài mẫu", "btn"))),
+    h("section", { class: "card stack", style: "gap:10px" }, secH(3, "Luyện và tự kiểm tra", "Máy kiểm tra trên máy bạn, không gọi AI"), practice));
+}
+function spBankTab() {
+  const part = UI.bkPart ||= "p1";
+  const tabs = h("div", { class: "row", style: "gap:6px" }, [["p1", "Part 1"], ["p2", "Part 2 + 3"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(part === k), onclick: () => { UI.bkPart = k; UI.bk = null; render(); } }, t)));
+  const B = UI.bk ||= { i: 0, q: 0, an: null };
+  let body;
+  if (part === "p1") {
+    const tp = SP_BANK.p1[B.i % SP_BANK.p1.length], [q, a] = tp.qs[B.q];
+    body = h("div", { class: "stack", style: "gap:10px" },
+      h("div", { class: "row", style: "gap:6px" }, SP_BANK.p1.map((t, k) => h("button", { type: "button", class: "opt", "aria-pressed": String(k === B.i), onclick: () => { B.i = k; B.q = 0; B.an = null; render(); } }, t.topic))),
+      h("section", { class: "card stack", style: "gap:8px" }, h("div", { class: "row", style: "gap:6px" }, tp.qs.map((_, k) => h("button", { type: "button", class: "opt", "aria-pressed": String(k === B.q), onclick: () => { B.q = k; B.an = null; render(); } }, "Câu " + (k + 1)))),
+        h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, q), h("div", { class: "row" }, sayBtn(q, "🔊 Nghe câu hỏi", "btn")),
+        h("details", null, h("summary", null, "Xem trả lời mẫu band 7"), h("p", { class: "model-text", style: "margin:8px 0" }, a), sayBtn(a, "🔊 Nghe mẫu", "btn")),
+        bankRec(q, 45), B.an && B.an.q === q ? metricsView(B.an.an, null) : null));
+  } else {
+    const c = SP_BANK.p2[B.i % SP_BANK.p2.length];
+    body = h("div", { class: "stack", style: "gap:10px" },
+      h("div", { class: "row", style: "gap:6px" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { B.i = (B.i + SP_BANK.p2.length - 1) % SP_BANK.p2.length; B.q = 0; B.an = null; render(); } }, "‹"), h("span", { class: "small muted" }, `Thẻ ${B.i % SP_BANK.p2.length + 1}/${SP_BANK.p2.length}`), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { B.i = (B.i + 1) % SP_BANK.p2.length; B.q = 0; B.an = null; render(); } }, "›")),
+      h("section", { class: "card stack", style: "gap:8px" }, h("span", { class: "eyebrow" }, "Part 2 · cue card"), h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, c.card), h("span", { class: "small muted" }, "You should say:"), h("ul", { class: "gex" }, c.pts.map(x => h("li", null, x))),
+        h("details", null, h("summary", null, "Xem bài mẫu band 7"), h("p", { class: "model-text", style: "margin:8px 0" }, c.a), sayBtn(c.a, "🔊 Nghe mẫu", "btn")),
+        bankRec(c.card, 150), B.an && B.an.q === c.card ? metricsView(B.an.an, null) : null),
+      h("section", { class: "card stack", style: "gap:8px" }, h("span", { class: "eyebrow" }, "Part 3 · thảo luận"), c.p3.map(([q, a]) => h("div", { class: "stack", style: "gap:6px;border-top:1px dashed var(--line);padding-top:8px" },
+        h("p", { class: "prompt", style: "margin:0" }, q), h("div", { class: "row" }, sayBtn(q, "🔊 Câu hỏi", "btn btn-quiet")),
+        h("details", null, h("summary", null, "Trả lời mẫu"), h("p", { class: "model-text", style: "margin:8px 0" }, a), sayBtn(a, "🔊 Nghe mẫu", "btn")),
+        bankRec(q, 90), B.an && B.an.q === q ? metricsView(B.an.an, null) : null))));
+  }
+  return h("div", { class: "stack", style: "gap:12px" }, tabs, body);
+}
+function bankRec(q, max) {
+  const B = UI.bk;
+  return h("div", { class: "stack", style: "gap:6px" }, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(async (blob, say) => { const an = await spAnalyze(blob, say); B.an = { q, an }; award("speaking", 5); addAct("speaking", 2); render(); }, { max, label: "● Ghi âm trả lời" }) : null);
+}
+/* ----- Thi thử: 1 lượt AI chấm cả bài ----- */
+function spNewSession(kind) {
+  const p1 = SP_BANK.p1[Math.floor(Math.random() * SP_BANK.p1.length)], p2 = SP_BANK.p2[Math.floor(Math.random() * SP_BANK.p2.length)], items = [];
+  if (kind === "p1" || kind === "full") p1.qs.forEach(([q]) => items.push({ part: 1, q, topic: p1.topic, max: 45 }));
+  if (kind === "p2" || kind === "full") items.push({ part: 2, q: p2.card, points: p2.pts, max: 130, prep: 60 });
+  if (kind === "p3" || kind === "full") p2.p3.forEach(([q]) => items.push({ part: 3, q, max: 90 }));
+  UI.spSess = { kind, items, i: 0, ans: {} };
+}
+function spTestTab() {
+  const S = UI.spSess;
+  if (!S) return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Thi thử Speaking"),
+    h("p", { class: "small muted", style: "margin:0" }, "Trả lời từng câu bằng giọng nói. Máy chép lời, đo độ trôi chảy và chấm phát âm ngay trên máy. Khi xong, AI đọc bản chép lời và các số đo để chấm band theo 4 tiêu chí: cả bài chỉ tốn 1 lượt AI. Âm thanh không gửi đi đâu."),
+    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { spNewSession("full"); render(); } }, "Đề đầy đủ (Part 1 → 3, khoảng 12 phút)"), ...["p1", "p2", "p3"].map(k => h("button", { class: "btn", type: "button", onclick: () => { spNewSession(k); render(); } }, "Part " + k[1]))),
+    spModelCard(["asr", "ph"]));
+  const it = S.items[S.i], an = S.ans[S.i];
+  const prep = it.prep ? (() => { const t = h("span", { class: "timer" }, "1:00"); let iv = null; return h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { if (iv) return; let left = it.prep; iv = setInterval(() => { if (!document.body.contains(t)) return clearInterval(iv); left--; t.textContent = mmss(Math.max(0, left)); if (left <= 0) { clearInterval(iv); toast("Hết 1 phút chuẩn bị. Bắt đầu nói!"); } }, 1000); } }, "Bắt đầu 1 phút chuẩn bị"), t); })() : null;
+  const allDone = S.items.every((_, k) => S.ans[k]);
+  return h("div", { class: "stack", style: "gap:14px" },
+    h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { if (Object.keys(S.ans).length && !confirm("Bỏ bài thi này?")) return; UI.spSess = null; render(); } }, "‹ Thoát"), h("span", { class: "small muted" }, `Câu ${S.i + 1}/${S.items.length} · Part ${it.part}`)),
+    h("div", { class: "meter" }, h("i", { style: `width:${Object.keys(S.ans).length / S.items.length * 100}%` })),
+    h("section", { class: "card stack", style: "gap:10px" }, h("span", { class: "eyebrow" }, `Part ${it.part}` + (it.topic ? " · " + it.topic : "")),
+      h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, it.q), it.points ? h("div", null, h("span", { class: "small muted" }, "You should say:"), h("ul", { class: "gex" }, it.points.map(p => h("li", null, p)))) : null,
+      h("div", { class: "row" }, sayBtn(it.q + (it.points ? ". You should say: " + it.points.join(", ") : ""), "🔊 Nghe câu hỏi", "btn btn-quiet"), h("span", { class: "small muted" }, it.part === 1 ? "Trả lời 2–4 câu (20–30 giây)." : it.part === 2 ? "Nói 1–2 phút." : "Trả lời 30–60 giây, có lý do và ví dụ.")),
+      prep, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(async (blob, say) => { S.ans[S.i] = await spAnalyze(blob, say); render(); }, { max: it.max }) : null,
+      an ? metricsView(an, null) : null,
+      h("div", { class: "row" }, S.i > 0 ? h("button", { class: "btn", type: "button", onclick: () => { S.i--; render(); } }, "‹ Câu trước") : null, S.i < S.items.length - 1 ? h("button", { class: "btn" + (an ? " btn-primary" : ""), type: "button", onclick: () => { S.i++; render(); window.scrollTo(0, 0); } }, an ? "Câu tiếp ›" : "Bỏ qua ›") : null)),
+    Object.keys(S.ans).length ? spGradeCard(S, allDone) : null);
+}
+const SPEAK_RUBRIC = `Band descriptors IELTS Speaking (bản công khai, tóm tắt). 4 tiêu chí ngang nhau.
+Fluency and Coherence: 9 trôi chảy, hiếm lặp/tự sửa; 8 trôi chảy, thỉnh thoảng lặp; 7 nói dài không gắng sức, đôi lúc ngập ngừng tìm từ, dùng từ nối linh hoạt; 6 sẵn lòng nói dài nhưng đôi khi mất mạch lạc do lặp, tự sửa, ngập ngừng; 5 giữ được nhịp nhưng phải lặp, tự sửa, nói chậm; 4 ngừng rõ rệt, nói chậm.
+Lexical Resource: 9 chính xác, tự nhiên; 8 rộng, linh hoạt, dùng thành ngữ khéo; 7 linh hoạt, có từ ít phổ biến, có collocation, vài lỗi; 6 đủ để bàn lâu, diễn đạt lại được; 5 đủ cho chủ đề quen, diễn đạt lại hạn chế; 4 đủ cho chủ đề quen, lỗi chọn từ nhiều.
+Grammatical Range and Accuracy: 9 chính xác tự nhiên; 8 đa dạng, phần lớn không lỗi; 7 dùng nhiều cấu trúc phức, nhiều câu không lỗi; 6 kết hợp câu đơn và phức, câu phức hay sai nhưng hiếm gây khó hiểu; 5 câu cơ bản khá đúng, câu phức ít và hay sai; 4 chủ yếu câu cơ bản, lỗi nhiều.
+Pronunciation: 9 dùng đầy đủ đặc điểm phát âm tinh tế; 8 linh hoạt, thỉnh thoảng sơ suất, dễ hiểu suốt bài; 7 có điểm của band 6 và một phần band 8; 6 dùng nhiều đặc điểm nhưng chưa đều, nhìn chung hiểu được; 5 có điểm của band 4 và một phần band 6; 4 phát âm sai thường xuyên gây khó hiểu.`;
+function spGradeCard(S, allDone) {
+  const out = h("div");
+  const btn = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
+    const idx = S.items.map((_, k) => k).filter(k => S.ans[k]);
+    if (!allDone && !confirm(`Mới trả lời ${idx.length}/${S.items.length} câu. Chấm luôn các câu đã trả lời?`)) return;
+    const ctl = new AbortController(); UI.busy.spg = ctl; btn.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "AI đang chấm, thường mất 30–90 giây…"), stopBtn("spg"));
+    const parts = idx.map(k => { const it = S.items[k], a = S.ans[k]; return `[Part ${it.part}] Câu hỏi: ${it.q}${it.points ? " (gợi ý: " + it.points.join("; ") + ")" : ""}
+Lời học sinh (máy chép): "${a.text}"
+Số đo: ${a.fl.words} từ trong ${a.fl.span} giây, ${a.fl.wpm} từ/phút; ${a.fl.pauses} khoảng ngừng ≥0,5 giây (${a.fl.long} lần ≥1 giây, dài nhất ${a.fl.longest} giây); trung bình ${a.fl.run} từ mỗi cụm nói liền; từ đệm: ${a.fl.fillers}; lặp từ: ${a.fl.reps}.
+Phát âm (mô hình âm vị chấm trên máy): ${a.pron.score ?? "?"}/100; lỗi âm hay gặp: ${a.pron.top.map(([k, v]) => k + " ×" + v).join(", ") || "không đáng kể"}; từ sai: ${a.pron.bad.map(b => `${b.w} /${b.ipa}/ ${b.score}`).join("; ") || "không có"}.`; }).join("\n\n");
+    const prompt = `Bạn là giám khảo IELTS Speaking giàu kinh nghiệm, chấm cho một sinh viên Việt Nam, mục tiêu band ${P.target}. Chấm trung thực, không nâng điểm để động viên.
+${SPEAK_RUBRIC}
+
+LƯU Ý: bạn không nghe được âm thanh. Lời học sinh do máy nhận diện chép lại: máy có thể bỏ bớt "ừm, à" và đôi khi tự sửa từ phát âm sai thành từ đúng. Độ trôi chảy đo bằng thời gian thật. Phát âm đo bằng mô hình nhận diện âm vị (chưa đo được ngữ điệu), nên band Pronunciation là ước lượng; nói rõ điều đó. Part 2 dưới 1 phút thì Fluency and Coherence khó vượt band 5.
+
+BÀI NÓI:
+${parts}
+
+Viết tiếng Việt:
+- Mỗi tiêu chí: band NGUYÊN 0–9, "comment" 1–3 câu dẫn chứng từ bài và số đo, "to_next" việc cụ thể để lên band kế tiếp.
+- "fixes": tối đa 5 lỗi ngữ pháp/dùng từ quan trọng nhất: "original" (trích nguyên văn), "corrected", "why", "category" (Ngữ pháp / Từ vựng / Mạch lạc).
+- "pron_tips": 2–4 lời khuyên phát âm cụ thể dựa trên lỗi âm ở trên.
+- "better": với mỗi câu đã trả lời, một câu trả lời mẫu band 7 ngắn (Part 1: 2–3 câu; Part 2: 120–160 từ; Part 3: 3–4 câu), giữ ý của học sinh khi hợp lý.
+- "next_step": một việc nên luyện tiếp.
+Chỉ trả lời JSON: {"criteria":[{"name":"Fluency and Coherence","band":5,"comment":"...","to_next":"..."},{"name":"Lexical Resource","band":5,"comment":"...","to_next":"..."},{"name":"Grammatical Range and Accuracy","band":5,"comment":"...","to_next":"..."},{"name":"Pronunciation","band":5,"comment":"...","to_next":"..."}],"fixes":[{"original":"...","corrected":"...","why":"...","category":"Ngữ pháp"}],"pron_tips":["..."],"better":["..."],"next_step":"..."}`;
+    try {
+      const r = await ai(prompt, { json: true, signal: ctl.signal });
+      if (!Array.isArray(r?.criteria) || r.criteria.length < 4) throw { code: "invalid_json" };
+      const crit = r.criteria.slice(0, 4).map(c => ({ name: String(c.name || ""), band: Math.max(0, Math.min(9, Math.round(Number(c.band) || 0))), comment: String(c.comment || ""), to_next: String(c.to_next || "") }));
+      const res = { overall: roundBand(crit.reduce((a, c) => a + c.band, 0) / 4), criteria: crit, fixes: (r.fixes || []).slice(0, 5).map(f => ({ original: String(f.original || ""), corrected: String(f.corrected || ""), why: String(f.why || ""), category: String(f.category || "") })), pron_tips: (r.pron_tips || []).map(String).slice(0, 4), better: (r.better || []).map(String), next_step: String(r.next_step || "") };
+      const doc = { kind: S.kind, created: Date.now(), items: idx.map(k => ({ part: S.items[k].part, q: S.items[k].q, text: S.ans[k].text, fl: { ...S.ans[k].fl, gaps: null }, pron: { score: S.ans[k].pron.score, bad: S.ans[k].pron.bad, top: S.ans[k].pron.top } })), result: res };
+      const id = newId(); await putDoc("speaks", id, JSON.parse(JSON.stringify(doc))).catch(() => {}); SPEAKS.unshift({ ...doc, id });
+      award("speaking", 60, "speak"); addAct("speaking", Math.max(5, Math.round(idx.length * 1.5)));
+      UI.spSess = null; UI.spTab = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
+    } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); btn.disabled = false; }
+    finally { delete UI.busy.spg; }
+  } }, allDone ? "Nhờ AI chấm cả bài (1 lượt)" : "Chấm các câu đã trả lời (1 lượt)");
+  return h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Chấm bài"), h("p", { class: "small muted", style: "margin:0" }, "AI nhận bản chép lời, số đo trôi chảy và kết quả phát âm, rồi chấm theo 4 tiêu chí. Âm thanh không được gửi đi. Bản chép lời và kết quả được lưu vào mục Kết quả."), h("div", { class: "row" }, btn), out);
+}
+function spHistTab() {
+  const v = UI.spView && SPEAKS.find(x => x.id === UI.spView);
+  if (v) { const r = v.result;
+    return h("div", { class: "stack", style: "gap:14px" }, h("button", { class: "btn btn-quiet", type: "button", style: "align-self:flex-start", onclick: () => { UI.spView = null; render(); } }, "‹ Tất cả lần thi"),
+      h("section", { class: "card stack", style: "gap:12px" }, h("div", { class: "row", style: "align-items:flex-end;gap:18px" }, h("div", { class: "stack", style: "gap:2px" }, h("span", { class: "eyebrow" }, "Band Speaking ước tính"), h("span", { class: "band-big" }, r.overall.toFixed(1))), h("div", { style: "flex:1;min-width:220px" }, ruler(r.overall, P.target))),
+        h("div", { class: "stack", style: "gap:10px" }, r.criteria.map(c => h("div", { class: "sp-crit" }, h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, c.name), h("b", null, String(c.band))), h("p", { style: "margin:0" }, c.comment), c.to_next ? h("p", { class: "small", style: "margin:0;color:var(--accent,#0b6e4f)" }, "Lên band " + Math.min(9, c.band + 1) + ": " + c.to_next) : null))),
+        r.pron_tips.length ? h("div", { class: "stack", style: "gap:4px" }, h("h3", null, "Luyện phát âm"), h("ul", { class: "gex" }, r.pron_tips.map(t => h("li", null, t)))) : null,
+        r.fixes.length ? h("div", { class: "stack" }, h("h3", null, "Lỗi nên sửa"), fixesNode(r.fixes)) : null,
+        r.next_step ? h("p", { class: "note" }, "Luyện tiếp: " + r.next_step) : null),
+      v.items.map((it, k) => h("section", { class: "card stack", style: "gap:8px" }, h("span", { class: "eyebrow" }, "Part " + it.part), h("p", { class: "prompt", style: "margin:0" }, it.q),
+        h("p", { class: "small", style: "margin:0" }, h("b", null, "Bạn nói: "), it.text), h("p", { class: "small muted", style: "margin:0" }, `${it.fl.wpm} từ/phút · ${it.fl.long} lần ngừng ≥1 giây · phát âm ${it.pron.score ?? "—"}/100`),
+        r.better[k] ? h("details", null, h("summary", null, "Câu trả lời mẫu band 7"), h("p", { class: "model-text", style: "margin-top:8px;white-space:pre-wrap" }, r.better[k])) : null))); }
+  return h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Các lần thi Speaking"),
+    SPEAKS.length ? h("div", { class: "stack", style: "gap:6px" }, SPEAKS.map(s => h("button", { type: "button", class: "sp-hrow", onclick: () => { UI.spView = s.id; render(); window.scrollTo(0, 0); } }, h("b", { class: "sp-hb" }, s.result.overall.toFixed(1)), h("span", null, { full: "Đề đầy đủ", p1: "Part 1", p2: "Part 2", p3: "Part 3" }[s.kind] || "Speaking"), h("span", { class: "small muted" }, fmtDate(s.created)))))
+      : h("p", { class: "empty" }, "Chưa có lần thi nào. Vào Thi thử để làm bài đầu tiên."));
+}
+
+/* =================== Gắn vào app =================== */
+(function () {
+  const ipa = NAV.find(x => x[0] === "ipa"); if (ipa) ipa[2] = "M3 12h2M7 8v8M11 5v14M15 8v8M19 11v2";
+  const at = NAV.findIndex(x => x[0] === "ipa"); NAV.splice(at + 1, 0, ["speak", "Nói", "M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3zM5 11a7 7 0 0014 0M12 18v3"]);
+  const _nav = navTab; navTab = r => r.startsWith("pr-") || r === "ipa-chart" ? "ipa" : r.startsWith("sl-") ? "speak" : _nav(r);
+  const mine = r => r === "ipa-chart" || r === "speak" || (r.startsWith("pr-") && PR_LESSONS.some(l => l.id === r.slice(3))) || (r.startsWith("sl-") && SP_PATH.some(l => l.id === r.slice(3)));
+  const _or = onRoute; window.removeEventListener("hashchange", _or);
+  onRoute = function () { const raw = (location.hash || "").slice(1); if (!mine(raw)) return _or(); if (raw !== UI.route) { try { stopTTS(); } catch {} UI.route = raw; UI.prW = null; UI.slS = null; $("#lookup").hidden = true; render(); window.scrollTo(0, 0); } };
+  window.addEventListener("hashchange", () => onRoute());
+  const _ri = renderInner;
+  renderInner = function () {
+    const r = UI.route; let node = null;
+    if (r === "ipa") node = pagePron();
+    else if (r === "ipa-chart") node = h("div", { class: "stack", style: "gap:12px" }, h("a", { class: "btn btn-quiet", href: "#ipa", style: "align-self:flex-start" }, "‹ Lộ trình phát âm"), pageIPA());
+    else if (r.startsWith("pr-") && PR_LESSONS.find(l => l.id === r.slice(3))) node = pagePrLesson(PR_LESSONS.find(l => l.id === r.slice(3)));
+    else if (r === "speak") node = pageSpeak();
+    else if (r.startsWith("sl-") && SP_PATH.find(l => l.id === r.slice(3))) node = pageSpLesson(SP_PATH.find(l => l.id === r.slice(3)));
+    if (!node) return _ri();
+    renderNav(); UI.keyH = null; $("#main").replaceChildren(node); renderAsk();
+  };
+})();
+
 </script>
 
 </body>
