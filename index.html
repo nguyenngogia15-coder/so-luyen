@@ -13697,7 +13697,7 @@ function lsVoicePick(s) {
     if (!confirm("Tạo giọng Gemini cho bài này sẽ dùng 1 lượt giọng đọc (mỗi ngày có khoảng 30 lượt cho cả nhóm). Nếu nơi lưu chung đã bật, các bạn khác nghe lại không tốn lượt. Tiếp tục?")) return;
     gemBtn.disabled = true; out.textContent = "Gemini đang đọc bài, thường mất 20–60 giây…";
     try { const b = await lsGemAudio(s, true); A.gemUrl = URL.createObjectURL(b); A.src = "gem"; A.gemState = "ok"; try { LSA.el?.pause(); } catch {} render(); }
-    catch (e) { out.textContent = e?.code === "rate_limited" ? "Hết lượt giọng Gemini hôm nay, dùng giọng thu sẵn nhé." : aiMsg(e); gemBtn.disabled = false; } } }, A.gemState === "ok" ? "Giọng Gemini (tự nhiên hơn)" : "✨ Tạo giọng Gemini");
+    catch (e) { out.textContent = (e?.code === "rate_limited" ? "Gemini chưa đọc được bài này. " : aiMsg(e) + " ") + "Chi tiết: " + (e?.message || e?.code || "không rõ"); gemBtn.disabled = false; } } }, A.gemState === "ok" ? "Giọng Gemini (tự nhiên hơn)" : "✨ Tạo giọng Gemini");
   return h("div", { class: "row", style: "gap:6px;align-items:center" }, h("span", { class: "small muted" }, "Giọng:"),
     A.gemState === "ok" ? h("span", { class: "chip good" }, "Giọng Gemini") : A.gemState === "loading" ? h("span", { class: "small muted" }, "đang tìm giọng Gemini…") : h("span", { class: "chip" }, "Giọng dự phòng (máy đọc)"),
     A.gemState === "none" && Object.keys(s.sp).length <= 2 ? gemBtn : null,
