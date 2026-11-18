@@ -1259,6 +1259,17 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
     doc: id => mkDoc(path + "/" + id)
   });
 
+  /* Chọn hạng model theo việc: top = chấm/sửa bài viết, tạo bài đọc; lite = tra từ, sổ từ vựng, phân tích câu ngắn; còn lại = mid */
+  const TOP = /giám khảo IELTS Writing|bài đọc luyện IELTS Academic Reading GỐC|Viết một bài đọc IELTS Academic GỐC|Bạn soạn bài luyện IELTS Reading|sửa bài cho một sinh viên|bài gần nhất của một học sinh/;
+  const LITE = /Tra nghĩa từ|vocabulary notebook|^Từ\/cụm tiếng Anh|ghi chép từ vựng|flashcards|Chọn 12 từ|Phân tích câu|paraphrase|You classify grammar|Giải thích ngắn|nâng cấp từ vựng|Sổ từ vựng IELTS/;
+  const pickTier = (input, opts) => {
+    if (opts.modelTier === "complex") return "top";
+    if (opts.modelTier === "quick") return "lite";
+    const t = (typeof input === "string" ? input : input.map(m => m.content).join("\n")).slice(0, 800);
+    return TOP.test(t) ? "top" : LITE.test(t) ? "lite" : "mid";
+  };
+  window.__pickTier = pickTier;
+
   const blobB64 = b => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = bad; r.readAsDataURL(b); });
   async function callAI(input, opts = {}, json = false) {
     const user = auth.currentUser; if (!user) throw { code: "not_granted" };
@@ -1270,7 +1281,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
       r = await fetch(CFG.workerUrl.replace(/\/$/, "") + "/ai", {
         method: "POST", signal: opts.signal,
         headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() },
-        body: JSON.stringify({ messages: msgs, json, tier: opts.modelTier || "default", images })
+        body: JSON.stringify({ messages: msgs, json, tier: pickTier(input, opts), images })
       });
     } catch (e) { if (e?.name === "AbortError") throw { code: "cancelled" }; throw { code: "network", message: String(e) }; }
     const out = await r.json().catch(() => ({ error: { code: "bad_response" } }));
