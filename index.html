@@ -1300,7 +1300,19 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
     try { r = await fetch(CFG.workerUrl.replace(/\/$/, "") + "/tts", { method: "POST", signal, headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() }, body: JSON.stringify(body) }); }
     catch (e) { if (e?.name === "AbortError") throw { code: "cancelled" }; throw { code: "network", message: String(e) }; }
     if (!r.ok) { const j = await r.json().catch(() => ({})); throw { code: j.error?.code || "http_" + r.status, message: j.error?.message }; }
-    const blob = await r.blob(); blob.cached = r.headers.get("x-cache") === "hit"; blob.model = r.headers.get("x-model"); return blob;
+    const b64 = await r.text(), mime = r.headers.get("x-mime") || "audio/wav";
+    const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    let blob;
+    if (/wav/i.test(mime) || (u[0] === 82 && u[1] === 73)) blob = new Blob([u], { type: "audio/wav" });
+    else { const rate = +(/rate=(\d+)/.exec(mime)?.[1] || 24000), hd = new DataView(new ArrayBuffer(44)), w = (o, s) => { for (let i = 0; i < s.length; i++) hd.setUint8(o + i, s.charCodeAt(i)); };
+      w(0, "RIFF"); hd.setUint32(4, 36 + u.length, true); w(8, "WAVE"); w(12, "fmt "); hd.setUint32(16, 16, true); hd.setUint16(20, 1, true); hd.setUint16(22, 1, true); hd.setUint32(24, rate, true); hd.setUint32(28, rate * 2, true); hd.setUint16(32, 2, true); hd.setUint16(34, 16, true); w(36, "data"); hd.setUint32(40, u.length, true);
+      blob = new Blob([hd.buffer, u], { type: "audio/wav" }); }
+    blob.cached = r.headers.get("x-cache") === "hit"; blob.model = r.headers.get("x-model"); return blob;
+  };
+  window.__lsPool = async () => {
+    const user = auth.currentUser; if (!user) return [];
+    const r = await fetch(CFG.workerUrl.replace(/\/$/, "") + "/ls-pool", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() }, body: "{}" });
+    if (!r.ok) return []; return (await r.json()).items || [];
   };
   const sample = (input, opts) => callAI(input, opts, false);
   sample.json = (input, opts) => callAI(input, opts, true);
@@ -13460,7 +13472,9 @@ LS_BANK.push(
 const LS_SENT = t => t.trim().split(/(?<=[.!?])\s+(?=[A-Z"“])/).filter(Boolean);
 const LS_MINE = []; let lsMineLoaded = false;
 async function loadListens() { if (lsMineLoaded) return; lsMineLoaded = true; try { const l = await store.list("listens"); LS_MINE.splice(0, LS_MINE.length, ...l.map(x => ({ ...x, mine: true })).sort((a, b) => (b.created || 0) - (a.created || 0))); render(); } catch (e) { console.warn(e); } }
-const lsAll = () => [...LS_BANK, ...LS_MINE];
+const LS_POOL = []; let lsPoolLoaded = false;
+async function loadPool() { if (lsPoolLoaded || !window.__lsPool) return; lsPoolLoaded = true; try { const l = await window.__lsPool(); LS_POOL.splice(0, LS_POOL.length, ...l.map(x => ({ ...x, shared: true })).sort((a, b) => (b.created || 0) - (a.created || 0))); if (l.length) render(); } catch (e) { console.warn(e); } }
+const lsAll = () => [...LS_BANK, ...LS_POOL, ...LS_MINE];
 const lsById = id => lsAll().find(s => s.id === id);
 const LS_META = { p: null }; function lsMeta() { return LS_META.p ||= fetch("voice/ls/index.json").then(r => r.ok ? r.json() : {}).catch(() => ({})); }
 const lsNorm = s => String(s || "").toLowerCase().replace(/[’']/g, "'").replace(/[£$€,]/g, "").replace(/\s+/g, " ").replace(/^(the|a|an) /, "").replace(/[.!?;]+$/, "").trim();
@@ -13477,7 +13491,7 @@ function lsGemSpeakers(s) {
 }
 async function lsGemAudio(s, generate) {
   if (!window.__tts) throw { code: "unavailable" };
-  return window.__tts({ key: s.id + "-g1", cacheOnly: !generate, speakers: lsGemSpeakers(s), turns: s.turns.map(([sp, text]) => ({ sp, text })) });
+  return window.__tts({ key: s.id + "-g2", cacheOnly: !generate, speakers: lsGemSpeakers(s), turns: s.turns.map(([sp, text]) => ({ sp, text })) });
 }
 /* ----- Kokoro chạy trong trình duyệt (cho bài AI tạo khi hết lượt giọng Gemini) ----- */
 const KK = { p: null };
@@ -13503,7 +13517,7 @@ const LSA = { el: null, url: null, src: {} };
 function lsPlayer(s, exam) {
   const A = UI.lsA ||= {}; const src = A.src === "gem" && A.gemUrl ? A.gemUrl : A.kUrl;
   if (!src) {
-    if (s.mine && A.gemState === "none") { const msg = h("span", { class: "small muted" }); const b = h("button", { class: "btn", type: "button", onclick: async () => { b.disabled = true; try { const k = await kokoroRender(s, t => msg.textContent = t); UI.lsKk = { id: s.id, url: URL.createObjectURL(k.blob), segs: k.segs }; Object.assign(A, { kUrl: UI.lsKk.url, segs: k.segs, src: "k" }); render(); } catch (e) { msg.textContent = "Lỗi: " + (e?.message || e); b.disabled = false; } } }, "Đọc bài bằng Kokoro trên máy");
+    if ((s.mine || s.shared) && A.gemState === "none") { const msg = h("span", { class: "small muted" }); const b = h("button", { class: "btn", type: "button", onclick: async () => { b.disabled = true; try { const k = await kokoroRender(s, t => msg.textContent = t); UI.lsKk = { id: s.id, url: URL.createObjectURL(k.blob), segs: k.segs }; Object.assign(A, { kUrl: UI.lsKk.url, segs: k.segs, src: "k" }); render(); } catch (e) { msg.textContent = "Lỗi: " + (e?.message || e); b.disabled = false; } } }, "Đọc bài bằng Kokoro trên máy");
       return h("div", { class: "row" }, b, msg); }
     return h("p", { class: "small muted" }, "Đang chuẩn bị âm thanh…");
   }
@@ -13520,8 +13534,8 @@ function lsPlayer(s, exam) {
 async function lsPrepare(s) {
   const A = UI.lsA ||= {}; if (A.id === s.id) return; try { LSA.el?.pause(); } catch {}
   Object.assign(A, { id: s.id, kUrl: null, gemUrl: null, src: "k", played: false, segs: null, gemState: "" });
-  if (s.mine) { try { const b = await lsGemAudio(s, false); A.gemUrl = URL.createObjectURL(b); A.src = "gem"; A.gemState = "ok"; } catch { A.gemState = "none"; } }
-  else { const m = (await lsMeta())[s.id]; if (m) { A.kUrl = "voice/ls/" + s.id + ".mp3"; A.segs = m.segs; } lsGemAudio(s, false).then(b => { if (A.id !== s.id) return; A.gemUrl = URL.createObjectURL(b); A.gemState = "ok"; render(); }, () => { A.gemState = "none"; }); }
+  if (s.mine || s.shared) { try { const b = await lsGemAudio(s, false); A.gemUrl = URL.createObjectURL(b); A.src = "gem"; A.gemState = "ok"; } catch { A.gemState = "none"; } }
+  else { const m = (await lsMeta())[s.id]; if (m) { A.kUrl = "voice/ls/" + s.id + ".mp3"; A.segs = m.segs; } A.gemState = "loading"; lsGemAudio(s, false).then(b => { if (A.id !== s.id) return; A.gemUrl = URL.createObjectURL(b); A.gemState = "ok"; if (!A.played) { A.src = "gem"; try { LSA.el?.pause(); } catch {} } render(); }, () => { A.gemState = "none"; render(); }); }
   render();
 }
 function lsVoicePick(s) {
@@ -13533,8 +13547,9 @@ function lsVoicePick(s) {
     try { const b = await lsGemAudio(s, true); A.gemUrl = URL.createObjectURL(b); A.src = "gem"; A.gemState = "ok"; try { LSA.el?.pause(); } catch {} render(); }
     catch (e) { out.textContent = e?.code === "rate_limited" ? "Hết lượt giọng Gemini hôm nay, dùng giọng thu sẵn nhé." : aiMsg(e); gemBtn.disabled = false; } } }, A.gemState === "ok" ? "Giọng Gemini (tự nhiên hơn)" : "✨ Tạo giọng Gemini");
   return h("div", { class: "row", style: "gap:6px;align-items:center" }, h("span", { class: "small muted" }, "Giọng:"),
-    s.mine ? null : h("button", { type: "button", class: "opt", "aria-pressed": String(A.src !== "gem"), onclick: () => { A.src = "k"; try { LSA.el?.pause(); } catch {} render(); } }, "Thu sẵn"),
-    Object.keys(s.sp).length <= 2 ? gemBtn : null, out);
+    A.gemState === "ok" ? h("span", { class: "chip good" }, "Giọng Gemini") : A.gemState === "loading" ? h("span", { class: "small muted" }, "đang tìm giọng Gemini…") : h("span", { class: "chip" }, "Giọng dự phòng (máy đọc)"),
+    A.gemState === "none" && Object.keys(s.sp).length <= 2 ? gemBtn : null,
+    A.gemState === "none" ? h("span", { class: "small muted" }, "Bài này sẽ được tự đổi sang giọng Gemini trong đêm.") : null, out);
 }
 /* ----- Câu hỏi ----- */
 function lsQuestions(s, st, done) {
@@ -13560,7 +13575,7 @@ function lsTranscript(s) {
 /* ----- Trang ----- */
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
-  loadListens();
+  loadListens(); loadPool();
   const tab = UI.lsTab ||= "sec";
   const tabs = h("div", { class: "row", role: "group", style: "gap:6px" }, [["sec", "Luyện theo phần"], ["test", "Đề đầy đủ"], ["dict", "Nghe chép"], ["ai", "Bài mới (AI)"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.lsTab = k; render(); } }, t)));
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
@@ -13572,7 +13587,7 @@ function pageListen() {
 function lsCard(s, href) {
   const st = (P.ls || {})[s.id] || {};
   return h("a", { class: "card lesson-card", href }, h("span", { class: "num" }, s.sec), h("div", { class: "stack", style: "gap:4px" }, h("h3", null, s.title), h("span", { class: "small muted" }, s.ctx),
-    h("div", { class: "row" }, st.score != null ? h("span", { class: "chip " + (st.score >= 8 ? "good" : st.score >= 6 ? "warn" : "bad") }, `Tốt nhất ${st.score}/10`) : h("span", { class: "chip" }, "Chưa làm"), s.mine ? h("span", { class: "chip acc" }, "AI soạn") : null)));
+    h("div", { class: "row" }, st.score != null ? h("span", { class: "chip " + (st.score >= 8 ? "good" : st.score >= 6 ? "warn" : "bad") }, `Tốt nhất ${st.score}/10`) : h("span", { class: "chip" }, "Chưa làm"), s.mine || s.shared ? h("span", { class: "chip acc" }, s.shared ? "Kho chung" : "AI soạn") : null)));
 }
 function lsSecTab() {
   return h("div", { class: "stack", style: "gap:16px" }, [1, 2, 3, 4].map(n => h("section", { class: "stack", style: "gap:10px" },
@@ -13585,7 +13600,7 @@ function pageLsSection(s) {
   const qs = lsQs(s), score = W.done ? qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length : null;
   const submit = () => { W.done = true; const sc = qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length; st.score = Math.max(st.score ?? 0, sc); st.last = sc; st.n = (st.n || 0) + 1; award("listening", 15); addAct("listening", 8); saveProfile(); render(); window.scrollTo(0, 0); };
   return h("div", { class: "stack", style: "gap:16px" },
-    h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#listen" }, "‹ Listening"), h("span", { class: "small muted" }, s.mine ? "Bài AI soạn" : `Đề ${s.test} · Section ${s.sec}`)),
+    h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#listen" }, "‹ Listening"), h("span", { class: "small muted" }, s.shared ? "Kho chung" : s.mine ? "Bài AI soạn" : `Đề ${s.test} · Section ${s.sec}`)),
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Section " + s.sec), h("h1", null, s.title), h("p", { class: "muted", style: "margin:0" }, s.ctx)),
     h("section", { class: "card stack", style: "gap:10px" },
       h("div", { class: "row", style: "gap:6px" }, h("button", { type: "button", class: "opt", "aria-pressed": String(!W.exam), disabled: W.done || null, onclick: () => { W.exam = false; render(); } }, "Luyện tập (dừng, tua, chỉnh tốc độ)"), h("button", { type: "button", class: "opt", "aria-pressed": String(W.exam), disabled: W.done || null, onclick: () => { W.exam = true; (UI.lsA || {}).played = false; render(); } }, "Như thi thật (nghe 1 lần)")),
@@ -13632,7 +13647,7 @@ function lsDictTab() {
   const ta = h("textarea", { rows: "2", placeholder: "Gõ lại đúng câu bạn nghe…", oninput: e => { D.typed = e.target.value; }, onkeydown: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); check(); } } }); ta.value = D.typed;
   let wi = 0; const resView = D.res ? h("p", { class: "ls-dict-res" }, D.res.want.map(w => { const k = /[a-z0-9]/i.test(w) ? wi++ : -1; return [h("span", { class: k < 0 || D.res.hitIdx.has(k) ? "ok" : "no" }, w), " "]; })) : null;
   return h("div", { class: "stack", style: "gap:12px" },
-    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài:"), h("select", { onchange: e => { UI.lsD = { id: e.target.value, i: 0, typed: "", res: null }; render(); } }, lsAll().map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `${x.mine ? "AI · " : "Đề " + x.test + " · "}S${x.sec} · ${x.title}`)))),
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài:"), h("select", { onchange: e => { UI.lsD = { id: e.target.value, i: 0, typed: "", res: null }; render(); } }, lsAll().map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `${x.mine || x.shared ? "AI · " : "Đề " + x.test + " · "}S${x.sec} · ${x.title}`)))),
     h("section", { class: "card stack", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, `Câu ${D.i % sents.length + 1}/${sents.length}`), h("span", { class: "small muted" }, "Enter để chấm")),
       h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => playSeg(1) }, "▶ Nghe câu"), h("button", { class: "btn", type: "button", onclick: () => playSeg(0.75) }, "🐢 Chậm")), ta,
       h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: check }, "Chấm"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { D.i = (D.i + 1) % sents.length; D.typed = ""; D.res = null; render(); } }, "Câu tiếp ›")),
@@ -13669,7 +13684,8 @@ Return ONLY JSON: {"title":"...","ctx":"one Vietnamese sentence describing the s
       h("div", { class: "row", style: "gap:6px" }, [1, 2, 3, 4].map(n => h("button", { type: "button", class: "opt", "aria-pressed": String(G.sec === n), onclick: () => { G.sec = n; render(); } }, "Section " + n))),
       h("input", { type: "text", placeholder: "Chủ đề (không bắt buộc), ví dụ: thuê xe đạp, bảo tàng khoa học, biến đổi khí hậu…", value: G.topic, oninput: e => { G.topic = e.target.value; } }),
       h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: G.busy || !sample || null, onclick: gen }, G.busy ? "Đang tạo…" : "Tạo bài nghe"), h("span", { class: "small muted ls-gen-msg" }, G.msg))),
-    LS_MINE.length ? h("section", { class: "stack", style: "gap:10px" }, h("h2", null, "Bài AI đã tạo"), h("div", { class: "grid3" }, LS_MINE.map(s => lsCard(s, "#ls-" + s.id)))) : null);
+    LS_POOL.length ? h("section", { class: "stack", style: "gap:10px" }, h("h2", null, `Kho chung: bài mới mỗi đêm (${LS_POOL.length})`), h("span", { class: "small muted" }, "Máy chủ tự soạn và đọc bằng giọng Gemini vào ban đêm, cả nhóm cùng dùng."), h("div", { class: "grid3" }, LS_POOL.map(s => lsCard(s, "#ls-" + s.id)))) : null,
+    LS_MINE.length ? h("section", { class: "stack", style: "gap:10px" }, h("h2", null, "Bài bạn đã tạo"), h("div", { class: "grid3" }, LS_MINE.map(s => lsCard(s, "#ls-" + s.id)))) : null);
 }
 
 /* =================== Gắn vào app =================== */
