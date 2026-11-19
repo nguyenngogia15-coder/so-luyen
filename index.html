@@ -1265,8 +1265,13 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
   const pickTier = (input, opts) => {
     if (opts.modelTier === "complex") return "top";
     if (opts.modelTier === "quick") return "lite";
-    const t = (typeof input === "string" ? input : input.map(m => m.content).join("\n")).slice(0, 800);
-    return TOP.test(t) ? "top" : LITE.test(t) ? "lite" : "mid";
+    const full = typeof input === "string" ? input : input.map(m => m.content).join("\n"), t = full.slice(0, 800);
+    if (TOP.test(t)) {
+      /* Bài chữa ngắn (vài câu trong bài ngữ pháp, một đoạn trong khóa Viết) không cần model mạnh nhất; bài dài từ 150 từ mới dùng hạng top */
+      if (/sửa bài cho một sinh viên/.test(t)) { const m = full.match(/"""([\s\S]*?)"""/); if (m && m[1].trim().split(/\s+/).length < 150) return "mid"; }
+      return "top";
+    }
+    return LITE.test(t) ? "lite" : "mid";
   };
   window.__pickTier = pickTier;
 
@@ -1281,7 +1286,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
       r = await fetch(CFG.workerUrl.replace(/\/$/, "") + "/ai", {
         method: "POST", signal: opts.signal,
         headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() },
-        body: JSON.stringify({ messages: msgs, json, tier: pickTier(input, opts), images })
+        body: JSON.stringify({ messages: msgs, json, tier: pickTier(input, opts), images, ...(opts.video ? { video: opts.video } : {}) })
       });
     } catch (e) { if (e?.name === "AbortError") throw { code: "cancelled" }; throw { code: "network", message: String(e) }; }
     const out = await r.json().catch(() => ({ error: { code: "bad_response" } }));
@@ -1314,6 +1319,15 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
     const r = await fetch(CFG.workerUrl.replace(/\/$/, "") + "/ls-pool", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() }, body: "{}" });
     if (!r.ok) return []; return (await r.json()).items || [];
   };
+  /* Gọi Worker với JSON, trả về JSON (dùng cho mốc câu chung, phụ đề YouTube, bảng lượt AI) */
+  const post = async (path, body) => {
+    const user = auth.currentUser; if (!user) throw { code: "not_granted" };
+    const r = await fetch(CFG.workerUrl.replace(/\/$/, "") + path, { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + await user.getIdToken() }, body: JSON.stringify(body || {}) });
+    const j = await r.json().catch(() => ({})); if (!r.ok) throw { code: j.error?.code || "http_" + r.status, message: j.error?.message }; return j;
+  };
+  window.__alShare = async b => { const j = await post("/ls-al", b); return b.get ? j.item || null : j; };
+  window.__yt = id => post("/yt", { id });
+  window.__quota = () => post("/quota", {});
   const sample = (input, opts) => callAI(input, opts, false);
   sample.json = (input, opts) => callAI(input, opts, true);
   sample.limits = async () => ({ images: true });
@@ -11634,6 +11648,14 @@ window.__bootApp = boot;
 .bottomnav{grid-template-columns:repeat(8,minmax(0,1fr))!important;padding-left:2px!important;padding-right:2px!important}
 .bottomnav a{font-size:.58rem!important;letter-spacing:-.01em}
 .bottomnav a[aria-current="page"] svg{padding:2px 0!important;width:20px!important}
+.room-card{padding:28px 18px}
+.room-orb{width:92px;height:92px;border:3px solid var(--ink);border-radius:50%!important;display:grid;place-items:center;font-size:2.4rem;background:var(--surface)}
+.room-orb.rec{background:#ffe1e1;animation:roomPulse 1.2s ease-in-out infinite}
+.room-orb.ask{background:#e8f4ff}
+@keyframes roomPulse{50%{transform:scale(1.07)}}
+.room-step{font-size:1.15rem}
+.room-cue{border:2px dashed var(--ink);padding:12px 16px;max-width:560px;width:100%;background:var(--surface)}
+@media (prefers-reduced-motion:reduce){.room-orb.rec{animation:none}}
 .ls-player{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .ls-seek{flex:1;min-width:160px;accent-color:var(--coral)}
 .ls-time{min-width:86px;font-variant-numeric:tabular-nums}
@@ -11655,6 +11677,36 @@ window.__bootApp = boot;
 .ls-player .ls-rate{width:auto!important;min-height:0!important;padding:6px 8px!important}
 .ls-player select,.ls-group select{width:auto!important}
 .lp-map{color:var(--ink);border:2px solid var(--line);padding:8px;background:var(--surface)}
+/* Shadowing */
+.shw-yt-ph{width:100%;max-width:720px;aspect-ratio:16/9;background:#111;border:2px solid var(--ink)}
+.shw-yt-host{position:absolute;z-index:4;display:none}
+.shw-yt-host iframe{width:100%;height:100%;display:block;border:0}
+.shw-text.hid{filter:blur(7px);user-select:none;cursor:pointer}
+.sp-rec.on,.btn.on{background:var(--bad,#c62828)!important;color:#fff!important}
+.nd-list{display:flex;flex-direction:column;gap:10px;padding-left:1.4em;margin:0}
+.nd-row{display:flex;flex-direction:column;gap:4px}
+.nd-row .ls-in{max-width:240px}
+.nd-row.ok .ls-in{border-color:var(--good)}.nd-row.no .ls-in{border-color:var(--bad)}
+.qt-wrap{overflow-x:auto}
+.qt-tbl{border-collapse:collapse;width:100%;font-size:.92rem}
+.qt-tbl th,.qt-tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+.qt-tbl tr.out td{opacity:.6}
+.bad-t{color:var(--bad)}
+#qchip{text-decoration:none;font-size:.78rem}
+/* Bảng 4 kỹ năng */
+.pl-board.b4{grid-template-columns:repeat(4,1fr)}
+.pl-board.b4>.pl-now{grid-column:1/-1;border-left:0;border-bottom:2px solid var(--line)}
+.pl-board.b4>.pl-cell{border-left:2px solid var(--line)}.pl-board.b4>.pl-cell:nth-child(2){border-left:0}
+@media (max-width:760px){.pl-board.b4{grid-template-columns:1fr 1fr}.pl-board.b4>.pl-cell{border-left:0;border-top:2px solid var(--line)}.pl-board.b4>.pl-cell:nth-child(odd){border-left:2px solid var(--line)}}
+@media (max-width:420px){.pl-board.b4{grid-template-columns:1fr}.pl-board.b4>.pl-cell:nth-child(odd){border-left:0}}
+.pl-ic.L,.ph-k.L{background:var(--mint)}.pl-ic.S,.ph-k.S{background:var(--pink)}
+.sk4-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.sk4-row{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sk4-h{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+.sk4-h .pl-ic{width:30px;height:30px}.sk4-h .pl-ic svg{width:17px;height:17px}
+.sk4-b{margin-left:auto;font-family:var(--font-head);font-weight:900;font-size:1.3rem}.sk4-b small{font-size:.8rem;color:var(--muted)}
+.sk4-w{margin:0;padding-left:1.1em;font-size:.88rem;display:flex;flex-direction:column;gap:2px}
+.sk4-next{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
 </style>
 <script>
 /* ===== Bộ nhận diện giọng nói chạy ngay trên máy (không gọi AI) =====
@@ -11768,48 +11820,72 @@ async function spLex() { return SP.lex ||= fetch(spBase() + "cmu.json").then(r =
 const spKey = w => String(w).toLowerCase().replace(/[’‘]/g, "'").replace(/^[^a-z]+|[^a-z']+$/g, "");
 function spWordPh(lex, w) { const k = spKey(w); const v = (SP.over && SP.over[k]) || lex[k] || lex[k.replace(/'s$/, "")] && lex[k.replace(/'s$/, "")] + " Z"; return v ? v.split(" ") : null; }
 /* Câu → [{w, ph:[ARPA có số trọng âm]}], từ không có trong từ điển: ph = null */
+const NW1 = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split(" "), NW10 = ",,twenty,thirty,forty,fifty,sixty,seventy,eighty,ninety".split(",");
+const ORD = { one: "first", two: "second", three: "third", five: "fifth", eight: "eighth", nine: "ninth", twelve: "twelfth" };
+function numWords(n) {
+  n = Math.floor(n); if (n < 20) return NW1[n]; if (n < 100) return NW10[Math.floor(n / 10)] + (n % 10 ? " " + NW1[n % 10] : "");
+  if (n < 1000) return NW1[Math.floor(n / 100)] + " hundred" + (n % 100 ? " and " + numWords(n % 100) : "");
+  if (n < 1e6) return numWords(Math.floor(n / 1000)) + " thousand" + (n % 1000 ? (n % 1000 < 100 ? " and " : " ") + numWords(n % 1000) : "");
+  return String(n).split("").map(d => NW1[+d]).join(" ");
+}
+const ordWord = w => { const p = w.split(" "), l = p.pop(); return [...p, ORD[l] || (l.endsWith("y") ? l.slice(0, -1) + "ieth" : l + "th")].join(" "); };
+/* Chữ số → chữ để căn chỉnh và chấm (đọc như người bản xứ hay đọc) */
+function spSpell(text) {
+  let t = String(text); while (/\d,\d{3}\b/.test(t)) t = t.replace(/(\d),(\d{3})\b/g, "$1$2");
+  return t.replace(/([£$€])\s?(\d+)(?:\.(\d{2}))?/g, (_, c, a, b) => numWords(+a) + " " + ({ "£": "pounds", "$": "dollars", "€": "euros" }[c]) + (b && +b ? " " + numWords(+b) : ""))
+    .replace(/\b(\d{1,2}):(\d{2})\b/g, (_, a, b) => numWords(+a) + (+b ? " " + (+b < 10 ? "oh " + numWords(+b) : numWords(+b)) : " o'clock"))
+    .replace(/\b0\d+\b/g, m => m.split("").map(d => d === "0" ? "oh" : NW1[+d]).join(" "))
+    .replace(/\b(\d+)(st|nd|rd|th)\b/g, (_, a) => ordWord(numWords(+a)))
+    .replace(/\b(1[1-9]|20)(\d{2})\b/g, (m, a, b) => (+m >= 2000 && +m < 2010) ? numWords(+m) : numWords(+a) + " " + (+b === 0 ? "hundred" : +b < 10 ? "oh " + numWords(+b) : numWords(+b)))
+    .replace(/\b(\d+)\.(\d+)\b/g, (_, a, b) => numWords(+a) + " point " + b.split("").map(d => NW1[+d]).join(" "))
+    .replace(/\b\d+\b/g, m => numWords(+m)).replace(/%/g, " percent");
+}
 async function spExpected(text) {
   const lex = await spLex();
-  const words = String(text).replace(/[“”"]/g, "").replace(/(\w)-(\w)/g, "$1 $2").split(/\s+/).map(w => w.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g, "")).filter(Boolean);
+  const words = spSpell(text).replace(/[“”"]/g, "").replace(/(\w)-(\w)/g, "$1 $2").split(/\s+/).map(w => w.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g, "")).filter(Boolean);
   return words.map(w => ({ w, ph: spWordPh(lex, w) }));
 }
-/* Mô hình → log xác suất [F × 40] (39 âm + khoảng trống), nhiệt độ 2 cho điểm mượt hơn */
-async function spLogp(a) {
+/* Mô hình → log xác suất [F × 40] (39 âm + khoảng trống), nhiệt độ 2 cho điểm mượt hơn; frames.t = thời điểm (giây) của từng khung */
+async function spLogp(a, onProg) {
   await spLoad("ph");
-  const T = SP.T, win = 16000 * 20, frames = [];
-  for (let o = 0; o < a.length; o += win) {
+  const T = SP.T, win = 16000 * 20, frames = [], times = [], nWin = Math.ceil(a.length / win);
+  for (let o = 0, wi = 0; o < a.length; o += win, wi++) {
+    onProg?.(wi, nWin);
     const seg = a.subarray(o, Math.min(a.length, o + win)); if (seg.length < 1600) break;
     let m = 0; for (const v of seg) m += v; m /= seg.length; let sd = 0; for (const v of seg) sd += (v - m) ** 2; sd = Math.sqrt(sd / seg.length) + 1e-7;
     const x = new Float32Array(seg.length); for (let i = 0; i < seg.length; i++) x[i] = (seg[i] - m) / sd;
     const { logits } = await SP.ph({ input_values: new T.Tensor("float32", x, [1, x.length]) });
-    const [, F, V] = logits.dims, d = logits.data;
+    const [, F, V] = logits.dims, d = logits.data, step = seg.length / 16000 / F;
     for (let f = 0; f < F; f++) {
       const row = new Float32Array(NC); let mx = -Infinity; for (let v = 0; v < V; v++) mx = Math.max(mx, d[f * V + v] / 2);
       let z = 0; const e = new Float64Array(V); for (let v = 0; v < V; v++) { e[v] = Math.exp(d[f * V + v] / 2 - mx); z += e[v]; }
       let bl = 0; for (let v = 0; v < V; v++) { if (v < NPH) row[v] = Math.log(e[v] / z + 1e-10); else bl += e[v] / z; }
-      row[NPH] = Math.log(bl + 1e-10); frames.push(row);
+      row[NPH] = Math.log(bl + 1e-10); frames.push(row); times.push(o / 16000 + f * step);
     }
   }
+  onProg?.(nWin, nWin); frames.t = times; frames.step = times.length > 1 ? (times[times.length - 1] - times[0]) / (times.length - 1) : 0.02;
   return frames;
 }
-/* Căn chỉnh CTC cưỡng bức: mỗi âm mong đợi → dãy khung */
+/* Căn chỉnh CTC cưỡng bức: mỗi âm mong đợi → dãy khung. Con trỏ lùi gói 2 bit/ô để căn được cả bài nghe dài vài phút */
 function spAlign(L, seq) {
   const F = L.length, S = [NPH]; for (const p of seq) S.push(p, NPH);
   const n = S.length, NEG = -1e30; if (!F || F < seq.length) return seq.map(() => []);
-  let D = new Float64Array(n).fill(NEG); const B = Array.from({ length: F }, () => new Int8Array(n));
+  const W = (n + 3) >> 2, B = new Uint8Array(F * W);
+  let D = new Float64Array(n).fill(NEG), N = new Float64Array(n);
   D[0] = L[0][S[0]]; if (n > 1) D[1] = L[0][S[1]];
+  const skip = new Uint8Array(n); for (let s = 2; s < n; s++) skip[s] = S[s] !== NPH && S[s] !== S[s - 2] ? 1 : 0;
   for (let t = 1; t < F; t++) {
-    const N = new Float64Array(n).fill(NEG), row = L[t];
+    const row = L[t], base = t * W;
     for (let s = 0; s < n; s++) {
       let best = D[s], k = 0;
       if (s >= 1 && D[s - 1] > best) { best = D[s - 1]; k = 1; }
-      if (s >= 2 && S[s] !== NPH && S[s] !== S[s - 2] && D[s - 2] > best) { best = D[s - 2]; k = 2; }
-      N[s] = best + row[S[s]]; B[t][s] = k;
+      if (skip[s] && D[s - 2] > best) { best = D[s - 2]; k = 2; }
+      N[s] = best + row[S[s]]; if (k) B[base + (s >> 2)] |= k << ((s & 3) << 1);
     }
-    D = N;
+    const tmp = D; D = N; N = tmp;
   }
   let s = n > 1 && D[n - 2] > D[n - 1] ? n - 2 : n - 1; const segs = seq.map(() => []);
-  for (let t = F - 1; t >= 0; t--) { if (s % 2 === 1) segs[(s - 1) / 2].unshift(t); s -= B[t][s]; }
+  for (let t = F - 1; t >= 0; t--) { if (s % 2 === 1) segs[(s - 1) / 2].unshift(t); s -= (B[t * W + (s >> 2)] >> ((s & 3) << 1)) & 3; }
   return segs;
 }
 const PH_FUNC = new Set("a an the and but or of to for from at in on as is are was were be been am do does did have has had can could will would shall should must that than them their there you your he she we they his her our it its this some by with".split(" "));
@@ -11825,8 +11901,29 @@ function phAlts(word, p, j, n) {
 }
 const phScore = g => Math.max(0, Math.min(100, Math.round((g + 4) / 3.7 * 100)));
 /* Chấm: exp = [{w, ph}] → mỗi từ có điểm, mỗi âm có điểm và "nghe giống" */
+/* Biến âm khi nói liền (người bản xứ vẫn chấp nhận): did you → /dɪdʒuː/, last night mất /t/, water → /wɑːdər/ (giọng Mỹ), bỏ /h/ trong him, her… */
+const H_DROP = new Set("him her his he have has had".split(" "));
+function spCtx(exp) {
+  const ctx = exp.map(w => (w.ph || []).map(() => ({ alts: [], elide: false })));
+  const B = phBase, cons = p => p && !isVowel(p);
+  exp.forEach((w, k) => {
+    const ph = w.ph; if (!ph) return; const n = ph.length, nx = exp[k + 1]?.ph, f = nx && B(nx[0]), l = B(ph[n - 1]), c = ctx[k];
+    for (let j = 1; j < n - 1; j++) { const p = B(ph[j]); if (p === "T" && (isVowel(ph[j - 1]) || B(ph[j - 1]) === "R") && isVowel(ph[j + 1]) && /0$/.test(ph[j + 1])) c[j].alts.push("D"); if (p === "T" && B(ph[j - 1]) === "N" && isVowel(ph[j + 1]) && /0$/.test(ph[j + 1])) c[j].elide = true; }
+    if (k > 0 && H_DROP.has(spKey(w.w)) && B(ph[0]) === "HH") c[0].elide = true;
+    if (spKey(w.w) === "to" && k > 0 && exp[k - 1].ph && ["N", "T", "NG"].includes(B(exp[k - 1].ph[exp[k - 1].ph.length - 1]))) c[0].elide = true;
+    if (spKey(w.w) === "going" && spKey(exp[k + 1]?.w || "") === "to") ph.forEach((p, j) => { const b = B(p); if (b === "OW") c[j].alts.push("AH"); if (b === "IH") c[j].elide = true; if (b === "NG") c[j].alts.push("N"); });
+    if (!nx) return; const c2 = ctx[k + 1];
+    if (cons(nx[0]) && f !== "Y") { if (l === "T") c[n - 1].elide = true; if (spKey(w.w) === "of" && l === "V") c[n - 1].elide = true;
+      if ("T P K F S SH CH TH HH".split(" ").includes(f)) { const dv = { Z: "S", V: "F", D: "T" }[l]; if (dv) c[n - 1].alts.push(dv); } }
+    const mix = { "T>Y": "CH", "D>Y": "JH", "S>Y": "SH", "Z>Y": "ZH" }[l + ">" + f]; if (mix) { c[n - 1].alts.push(mix); c2[0].alts.push(mix); }
+    if ((l === "T" || l === "D") && n >= 2 && cons(ph[n - 2]) && cons(nx[0]) && f !== "Y") c[n - 1].elide = true;
+    if (cons(ph[n - 1]) && l === f) c[n - 1].elide = true;
+    if (l === "T" && n >= 2 && (isVowel(ph[n - 2]) || B(ph[n - 2]) === "R") && isVowel(nx[0])) c[n - 1].alts.push("D");
+  });
+  return ctx;
+}
 function spGOP(L, exp) {
-  const seq = [], own = [];
+  const seq = [], own = [], ctx = spCtx(exp);
   exp.forEach((w, k) => (w.ph || []).forEach((p, j) => { seq.push(A2I[phBase(p)]); own.push([k, j]); }));
   const segs = spAlign(L, seq);
   const words = exp.map(w => ({ w: w.w, ph: w.ph, ipa: w.ph ? arpaIpa(w.ph) : "", arr: w.ph ? arpaIpaArr(w.ph) : [], phones: [], score: null }));
@@ -11835,11 +11932,13 @@ function spGOP(L, exp) {
     if (fr.length) {
       let sum = 0; const acc = new Float64Array(NPH);
       for (const t of fr) { const r = L[t]; let mx = -Infinity; for (let v = 0; v < NPH; v++) mx = Math.max(mx, r[v]); let z = 0; for (let v = 0; v < NPH; v++) z += Math.exp(r[v] - mx); const nb = mx + Math.log(z); sum += r[p] - nb; for (let v = 0; v < NPH; v++) acc[v] += r[v] - nb; }
-      g = sum / fr.length; for (const q of phAlts(exp[k].w, ex, j, exp[k].ph.length)) g = Math.max(g, acc[q] / fr.length);
-      let bi = -1, bv = -Infinity; const okSet = new Set([p, ...phAlts(exp[k].w, ex, j, exp[k].ph.length)]); for (let v = 0; v < NPH; v++) if (!okSet.has(v) && acc[v] > bv) { bv = acc[v]; bi = v; }
+      const alts = [...phAlts(exp[k].w, ex, j, exp[k].ph.length), ...ctx[k][j].alts.map(x => A2I[x])];
+      g = sum / fr.length; for (const q of alts) g = Math.max(g, acc[q] / fr.length);
+      let bi = -1, bv = -Infinity; const okSet = new Set([p, ...alts]); for (let v = 0; v < NPH; v++) if (!okSet.has(v) && acc[v] > bv) { bv = acc[v]; bi = v; }
       if (bv / fr.length > g + 0.3) alt = ARPA[bi];
     }
-    words[k].phones.push({ p: ex, ipa: phIpa(ex), show: words[k].arr[j], g: +g.toFixed(2), s: phScore(g), heard: alt, miss: !fr.length || (g < -6 && !alt), last: j === exp[k].ph.length - 1 });
+    const el = ctx[k][j].elide && g < -1.2; if (el) { g = -1.2; alt = null; }
+    words[k].phones.push({ p: ex, ipa: phIpa(ex), show: words[k].arr[j], g: +g.toFixed(2), s: phScore(g), heard: alt, miss: !el && (!fr.length || (g < -6 && !alt)), last: j === exp[k].ph.length - 1, elided: el || undefined, fr: fr.length ? [fr[0], fr[fr.length - 1]] : null });
   });
   for (const w of words) if (w.phones.length) w.score = Math.round(w.phones.reduce((a, x) => a + x.s, 0) / w.phones.length);
   const sc = words.filter(w => w.score != null);
@@ -12110,6 +12209,65 @@ const PR_STAGES = [
       pairs: [],
       words: ["really", "important", "question", "answer", "interesting", "understand", "remember", "different", "together", "tomorrow"],
       sents: ["What do you usually do on weekends?", "Do you think it is really important?", "I don't remember the answer to that question."] }
+  ] }
+  ,
+  { id: "lk", name: "Nói liền như người bản xứ", sub: "Nối âm, biến âm, nuốt âm và dạng rút gọn khi nói nhanh: nói tự nhiên hơn và nghe ra lời nói nhanh", lessons: [
+    { id: "lk-vv", t: "Nguyên âm gặp nguyên âm: chèn /w/ hoặc /j/", ph: [], phr: true,
+      how: "Khi từ trước tận cùng bằng nguyên âm và từ sau bắt đầu bằng nguyên âm, người bản xứ chèn một âm lướt rất nhẹ để hai từ không đứt quãng. Sau nguyên âm môi tròn /uː/ /oʊ/ /aʊ/ thì chèn /w/: go out → go‿w‿out, do it → do‿w‿it. Sau nguyên âm môi bè /iː/ /eɪ/ /aɪ/ /ɔɪ/ thì chèn /j/: I agree → I‿y‿agree, the end → thee‿y‿end. Âm lướt không phải tự thêm vào: nó tự xuất hiện khi môi đi từ vị trí nguyên âm trước sang nguyên âm sau mà không ngắt hơi.",
+      img: "Âm lướt là cây cầu nhỏ bắc qua khe giữa hai từ: môi đang tròn thì cầu là /w/, môi đang bè thì cầu là /j/.",
+      trap: "Ngắt hẳn giữa hai từ (go. out) hoặc chặn hơi ở cổ họng, nên câu nghe giật cục như đọc từng từ.",
+      pairs: [],
+      words: ["go out", "do it", "two apples", "who is", "I agree", "the end", "say it", "my uncle", "see it", "how often"],
+      ipa: { "go out": "/ɡoʊ‿w‿aʊt/", "do it": "/duː‿w‿ɪt/", "two apples": "/tuː‿w‿æpəlz/", "who is": "/huː‿w‿ɪz/", "I agree": "/aɪ‿j‿əˈɡriː/", "the end": "/ðiː‿j‿end/", "say it": "/seɪ‿j‿ɪt/", "my uncle": "/maɪ‿j‿ʌŋkəl/", "see it": "/siː‿j‿ɪt/", "how often": "/haʊ‿w‿ˈɔːfən/" },
+      sents: ["I want to go out and see it again.", "Do you know who is at the door?", "The idea is to stay inside the area."] },
+    { id: "lk-same", t: "Hai phụ âm giống nhau: đọc một lần, giữ lâu hơn", ph: [], phr: true,
+      how: "Khi âm cuối của từ trước trùng âm đầu của từ sau, chỉ đọc âm đó một lần nhưng giữ lâu hơn một chút. Với âm tắc /t/ /d/ /k/ /p/ /b/ /ɡ/: chặn hơi lâu hơn bình thường rồi mới bật một lần: black coffee → bla(k)‿coffee, bus stop → bu(s)‿stop. Với âm kéo dài được như /s/ /m/ /n/ /l/: kéo dài gấp rưỡi: some money → so‿mmoney.",
+      img: "Hai toa tàu dùng chung một khớp nối, không cần hai cái.",
+      trap: "Bật âm hai lần (black‿k‿coffee) nghe như nói lắp, hoặc nuốt mất luôn nên nghe như “blah coffee”.",
+      pairs: [],
+      words: ["black coffee", "want to", "bus stop", "big game", "good day", "some money", "this side", "next time", "Mike called", "well liked"],
+      ipa: { "black coffee": "/blæk‿ˈkɔːfi/", "want to": "/wɑːn‿tə/", "bus stop": "/bʌs‿stɑːp/", "big game": "/bɪɡ‿ɡeɪm/", "good day": "/ɡʊd‿deɪ/", "some money": "/sʌm‿ˈmʌni/", "this side": "/ðɪs‿saɪd/", "next time": "/neks‿taɪm/", "Mike called": "/maɪk‿kɔːld/", "well liked": "/wel‿laɪkt/" },
+      sents: ["I'd like a black coffee, please.", "Let's meet at the bus stop next time.", "I want to buy some milk."] },
+    { id: "lk-yod", t: "/t/ /d/ /s/ /z/ gặp you: thành /tʃ/ /dʒ/ /ʃ/ /ʒ/", ph: [], phr: true,
+      how: "Âm /j/ ở đầu you, your, year kéo thân lưỡi lên sát vòm miệng. Khi nó đứng ngay sau /t/ /d/ /s/ /z/, hai âm nhập làm một: t + j → /tʃ/ (don't you → “đôn-chu”), d + j → /dʒ/ (did you → “đi-dju”), s + j → /ʃ/ (miss you → “mi-shu”), z + j → /ʒ/ (as you → “a-zhu”). Trong giao tiếp gần như ai cũng nói vậy; trong bài nghe bạn sẽ gặp rất nhiều.",
+      img: "Hai giọt nước chạm nhau thành một giọt mới: /t/ + /j/ không còn là hai âm mà thành /tʃ/.",
+      trap: "Nghe did you thành một từ lạ “didja” rồi không hiểu; khi nói lại tách rời từng từ nên chậm và cứng.",
+      pairs: [["What did you do?", "What do you do?"], ["Would you like it?", "Do you like it?"], ["Don't you know?", "Do you know?"], ["Got you.", "Got it."]],
+      words: ["did you", "would you", "could you", "don't you", "last year", "miss you", "as you", "got you", "meet you", "bless you"],
+      ipa: { "did you": "/ˈdɪdʒu/", "would you": "/ˈwʊdʒu/", "could you": "/ˈkʊdʒu/", "don't you": "/ˈdoʊntʃu/", "last year": "/læs‿tʃɪr/", "miss you": "/ˈmɪʃu/", "as you": "/æʒu/", "got you": "/ˈɡɑːtʃu/", "meet you": "/ˈmiːtʃu/", "bless you": "/ˈbleʃu/" },
+      sents: ["Did you finish it last year?", "Would you like to meet your new teacher?", "Nice to meet you, I've missed you."] },
+    { id: "lk-elide", t: "Nuốt /t/ /d/ kẹp giữa hai phụ âm", ph: [], phr: true,
+      how: "Khi /t/ hoặc /d/ nằm ở cuối một cụm phụ âm và từ sau lại bắt đầu bằng phụ âm, người bản xứ thường không bật nó ra: next day → nex‿day, last night → las‿night, old man → ol‿man, must be → mus‿be. Lưỡi vẫn chạm vị trí /t/ /d/ nhưng không bật hơi. Trước nguyên âm thì giữ lại và nối sang: last of all → las‿tof‿all. Cuối câu thì đọc rõ.",
+      img: "/t/ /d/ như người đứng giữa hai người to con trong thang máy: bị ép, không lộ mặt, nhưng vẫn ở đó.",
+      trap: "Người Việt hay bỏ âm cuối ở mọi chỗ. Chỉ được nuốt khi /t/ /d/ kẹp giữa hai phụ âm; trước nguyên âm hoặc cuối câu phải đọc rõ (máy vẫn bắt lỗi ở những chỗ đó).",
+      pairs: [],
+      words: ["next day", "last night", "old man", "must be", "first time", "and then", "best friend", "just now", "second floor", "cold milk"],
+      ipa: { "next day": "/neks‿deɪ/", "last night": "/læs‿naɪt/", "old man": "/oʊl‿mæn/", "must be": "/mʌs‿bi/", "first time": "/fɜːrs‿taɪm/", "and then": "/ən‿ðen/", "best friend": "/bes‿frend/", "just now": "/dʒʌs‿naʊ/", "second floor": "/ˈsekən‿flɔːr/", "cold milk": "/koʊl‿mɪlk/" },
+      sents: ["I met my best friend last night.", "It must be the next bus.", "Just send the old file and then call me."] },
+    { id: "lk-flap", t: "T giọng Mỹ giữa hai nguyên âm: như /d/ nhẹ", ph: [], phr: true,
+      how: "Trong giọng Mỹ, /t/ đứng giữa hai nguyên âm (nguyên âm sau không nhấn) được đọc thành một cái chạm lưỡi rất nhanh lên lợi, nghe giống /d/ nhẹ: water → “wa-đơ”, better → “be-đơ”, city → “xi-đi”. Qua ranh giới từ cũng vậy: get it → “ge-đit”, a lot of → “ơ lo-đơ”. Giọng Anh giữ /t/ rõ. Máy chấm chấp nhận cả hai cách.",
+      img: "Lưỡi như cái dùi gõ nhẹ một cái lên lợi rồi đi luôn, không dừng lại để bật hơi.",
+      trap: "Nghe “wa-đơ” không nhận ra water; hoặc đọc “uô-tơ” cứng và tách như tiếng Việt.",
+      pairs: [],
+      words: ["water", "better", "city", "pretty", "matter", "later", "get it", "what about", "a lot of", "put it on"],
+      ipa: { water: "/ˈwɑːɾər/", better: "/ˈbeɾər/", city: "/ˈsɪɾi/", pretty: "/ˈprɪɾi/", matter: "/ˈmæɾər/", later: "/ˈleɪɾər/", "get it": "/ɡeɾ‿ɪt/", "what about": "/wʌɾ‿əˈbaʊt/", "a lot of": "/ə‿lɑːɾ‿əv/", "put it on": "/pʊɾ‿ɪɾ‿ɑːn/" },
+      sents: ["Put it on the table, it doesn't matter.", "A lot of people get better with time.", "It's pretty hot in the city later today."] },
+    { id: "lk-reduce", t: "Nói nhanh: gonna, wanna, gotta, kinda, lemme", ph: [], phr: true,
+      how: "Khi nói nhanh, vài cụm rất hay dùng bị rút gọn hẳn: going to → gonna /ˈɡʌnə/, want to → wanna /ˈwɑːnə/, got to → gotta /ˈɡɑːɾə/, kind of → kinda, let me → lemme, don't know → dunno, have to → hafta. Bài nghe IELTS dùng dạng rút gọn này, nhưng khi viết đáp án và khi làm Writing luôn viết dạng đầy đủ. Khi nói Speaking dùng được ở mức vừa phải. Bài luyện dưới đây viết dạng đầy đủ; bạn nói đầy đủ hay rút gọn đều được chấm đúng.",
+      img: "Như nhắn tin “ko” thay cho “không”: ai cũng hiểu, nhưng không viết vào bài luận.",
+      trap: "Nghe gonna rồi điền “gone a” vào bài nghe; hoặc viết wanna vào bài Writing.",
+      pairs: [["We're going to win.", "We were going to win."], ["Let me see.", "Let's see."], ["I don't know.", "I do know."]],
+      words: ["going to", "want to", "got to", "kind of", "let me", "don't know", "have to", "out of", "lot of", "a cup of tea"],
+      ipa: { "going to": "/ˈɡʌnə/", "want to": "/ˈwɑːnə/", "got to": "/ˈɡɑːɾə/", "kind of": "/ˈkaɪndə/", "let me": "/ˈlemi/", "don't know": "/dəˈnoʊ/", "have to": "/ˈhæftə/", "out of": "/ˈaʊɾə/", "lot of": "/ˈlɑːɾə/", "a cup of tea": "/ə ˈkʌpə ˈtiː/" },
+      sents: ["I'm going to call you later.", "Let me know what you want to do.", "I don't know, it's kind of hard to say."] },
+    { id: "lk-contract", t: "Dạng rút gọn: I'll, we'd, they've và can / can't", ph: [], phr: true,
+      how: "will, would, had, have, is, are thường chỉ còn một âm dính vào từ trước: I'll /aɪl/, we'd /wiːd/, they've /ðeɪv/, she's /ʃiːz/. Âm nhỏ này đổi cả thì của câu, nên trong bài nghe phải bắt được nó. Riêng can và can't: can thường đọc yếu /kən/ và động từ phía sau được nhấn; can't đọc mạnh /kænt/ (giọng Anh /kɑːnt/), chính nó được nhấn, còn /t/ cuối nhiều khi không bật.",
+      img: "can là cái bóng mờ đứng trước động từ; can't là tấm biển cấm dựng đứng, ai cũng nhìn thấy.",
+      trap: "Chờ nghe âm /t/ để phân biệt can và can't nên hay nghe nhầm; hãy nghe trọng âm: từ được nhấn mạnh là can't.",
+      pairs: [["I can go.", "I can't go."], ["We'll stay here.", "We stay here."], ["They've finished.", "They finished."], ["He'd like it.", "He likes it."], ["She's left.", "She left."]],
+      words: ["I'll", "we'd", "they've", "she's", "it'll", "you're", "I can", "I can't", "he'd", "there's"],
+      ipa: { "I'll": "/aɪl/", "we'd": "/wiːd/", "they've": "/ðeɪv/", "she's": "/ʃiːz/", "it'll": "/ˈɪɾəl/", "you're": "/jʊr/", "I can": "/aɪ kən/", "I can't": "/aɪ ˈkænt/", "he'd": "/hiːd/", "there's": "/ðerz/" },
+      sents: ["I can swim, but I can't dive.", "We'd better go, they've already left.", "I'll call you when she's ready."] }
   ] }
 ];
 const PR_LESSONS = PR_STAGES.flatMap(s => s.lessons.map(l => ({ ...l, stage: s.id })));
@@ -12405,7 +12563,8 @@ function prCheckDone(l) {
   if (quizOk && w.avg != null && w.avg >= PR_PASS.word && s.avg != null && s.avg >= PR_PASS.sent) { st.done = today(); award("speaking", 40); addAct("speaking", 10); toast("Hoàn thành bài! Bài tiếp theo đã mở khóa."); }
   saveProfile();
 }
-const prUnlocked = l => { const i = PR_LESSONS.findIndex(x => x.id === l.id); return i === 0 || prDone(PR_LESSONS[i - 1]) || prDone(l); };
+/* Chặng "Nói liền" là nhánh riêng: mở ngay bài đầu, không cần xong các chặng trước (hữu ích cho cả Listening) */
+const prUnlocked = l => { const i = PR_LESSONS.findIndex(x => x.id === l.id); return i === 0 || prDone(PR_LESSONS[i - 1]) || prDone(l) || (l.stage === "lk" && PR_LESSONS[i - 1]?.stage !== "lk"); };
 function pagePron() {
   const done = PR_LESSONS.filter(prDone).length, next = PR_LESSONS.find(l => !prDone(l));
   const weak = Object.entries(P.pron || {}).filter(([, v]) => v[0] >= 6 && v[1] / v[0] > 0.35).sort((a, b) => b[1][1] / b[1][0] - a[1][1] / a[1][0]).slice(0, 6);
@@ -12426,7 +12585,7 @@ function pagePrLesson(l) {
   if (!prUnlocked(l)) return h("div", { class: "stack", style: "gap:12px" }, h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình"), h("p", { class: "note warn" }, "Bài này chưa mở. Hoàn thành bài trước (đạt cả phần từ và phần câu) để mở khóa."));
   const st = prSt(l.id), i = PR_LESSONS.indexOf(l), nx = PR_LESSONS[i + 1];
   const W = UI.prW && UI.prW.id === l.id ? UI.prW : (UI.prW = { id: l.id, word: l.words[0], sent: 0, res: null, sres: null, q: null });
-  const ipaOf = w => { const ph = SP.lexData && spWordPh(SP.lexData, w); return ph ? "/" + arpaIpa(ph) + "/" : ""; };
+  const ipaOf = w => { if (l.ipa?.[w]) return l.ipa[w]; if (/\s/.test(w)) return SP.lexData ? "/" + w.split(/\s+/).map(x => { const ph = spWordPh(SP.lexData, x); return ph ? arpaIpa(ph) : x; }).join(" ") + "/" : ""; const ph = SP.lexData && spWordPh(SP.lexData, w); return ph ? "/" + arpaIpa(ph) + "/" : ""; };
   if (!SP.lexData) spLex().then(() => document.querySelector(".sp-lesson") && render(), () => {});
   /* 1. Hiểu */
   const s1 = h("section", { class: "card stack", style: "gap:10px" }, secH(1, "Hiểu cách phát âm"),
@@ -12437,7 +12596,7 @@ function pagePrLesson(l) {
   if (l.pairs.length) {
     const Q = W.q ||= { n: 0, ok: 0, cur: null, picked: null };
     const next = () => { const pair = l.pairs[Math.floor(Math.random() * l.pairs.length)]; Q.cur = { pair, w: pair[Math.random() < 0.5 ? 0 : 1] }; Q.picked = null; render(); setTimeout(() => spSay(Q.cur.w), 60); };
-    const body = !Q.cur ? h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: next }, Q.n ? "Làm lại" : "Bắt đầu nghe"), h("span", { class: "small muted" }, `Máy đọc một từ, bạn chọn từ nghe được. Đúng ${PR_PASS.quiz}/8 là đạt.`))
+    const body = !Q.cur ? h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: next }, Q.n ? "Làm lại" : "Bắt đầu nghe"), h("span", { class: "small muted" }, `${l.phr ? "Máy đọc một câu, bạn chọn câu nghe được" : "Máy đọc một từ, bạn chọn từ nghe được"}. Đúng ${PR_PASS.quiz}/8 là đạt.`))
       : h("div", { class: "stack", style: "gap:8px" }, h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(Q.cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, `Câu ${Math.min(8, Q.n + (Q.picked ? 0 : 1))}/8 · đúng ${Q.ok}`)),
         h("div", { class: "opts" }, Q.cur.pair.map(x => h("button", { type: "button", class: "opt" + (Q.picked ? (x === Q.cur.w ? " right" : x === Q.picked ? " wrong" : "") : ""), disabled: Q.picked || null, onclick: () => { Q.picked = x; Q.n++; if (x === Q.cur.w) Q.ok++; if (Q.n >= 8) { st.quiz = Math.max(st.quiz || 0, Q.ok); prCheckDone(l); } render(); } }, x))),
         Q.picked ? h("div", { class: "row" }, h("span", { class: "small" }, Q.picked === Q.cur.w ? "Đúng." : `Từ vừa đọc là “${Q.cur.w}”.`), Q.n < 8 ? h("button", { class: "btn btn-primary", type: "button", onclick: next }, "Câu tiếp ›") : h("button", { class: "btn", type: "button", onclick: () => { W.q = { n: 0, ok: 0, cur: null, picked: null }; render(); } }, `Xong: ${Q.ok}/8 · làm lại`)) : null);
@@ -12445,15 +12604,17 @@ function pagePrLesson(l) {
   }
   /* 3. Đọc từ */
   const wp = prWordPass(l, st), cur = W.word;
-  const judgeW = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, cur, say); const w = r.words[0]; if (!w || w.score == null) throw { vn: "Máy chưa nghe rõ từ này." };
+  const judgeW = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, cur, say);
+    if (l.phr) { if (r.score == null) throw { vn: "Máy chưa nghe rõ cụm này." }; st.w[cur] = Math.max(st.w[cur] ?? 0, r.score); pronStat(r.words); W.res = { word: cur, r, tOk: true, sc: r.score, phrase: true }; award("speaking", 2); prCheckDone(l); render(); return; }
+    const w = r.words[0]; if (!w || w.score == null) throw { vn: "Máy chưa nghe rõ từ này." };
     const tgt = w.phones.filter(x => l.ph.includes(phBase(x.p))), tOk = tgt.every(x => x.s >= PR_PASS.target), sc = tOk ? w.score : Math.min(w.score, PR_PASS.word - 1);
     st.w[cur] = Math.max(st.w[cur] ?? 0, sc); pronStat([w]); W.res = { word: cur, r, tOk, sc }; award("speaking", 2); prCheckDone(l); render(); };
-  const s3 = h("section", { class: "card stack", style: "gap:10px" }, secH(l.pairs.length ? 3 : 2, "Đọc từng từ", wp.avg != null ? `Trung bình ${wp.avg}/100 · cần ${PR_PASS.word}` : `Đã đọc ${wp.n}/${l.words.length} từ · cần trung bình ${PR_PASS.word}`),
+  const s3 = h("section", { class: "card stack", style: "gap:10px" }, secH(l.pairs.length ? 3 : 2, l.phr ? "Đọc từng cụm" : "Đọc từng từ", wp.avg != null ? `Trung bình ${wp.avg}/100 · cần ${PR_PASS.word}` : `Đã đọc ${wp.n}/${l.words.length} ${l.phr ? "cụm" : "từ"} · cần trung bình ${PR_PASS.word}`),
     h("div", { class: "sp-wgrid" }, l.words.map(w => { const b = st.w[w]; return h("button", { type: "button", class: "sp-wbtn" + (w === cur ? " on" : ""), onclick: () => { W.word = w; W.res = null; render(); } }, h("b", null, w), h("span", { class: "small muted" }, ipaOf(w)), b != null ? scoreChip(b) : h("span", { class: "chip" }, "chưa đọc")); })),
     h("div", { class: "task-box stack", style: "gap:8px" },
       h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "sp-big" }, cur), h("span", { class: "sp-ipa-big" }, ipaOf(cur)), sayBtn(cur, "🔊 Nghe mẫu", "btn"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => spSay(cur, 0.7) }, "🐢 Chậm")),
-      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeW, { max: 5, hint: "Đọc to, rõ một lần rồi bấm Dừng." }) : null,
-      W.res && W.res.word === cur ? h("div", { class: "stack", style: "gap:6px" }, wordDetail(W.res.r.words[0]), !W.res.tOk && l.ph.length ? h("p", { class: "note warn small", style: "margin:0" }, `Âm trọng tâm của bài chưa đạt (dưới ${PR_PASS.target}), nên lần này tính tối đa ${PR_PASS.word - 1} điểm.`) : null,
+      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeW, { max: l.phr ? 8 : 5, hint: l.phr ? "Đọc cả cụm liền một hơi rồi bấm Dừng." : "Đọc to, rõ một lần rồi bấm Dừng." }) : null,
+      W.res && W.res.word === cur ? h("div", { class: "stack", style: "gap:6px" }, W.res.phrase ? resultView(W.res.r, { label: "Cả cụm" }) : wordDetail(W.res.r.words[0]), !W.res.tOk && l.ph.length ? h("p", { class: "note warn small", style: "margin:0" }, `Âm trọng tâm của bài chưa đạt (dưới ${PR_PASS.target}), nên lần này tính tối đa ${PR_PASS.word - 1} điểm.`) : null,
         h("div", { class: "row" }, (() => { const k = l.words.indexOf(cur), n = l.words.find((w, j) => j > k && st.w[w] == null) || l.words[(k + 1) % l.words.length]; return h("button", { class: "btn", type: "button", onclick: () => { W.word = n; W.res = null; render(); } }, "Từ tiếp ›"); })())) : null));
   /* 4. Đọc câu */
   const sp2 = prSentPass(l, st), si = W.sent, sent = l.sents[si];
@@ -12516,11 +12677,11 @@ const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
   const tab = UI.spTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["path", "Lộ trình"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
+  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["path", "Lộ trình"], ["shadow", "Shadowing"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
   return h("div", { class: "stack", style: "gap:18px" },
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Speaking"), h("h1", null, "Nói, ghi âm và được chấm"),
-      h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
-    tab === "path" ? spPathTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
+      h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
+    tab === "path" ? spPathTab() : tab === "shadow" ? spShadowTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
 }
 function spPathTab() {
   const dn = SP_PATH.filter(l => splSt(l.id).done).length;
@@ -12595,10 +12756,13 @@ function spNewSession(kind) {
   UI.spSess = { kind, items, i: 0, ans: {} };
 }
 function spTestTab() {
+  if (UI.room) return roomView();
   const S = UI.spSess;
   if (!S) return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Thi thử Speaking"),
     h("p", { class: "small muted", style: "margin:0" }, "Trả lời từng câu bằng giọng nói. Máy chép lời, đo độ trôi chảy và chấm phát âm ngay trên máy. Khi xong, AI đọc bản chép lời và các số đo để chấm band theo 4 tiêu chí: cả bài chỉ tốn 1 lượt AI. Âm thanh không gửi đi đâu."),
-    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { spNewSession("full"); render(); } }, "Đề đầy đủ (Part 1 → 3, khoảng 12 phút)"), ...["p1", "p2", "p3"].map(k => h("button", { class: "btn", type: "button", onclick: () => { spNewSession(k); render(); } }, "Part " + k[1]))),
+    h("div", { class: "note stack", style: "gap:6px" }, h("b", null, "Phòng thi giống thật"), h("span", { class: "small" }, "Giám khảo đọc câu hỏi, chữ được ẩn, tự ghi âm khi tới lượt, Part 2 có 1 phút chuẩn bị và tự dừng ở 2 phút."), h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { roomNew(); render(); } }, "Vào phòng thi (khoảng 13 phút)"))),
+    h("span", { class: "small muted" }, "Hoặc tự luyện từng câu (thấy chữ câu hỏi, tự bấm ghi âm):"),
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { spNewSession("full"); render(); } }, "Đề đầy đủ (Part 1 → 3)"), ...["p1", "p2", "p3"].map(k => h("button", { class: "btn", type: "button", onclick: () => { spNewSession(k); render(); } }, "Part " + k[1]))),
     spModelCard(["asr", "ph"]));
   const it = S.items[S.i], an = S.ans[S.i];
   const prep = it.prep ? (() => { const t = h("span", { class: "timer" }, "1:00"); let iv = null; return h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { if (iv) return; let left = it.prep; iv = setInterval(() => { if (!document.body.contains(t)) return clearInterval(iv); left--; t.textContent = mmss(Math.max(0, left)); if (left <= 0) { clearInterval(iv); toast("Hết 1 phút chuẩn bị. Bắt đầu nói!"); } }, 1000); } }, "Bắt đầu 1 phút chuẩn bị"), t); })() : null;
@@ -12652,7 +12816,7 @@ Chỉ trả lời JSON: {"criteria":[{"name":"Fluency and Coherence","band":5,"c
       const doc = { kind: S.kind, created: Date.now(), items: idx.map(k => ({ part: S.items[k].part, q: S.items[k].q, text: S.ans[k].text, fl: { ...S.ans[k].fl, gaps: null }, pron: { score: S.ans[k].pron.score, bad: S.ans[k].pron.bad, top: S.ans[k].pron.top } })), result: res };
       const id = newId(); await putDoc("speaks", id, JSON.parse(JSON.stringify(doc))).catch(() => {}); SPEAKS.unshift({ ...doc, id });
       award("speaking", 60, "speak"); addAct("speaking", Math.max(5, Math.round(idx.length * 1.5)));
-      UI.spSess = null; UI.spTab = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
+      UI.spSess = null; UI.room = null; UI.spTab = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); btn.disabled = false; }
     finally { delete UI.busy.spg; }
   } }, allDone ? "Nhờ AI chấm cả bài (1 lượt)" : "Chấm các câu đã trả lời (1 lượt)");
@@ -12671,7 +12835,7 @@ function spHistTab() {
         h("p", { class: "small", style: "margin:0" }, h("b", null, "Bạn nói: "), it.text), h("p", { class: "small muted", style: "margin:0" }, `${it.fl.wpm} từ/phút · ${it.fl.long} lần ngừng ≥1 giây · phát âm ${it.pron.score ?? "—"}/100`),
         r.better[k] ? h("details", null, h("summary", null, "Câu trả lời mẫu band 7"), h("p", { class: "model-text", style: "margin-top:8px;white-space:pre-wrap" }, r.better[k])) : null))); }
   return h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Các lần thi Speaking"),
-    SPEAKS.length ? h("div", { class: "stack", style: "gap:6px" }, SPEAKS.map(s => h("button", { type: "button", class: "sp-hrow", onclick: () => { UI.spView = s.id; render(); window.scrollTo(0, 0); } }, h("b", { class: "sp-hb" }, s.result.overall.toFixed(1)), h("span", null, { full: "Đề đầy đủ", p1: "Part 1", p2: "Part 2", p3: "Part 3" }[s.kind] || "Speaking"), h("span", { class: "small muted" }, fmtDate(s.created)))))
+    SPEAKS.length ? h("div", { class: "stack", style: "gap:6px" }, SPEAKS.map(s => h("button", { type: "button", class: "sp-hrow", onclick: () => { UI.spView = s.id; render(); window.scrollTo(0, 0); } }, h("b", { class: "sp-hb" }, s.result.overall.toFixed(1)), h("span", null, { full: "Đề đầy đủ", room: "Phòng thi", p1: "Part 1", p2: "Part 2", p3: "Part 3" }[s.kind] || "Speaking"), h("span", { class: "small muted" }, fmtDate(s.created)))))
       : h("p", { class: "empty" }, "Chưa có lần thi nào. Vào Thi thử để làm bài đầu tiên."));
 }
 
@@ -13638,6 +13802,8 @@ const LS_META = { p: null }; function lsMeta() { return LS_META.p ||= fetch("voi
 const lsNorm = s => String(s || "").toLowerCase().replace(/[’']/g, "'").replace(/[£$€,]/g, "").replace(/\s+/g, " ").replace(/^(the|a|an) /, "").replace(/[.!?;]+$/, "").trim();
 function lsCheck(g, it, v) { if (g.type === "gap") { const x = lsNorm(v); return !!x && it.a.some(a => lsNorm(a) === x); } return String(v || "").toUpperCase() === it.a; }
 const lsQs = s => s.qs.flatMap(g => g.items.map(it => ({ g, it })));
+/* Thống kê đúng/sai theo dạng câu (điền từ, trắc nghiệm, nối) cho phần phân tích cá nhân */
+function lsQtStat(qs, ans) { P.lsQt ||= {}; for (const { g, it } of qs) { const s = P.lsQt[g.type] ||= [0, 0]; s[0]++; if (lsCheck(g, it, ans[it.n])) s[1]++; } }
 function lsBand(raw) { const t = [[39, 9], [37, 8.5], [35, 8], [32, 7.5], [30, 7], [26, 6.5], [23, 6], [18, 5.5], [16, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5]]; for (const [n, b] of t) if (raw >= n) return b; return raw > 0 ? 2 : 0; }
 
 /* ----- Giọng Gemini cho từng người nói ----- */
@@ -13725,22 +13891,23 @@ function lsQuestions(s, st, done) {
   }));
 }
 function lsTranscript(s) {
-  const A = UI.lsA || {}, segs = A.src !== "gem" ? A.segs : null, answers = lsQs(s).filter(x => x.g.type === "gap").flatMap(x => x.it.a).filter(a => a.length > 1);
+  const A = UI.lsA || {}, src = A.id === s.id ? lsSrcInfo(s) : null, st = src ? lsSegs(s, src) : {}, answers = lsQs(s).filter(x => x.g.type === "gap").flatMap(x => x.it.a).filter(a => a.length > 1);
   const mark = t => { let html = esc(t); for (const a of answers) html = html.replace(new RegExp("\\b(" + a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")\\b", "i"), "<mark>$1</mark>"); return html; };
-  return h("div", { class: "stack ls-tr", style: "gap:6px" }, s.turns.map(([sp, t], ti) => h("p", { style: "margin:0" }, Object.keys(s.sp).length > 1 ? h("b", null, s.sp[sp].name + ": ") : null,
-    ...LS_SENT(t).map((x, k) => { const seg = segs?.filter(z => z[0] === ti)[k]; return h("span", { class: "ls-sent" + (seg ? " click" : ""), title: seg ? "Bấm để nghe câu này" : null, html: mark(x) + " ", onclick: seg ? () => { if (LSA.el) { LSA.el.currentTime = seg[1]; LSA.el.play(); } } : null }); }))));
+  let gi = 0;
+  return h("div", { class: "stack ls-tr", style: "gap:6px", "data-lsseg": "1" }, s.turns.map(([sp, t]) => h("p", { style: "margin:0" }, Object.keys(s.sp).length > 1 ? h("b", null, s.sp[sp].name + ": ") : null,
+    ...LS_SENT(t).map(x => { const seg = st.segs?.[gi++]; return h("span", { class: "ls-sent" + (seg ? " click" : ""), title: seg ? "Bấm để nghe câu này" : null, html: mark(x) + " ", onclick: seg ? () => { try { LSA.el?.pause(); } catch {} lsPlaySent(src, seg, 1); } : null }); }))));
 }
 /* ----- Trang ----- */
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
   const tab = UI.lsTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", style: "gap:6px" }, [["path", "Lộ trình"], ["sec", "Luyện theo phần"], ["test", "Đề đầy đủ"], ["dict", "Nghe chép"], ["ai", "Bài mới (AI)"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.lsTab = k; render(); } }, t)));
+  const tabs = h("div", { class: "row", role: "group", style: "gap:6px" }, [["path", "Lộ trình"], ["sec", "Luyện theo phần"], ["test", "Đề đầy đủ"], ["nd", "Số & đánh vần"], ["dict", "Nghe chép"], ["ai", "Bài mới (AI)"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.lsTab = k; render(); } }, t)));
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
   return h("div", { class: "stack", style: "gap:18px" },
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Listening"), h("h1", null, "Luyện nghe IELTS"),
       h("p", { class: "muted", style: "max-width:66ch" }, `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`), tabs),
-    tab === "path" ? lpTab() : tab === "sec" ? lsSecTab() : tab === "test" ? lsTestTab() : tab === "dict" ? lsDictTab() : lsAiTab());
+    tab === "path" ? lpTab() : tab === "sec" ? lsSecTab() : tab === "test" ? lsTestTab() : tab === "nd" ? lsNdTab() : tab === "dict" ? lsDictTab() : lsAiTab());
 }
 function lsCard(s, href) {
   const st = (P.ls || {})[s.id] || {};
@@ -13756,7 +13923,7 @@ function pageLsSection(s) {
   lsPrepare(s);
   const st = lsSt(s.id), W = UI.lsW && UI.lsW.id === s.id ? UI.lsW : (UI.lsW = { id: s.id, exam: false, done: false, ans: {} });
   const qs = lsQs(s), score = W.done ? qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length : null;
-  const submit = () => { W.done = true; const sc = qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length; st.score = Math.max(st.score ?? 0, sc); st.last = sc; st.n = (st.n || 0) + 1; award("listening", 15); addAct("listening", 8); saveProfile(); render(); window.scrollTo(0, 0); };
+  const submit = () => { W.done = true; const sc = qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length; st.score = Math.max(st.score ?? 0, sc); st.last = sc; st.n = (st.n || 0) + 1; st.date = today(); lsQtStat(qs, W.ans); award("listening", 15); addAct("listening", 8); saveProfile(); render(); window.scrollTo(0, 0); };
   return h("div", { class: "stack", style: "gap:16px" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#listen" }, "‹ Listening"), h("span", { class: "small muted" }, s.shared ? "Kho chung" : s.mine ? "Bài AI soạn" : `Đề ${s.test} · Section ${s.sec}`)),
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Section " + s.sec), h("h1", null, s.title), h("p", { class: "muted", style: "margin:0" }, s.ctx)),
@@ -13765,7 +13932,7 @@ function pageLsSection(s) {
       lsVoicePick(s), lsPlayer(s, W.exam && !W.done),
       W.done ? h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "band-big" }, `${score}/10`), h("span", { class: "muted" }, score >= 9 ? "Xuất sắc!" : score >= 7 ? "Tốt, xem lại các câu sai bên dưới." : "Mở lời thoại để tìm chỗ chứa đáp án."), h("button", { class: "btn", type: "button", onclick: () => { UI.lsW = null; if (UI.lsA) UI.lsA.played = false; render(); } }, "Làm lại")) : null),
     h("section", { class: "card stack", style: "gap:12px" }, h("h2", null, "Câu hỏi"), lsQuestions(s, W, W.done), W.done ? null : h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: submit }, "Nộp bài và chấm"))),
-    W.done ? h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Lời thoại"), h("p", { class: "small muted", style: "margin:0" }, "Chữ được tô là đáp án. " + ((UI.lsA || {}).src !== "gem" ? "Bấm vào một câu để nghe lại đúng câu đó." : "")), lsTranscript(s)) : null);
+    W.done ? h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Lời thoại"), h("p", { class: "small muted", style: "margin:0" }, "Chữ được tô là đáp án. Bấm vào một câu để nghe lại đúng câu đó."), lsTranscript(s)) : null);
 }
 /* ----- Lộ trình kỹ năng ----- */
 const lpDone = l => !!(P.lp || {})[l.id]?.done;
@@ -13785,7 +13952,7 @@ function pageLp(l) {
   const s = { ...l.pr, title: l.t, sec: 0 }; lsPrepare(s);
   const st = (P.lp ||= {})[l.id] ||= {}, W = UI.lpW && UI.lpW.id === l.id ? UI.lpW : (UI.lpW = { id: l.id, done: false, ans: {} });
   const qs = lsQs(s), total = qs.length, score = W.done ? qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length : null;
-  const submit = () => { W.done = true; const sc = qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length; st.best = Math.max(st.best ?? 0, sc); if (sc / total >= LP_PASS && !st.done) { st.done = today(); award("listening", 25); toast("Đạt bài! Bài tiếp theo đã mở."); } addAct("listening", 5); saveProfile(); render(); };
+  const submit = () => { W.done = true; const sc = qs.filter(({ g, it }) => lsCheck(g, it, W.ans[it.n])).length; st.best = Math.max(st.best ?? 0, sc); lsQtStat(qs, W.ans); if (sc / total >= LP_PASS && !st.done) { st.done = today(); award("listening", 25); toast("Đạt bài! Bài tiếp theo đã mở."); } addAct("listening", 5); saveProfile(); render(); };
   return h("div", { class: "stack", style: "gap:16px" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#listen" }, "‹ Listening"), h("span", { class: "small muted" }, `Bài ${i + 1}/${LP_PATH.length}`)),
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Lộ trình Listening"), h("h1", null, l.t), st.done ? h("p", { class: "note", style: "margin:0" }, "Đã đạt bài này. ", nx ? h("a", { href: "#lp-" + nx.id }, "Bài tiếp: " + nx.t + " ›") : "Bạn đã xong lộ trình, sang Đề đầy đủ để thi thử nhé!") : null),
@@ -13813,7 +13980,7 @@ function pageLsTest(t) {
   const raw = T.done ? secs.reduce((a, x) => a + lsQs(x).filter(({ g, it }) => lsCheck(g, it, T.ans[it.n])).length, 0) : null;
   const W = { ans: T.ans };
   const finish = () => { if (!confirm("Nộp cả đề để chấm?")) return; T.done = true; const r = secs.reduce((a, x) => a + lsQs(x).filter(({ g, it }) => lsCheck(g, it, T.ans[it.n])).length, 0); (P.lsTests ||= {})[t] = { raw: r, band: lsBand(r), date: today() };
-    for (const x of secs) { const sc = lsQs(x).filter(({ g, it }) => lsCheck(g, it, T.ans[it.n])).length; const st = lsSt(x.id); st.score = Math.max(st.score ?? 0, sc); } award("listening", 60); addAct("listening", 30); saveProfile(); render(); window.scrollTo(0, 0); };
+    for (const x of secs) { const sc = lsQs(x).filter(({ g, it }) => lsCheck(g, it, T.ans[it.n])).length; const st = lsSt(x.id); st.score = Math.max(st.score ?? 0, sc); st.date = today(); lsQtStat(lsQs(x), T.ans); } award("listening", 60); addAct("listening", 30); saveProfile(); render(); window.scrollTo(0, 0); };
   return h("div", { class: "stack", style: "gap:16px" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#listen" }, "‹ Listening"), h("span", { class: "small muted" }, `Đề ${t} · Section ${s.sec}/4`)),
     T.done ? h("section", { class: "card stack", style: "gap:8px" }, h("span", { class: "eyebrow" }, "Kết quả"), h("div", { class: "row", style: "gap:18px;align-items:flex-end" }, h("span", { class: "band-big" }, lsBand(raw).toFixed(1)), h("span", { class: "muted" }, `${raw}/40 câu đúng`)), h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { UI.lsT = null; render(); } }, "Làm lại đề này"))) : null,
@@ -13823,27 +13990,35 @@ function pageLsTest(t) {
       h("div", { class: "row" }, T.i < secs.length - 1 ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { T.i++; render(); window.scrollTo(0, 0); } }, "Sang Section " + secs[T.i + 1].sec + " ›") : null, !T.done && T.i === secs.length - 1 ? h("button", { class: "btn btn-primary", type: "button", onclick: finish }, "Nộp cả đề") : null)),
     T.done ? h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Lời thoại"), lsTranscript(s)) : null);
 }
-/* ----- Nghe chép từng câu ----- */
+/* ----- Nghe chép từng câu: phát đúng đoạn của câu (cắt mẫu âm thanh, không tua), ưu tiên giọng Gemini ----- */
 function lsDictTab() {
-  const D = UI.lsD ||= { id: LS_BANK[0].id, i: 0, typed: "", res: null };
+  const D = UI.lsD ||= { id: LS_BANK[0].id, i: 0, typed: "", res: null, voice: "gem" };
   const s = lsById(D.id) || LS_BANK[0]; lsPrepare(s);
-  const sents = s.turns.flatMap(([, t], ti) => LS_SENT(t).map((x, k) => ({ ti, k, x }))), cur = sents[D.i % sents.length];
-  const segs = (UI.lsA || {}).id === s.id ? (UI.lsA.segs || []) : [], seg = segs.filter(z => z[0] === cur.ti)[cur.k];
-  const playSeg = rate => { if (!seg) return spSay(cur.x, rate); const a = LSA.el && LSA.el.dataset.src === "voice/ls/" + s.id + ".mp3" ? LSA.el : (LSA.el = Object.assign(new Audio("voice/ls/" + s.id + ".mp3"), { })); a.dataset.src = "voice/ls/" + s.id + ".mp3"; a.playbackRate = rate || 1; a.currentTime = seg[1]; a.play(); const stop = () => { if (a.currentTime >= seg[2]) { a.pause(); a.removeEventListener("timeupdate", stop); } }; a.addEventListener("timeupdate", stop); };
-  const words = t => t.toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
-  const check = () => { const want = words(cur.x), got = words(D.typed); const n = want.length, m = got.length, dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
-    for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = want[i] === got[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
-    const hit = new Set(); let i = 0, j = 0; while (i < n && j < m) { if (want[i] === got[j]) { hit.add(i); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
-    D.res = { want: cur.x.split(/\s+/), hitIdx: hit, pct: Math.round(hit.size / Math.max(1, n) * 100) }; const st = lsSt("dict"); st.n = (st.n || 0) + 1; award("listening", 2); saveProfile(); render(); };
+  const sents = alSents(s), n = sents.length, cur = sents[D.i % n], A = UI.lsA || {};
+  const src = A.id === s.id ? lsSrcInfo(s, D.voice) : null, st = src ? lsSegs(s, src) : { state: "loading" }, seg = lsSegAt(s, src, st, D.i % n);
+  const msg = h("span", { class: "small muted" });
+  const playSeg = async rate => { if (!seg) return; try { await lsPlaySent(src, seg, rate); } catch (e) { msg.textContent = "Chưa phát được: " + (e?.message || e); } };
+  const words = t => t.toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  const check = () => { const want = words(spSpellKeep(cur.x)), got = words(spSpellKeep(D.typed)); if (!got.length) return; const N = want.length, m = got.length, dp = Array.from({ length: N + 1 }, () => new Array(m + 1).fill(0));
+    for (let i = N - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = want[i] === got[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    const hit = new Set(); let i = 0, j = 0; while (i < N && j < m) { if (want[i] === got[j]) { hit.add(i); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
+    const disp = cur.x.split(/\s+/), map = []; let k = 0; for (const w of disp) { const c = words(spSpellKeep(w)).length; map.push([k, k + c]); k += c; }
+    D.res = { want: disp, ok: map.map(([x, y]) => y > x && [...Array(y - x).keys()].every(q => hit.has(x + q))), pct: Math.round(hit.size / Math.max(1, N, m) * 100), extra: Math.max(0, m - hit.size) };
+    const sd = lsSt("dict"); sd.n = (sd.n || 0) + 1; sd.w = (sd.w || 0) + N; sd.ok = (sd.ok || 0) + hit.size; award("listening", 2); addAct("listening", 1); saveProfile(); render(); };
   const ta = h("textarea", { rows: "2", placeholder: "Gõ lại đúng câu bạn nghe…", oninput: e => { D.typed = e.target.value; }, onkeydown: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); check(); } } }); ta.value = D.typed;
-  let wi = 0; const resView = D.res ? h("p", { class: "ls-dict-res" }, D.res.want.map(w => { const k = /[a-z0-9]/i.test(w) ? wi++ : -1; return [h("span", { class: k < 0 || D.res.hitIdx.has(k) ? "ok" : "no" }, w), " "]; })) : null;
+  const resView = D.res ? h("p", { class: "ls-dict-res" }, D.res.want.map((w, k) => [h("span", { class: D.res.ok[k] || !/[a-z0-9]/i.test(w) ? "ok" : "no" }, w), " "])) : null;
+  const go = d => { D.i = (D.i + d + n) % n; D.typed = ""; D.res = null; render(); setTimeout(() => { const s2 = lsSegAt(s, src, UI.lsSeg[src?.key], D.i); if (s2) lsPlaySent(src, s2, 1).catch(() => {}); }, 30); };
+  const voiceBtns = A.id === s.id && A.gemUrl && A.kUrl ? h("div", { class: "row", style: "gap:6px" }, h("span", { class: "small muted" }, "Giọng:"), [["gem", "Gemini"], ["k", "Kokoro"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(src?.kind === k), onclick: () => { D.voice = k; alStop(); render(); } }, t))) : A.id === s.id && !A.gemUrl && A.gemState === "loading" ? h("span", { class: "small muted" }, "Đang tìm giọng Gemini…") : null;
   return h("div", { class: "stack", style: "gap:12px" },
-    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài:"), h("select", { onchange: e => { UI.lsD = { id: e.target.value, i: 0, typed: "", res: null }; render(); } }, lsAll().map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `${x.mine || x.shared ? "AI · " : "Đề " + x.test + " · "}S${x.sec} · ${x.title}`)))),
-    h("section", { class: "card stack", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, `Câu ${D.i % sents.length + 1}/${sents.length}`), h("span", { class: "small muted" }, "Enter để chấm")),
-      h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => playSeg(1) }, "▶ Nghe câu"), h("button", { class: "btn", type: "button", onclick: () => playSeg(0.75) }, "🐢 Chậm")), ta,
-      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: check }, "Chấm"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { D.i = (D.i + 1) % sents.length; D.typed = ""; D.res = null; render(); } }, "Câu tiếp ›")),
-      D.res ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "chip " + (D.res.pct >= 90 ? "good" : D.res.pct >= 60 ? "warn" : "bad") }, `Đúng ${D.res.pct}% số từ`), resView, h("span", { class: "small muted" }, "Xanh: bạn nghe đúng · Đỏ: bạn bỏ sót hoặc nghe sai.")) : null));
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài:"), h("select", { onchange: e => { alStop(); UI.lsD = { id: e.target.value, i: 0, typed: "", res: null, voice: D.voice }; render(); } }, lsAll().map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `${x.mine || x.shared ? "AI · " : "Đề " + x.test + " · "}S${x.sec} · ${x.title}`))), voiceBtns),
+    h("section", { class: "card stack", style: "gap:10px", "data-lsseg": "1" }, h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, `Câu ${D.i % n + 1}/${n}`), h("span", { class: "small muted" }, "Enter để chấm · Bấm Nghe bao nhiêu lần cũng được")),
+      h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: !seg || null, onclick: () => playSeg(1) }, "▶ Nghe câu"), h("button", { class: "btn", type: "button", disabled: !seg || null, onclick: () => playSeg(0.75) }, "🐢 Chậm 0.75×"), h("button", { class: "btn btn-quiet", type: "button", disabled: !st.segs?.[(D.i - 1 + n) % n] || null, onclick: async () => { const a = st.segs[(D.i - 1 + n) % n]; if (D.i && a && seg) lsPlaySent(src, [a[0], seg[1]], 1); } }, "↺ Nghe từ câu trước"), msg),
+      lsSegNote(s, src, st), ta,
+      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: check }, "Chấm"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => go(-1) }, "‹ Câu trước"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => go(1) }, "Câu tiếp ›")),
+      D.res ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "chip " + (D.res.pct >= 90 ? "good" : D.res.pct >= 60 ? "warn" : "bad") }, `Đúng ${D.res.pct}% số từ`), resView, h("span", { class: "small muted" }, "Xanh: bạn nghe đúng · Đỏ: bạn bỏ sót hoặc nghe sai. Số viết bằng chữ hay chữ số đều được.")) : null));
 }
+/* Số viết bằng chữ hay chữ số đều tính đúng: đổi chữ số sang chữ trước khi so */
+function spSpellKeep(t) { return spSpell(String(t)); }
 /* ----- AI soạn bài nghe mới: 1 lượt AI (soạn) + 1 lượt giọng Gemini (đọc), hết lượt giọng thì đọc bằng Kokoro trên máy ----- */
 function lsAiTab() {
   const G = UI.lsG ||= { sec: 1, topic: "", busy: false, msg: "" }, out = h("div", { class: "small muted" }, G.msg);
@@ -13901,6 +14076,853 @@ Return ONLY JSON: {"title":"...","ctx":"one Vietnamese sentence describing the s
   /* Bài AI dùng Kokoro trên máy: phát từ bộ nhớ tạm */
   const _prep = lsPrepare;
   lsPrepare = async function (s) { const Gm = UI.lsGem; if (s.mine && Gm && Gm.id === s.id) { const A = UI.lsA ||= {}; if (A.id === s.id) return; Object.assign(A, { id: s.id, gemUrl: Gm.url, kUrl: null, segs: null, src: "gem", gemState: "ok", played: false }); render(); return; } const K = UI.lsKk; if (s.mine && K && K.id === s.id) { const A = UI.lsA ||= {}; if (A.id === s.id) return; Object.assign(A, { id: s.id, kUrl: K.url, segs: K.segs, src: "k", gemUrl: null, played: false }); render(); return; } return _prep(s); };
+})();
+
+/* ===== Căn thời gian từng câu trong một bài nghe dài (cho Nghe chép, Shadowing, bấm câu để nghe lại) =====
+   1. Dò khoảng lặng: tức thì, không cần mô hình, đúng khi giữa các câu có chỗ ngừng rõ.
+   2. Căn cưỡng bức bằng mô hình âm vị (HuBERT, cùng mô hình chấm phát âm): khớp từng âm của lời thoại với âm thanh,
+      đúng tới khoảng 20–40 ms kể cả khi người đọc nói liền không ngừng. Kết quả lưu lại trên máy và chia sẻ cho cả nhóm. */
+const AL = { bufs: new Map(), mem: {} };
+const alSents = s => s.turns.flatMap(([sp, t], ti) => LS_SENT(t).map((x, k) => ({ ti, k, sp, x })));
+/* Giải mã âm thanh: giữ bản gốc để phát (đủ chất lượng) và bản 16 kHz để phân tích */
+async function alDecode(url) {
+  if (AL.bufs.has(url)) return AL.bufs.get(url);
+  const p = (async () => {
+    const ab = await (await fetch(url)).arrayBuffer(), AC = window.AudioContext || window.webkitAudioContext, ac = new AC();
+    const buf = await ac.decodeAudioData(ab); try { ac.close(); } catch {}
+    const len = Math.ceil(buf.duration * 16000), off = new OfflineAudioContext(1, Math.max(1, len), 16000);
+    const src = off.createBufferSource(); src.buffer = buf; src.connect(off.destination); src.start();
+    const a16 = (await off.startRendering()).getChannelData(0).slice();
+    return { buf, a16, dur: buf.duration };
+  })();
+  AL.bufs.set(url, p); if (AL.bufs.size > 3) AL.bufs.delete(AL.bufs.keys().next().value);
+  p.catch(() => AL.bufs.delete(url)); return p;
+}
+/* Cắt đúng đoạn [s, e] giây thành WAV riêng để phát: không lệch do tua MP3, đổi tốc độ vẫn giữ giọng */
+function alSlice(buf, s, e) {
+  const r = buf.sampleRate, a = Math.max(0, Math.floor(s * r)), b = Math.min(buf.length, Math.ceil(e * r)), n = Math.max(1, b - a), ch = buf.numberOfChannels;
+  const mono = new Float32Array(n); for (let c = 0; c < ch; c++) { const d = buf.getChannelData(c); for (let i = 0; i < n; i++) mono[i] += d[a + i] / ch; }
+  const fade = Math.min(n >> 1, Math.round(r * 0.012)); for (let i = 0; i < fade; i++) { mono[i] *= i / fade; mono[n - 1 - i] *= i / fade; }
+  return lsWav(mono, r);
+}
+const AL_PLAY = { a: null, url: null };
+function alPlay(buf, s, e, rate = 1) {
+  alStop(); const url = URL.createObjectURL(alSlice(buf, s, e)), a = new Audio(url);
+  a.playbackRate = rate; try { a.preservesPitch = true; } catch {} AL_PLAY.a = a; AL_PLAY.url = url;
+  a.onended = () => { if (AL_PLAY.a === a) { URL.revokeObjectURL(url); AL_PLAY.a = null; } };
+  return a.play().then(() => a, () => a);
+}
+function alStop() { try { AL_PLAY.a?.pause(); } catch {} if (AL_PLAY.url) URL.revokeObjectURL(AL_PLAY.url); AL_PLAY.a = null; AL_PLAY.url = null; }
+
+/* ----- 1. Dò khoảng lặng + quy hoạch động theo độ dài câu ----- */
+function alEnergy(a16) {
+  const hop = 160, fr = new Float32Array(Math.floor(a16.length / hop));
+  for (let f = 0; f < fr.length; f++) { let s = 0; for (let j = f * hop; j < f * hop + hop; j++) s += a16[j] * a16[j]; fr[f] = Math.sqrt(s / hop); }
+  return fr;
+}
+function alSilence(a16, sents) {
+  const fr = alEnergy(a16), srt = Array.from(fr).sort((x, y) => x - y), noise = srt[Math.floor(srt.length * 0.1)] || 0, peak = srt[Math.floor(srt.length * 0.95)] || 0;
+  const thr = Math.max(noise * 2.5, peak * 0.06, 0.003), sil = Array.from(fr, v => v < thr);
+  const first = sil.indexOf(false), last = sil.lastIndexOf(false); if (first < 0) return null;
+  const cand = []; let run = 0;
+  for (let i = first; i <= last + 1; i++) { if (i <= last && sil[i]) run++; else { if (run >= 8) cand.push({ c: (i - run / 2) * 0.01, len: run * 0.01 }); run = 0; } }
+  /* chỗ hai câu dính liền không có khoảng lặng: lấy thêm các điểm năng lượng thấp cục bộ (độ tin thấp) */
+  const sm = fr.map((_, i) => { let a = 0, c = 0; for (let j = Math.max(0, i - 3); j <= Math.min(fr.length - 1, i + 3); j++) { a += fr[j]; c++; } return a / c; });
+  const med = srt[Math.floor(srt.length * 0.6)] || thr;
+  for (let i = first + 20; i < last - 20; i++) if (sm[i] < med * 0.45 && sm[i] <= sm[i - 1] && sm[i] < sm[i + 1] && !cand.some(c => Math.abs(c.c - i * 0.01) < 0.15)) { let lo = i; for (let j = i - 15; j <= i + 15; j++) if (sm[j] < sm[lo]) lo = j; if (lo === i) cand.push({ c: i * 0.01, len: 0.02, weak: true }); }
+  cand.sort((a, b) => a.c - b.c);
+  const n = sents.length, S0 = first * 0.01, S1 = (last + 1) * 0.01;
+  if (n === 1) return [[Math.max(0, S0 - 0.15), Math.min(a16.length / 16000, S1 + 0.2)]];
+  const w = sents.map(x => x.x.length + 6), W = w.reduce((a, b) => a + b, 0);
+  const pts = [{ c: S0, len: 1, start: true }, ...cand, { c: S1, len: 1, end: true }], m = pts.length;
+  /* D[i][j]: chi phí tốt nhất khi ranh giới thứ i rơi vào điểm j */
+  const speech = (S1 - S0) - cand.reduce((a, x) => a + x.len, 0), rate = Math.max(1, speech) / W;
+  const E = w.map(x => x * rate), INF = 1e18;
+  let D = new Float64Array(m).fill(INF); D[0] = 0; const back = [];
+  const pre = new Float64Array(m); for (let j = 1; j < m; j++) pre[j] = pre[j - 1] + (j - 1 > 0 && j - 1 < m - 1 ? pts[j - 1].len : 0);
+  for (let i = 1; i <= n; i++) {
+    const N = new Float64Array(m).fill(INF), bk = new Int32Array(m).fill(-1);
+    for (let j = 1; j < m; j++) {
+      if (i === n && j !== m - 1) continue; if (i < n && j === m - 1) continue;
+      const bonus = j === m - 1 ? 0 : pts[j].weak ? 0.6 : -1.6 * Math.min(1, pts[j].len / 0.45);
+      for (let k = 0; k < j; k++) {
+        if (D[k] >= INF) continue;
+        const dur = (pts[j].c - pts[k].c) - (pre[j] - pre[k + 1]) - (k > 0 ? pts[k].len / 2 : 0) - (j < m - 1 ? pts[j].len / 2 : 0);
+        if (dur < E[i - 1] * 0.25 || dur > E[i - 1] * 4 + 2) continue;
+        const z = (dur - E[i - 1]) / (E[i - 1] * 0.35 + 0.25), c = D[k] + z * z + bonus;
+        if (c < N[j]) { N[j] = c; bk[j] = k; }
+      }
+    }
+    D = N; back.push(bk);
+  }
+  if (D[m - 1] >= INF) return null;
+  const cuts = [m - 1]; for (let i = n - 1; i >= 0; i--) cuts.unshift(back[i][cuts[0]]);
+  const T = a16.length / 16000;
+  return sents.map((_, i) => { const a = pts[cuts[i]], b = pts[cuts[i + 1]]; return [+(i === 0 ? Math.max(0, a.c - 0.15) : a.c).toFixed(2), +(i === n - 1 ? Math.min(T, b.c + 0.25) : b.c).toFixed(2)]; });
+}
+
+/* ----- 2. Căn cưỡng bức bằng mô hình âm vị ----- */
+async function alForced(a16, sents, onProg) {
+  const L = await spLogp(a16, (i, n) => onProg?.(i, n)), t = L.t, step = L.step;
+  const exps = await Promise.all(sents.map(s => spExpected(s.x))), seq = [], own = [];
+  exps.forEach((ws, si) => ws.forEach((w, wi) => (w.ph || []).forEach(p => { seq.push(A2I[phBase(p)]); own.push([si, wi]); })));
+  const al = spAlign(L, seq), span = sents.map(() => [Infinity, -Infinity]), words = exps.map(ws => ws.map(w => ({ w: w.w, s: null, e: null })));
+  al.forEach((f, i) => { if (!f.length) return; const [si, wi] = own[i], a = t[f[0]], b = t[f[f.length - 1]] + step;
+    span[si][0] = Math.min(span[si][0], a); span[si][1] = Math.max(span[si][1], b);
+    const W = words[si][wi]; W.s = W.s == null ? a : Math.min(W.s, a); W.e = W.e == null ? b : Math.max(W.e, b); });
+  /* câu không căn được (toàn tên riêng, số lạ): nội suy theo hai câu bên cạnh */
+  for (let i = 0; i < span.length; i++) if (!isFinite(span[i][0])) { const pv = span.slice(0, i).reverse().find(x => isFinite(x[1])), nx = span.slice(i + 1).find(x => isFinite(x[0])); span[i] = [pv ? pv[1] + 0.1 : 0, nx ? nx[0] - 0.1 : a16.length / 16000]; }
+  /* ranh giới: chỗ năng lượng thấp nhất quanh khoảng giữa hai câu (mô hình CTC hay báo âm cuối sớm hơn thật) */
+  const T = a16.length / 16000, fr = alEnergy(a16), sm = i => { let a = 0, c = 0; for (let j = Math.max(0, i - 2); j <= Math.min(fr.length - 1, i + 2); j++) { a += fr[j]; c++; } return a / c; };
+  const lowest = (x, y) => { let lo = -1, lv = Infinity; for (let f = Math.max(0, Math.floor(x * 100)); f <= Math.min(fr.length - 1, Math.ceil(y * 100)); f++) { const v = sm(f); if (v < lv) { lv = v; lo = f; } } return lo < 0 ? (x + y) / 2 : lo / 100; };
+  const cuts = [];
+  for (let i = 0; i < span.length - 1; i++) { let x = span[i][1] - 0.06, y = span[i + 1][0] + 0.06; if (y - x < 0.16) { const c = (x + y) / 2; x = c - 0.12; y = c + 0.12; } cuts.push(lowest(x, Math.min(y, x + 1.2))); }
+  const srt = Array.from(fr).sort((p, q) => p - q), thr = Math.max((srt[Math.floor(srt.length * 0.1)] || 0) * 2.5, (srt[Math.floor(srt.length * 0.95)] || 0) * 0.06, 0.003);
+  let head = Math.floor(Math.max(0, span[0][0] - 0.6) * 100); while (head < fr.length && fr[head] < thr) head++;
+  let tail = Math.ceil(Math.min(T, span[span.length - 1][1] + 0.8) * 100); while (tail > 0 && fr[Math.min(fr.length - 1, tail)] < thr) tail--;
+  const segs = span.map((_, i) => [+(i ? cuts[i - 1] : Math.max(0, Math.min(span[0][0], head / 100) - 0.12)).toFixed(2), +(i < span.length - 1 ? cuts[i] : Math.min(T, Math.max(span[i][1], tail / 100) + 0.2)).toFixed(2)]);
+  return { segs, words: words.map(ws => ws.map(w => w.s == null ? [w.w] : [w.w, +w.s.toFixed(2), +w.e.toFixed(2)])) };
+}
+
+/* ----- Lấy mốc câu cho một bài: bộ nhớ máy → kho chung → tự tính ----- */
+const alLocal = { get: k => { try { return JSON.parse(localStorage.getItem("al:" + k) || "null"); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem("al:" + k, JSON.stringify(v)); } catch {} } };
+/* key: định danh âm thanh (ví dụ id-g2); url: âm thanh; trả về {segs, words?, how: "forced"|"silence"} */
+async function alGet(key, url, sents, { forced = "auto", onProg } = {}) {
+  const want = sents.length, ok = r => r && Array.isArray(r.segs) && r.segs.length === want;
+  let r = AL.mem[key] || alLocal.get(key); if (ok(r) && (r.how === "forced" || forced === false)) return AL.mem[key] = r;
+  if (window.__alShare) { const sh = await window.__alShare({ get: key }).catch(() => null); if (ok(sh)) { sh.how = "forced"; alLocal.set(key, sh); return AL.mem[key] = sh; } }
+  const d = await alDecode(url);
+  const canForce = forced === true || (forced === "auto" && (spReady(["ph"]) || await spCached(["ph"])));
+  if (canForce) {
+    try {
+      const f = await alForced(d.a16, sents, onProg); const out = { segs: f.segs, words: f.words, how: "forced" };
+      alLocal.set(key, out); AL.mem[key] = out; window.__alShare?.({ put: key, segs: f.segs, words: f.words }).catch(() => {}); return out;
+    } catch (e) { console.warn("căn cưỡng bức lỗi", e); }
+  }
+  const segs = alSilence(d.a16, sents) || sents.map((_, i) => [d.dur * i / want, d.dur * (i + 1) / want]);
+  return AL.mem[key] = { segs, how: "silence" };
+}
+
+/* ----- Mốc câu cho bài nghe đang mở, theo giọng đang chọn ----- */
+UI.lsSeg ||= {};
+function lsSrcInfo(s, want) {
+  const A = (UI.lsA || {}).id === s.id ? UI.lsA : {};
+  const gem = A.gemUrl ? { kind: "gem", url: A.gemUrl, key: s.id + "-g2" } : null;
+  const kk = A.kUrl ? { kind: "k", url: A.kUrl, key: s.id + "-k", exact: A.segs } : null;
+  return want === "k" ? kk || gem : want === "gem" ? gem || kk : (A.src === "gem" ? gem : kk) || gem || kk;
+}
+/* Trả về {state, segs, how, prog} và tự chạy nền; render lại khi có kết quả */
+function lsSegs(s, src) {
+  if (!src) return { state: "nosrc" };
+  const sents = alSents(s), key = src.key, have = UI.lsSeg[key];
+  if (have) return have;
+  if (src.exact?.length === sents.length) { const T = src.exact, segs = T.map((z, i) => [Math.max(0, z[1] - 0.1, i ? (T[i - 1][2] + z[1]) / 2 : 0), Math.min(z[2] + 0.15, i < T.length - 1 ? (z[2] + T[i + 1][1]) / 2 : z[2] + 0.4)]); return UI.lsSeg[key] = { state: "ok", how: "exact", segs }; }
+  const st = UI.lsSeg[key] = { state: "loading", segs: null };
+  const rr = () => { if (document.querySelector("[data-lsseg]")) render(); };
+  alGet(key, src.url, sents, { forced: false }).then(async r => {
+    Object.assign(st, { state: "ok", segs: r.segs, how: r.how, words: r.words }); rr();
+    if (r.how !== "forced" && (spReady(["ph"]) || await spCached(["ph"]))) lsSegForce(s, src);
+  }, e => { Object.assign(st, { state: "err", err: String(e?.message || e) }); rr(); });
+  return st;
+}
+function lsSegForce(s, src) {
+  const st = UI.lsSeg[src.key] ||= { state: "loading" }; if (st.forcing) return; st.forcing = true; st.prog = "Đang tải bộ căn câu…";
+  const rr = () => { if (document.querySelector("[data-lsseg]")) render(); }; rr();
+  alGet(src.key, src.url, alSents(s), { forced: true, onProg: (i, n) => { st.prog = `Đang căn câu chính xác: ${Math.round(i / n * 100)}%`; const el = document.querySelector("[data-lsseg-msg]"); if (el) el.textContent = st.prog; } })
+    .then(r => { Object.assign(st, { state: "ok", segs: r.segs, how: r.how, words: r.words, forcing: false, prog: "" }); rr(); }, e => { st.forcing = false; st.prog = "Chưa căn được: " + (e?.message || e); rr(); });
+}
+/* Dòng trạng thái độ chính xác + nút căn chính xác */
+function lsSegNote(s, src, st) {
+  if (!src || st.state === "nosrc") return null;
+  if (st.how === "exact") return h("span", { class: "small muted", "data-lsseg": "1" }, "Mốc câu chính xác (thu sẵn từng câu).");
+  if (st.how === "forced") return h("span", { class: "small muted", "data-lsseg": "1" }, "✓ Mốc câu đã căn chính xác bằng mô hình âm vị.");
+  if (st.state === "loading") return h("span", { class: "small muted", "data-lsseg": "1" }, "Đang dò mốc từng câu…");
+  if (st.state === "err") return h("span", { class: "small", style: "color:var(--bad)", "data-lsseg": "1" }, "Chưa đọc được âm thanh: " + st.err);
+  if (st.forcing) return h("span", { class: "small muted", "data-lsseg": "1", "data-lsseg-msg": "1" }, st.prog || "Đang căn câu chính xác…");
+  if (spReady(["ph"])) return h("div", { class: "row small muted", style: "gap:8px", "data-lsseg": "1" }, h("span", null, "✓ Câu đang học được căn chính xác bằng mô hình âm vị."), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => lsSegForce(s, src) }, "Căn cả bài cho cả nhóm (1–3 phút)"), st.prog ? h("span", null, st.prog) : null);
+  return h("div", { class: "note warn small stack", style: "gap:6px", "data-lsseg": "1" },
+    h("span", null, "Mốc câu đang ước lượng theo khoảng lặng, có thể lệch ở chỗ người nói nói liền. Bật bộ chấm phát âm để máy căn chính xác từng câu bạn đang nghe, hoặc căn cả bài một lần cho cả nhóm dùng chung (1–3 phút)."),
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => lsSegForce(s, src) }, "Căn cả bài chính xác"), h("button", { class: "btn btn-quiet", type: "button", onclick: async () => { await spLoad("ph").catch(() => {}); render(); } }, "Bật bộ chấm (145 MB lần đầu)"), st.prog ? h("span", { class: "small muted" }, st.prog) : null));
+}
+async function lsPlaySent(src, seg, rate) { const d = await alDecode(src.url); return alPlay(d.buf, seg[0], seg[1], rate); }
+/* Căn chính xác riêng câu đang học (cùng câu trước và sau) khi đã có bộ chấm: vài giây, không phải chờ căn cả bài */
+function lsSegAt(s, src, st, i) {
+  if (!st?.segs) return null;
+  if (st.how !== "silence") return st.segs[i];
+  const f = (st.fine ||= {}); if (f[i]) return f[i];
+  if (spReady(["ph"]) && !(st.refining ||= {})[i]) {
+    st.refining[i] = true;
+    (async () => {
+      const d = await alDecode(src.url), sents = alSents(s), n = sents.length, lo = Math.max(0, i - 1), hi = Math.min(n - 1, i + 1);
+      const a = Math.max(0, st.segs[lo][0] - 1), b = Math.min(d.dur, st.segs[hi][1] + 1), r = await alForced(d.a16.subarray(Math.floor(a * 16000), Math.ceil(b * 16000)), sents.slice(lo, hi + 1));
+      const m = r.segs[i - lo]; f[i] = [+(a + m[0]).toFixed(2), +(a + m[1]).toFixed(2)];
+      if (document.querySelector("[data-lsseg]")) render();
+    })().catch(e => console.warn("căn câu", e));
+  }
+  return st.segs[i];
+}
+
+/* ===== Shadowing: nghe từng câu rồi nói lại, máy chấm phát âm từng âm + nhịp + tốc độ so với giọng mẫu (không gọi AI) =====
+   Nguồn: bài nghe trong web (giọng Gemini hoặc Kokoro, mốc câu căn chính xác) hoặc video YouTube (mốc câu theo phụ đề). */
+const SHW = { api: null, player: null, vid: null, tm: null, rec: null, userUrl: null };
+
+/* ----- Ghi âm tự dừng khi bạn nói xong (ngừng 1,2 giây) ----- */
+async function autoRec({ maxSec = 15, quietSec = 1.2, idleSec = 6, onState } = {}) {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  const rec = new MediaRecorder(stream), parts = []; rec.ondataavailable = e => e.data.size && parts.push(e.data);
+  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 1024; ac.createMediaStreamSource(stream).connect(an);
+  const buf = new Float32Array(an.fftSize); let noise = 0, nN = 0, spoke = false, quiet = 0; const t0 = Date.now();
+  return new Promise((res, rej) => {
+    const stop = () => { clearInterval(iv); try { rec.state === "recording" && rec.stop(); } catch {} };
+    SHW.rec = { stop };
+    rec.onstop = () => { try { ac.close(); } catch {} stream.getTracks().forEach(t => t.stop()); SHW.rec = null; onState?.("done"); res(new Blob(parts, { type: rec.mimeType || "audio/webm" })); };
+    rec.onerror = e => { stop(); rej(e); };
+    rec.start(); onState?.("rec");
+    const iv = setInterval(() => {
+      an.getFloatTimeDomainData(buf); let s = 0; for (const v of buf) s += v * v; const rms = Math.sqrt(s / buf.length), el = (Date.now() - t0) / 1000;
+      if (el < 0.35) { noise += rms; nN++; return; }
+      const thr = Math.max(0.012, (noise / Math.max(1, nN)) * 3);
+      if (rms > thr) { spoke = true; quiet = 0; } else quiet += 0.05;
+      onState?.("rec", { spoke, el });
+      if ((spoke && quiet >= quietSec) || el >= maxSec || (!spoke && el >= idleSec)) stop();
+    }, 50);
+  });
+}
+
+/* ----- Chấm một câu shadowing ----- */
+function wordTimes(r, L) {
+  return r.words.map(w => { const f = w.phones.filter(x => x.fr); if (!f.length) return null; return { s: L.t[f[0].fr[0]], e: L.t[f[f.length - 1].fr[1]] + L.step }; });
+}
+async function shadowScore(text, blob, modelA16, modelDur) {
+  await spLoad("ph");
+  const raw = await spDecode(blob), z = spPauses(raw); if (!z.speech || z.speech < 0.3) throw { vn: "Máy chưa nghe thấy bạn nói. Nói to, gần micro hơn nhé." };
+  const ua = spTrim(raw), exp = await spExpected(text); if (!exp.some(x => x.ph)) throw { vn: "Câu này chưa có phiên âm để chấm." };
+  const Lu = await spLogp(ua), ru = spGOP(Lu, exp), tu = wordTimes(ru, Lu);
+  let tm = null, mSpan = modelDur || null;
+  if (modelA16) { const ma = spTrim(modelA16), Lm = await spLogp(ma), rm = spGOP(Lm, exp); tm = wordTimes(rm, Lm); const v = tm.filter(Boolean); if (v.length) mSpan = v[v.length - 1].e - v[0].s; }
+  const vu = tu.filter(Boolean), uSpan = vu.length ? vu[vu.length - 1].e - vu[0].s : z.speech;
+  const notes = []; let rhythm = null;
+  if (tm) {
+    const idx = exp.map((_, k) => k).filter(k => tu[k] && tm[k]);
+    if (idx.length >= 3) {
+      const nu = k => (tu[k].s - tu[idx[0]].s) / Math.max(0.2, tu[idx[idx.length - 1]].s - tu[idx[0]].s), nm = k => (tm[k].s - tm[idx[0]].s) / Math.max(0.2, tm[idx[idx.length - 1]].s - tm[idx[0]].s);
+      const mad = idx.reduce((a, k) => a + Math.abs(nu(k) - nm(k)), 0) / idx.length; rhythm = Math.max(0, Math.min(100, Math.round(100 - mad * 380)));
+      const extra = [], miss = [];
+      for (let q = 0; q < idx.length - 1; q++) { const a = idx[q], b = idx[q + 1], gu = tu[b].s - tu[a].e, gm = tm[b].s - tm[a].e;
+        if (gu > 0.4 && gm < 0.15) extra.push(exp[a].w + " … " + exp[b].w); if (gm > 0.3 && gu < 0.1) miss.push(exp[a].w + " | " + exp[b].w); }
+      if (extra.length) notes.push("Bạn ngắt hơi giữa cụm mà người mẫu nói liền: " + extra.slice(0, 3).join(", ") + ".");
+      if (miss.length) notes.push("Người mẫu ngừng ở chỗ này, bạn nói liền qua: " + miss.slice(0, 3).join(", ") + ".");
+    }
+  }
+  let speed = null;
+  if (mSpan && uSpan) { const k = uSpan / mSpan; speed = { ratio: +k.toFixed(2), score: Math.max(0, Math.min(100, Math.round(100 - Math.abs(Math.log(k)) * 160))) };
+    if (k > 1.25) notes.push(`Bạn nói chậm hơn mẫu khoảng ${Math.round((k - 1) * 100)}%. Thử nói liền các từ nhỏ (to, of, and) và bớt kéo dài từng từ.`); else if (k < 0.8) notes.push(`Bạn nói nhanh hơn mẫu khoảng ${Math.round((1 - k) * 100)}%, chú ý giữ rõ âm cuối.`); }
+  const pron = ru.score ?? 0, parts = [[pron, 0.6], [rhythm, 0.25], [speed?.score, 0.15]].filter(x => x[0] != null), wsum = parts.reduce((a, x) => a + x[1], 0);
+  const total = Math.round(parts.reduce((a, x) => a + x[0] * x[1], 0) / wsum);
+  const linked = ru.words.flatMap(w => w.phones.filter(x => x.elided).map(() => w.w)); if (linked.length) notes.push("Máy đã chấp nhận chỗ bạn nối/nuốt âm tự nhiên như người bản xứ: " + [...new Set(linked)].slice(0, 4).join(", ") + ".");
+  return { words: ru.words, pron, rhythm, speed, total, notes };
+}
+
+/* ----- Giao diện chung cho một câu ----- */
+function shadowCard({ text, n, i, go, playModel, modelInfo, extra, onScore, best }) {
+  const S = UI.shw, R = S.res && S.res.key === S.key + ":" + i ? S.res : null;
+  const info = h("span", { class: "small muted" });
+  const userPlay = () => { if (SHW.userUrl) { alStop(); const a = new Audio(SHW.userUrl); AL_PLAY.a = a; a.play(); } };
+  const judge = async (blob, say) => { say?.("Đang chấm…"); const r = await onScore(blob); if (SHW.userUrl) URL.revokeObjectURL(SHW.userUrl); SHW.userUrl = URL.createObjectURL(blob); S.res = { key: S.key + ":" + i, ...r }; render(); };
+  const auto = h("button", { class: "btn btn-primary", type: "button", onclick: async () => {
+    if (SHW.rec) { SHW.rec.stop(); return; }
+    auto.disabled = true;
+    try { info.textContent = "Nghe mẫu…"; const a = await playModel(1); if (a) await new Promise(r => { if (a.ended || a.paused && a.currentTime > 0) return r(); a.addEventListener("ended", r, { once: true }); a.addEventListener("pause", r, { once: true }); });
+      auto.disabled = false; auto.textContent = "■ Dừng"; auto.classList.add("on");
+      const blob = await autoRec({ maxSec: Math.min(30, (modelInfo?.dur || 5) * 2.2 + 3), onState: (st, x) => { if (st === "rec") info.textContent = x?.spoke ? "Đang ghi… nói xong ngừng một chút là tự dừng" : "Đến lượt bạn: nói lại câu vừa nghe"; } });
+      auto.classList.remove("on"); auto.textContent = "Đang chấm…"; auto.disabled = true;
+      await judge(blob, t => info.textContent = t);
+    } catch (e) { console.warn(e); info.textContent = e?.vn || (e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro." : "Lỗi: " + (e?.message || e)); auto.disabled = false; auto.classList.remove("on"); auto.textContent = "▶● Nghe rồi nói"; }
+  } }, "▶● Nghe rồi nói");
+  const textNode = h("p", { class: "prompt shw-text" + (S.hide && !R ? " hid" : ""), style: "font-size:1.2rem;margin:0" }, text);
+  return h("section", { class: "card stack", style: "gap:10px", "data-lsseg": "1" },
+    h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, `Câu ${i + 1}/${n}`), h("div", { class: "row", style: "gap:6px" }, best != null ? scoreChip(best, "Tốt nhất ") : null, h("label", { class: "small row", style: "gap:4px" }, h("input", { type: "checkbox", checked: S.hide || null, onchange: e => { S.hide = e.target.checked; render(); } }), "Ẩn chữ (khó hơn)"))),
+    textNode,
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => playModel(1) }, "▶ Nghe mẫu"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => playModel(0.75) }, "🐢 0.75×"), extra || null),
+    spModelCard(["ph"]),
+    spReady(["ph"]) ? h("div", { class: "stack", style: "gap:6px" }, h("div", { class: "row" }, auto, info), h("details", null, h("summary", { class: "small" }, "Tự bấm ghi âm (không tự phát mẫu)"), recBox(judge, { max: 30, hint: "Nói lại câu, xong bấm Dừng." }))) : null,
+    R ? h("div", { class: "stack", style: "gap:8px" },
+      h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "band-big" }, R.total), h("div", { class: "stack", style: "gap:4px" }, h("div", { class: "row", style: "gap:6px" }, scoreChip(R.pron, "Phát âm "), R.rhythm != null ? scoreChip(R.rhythm, "Nhịp ") : null, R.speed ? h("span", { class: "chip " + scCls(R.speed.score) }, `Tốc độ ${R.speed.ratio}× mẫu`) : null), h("span", { class: "small muted" }, "Tổng = 60% phát âm + 25% nhịp + 15% tốc độ"))),
+      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: userPlay }, "▶ Giọng bạn"), h("button", { class: "btn btn-quiet", type: "button", onclick: async () => { const a = await playModel(1); if (a) a.addEventListener("ended", userPlay, { once: true }); } }, "▶ Mẫu rồi tới bạn")),
+      resultView({ words: R.words, score: R.pron }, { label: "Từng từ" }),
+      R.notes.length ? h("ul", { class: "gex" }, R.notes.map(t => h("li", null, t))) : null) : null,
+    h("div", { class: "row" }, h("button", { class: "btn btn-quiet", type: "button", disabled: i === 0 || null, onclick: () => go(-1) }, "‹ Câu trước"), h("button", { class: "btn" + (R ? " btn-primary" : " btn-quiet"), type: "button", disabled: i >= n - 1 || null, onclick: () => go(1) }, "Câu tiếp ›")));
+}
+function shadowSave(key, i, total) {
+  const st = (P.shadow ||= {})[key] ||= { best: {} }; st.best[i] = Math.max(st.best[i] ?? 0, total); st.last = today(); P.shDay = { [today()]: (P.shDay?.[today()] || 0) + 1 };
+  award("speaking", 3); addAct("speaking", 1); const all = Object.values(P.shadow).flatMap(x => Object.values(x.best)); (P.shStat ||= {}).n = all.length; P.shStat.avg = Math.round(all.reduce((a, b) => a + b, 0) / Math.max(1, all.length)); saveProfile();
+}
+
+/* ----- Tab Shadowing trong trang Nói ----- */
+function spShadowTab() {
+  const S = UI.shw ||= { mode: "bank", id: LS_BANK[0].id, i: 0, hide: false, res: null, voice: "gem" };
+  const modes = h("div", { class: "row", style: "gap:6px" }, [["bank", "Bài nghe trong web"], ["yt", "Video YouTube"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(S.mode === k), onclick: () => { S.mode = k; S.res = null; alStop(); try { SHW.player?.pauseVideo(); } catch {} render(); } }, t)));
+  const intro = h("p", { class: "small muted", style: "margin:0;max-width:70ch" }, "Shadowing: nghe một câu của người bản xứ rồi nói lại y hệt, cả âm, nhịp và chỗ ngừng. Máy chấm ngay trên máy bạn: phát âm từng âm, nhịp so với mẫu, tốc độ. Nên đeo tai nghe.");
+  return h("div", { class: "stack", style: "gap:12px" }, intro, modes, S.mode === "yt" ? shadowYt(S) : shadowBank(S));
+}
+function shadowBank(S) {
+  const s = lsById(S.id) || LS_BANK[0]; lsPrepare(s);
+  const sents = alSents(s), n = sents.length, i = Math.min(S.i, n - 1), A = UI.lsA || {};
+  const src = A.id === s.id ? lsSrcInfo(s, S.voice) : null, st = src ? lsSegs(s, src) : { state: "loading" }, seg = lsSegAt(s, src, st, i);
+  S.key = "ls:" + s.id;
+  const playModel = async rate => seg ? lsPlaySent(src, seg, rate) : null;
+  const go = d => { S.i = Math.max(0, Math.min(n - 1, i + d)); S.res = null; alStop(); render(); };
+  const best = (P.shadow || {})[S.key]?.best || {};
+  const done = Object.keys(best).length, avg = done ? Math.round(Object.values(best).reduce((a, b) => a + b, 0) / done) : null;
+  return h("div", { class: "stack", style: "gap:12px" },
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài:"), h("select", { onchange: e => { alStop(); S.id = e.target.value; S.i = 0; S.res = null; render(); } }, lsAll().map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `${x.mine || x.shared ? "AI · " : "Đề " + x.test + " · "}S${x.sec} · ${x.title}`))),
+      A.id === s.id && A.gemUrl && A.kUrl ? h("div", { class: "row", style: "gap:6px" }, [["gem", "Gemini"], ["k", "Kokoro"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(src?.kind === k), onclick: () => { S.voice = k; S.res = null; alStop(); render(); } }, t))) : null,
+      done ? h("span", { class: "small muted" }, `Đã nói ${done}/${n} câu · trung bình ${avg}`) : null),
+    lsSegNote(s, src, st),
+    seg ? shadowCard({ text: sents[i].x, n, i, go, playModel, modelInfo: { dur: seg[1] - seg[0] }, best: best[i],
+      onScore: async blob => { const d = await alDecode(src.url), a = d.a16.subarray(Math.floor(seg[0] * 16000), Math.ceil(seg[1] * 16000)); const r = await shadowScore(sents[i].x, blob, a); shadowSave(S.key, i, r.total); return r; } })
+      : h("p", { class: "small muted" }, "Đang chuẩn bị âm thanh và mốc câu…"),
+    h("details", null, h("summary", { class: "small" }, "Chọn câu"), h("div", { class: "row", style: "gap:4px;margin-top:6px" }, sents.map((x, k) => h("button", { type: "button", class: "opt small", "aria-pressed": String(k === i), title: x.x, onclick: () => { S.i = k; S.res = null; alStop(); render(); } }, String(k + 1) + (best[k] != null ? " · " + best[k] : ""))))));
+}
+
+/* ----- YouTube ----- */
+const ytId = u => (String(u).trim().match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/) || String(u).trim().match(/^([\w-]{11})$/) || [])[1] || null;
+function ytApi() { return SHW.api ||= new Promise((res, rej) => { if (window.YT?.Player) return res(window.YT); const prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = () => { prev?.(); res(window.YT); }; const sc = document.createElement("script"); sc.src = "https://www.youtube.com/iframe_api"; sc.onerror = () => { SHW.api = null; rej(new Error("Không tải được trình phát YouTube")); }; document.head.append(sc); }); }
+function ytHost() { let el = document.getElementById("shw-yt-host"); if (!el) { el = h("div", { id: "shw-yt-host", class: "shw-yt-host" }, h("div", { id: "shw-yt" })); document.body.append(el); } return el; }
+/* Trình phát nằm ngoài vùng vẽ lại của trang (vẽ lại không làm tải lại video), đặt đè lên ô giữ chỗ */
+function ytPlace() { const host = document.getElementById("shw-yt-host"); if (!host) return; const ph = document.querySelector(".shw-yt-ph"); if (!ph) { host.style.display = "none"; try { SHW.player?.pauseVideo(); } catch {} return; } const r = ph.getBoundingClientRect(); Object.assign(host.style, { display: "block", top: r.top + scrollY + "px", left: r.left + scrollX + "px", width: r.width + "px", height: r.height + "px" }); }
+setInterval(ytPlace, 250); addEventListener("resize", ytPlace);
+async function ytOpen(id) {
+  const YT = await ytApi(); ytHost(); ytPlace();
+  if (SHW.player && SHW.vid === id) return SHW.player;
+  if (SHW.player) { SHW.player.cueVideoById(id); SHW.vid = id; return SHW.player; }
+  SHW.player = await new Promise(res => { const p = new YT.Player("shw-yt", { videoId: id, width: "100%", height: "100%", playerVars: { playsinline: 1, rel: 0, modestbranding: 1 }, events: { onReady: () => res(p) } }); });
+  SHW.vid = id; return SHW.player;
+}
+function ytPlaySeg(s, e, rate = 1) {
+  const p = SHW.player; if (!p) return null; clearInterval(SHW.tm);
+  try { p.setPlaybackRate(rate); } catch {} p.seekTo(Math.max(0, s), true); p.playVideo();
+  const fake = new EventTarget(); fake.ended = false; fake.paused = false; fake.currentTime = 0;
+  SHW.tm = setInterval(() => { let t = 0; try { t = p.getCurrentTime(); } catch {} if (t >= e) { p.pauseVideo(); clearInterval(SHW.tm); fake.ended = true; fake.dispatchEvent(new Event("ended")); } }, 40);
+  return fake;
+}
+/* Bản chép lời → câu có mốc thời gian. Nhận: phụ đề YouTube (có mốc từng từ), WebVTT/SRT, hoặc dán từ ô "Hiện bản chép lời" */
+const ytClean = t => String(t).replace(/\[[^\]]*\]|\([^)]*\)|>>|♪/g, " ").replace(/^\s*[A-Z][A-Z .'-]{1,20}:\s*/, "").replace(/\s+/g, " ").trim();
+const tsec = x => { const p = String(x).replace(",", ".").split(":").map(Number); return p.reduce((a, v) => a * 60 + v, 0); };
+function ytParsePaste(txt) {
+  const lines = String(txt).replace(/\r/g, "").split("\n"), cues = [];
+  const arrow = /^(\d{1,2}:)?\d{1,2}:\d{2}[.,]\d{1,3}\s*-->\s*((\d{1,2}:)?\d{1,2}:\d{2}[.,]\d{1,3})/;
+  for (let k = 0; k < lines.length; k++) {
+    const L = lines[k].trim(); if (!L) continue;
+    let m = L.match(arrow); if (m) { const [a, b] = L.split("-->").map(x => tsec(x.trim().split(/\s/)[0])); const txt2 = []; while (k + 1 < lines.length && lines[k + 1].trim() && !arrow.test(lines[k + 1].trim())) txt2.push(lines[++k].trim()); cues.push({ s: a, e: b, t: ytClean(txt2.join(" ").replace(/<[^>]+>/g, "")) }); continue; }
+    m = L.match(/^(\d{1,2}(?::\d{2}){1,2})(?:\s+(.*))?$/); if (m) { let t = m[2] || ""; while (!t && k + 1 < lines.length && /seconds?|minutes?|giây|phút/.test(lines[k + 1])) k++; if (!t) { const nx = []; while (k + 1 < lines.length && lines[k + 1].trim() && !/^\d{1,2}(:\d{2}){1,2}(\s|$)/.test(lines[k + 1].trim())) nx.push(lines[++k].trim()); t = nx.join(" "); } cues.push({ s: tsec(m[1]), t: ytClean(t) }); }
+  }
+  cues.forEach((c, i) => { if (c.e == null) c.e = cues[i + 1] ? cues[i + 1].s : c.s + 4; });
+  return cues.filter(c => c.t);
+}
+function ytSentences(cues) {
+  const words = [];
+  for (const c of cues) { if (c.w?.length) { c.w.forEach(([w, t], k) => words.push({ w, t, e: c.w[k + 1] ? c.w[k + 1][1] : c.e })); continue; }
+    const ws = c.t.split(/\s+/).filter(Boolean), len = ws.reduce((a, w) => a + w.length + 1, 0); let acc = 0;
+    ws.forEach(w => { const t = c.s + (c.e - c.s) * acc / len; acc += w.length + 1; words.push({ w, t, e: c.s + (c.e - c.s) * acc / len }); }); }
+  const punct = words.filter(x => /[.!?]["”]?$/.test(x.w)).length >= Math.max(2, words.length / 40), out = []; let cur = [];
+  for (let k = 0; k < words.length; k++) {
+    cur.push(words[k]); const nx = words[k + 1], gap = nx ? nx.t - words[k].e : 9;
+    const end = punct ? (/[.!?]["”]?$/.test(words[k].w) && cur.length >= 3) || cur.length >= 28 : (gap > 0.55 && cur.length >= 4) || cur.length >= 14;
+    if (end || !nx) { out.push({ x: cur.map(z => z.w).join(" "), s: cur[0].t, e: Math.min(cur[cur.length - 1].e + 0.15, nx ? nx.t + 0.05 : 1e9) }); cur = []; }
+  }
+  return out.filter(z => /[a-z]/i.test(z.x));
+}
+function shadowYt(S) {
+  const Y = S.yt ||= { url: "", id: null, sents: null, how: "", err: "", busy: "", adj: {} };
+  const urlIn = h("input", { type: "url", placeholder: "Dán link YouTube, ví dụ https://www.youtube.com/watch?v=…", value: Y.url, oninput: e => { Y.url = e.target.value; } });
+  const load = async () => {
+    const id = ytId(Y.url); if (!id) { Y.err = "Link YouTube chưa đúng."; render(); return; }
+    Object.assign(Y, { id, sents: null, err: "", busy: "Đang mở video…", how: "", adj: {} }); S.i = 0; S.res = null; render();
+    try { await ytOpen(id); } catch (e) { Y.err = e.message; Y.busy = ""; render(); return; }
+    const cached = (() => { try { return JSON.parse(localStorage.getItem("yt:" + id) || "null"); } catch { return null; } })();
+    if (cached?.sents?.length) { Object.assign(Y, { sents: cached.sents, how: cached.how, adj: cached.adj || {}, busy: "" }); render(); return; }
+    Y.busy = "Đang lấy phụ đề của video…"; render();
+    try { const r = await window.__yt?.(id); if (r?.cues?.length) { ytSet(Y, ytSentences(r.cues), r.asr ? "Phụ đề tự động của YouTube (mốc từng từ)" : "Phụ đề của video"); return; } } catch (e) { console.warn("yt captions", e); }
+    Y.busy = ""; Y.need = true; render();
+  };
+  const ytSet = (Y, sents, how) => { if (!sents.length) { Y.err = "Không tách được câu nào."; Y.busy = ""; render(); return; } Object.assign(Y, { sents, how, busy: "", need: false, err: "" }); try { localStorage.setItem("yt:" + Y.id, JSON.stringify({ sents, how, adj: Y.adj })); } catch {} render(); };
+  const pasteBox = h("textarea", { rows: "6", placeholder: "Dán bản chép lời có mốc thời gian (phụ đề .vtt/.srt, hoặc chép từ ô \"Hiện bản chép lời\" của YouTube)…" });
+  const aiBtn = h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: async () => {
+    aiBtn.disabled = true; Y.busy = "Gemini đang xem video và chép lời (30–90 giây, tốn 1 lượt AI)…"; render();
+    try { const r = await sample.json(`Transcribe the spoken English in this video verbatim (only the first 8 minutes). Split it into natural sentences of at most 25 words. For each sentence give the start and end time in seconds from the start of the video, as precisely as you can (one decimal). Return ONLY JSON: {"sents":[{"s":1.2,"e":4.8,"t":"..."}]}`, { video: "https://www.youtube.com/watch?v=" + Y.id, modelTier: "default" });
+      const sents = (r?.sents || []).map(x => ({ x: ytClean(x.t), s: +x.s, e: +x.e })).filter(x => x.x && isFinite(x.s) && isFinite(x.e) && x.e > x.s);
+      ytSet(Y, sents.map(x => ({ ...x, s: Math.max(0, x.s - 0.2), e: x.e + 0.3 })), "Gemini chép lời (mốc ước lượng, chỉnh tay nếu lệch)");
+    } catch (e) { Y.busy = ""; Y.err = aiMsg(e) + (e?.message ? " " + e.message : ""); render(); } } }, "Nhờ Gemini chép lời (1 lượt AI)");
+  const head = h("section", { class: "card stack", style: "gap:8px" }, h("div", { class: "row" }, urlIn, h("button", { class: "btn btn-primary", type: "button", onclick: load }, "Mở video")),
+    Y.err ? h("p", { class: "note bad small", style: "margin:0" }, Y.err) : null, Y.busy ? h("p", { class: "small muted", style: "margin:0" }, Y.busy) : null,
+    Y.id ? h("div", { class: "shw-yt-ph" }) : null,
+    Y.need ? h("div", { class: "stack", style: "gap:8px" }, h("p", { class: "note warn small", style: "margin:0" }, "Chưa lấy được phụ đề tự động của video này. Chọn một cách:"),
+      h("ol", { class: "gex small" }, h("li", null, "Trên máy tính: mở video trên YouTube → bấm “…Thêm” dưới video → “Hiện bản chép lời” → bôi đen toàn bộ, chép rồi dán vào ô dưới. Có tệp phụ đề .vtt/.srt thì dán nội dung tệp (mốc chính xác nhất)."), h("li", null, "Hoặc nhờ Gemini xem video và chép lời (mốc chỉ gần đúng, có thể chỉnh tay từng câu).")),
+      pasteBox, h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { const c = ytParsePaste(pasteBox.value); if (!c.length) { Y.err = "Không đọc được mốc thời gian trong đoạn đã dán."; render(); return; } ytSet(Y, ytSentences(c), /-->/.test(pasteBox.value) ? "Tệp phụ đề bạn dán" : "Bản chép lời bạn dán (mốc theo giây)"); } }, "Dùng bản này"), aiBtn)) : null);
+  if (!Y.sents) return h("div", { class: "stack", style: "gap:12px" }, head);
+  const n = Y.sents.length, i = Math.min(S.i, n - 1), sn = Y.sents[i], ad = Y.adj[i] || [0, 0], s0 = sn.s + ad[0], e0 = sn.e + ad[1];
+  S.key = "yt:" + Y.id;
+  const best = (P.shadow || {})[S.key]?.best || {};
+  const nudge = (k, d) => { const a = Y.adj[i] ||= [0, 0]; a[k] = +(a[k] + d).toFixed(2); try { localStorage.setItem("yt:" + Y.id, JSON.stringify({ sents: Y.sents, how: Y.how, adj: Y.adj })); } catch {} render(); ytPlaySeg(sn.s + a[0], sn.e + a[1]); };
+  const extra = h("span", { class: "row small", style: "gap:4px" }, h("span", { class: "muted" }, "Chỉnh mốc:"), h("button", { class: "btn btn-quiet small", type: "button", title: "Bắt đầu sớm hơn", onclick: () => nudge(0, -0.2) }, "⇤ sớm"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(0, 0.2) }, "muộn ⇥"), h("span", { class: "muted" }, "|"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(1, -0.2) }, "cắt sớm"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(1, 0.2) }, "kéo dài"));
+  return h("div", { class: "stack", style: "gap:12px" }, head,
+    h("span", { class: "small muted" }, `${Y.how} · ${n} câu`),
+    shadowCard({ text: sn.x, n, i, playModel: async rate => ytPlaySeg(s0, e0, rate), modelInfo: { dur: e0 - s0 }, extra, best: best[i],
+      go: d => { S.i = Math.max(0, Math.min(n - 1, i + d)); S.res = null; try { SHW.player?.pauseVideo(); } catch {} render(); },
+      onScore: async blob => { const r = await shadowScore(sn.x, blob, null, Math.max(0.5, e0 - s0 - 0.35)); shadowSave(S.key, i, r.total); return r; } }));
+}
+
+/* ===== Luyện nghe số, ngày, giờ, đánh vần (dạng hay gặp ở IELTS Listening Section 1), chấm trên máy ===== */
+const ND_CAT = {
+  phone: ["Số điện thoại", "“oh” = 0; “double four” = 44; “triple seven” = 777. Người Anh đọc số điện thoại theo nhóm 3–5 số, ngừng ngắn giữa các nhóm."],
+  teen: ["13 hay 30?", "13–19 nhấn vào âm cuối và kéo dài “teen” /ˈtiːn/ (thir-TEEN). 30–90 nhấn âm đầu, đuôi “ty” ngắn và nhẹ (THIR-ty, giọng Mỹ nghe như “thơ-đi”)."],
+  price: ["Giá tiền", "“twelve fifty” = £12.50; “forty-five pounds” = £45. Số sau “pounds” là pence (phần lẻ)."],
+  date: ["Ngày tháng", "“the twenty-first of March” và “March the twenty-first” đều là 21 March. Bài thi chấp nhận nhiều cách viết, nhưng đúng ngày và tháng."],
+  time: ["Giờ", "“quarter past seven” = 7:15; “half past” = :30; “quarter to nine” = 8:45 (kém 15 phút là 9 giờ); “ten to” = kém 10; “oh five” = :05."],
+  spell: ["Đánh vần tên", "Chữ dễ nhầm: A /eɪ/, E /iː/, I /aɪ/; G /dʒiː/ và J /dʒeɪ/; Y /waɪ/; W “double-you”; Z: Anh “zed”, Mỹ “zee”; “double L” = LL."],
+  post: ["Mã bưu chính", "Mã của Anh có hai nhóm, ví dụ CB2 1TN. Chú ý cặp dễ nhầm B/P/D/T/V và M/N."],
+  ref: ["Mã đặt chỗ", "Chữ và số đọc rời từng ký tự; số 0 đọc là “zero”."],
+  addr: ["Địa chỉ", "Số nhà đọc trước, rồi tên đường; tên đường lạ thường được đánh vần ngay sau. Road, Street, Avenue, Lane viết đủ."],
+  num: ["Năm, số lớn, phần trăm", "“nineteen eighty-seven” = 1987; “one hundred and fifty” = 150; “two thousand five hundred” = 2500; “per cent” = %."]
+};
+const ND = { idx: null, shards: {} };
+function ndIndex() { return ND.idx ||= fetch("voice/nd/index.json").then(r => { if (!r.ok) throw new Error("nd " + r.status); return r.json(); }).catch(e => { ND.idx = null; throw e; }); }
+async function ndPlay(it, rate = 1) {
+  const s = it.s; const ab = await (ND.shards[s[0]] ||= fetch("voice/nd/" + String(s[0]).padStart(2, "0") + ".mp3").then(r => r.arrayBuffer()).catch(e => { delete ND.shards[s[0]]; throw e; }));
+  alStop(); try { SPV.audio?.pause(); } catch {}
+  const url = URL.createObjectURL(new Blob([new Uint8Array(ab, s[1], s[2])], { type: "audio/mpeg" })), a = new Audio(url); a.playbackRate = rate; try { a.preservesPitch = true; } catch {}
+  AL_PLAY.a = a; AL_PLAY.url = url; await a.play(); return a;
+}
+/* ----- Chấm: chuẩn hóa theo từng loại, chỉ một đáp án đúng ----- */
+const MON = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+const ndNum = s => { const t = String(s).toLowerCase().replace(/[,£$%]|pounds?|per ?cent|percent/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim(); if (/^\d+(\.\d+)?$/.test(t)) return +t; for (let n = 0; n <= 100000; n += n < 1000 ? 1 : n < 10000 ? 10 : 100) if (numWords(n).replace(/-/g, " ") === t || numWords(n).replace(/ and /g, " ") === t) return n; return null; };
+function ndCheck(it, v) {
+  const x = String(v || "").trim(); if (!x) return false; const a = it.a;
+  switch (it.c) {
+    case "phone": case "ref": case "post": return x.toUpperCase().replace(/[^A-Z0-9]/g, "") === a.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    case "spell": return x.toLowerCase().replace(/[^a-z]/g, "") === a.toLowerCase();
+    case "teen": case "num": { if (a.endsWith("%") && /[a-z]/i.test(x) && !/per ?cent/i.test(x)) return false; const n = ndNum(x); return n != null && n === parseFloat(a); }
+    case "price": { const m = x.toLowerCase().replace(/[£$,]|pounds?/g, " ").trim().match(/^(\d+)(?:[.\s](\d{1,2}))?\s*p?$/); if (!m) return false; return Math.abs(+m[1] + (m[2] ? +m[2].padEnd(2, "0") / 100 : 0) - parseFloat(a.slice(1))) < 0.001; }
+    case "date": { const t = x.toLowerCase(), d = t.match(/\b(\d{1,2})(st|nd|rd|th)?\b/), mi = MON.findIndex(m => new RegExp("\\b" + m.slice(0, 3) + "(" + m.slice(3) + ")?\\b").test(t)); const [ad, am] = a.split(" "); return !!d && +d[1] === +ad && mi === MON.indexOf(am.toLowerCase()); }
+    case "time": { const m = x.toLowerCase().replace(/\s*(am|pm|a\.m\.|p\.m\.)$/, "").match(/^(\d{1,2})(?:[:.h\s](\d{2}))?$/); if (!m) return false; const [ah, am] = a.split(":").map(Number); return (+m[1] % 12 || 12) === (ah % 12 || 12) && +(m[2] || 0) === am; }
+    case "addr": { const n = t => t.toLowerCase().replace(/[.,]/g, " ").replace(/\brd\b/g, "road").replace(/\bst\b/g, "street").replace(/\bave?\b/g, "avenue").replace(/\bln\b/g, "lane").replace(/\s+/g, " ").trim(); return n(x) === n(a); }
+  }
+  return x.toLowerCase() === a.toLowerCase();
+}
+/* ----- Giao diện ----- */
+function lsNdTab() {
+  const N = UI.nd ||= { cat: "mix", exam: false, round: null, ans: {}, done: false, plays: {} };
+  const stat = P.ndStat || {};
+  const catBtns = h("div", { class: "row", style: "gap:6px" }, [["mix", "Trộn tất cả"], ...Object.entries(ND_CAT).map(([k, v]) => [k, v[0]])].map(([k, t]) => { const s = stat[k], pct = s && s[0] ? Math.round(s[1] / s[0] * 100) : null; return h("button", { type: "button", class: "opt", "aria-pressed": String(N.cat === k), onclick: () => { N.cat = k; N.round = null; N.ans = {}; N.done = false; N.plays = {}; render(); } }, t, pct != null ? h("small", { class: "muted" }, ` ${pct}%`) : null); }));
+  const body = h("div", { class: "nd-wrap stack", style: "gap:10px" }, h("p", { class: "small muted" }, "Đang tải kho câu…"));
+  ndIndex().then(D => {
+    const pool = D.items.filter(x => N.cat === "mix" || x.c === N.cat);
+    if (!N.round) { const seen = P.ndSeen || {}; N.round = pool.slice().sort((a, b) => ((seen[a.id] || 0) - (seen[b.id] || 0)) || Math.random() - 0.5).slice(0, 10).map(x => x.id); }
+    const items = N.round.map(id => D.items.find(x => x.id === id)).filter(Boolean);
+    const score = N.done ? items.filter(it => ndCheck(it, N.ans[it.id])).length : null;
+    const submit = () => {
+      N.done = true; P.ndStat ||= {}; P.ndSeen ||= {}; P.ndDay = today();
+      for (const it of items) { const s = P.ndStat[it.c] ||= [0, 0]; s[0]++; if (ndCheck(it, N.ans[it.id])) s[1]++; P.ndSeen[it.id] = (P.ndSeen[it.id] || 0) + 1; }
+      award("listening", 10); addAct("listening", 4); saveProfile(); render();
+    };
+    const tip = N.cat !== "mix" ? h("p", { class: "gnote", style: "margin:0" }, h("b", null, "Mẹo: "), ND_CAT[N.cat][1]) : null;
+    body.replaceChildren(tip || "",
+      h("div", { class: "row", style: "gap:6px" }, h("button", { type: "button", class: "opt", "aria-pressed": String(!N.exam), disabled: N.done || null, onclick: () => { N.exam = false; render(); } }, "Luyện (nghe nhiều lần)"), h("button", { type: "button", class: "opt", "aria-pressed": String(N.exam), disabled: N.done || null, onclick: () => { N.exam = true; render(); } }, "Như thi (nghe 1 lần)")),
+      h("ol", { class: "nd-list" }, items.map(it => { const ok = N.done ? ndCheck(it, N.ans[it.id]) : null, np = N.plays[it.id] || 0;
+        const play = h("button", { class: "btn" + (np ? "" : " btn-primary"), type: "button", disabled: (N.exam && np >= 1 && !N.done) || null, onclick: async () => { N.plays[it.id] = np + 1; try { await ndPlay(it); } catch (e) { toast("Chưa phát được âm thanh."); } if (N.exam && !N.done) render(); } }, np ? "↺ Nghe lại" : "▶ Nghe");
+        return h("li", { class: "nd-row" + (ok === true ? " ok" : ok === false ? " no" : "") },
+          h("div", { class: "row", style: "gap:8px;align-items:center" }, play, h("span", { class: "small", style: "min-width:110px" }, it.q + ":"),
+            h("input", { type: "text", class: "ls-in", autocomplete: "off", spellcheck: "false", placeholder: it.hint, value: N.ans[it.id] || "", disabled: N.done || null, oninput: e => { N.ans[it.id] = e.target.value; }, onkeydown: e => { if (e.key === "Enter") { const nx = e.target.closest("li")?.nextElementSibling?.querySelector("input"); nx ? nx.focus() : null; } } }),
+            N.done ? h("span", { class: "ls-mark " + (ok ? "ok" : "no") }, ok ? "✓" : "✗ " + it.a) : null),
+          N.done ? h("span", { class: "small muted" }, "Câu nghe: “" + it.say + "”" + (N.plays[it.id] > 1 ? ` · bạn nghe ${N.plays[it.id]} lần` : "")) : null); })),
+      N.done ? h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "band-big" }, `${score}/${items.length}`), h("button", { class: "btn btn-primary", type: "button", onclick: () => { N.round = null; N.ans = {}; N.done = false; N.plays = {}; render(); } }, "Lượt mới"))
+        : h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: submit }, "Chấm")));
+  }, () => body.replaceChildren(h("p", { class: "note bad" }, "Chưa tải được kho câu. Kiểm tra mạng rồi thử lại.")));
+  const weak = Object.entries(stat).filter(([, s]) => s[0] >= 5).sort((a, b) => a[1][1] / a[1][0] - b[1][1] / b[1][0]).slice(0, 3);
+  return h("div", { class: "stack", style: "gap:12px" },
+    h("p", { class: "small muted", style: "margin:0;max-width:70ch" }, "Section 1 hay mất điểm ở số điện thoại, giá tiền, ngày giờ và tên được đánh vần. Mỗi lượt 10 câu nghe ngắn bằng giọng Anh và Mỹ, máy chấm ngay (chấp nhận các cách viết mà bài thi chấp nhận)."),
+    weak.length ? h("p", { class: "small", style: "margin:0" }, h("b", null, "Bạn hay sai: "), weak.map(([k, s]) => `${ND_CAT[k][0]} (đúng ${Math.round(s[1] / s[0] * 100)}%)`).join(" · ")) : null,
+    catBtns, body);
+}
+
+/* ===== Phòng thi Speaking giống thật: giám khảo đọc câu hỏi (giọng Gemini thu sẵn mỗi đêm, chưa có thì giọng máy),
+   không hiện chữ câu hỏi, tự ghi âm khi tới lượt, Part 2 có 1 phút chuẩn bị và tự dừng ở 2 phút. Chấm: 1 lượt AI ở cuối. ===== */
+const SPQ_INTRO2 = "Now I'm going to give you a topic, and I'd like you to talk about it for one to two minutes. Before you talk, you'll have one minute to think about what you're going to say. You can make some notes if you wish. Here is your topic.";
+/* Nhóm câu cho máy chủ thu giọng Gemini (mỗi nhóm một lần đọc, các câu cách nhau bằng khoảng lặng) */
+function spqGroups() {
+  return [...SP_BANK.p1.map((t, i) => ({ id: "p1-" + i, lines: t.qs.map(q => q[0]) })), ...SP_BANK.p2.map((c, i) => ({ id: "p2-" + i, lines: [SPQ_INTRO2 + " " + c.card, ...c.p3.map(q => q[0])] }))];
+}
+const SPQ = {};
+/* Lấy âm thanh giám khảo của một nhóm: {url, segs} hoặc null (chưa thu) */
+function spqLoad(g) {
+  return SPQ[g.id] ||= (async () => {
+    if (!window.__tts) return null;
+    const b = await window.__tts({ key: "spq-" + g.id + "-v1", cacheOnly: true }).catch(() => null); if (!b) return null;
+    const url = URL.createObjectURL(b), d = await alDecode(url), segs = alSilence(d.a16, g.lines.map(x => ({ x })));
+    return segs ? { url, segs, buf: d.buf } : null;
+  })().catch(() => null);
+}
+/* Đọc câu hỏi và chờ đọc xong */
+async function spqSay(gid, k, text) {
+  const g = spqGroups().find(x => x.id === gid), a = g && await spqLoad(g);
+  if (a?.segs?.[k]) { const el = await alPlay(a.buf, a.segs[k][0], a.segs[k][1]); await new Promise(r => { if (el.ended) return r(); el.addEventListener("ended", r, { once: true }); el.addEventListener("pause", r, { once: true }); }); return "gem"; }
+  await spSayWait(text); return "k";
+}
+async function spSayWait(text) {
+  try { const e = (await spvIndex())[spvKey(text)]; if (e) { const ab = await spvShard(e[0]); alStop(); const url = URL.createObjectURL(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" })), a = new Audio(url); AL_PLAY.a = a; AL_PLAY.url = url; await a.play(); await new Promise(r => { a.onended = r; a.onpause = r; }); return; } } catch {}
+  await new Promise(r => { try { const u = new SpeechSynthesisUtterance(text); u.lang = "en-GB"; u.rate = 0.95; u.onend = r; u.onerror = r; speechSynthesis.speak(u); setTimeout(r, 2500 + text.length * 75); } catch { r(); } });
+}
+function beep(f = 880, ms = 160) { try { const ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; g.gain.value = 0.08; o.connect(g); g.connect(ac.destination); o.start(); setTimeout(() => { o.stop(); ac.close(); }, ms); } catch {} }
+
+/* ----- Phiên thi ----- */
+function roomNew() {
+  const n1 = SP_BANK.p1.length, a = Math.floor(Math.random() * n1); let b = Math.floor(Math.random() * (n1 - 1)); if (b >= a) b++;
+  const ci = Math.floor(Math.random() * SP_BANK.p2.length), c = SP_BANK.p2[ci], items = [];
+  for (const ti of [a, b]) SP_BANK.p1[ti].qs.forEach(([q], k) => items.push({ part: 1, q, topic: SP_BANK.p1[ti].topic, max: 45, g: "p1-" + ti, k }));
+  items.push({ part: 2, q: c.card, points: c.pts, max: 120, prep: 60, g: "p2-" + ci, k: 0 });
+  c.p3.forEach(([q], k) => items.push({ part: 3, q, max: 90, g: "p2-" + ci, k: k + 1 }));
+  for (const g of spqGroups().filter(x => items.some(it => it.g === x.id))) spqLoad(g);
+  UI.room = { kind: "room", items, i: -1, ans: {}, phase: "intro", show: false, notes: "", queue: Promise.resolve(), pending: 0, voice: null };
+}
+function roomStop() { const R = UI.room; if (!R) return; R.stopped = true; try { SHW.rec?.stop(); } catch {} alStop(); try { speechSynthesis.cancel(); } catch {} clearInterval(R.tick); }
+async function roomRun() {
+  const R = UI.room; R.phase = "run"; R.stopped = false; R.i = 0; R.step = "ask"; render();
+  for (let i = 0; i < R.items.length && !R.stopped; i++) {
+    const it = R.items[i]; R.i = i; R.show = false;
+    if (it.part === 2) {
+      R.step = "ask"; render(); R.voice = await spqSay(it.g, 0, SPQ_INTRO2 + " " + it.q); if (R.stopped) return;
+      R.step = "prep"; R.left = it.prep; render();
+      await new Promise(res => { R.tick = setInterval(() => { R.left--; const el = document.getElementById("room-clock"); if (el) el.textContent = mmss(Math.max(0, R.left)); if (R.left <= 0 || R.stopped || R.skipPrep) { clearInterval(R.tick); R.skipPrep = false; res(); } }, 1000); });
+      if (R.stopped) return; await spSayWait("All right? Remember you have one to two minutes for this. Please start speaking now.");
+    } else { R.step = "ask"; render(); R.voice = await spqSay(it.g, it.k, it.q); }
+    if (R.stopped) return;
+    beep(); R.step = "rec"; R.t0 = Date.now(); render();
+    clearInterval(R.tick); R.tick = setInterval(() => { const el = document.getElementById("room-clock"); if (el) el.textContent = it.part === 2 ? mmss(Math.max(0, it.max - Math.floor((Date.now() - R.t0) / 1000))) : mmss(Math.floor((Date.now() - R.t0) / 1000)); }, 500);
+    let blob = null;
+    try { blob = await autoRec({ maxSec: it.max, quietSec: it.part === 2 ? 6 : 2.5, idleSec: it.part === 2 ? 15 : 8 }); } catch (e) { R.err = e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro." : "Không ghi âm được: " + (e?.message || e); roomStop(); render(); return; }
+    clearInterval(R.tick); if (R.stopped) return;
+    if (it.part === 2) await spSayWait("Thank you.");
+    R.pending++; const idx = i;
+    R.queue = R.queue.then(async () => { try { R.ans[idx] = await spAnalyze(blob); } catch (e) { R.ans[idx] = null; R.fail = (R.fail || 0) + 1; } R.pending--; if (R.phase === "done") render(); });
+  }
+  if (R.stopped) return;
+  R.step = null; await spSayWait("Thank you. That is the end of the speaking test."); R.phase = "done"; render();
+}
+function roomView() {
+  const R = UI.room, it = R.items[R.i];
+  if (R.phase === "intro") return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Phòng thi giống thật"),
+    h("ul", { class: "gex" }, h("li", null, "Giám khảo đọc câu hỏi, chữ câu hỏi được ẩn như thi thật (bấm hiện được nếu nghe không ra)."), h("li", null, "Sau tiếng bíp là tới lượt bạn: máy tự ghi âm và tự dừng khi bạn ngừng nói khoảng 2,5 giây (Part 1, 3)."), h("li", null, "Part 2: đọc thẻ đề, 1 phút chuẩn bị (ghi chú được), rồi nói; tới 2 phút giám khảo tự dừng bạn."), h("li", null, `Gồm ${R.items.filter(x => x.part === 1).length} câu Part 1, 1 thẻ Part 2, ${R.items.filter(x => x.part === 3).length} câu Part 3, khoảng 12–14 phút. Xong mới chấm 1 lượt AI.`), h("li", null, "Nên đeo tai nghe có micro và ngồi chỗ yên tĩnh.")),
+    spModelCard(["asr", "ph"]),
+    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: !spReady(["asr", "ph"]) || null, onclick: () => roomRun() }, "Bắt đầu thi"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { UI.room = null; render(); } }, "Thoát")));
+  if (R.phase === "done") {
+    const S = { kind: "room", items: R.items, ans: Object.fromEntries(Object.entries(R.ans).filter(([, v]) => v)) };
+    return h("div", { class: "stack", style: "gap:14px" }, h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Hết giờ thi"),
+      R.pending ? h("p", { class: "muted" }, `Máy đang chép lời và đo các câu cuối (còn ${R.pending})…`) : h("p", { class: "small muted", style: "margin:0" }, `Đã ghi ${Object.keys(S.ans).length}/${R.items.length} câu trả lời.` + (R.fail ? ` ${R.fail} câu không nghe rõ nên bỏ qua.` : "")),
+      h("div", { class: "row" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { UI.room = null; render(); } }, "Thoát (không chấm)"))),
+      !R.pending && Object.keys(S.ans).length ? spGradeCard(S, Object.keys(S.ans).length === R.items.length) : null,
+      !R.pending ? h("details", null, h("summary", null, "Xem lại lời bạn đã nói"), h("div", { class: "stack", style: "gap:8px;margin-top:8px" }, R.items.map((x, k) => h("div", { class: "stack", style: "gap:2px" }, h("b", { class: "small" }, `Part ${x.part}: ${x.q}`), h("span", { class: "small" }, R.ans[k]?.text || "(không có)"))))) : null);
+  }
+  const partN = it.part, stepTxt = R.step === "ask" ? "Giám khảo đang hỏi…" : R.step === "prep" ? "Thời gian chuẩn bị" : R.step === "rec" ? (partN === 2 ? "Bạn đang nói, còn" : "Đến lượt bạn, đang ghi") : "";
+  return h("div", { class: "stack", style: "gap:14px" },
+    h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { if (!confirm("Dừng bài thi? Các câu đã trả lời vẫn chấm được.")) return; roomStop(); R.phase = "done"; render(); } }, "■ Dừng thi"), h("span", { class: "small muted" }, `Câu ${R.i + 1}/${R.items.length} · Part ${partN}`)),
+    h("div", { class: "meter" }, h("i", { style: `width:${R.i / R.items.length * 100}%` })),
+    R.err ? h("p", { class: "note bad" }, R.err) : null,
+    h("section", { class: "card stack room-card", style: "gap:12px;align-items:center;text-align:center" },
+      h("span", { class: "eyebrow" }, `Part ${partN}` + (it.topic ? " · " + it.topic : "")),
+      h("div", { class: "room-orb " + (R.step || "") }, R.step === "ask" ? "🗣️" : R.step === "rec" ? "🎙️" : "📝"),
+      h("b", { class: "room-step" }, stepTxt), R.step === "prep" || R.step === "rec" ? h("span", { id: "room-clock", class: "timer" }, partN === 2 && R.step === "rec" ? mmss(it.max) : R.step === "prep" ? mmss(R.left) : "0:00") : null,
+      partN === 2 ? h("div", { class: "room-cue stack", style: "gap:6px;text-align:left" }, h("b", null, it.q), h("span", { class: "small muted" }, "You should say:"), h("ul", { class: "gex" }, it.points.map(p => h("li", null, p))), h("span", { class: "small muted" }, "and explain why.")) :
+        R.show ? h("p", { class: "prompt", style: "margin:0" }, it.q) : h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { R.show = true; render(); } }, "Hiện câu hỏi (nếu nghe không ra)"),
+      R.step === "prep" ? h("textarea", { rows: "4", placeholder: "Ghi chú nhanh 4–6 từ khóa…", style: "max-width:520px;width:100%", oninput: e => { R.notes = e.target.value; } }, R.notes) : null,
+      R.step === "prep" ? h("button", { class: "btn", type: "button", onclick: () => { R.skipPrep = true; } }, "Tôi chuẩn bị xong, nói luôn") : null,
+      R.step === "rec" ? h("button", { class: "btn btn-primary", type: "button", onclick: () => SHW.rec?.stop() }, partN === 2 ? "Tôi nói xong" : "Xong câu này") : null,
+      R.voice === "k" ? h("span", { class: "small muted" }, "Câu này đang dùng giọng máy; giọng giám khảo Gemini được máy chủ thu dần mỗi đêm.") : null));
+}
+
+/* ===== Bảng lượt AI còn lại hôm nay (cả nhóm dùng chung một key Gemini miễn phí) ===== */
+const QT = { d: null, at: 0, p: null, err: null };
+function quotaLoad(force) {
+  if (!window.__quota) return Promise.resolve(null);
+  if (!force && (QT.d || QT.err) && Date.now() - QT.at < (QT.err ? 300000 : 60000)) return Promise.resolve(QT.d);
+  return QT.p ||= window.__quota().then(d => { if (!d?.tiers) throw { message: "Worker chưa có bảng lượt (cần cập nhật bản mới)" }; Object.assign(QT, { d, at: Date.now(), err: null }); return d; }).catch(e => { QT.err = e?.message || e?.code || "lỗi"; QT.at = Date.now(); return null; }).finally(() => { QT.p = null; });
+}
+const TIER_INFO = {
+  top: ["Mạnh nhất", "Chấm bài Writing đầy đủ, chấm thi thử Speaking, chữa bài viết dài từ 150 từ, soạn bài đọc và bài nghe mới, phân tích tiến bộ"],
+  mid: ["Vừa", "Chữa đoạn ngắn trong bài ngữ pháp và khóa Viết, chấm game viết câu và bài dịch, ra đề, giải thích đề, lập kế hoạch tuần, chép lời video YouTube"],
+  lite: ["Nhẹ", "Tra từ, sổ từ vựng, phân tích câu, giải thích câu Reading làm sai, chấm paraphrase"]
+};
+function quotaSum(rows) {
+  let left = 0, known = true, used = 0;
+  for (const r of rows) { used += r.used; if (r.out) continue; if (r.lim == null) { known = false; continue; } left += Math.max(0, r.lim - r.used); }
+  return { left, known, used, allOut: rows.length > 0 && rows.every(r => r.out) };
+}
+function quotaChip() {
+  const d = QT.d; if (!d) { quotaLoad(); return null; }
+  const s = quotaSum(d.tiers.mid);
+  return h("a", { class: "chip " + (s.allOut ? "bad" : s.known && s.left < 20 ? "warn" : "good"), href: "#quota", title: "Lượt AI còn lại hôm nay" }, "⚡ " + (s.allOut ? "Hết lượt AI" : (s.known ? "" : "≥") + s.left + " lượt AI"));
+}
+function pageQuota() {
+  const d = QT.d;
+  if (!d) { quotaLoad(true).then(() => document.querySelector(".qt-page") && render()); }
+  const reset = d ? new Date(d.resetAt) : null;
+  const tbl = (rows, label) => h("table", { class: "qt-tbl" }, h("thead", null, h("tr", null, h("th", null, label), h("th", null, "Đã dùng"), h("th", null, "Giới hạn/ngày"), h("th", null, "Còn"), h("th", null, "Trạng thái"))),
+    h("tbody", null, rows.map(r => h("tr", { class: r.out ? "out" : "" }, h("td", null, h("code", null, r.model)), h("td", null, String(r.used)), h("td", null, r.lim ?? "chưa biết"), h("td", null, r.out ? "0" : r.lim != null ? String(Math.max(0, r.lim - r.used)) : "?"),
+      h("td", null, r.out ? h("span", { class: "chip bad" }, "Hết lượt hôm nay") : r.busy ? h("span", { class: "chip warn" }, "Đang quá nhanh, chờ 1 phút") : h("span", { class: "chip good" }, "Dùng được"))))));
+  return h("div", { class: "stack qt-page", style: "gap:18px" },
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Dùng chung cả nhóm"), h("h1", null, "Lượt AI hôm nay"),
+      h("p", { class: "muted", style: "max-width:68ch;margin:0" }, "Cả nhóm dùng chung một key Gemini miễn phí. Mỗi model có giới hạn lượt riêng mỗi ngày; model đầu hết lượt thì web tự chuyển sang model sau trong cùng hạng. Phần chấm phát âm, nghe, số và đánh vần, shadowing chạy trên máy nên không tốn lượt."),
+      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { QT.d = null; quotaLoad(true).then(() => render()); render(); } }, "↻ Cập nhật"), d ? h("span", { class: "small muted" }, "Cập nhật lúc " + new Date(QT.at).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })) : null)),
+    QT.err && !d ? h("p", { class: "note bad" }, "Chưa lấy được số liệu (" + QT.err + "). Có thể Worker chưa được cập nhật bản mới.") : null,
+    !d ? h("p", { class: "muted" }, "Đang tải…") : [
+      !d.kv ? h("p", { class: "note warn" }, "Worker chưa gắn nơi lưu AUDIO nên chưa đếm được lượt.") : null,
+      h("section", { class: "card stack", style: "gap:10px" },
+        h("div", { class: "statgrid" }, [["Bạn đã dùng hôm nay", d.me + " lượt"], ["Cả nhóm đã dùng", d.total + " lượt"], ["Số người dùng hôm nay", d.people], ["Đặt lại lượt lúc", reset.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) + " (giờ VN)"]].map(([k, v]) => h("div", null, h("span", { class: "small muted" }, k), h("b", null, String(v))))),
+        h("p", { class: "small muted", style: "margin:0" }, "Google đặt lại lượt lúc 0 giờ theo giờ California, tức khoảng 14–15 giờ chiều giờ Việt Nam.")),
+      ...["top", "mid", "lite"].map(t => { const s = quotaSum(d.tiers[t]);
+        return h("section", { class: "card stack", style: "gap:8px" }, h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" }, h("h2", null, `Hạng ${TIER_INFO[t][0].toLowerCase()}`), h("b", { class: s.allOut ? "bad-t" : "" }, s.allOut ? "Hết lượt" : `Còn ${s.known ? "" : "ít nhất "}${s.left} lượt`)),
+          h("p", { class: "small muted", style: "margin:0" }, "Dùng cho: " + TIER_INFO[t][1] + "."), h("div", { class: "qt-wrap" }, tbl(d.tiers[t], "Model (theo thứ tự ưu tiên)"))); }),
+      h("section", { class: "card stack", style: "gap:8px" }, h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" }, h("h2", null, "Giọng đọc Gemini"), (() => { const s = quotaSum(d.tts); return h("b", null, s.allOut ? "Hết lượt" : `Còn ${s.known ? "" : "ít nhất "}${s.left} lượt`); })()),
+        h("p", { class: "small muted", style: "margin:0" }, "Dùng để đọc bài nghe và giọng giám khảo Speaking. Máy chủ tự thu ban đêm; bài đã thu thì cả nhóm nghe lại không tốn lượt."), h("div", { class: "qt-wrap" }, tbl(d.tts, "Model giọng đọc"))),
+      h("p", { class: "small muted" }, "“Chưa biết”: Google không báo trước giới hạn; Worker tự ghi lại con số khi model đó báo hết lượt lần đầu. Chủ trang có thể ghi sẵn giới hạn trong biến RPD của Worker.")]);
+}
+(function () {
+  const mine = r => r === "quota";
+  const _or = onRoute; window.removeEventListener("hashchange", _or);
+  onRoute = function () { const raw = (location.hash || "").slice(1); if (!mine(raw)) return _or(); if (raw !== UI.route) { UI.route = raw; $("#lookup").hidden = true; render(); window.scrollTo(0, 0); } };
+  window.addEventListener("hashchange", () => onRoute());
+  const _ri = renderInner;
+  renderInner = function () { if (UI.route !== "quota") return _ri(); renderNav(); UI.keyH = null; $("#main").replaceChildren(pageQuota()); renderAsk(); };
+  const _nav = navTab; navTab = r => r === "quota" ? "today" : _nav(r);
+})();
+/* Chip nhỏ cạnh tài khoản ở thanh trên: luôn thấy còn bao nhiêu lượt */
+setInterval(() => { const box = document.getElementById("acct"); if (!box || !window.__quota) return; quotaLoad().then(() => { const c = quotaChip(); if (!c) return; c.id = "qchip"; const old = document.getElementById("qchip"); old ? old.replaceWith(c) : box.prepend(c); }); }, 4000);
+
+/* Tự sinh từ app gốc bởi gen_sync4.py: bản 4 kỹ năng. Đừng sửa tay. */
+function goalCard() {
+  const sb = skillBands(), t = today();
+  const daysLeft = P.examDate ? Math.round((new Date(P.examDate + "T00:00:00") - new Date(t + "T00:00:00")) / 86400000) : null;
+  const skills = SK4.map(x => x.slice(0, 3));
+  const missing = skills.filter(([k]) => sb[k] == null);
+  const known = skills.filter(([k]) => sb[k] != null).sort((a, b) => (sb[a[0]] - (P.skillTarget?.[a[0]] ?? P.target)) - (sb[b[0]] - (P.skillTarget?.[b[0]] ?? P.target)));
+  const focus = missing[0] || known[0];
+  const rep = h("div");
+  return h("section", { class: "card" },
+    h("div", { class: "row", style: "justify-content:space-between;align-items:flex-end" },
+      h("div", { class: "stack", style: "gap:2px" }, h("span", { class: "eyebrow" }, "Mục tiêu"), h("h2", null, `Band ${(+P.target).toFixed(1)}` + (daysLeft != null ? (daysLeft >= 0 ? ` · còn ${daysLeft} ngày` : " · đã qua ngày thi") : ""))),
+      h("a", { class: "btn btn-primary", href: "#mock" }, "Thi thử")),
+    h("div", { class: "row" }, skills.map(([k, l]) => h("span", { class: "chip " + (sb[k] == null ? "" : sb[k] >= (P.skillTarget?.[k] ?? P.target) ? "good" : "warn") }, `${l} ${sb[k] == null ? "chưa có" : sb[k].toFixed(1)} / ${(P.skillTarget?.[k] ?? P.target).toFixed(1)}`))),
+    focus ? h("p", { class: "note small" }, missing.length ? `Tuần này nên tập trung: ${focus[1]}. Chưa có điểm ${focus[1]} để ước tính, làm 1–2 bài để web biết bạn đang ở đâu. ` : `Tuần này nên tập trung: ${focus[1]} (thấp nhất, ước tính ${sb[focus[0]].toFixed(1)}). `, h("a", { href: focus[2] }, "Đi tới " + focus[1])) : null,
+    h("p", { class: "small muted" }, "Listening và Reading quy đổi từ số câu đúng; Writing và Speaking do AI chấm theo 4 tiêu chí (Speaking lấy 2 lần thi gần nhất)."),
+    h("details", { open: UI.goalOpen || null, ontoggle: e => UI.goalOpen = e.currentTarget.open }, h("summary", { class: "small" }, "Sửa ngày thi, band mục tiêu, thời gian học"),
+      goalEditor()),
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: async () => { const txt = weekReport(); try { await navigator.clipboard.writeText(txt); toast("Đã sao chép báo cáo tuần"); } catch { const ta = h("textarea", { rows: "9", readonly: true }); ta.value = txt; rep.replaceChildren(h("p", { class: "small muted" }, "Không sao chép tự động được, hãy chọn và sao chép đoạn dưới:"), ta); ta.select(); } } }, "Sao chép báo cáo tuần")), rep);
+}
+function goalEditor() {
+  const bands = [4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5];
+  const apply = fn => { fn(); UI.goalOpen = true; saveProfileNow("goal"); };
+  const chips = (vals, cur, label, on) => h("div", { class: "row", style: "gap:6px" }, vals.map(v => h("button", { type: "button", class: "opt", "aria-pressed": cur === v ? "true" : "false", onclick: () => apply(() => on(v)) }, label(v))));
+  const dIn = h("input", { type: "text", id: "exdate2", inputmode: "numeric", placeholder: "ví dụ 20/03/2027", style: "max-width:170px", value: P.examDate ? P.examDate.split("-").reverse().join("/") : "" });
+  const dMsg = h("span", { class: "small", style: "color:var(--bad)" });
+  const saveDate = () => { const m = dIn.value.trim().match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/); if (!dIn.value.trim()) { apply(() => P.examDate = null); return; } if (!m) { dMsg.textContent = "Nhập dạng ngày/tháng/năm, ví dụ 20/03/2027."; return; } const iso = `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`; if (isNaN(new Date(iso + "T00:00:00"))) { dMsg.textContent = "Ngày không hợp lệ."; return; } apply(() => P.examDate = iso); };
+  return h("div", { class: "stack", style: "gap:12px;margin-top:10px" },
+    saveMsgNode("goal") || h("span", { class: "small muted" }, "Chạm vào lựa chọn là lưu luôn."),
+    h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small" }, "Band mục tiêu tổng"), chips(bands, +P.target, v => v.toFixed(1), v => P.target = v)),
+    SK4.map(x => x[0]).map(k => h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small" }, { listening: "Listening", reading: "Reading", writing: "Writing", speaking: "Speaking" }[k] + " (để “=” thì bằng band tổng)"),
+      chips(["=", ...bands], P.skillTarget?.[k] ?? "=", v => v === "=" ? "=" : v.toFixed(1), v => { P.skillTarget ||= {}; if (v === "=") delete P.skillTarget[k]; else P.skillTarget[k] = v; }))),
+    h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small" }, "Phút học mỗi ngày"), chips([15, 20, 30, 45, 60, 90, 120], P.minutesPerDay || 20, v => v + "′", v => P.minutesPerDay = v)),
+    h("div", { class: "stack", style: "gap:6px" }, h("label", { class: "small", for: "exdate2" }, "Ngày thi (ngày/tháng/năm, để trống nếu chưa có)"),
+      h("div", { class: "row" }, dIn, h("button", { class: "btn btn-primary", type: "button", onclick: saveDate }, "Lưu ngày thi"), P.examDate ? h("button", { class: "btn btn-quiet", type: "button", onclick: () => apply(() => P.examDate = null) }, "Xoá") : null), dMsg));
+}
+function planCard() {
+  const PL = P.plan, t = today();
+  const out = h("div", { class: "stack" });
+  const btn = aiBtn(PL ? "Lập lại kế hoạch" : "Claude lập kế hoạch 7 ngày", async () => {
+    out.replaceChildren(h("p", { class: "small muted" }, "Claude đang xếp lịch…"));
+    const sb = skillBands(), next = LESSONS.filter(l => !P.lessons[l.id]?.done).slice(0, 6).map(l => `lesson-${l.id}: ${l.title}`);
+    try {
+      const r = await ai(`Lập kế hoạch học IELTS đủ 4 kỹ năng (Listening, Reading, Writing, Speaking, kèm phát âm IPA) cho 7 ngày bắt đầu từ ${t} cho một sinh viên Việt Nam. Mỗi ngày khoảng ${P.minutesPerDay || 20} phút.
+Dữ liệu: mục tiêu band ${P.target}; ${P.examDate ? "ngày thi " + P.examDate : "chưa có ngày thi"}; band ước tính Listening ${sb.listening ?? "chưa có"}, Reading ${sb.reading ?? "chưa có"}, Writing ${sb.writing ?? "chưa có"}, Speaking ${sb.speaking ?? "chưa có"}; ${sk4Brief()}; lỗi hay gặp: ${Object.entries(P.errors || {}).sort((a, b) => b[1].n - a[1].n).slice(0, 4).map(([k, v]) => k + " " + v.n + " lần").join(", ") || "chưa có"}; từ vựng đến hạn ${VOCAB.filter(v => v.due <= t).length}; sổ lỗi đến hạn ${MIST.filter(m => m.due <= t).length}; bài ngữ pháp chưa học: ${next.join("; ") || "đã học hết"}.
+Ưu tiên kỹ năng yếu nhất, mỗi ngày 2–3 việc, cộng phút đúng khoảng thời gian trên. Có 1 ngày nhẹ. Nếu còn dưới 14 ngày tới ngày thi thì thêm thi thử.
+Mỗi việc có "link" là MỘT trong các giá trị: ${PLAN_LINKS.join(", ")}.
+Chỉ trả lời JSON: {"focus":"1 câu tiếng Việt: trọng tâm tuần","days":[{"date":"YYYY-MM-DD","tasks":[{"what":"việc cụ thể bằng tiếng Việt","minutes":10,"link":"reading"}]}]}`, { json: true, cache: false });
+      const days = (Array.isArray(r?.days) ? r.days : []).slice(0, 7).map((d, i) => ({ date: /^\d{4}-\d{2}-\d{2}$/.test(d.date) ? d.date : addDays(t, i), tasks: (Array.isArray(d.tasks) ? d.tasks : []).slice(0, 4).map(x => ({ what: String(x.what || ""), minutes: Number(x.minutes) || 0, link: PLAN_LINKS.includes(x.link) ? x.link : "today" })) }));
+      if (!days.length) throw { code: "invalid_json" };
+      P.plan = { created: t, focus: String(r.focus || ""), days, done: {} }; saveProfile(); render();
+    } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
+  }, PL ? "btn" : "btn btn-primary");
+  const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kế hoạch 7 ngày"), btn)];
+  if (!PL) kids.push(h("p", { class: "small muted" }, `Claude xếp lịch theo ngày thi, kỹ năng yếu nhất, sổ lỗi và ${P.minutesPerDay || 20} phút mỗi ngày của bạn (đổi số phút ở phần Mục tiêu).`), aiNote());
+  else {
+    if (PL.focus) kids.push(h("p", { class: "note small" }, PL.focus));
+    const dayNode = (d, di) => h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, new Date(d.date + "T00:00:00").toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" }) + (d.date === t ? " · hôm nay" : "")),
+      d.tasks.map((x, ti) => { const k = di + "-" + ti, ok = !!PL.done[k];
+        return h("div", { class: "goal" }, h("button", { type: "button", class: "tick" + (ok ? " on" : ""), style: "cursor:pointer;background:" + (ok ? "var(--good)" : "transparent"), "aria-label": "Đánh dấu xong", onclick: () => { PL.done[k] = !ok; saveProfile(); render(); } }, ok ? "✓" : ""), h("a", { href: "#" + x.link, style: "color:var(--ink);text-decoration:none" }, x.what), h("span", { class: "small muted" }, x.minutes ? x.minutes + "′" : "")); }));
+    const ti = PL.days.findIndex(d => d.date === t);
+    if (ti >= 0) kids.push(dayNode(PL.days[ti], ti)); else kids.push(h("p", { class: "small muted" }, "Kế hoạch này không có ngày hôm nay. Bấm lập lại để có kế hoạch mới."));
+    kids.push(h("details", null, h("summary", { class: "small" }, "Xem cả tuần"), h("div", { class: "stack", style: "gap:12px;margin-top:10px" }, PL.days.map((d, i) => i === ti ? null : dayNode(d, i)))));
+  }
+  kids.push(out);
+  return h("section", { class: "card" }, kids);
+}
+
+/* ===== Đồng bộ 4 kỹ năng cho web ngoài: band ước tính, Mục tiêu, Hôm nay, Lộ trình, phân tích cá nhân và lộ trình đề xuất ===== */
+const SK4 = [["listening", "Listening", "#listen", "L"], ["reading", "Reading", "#reading", "R"], ["writing", "Writing", "#writing", "W"], ["speaking", "Speaking", "#speak", "S"]];
+const SK4_ICO = { L: "M4 14v-2a8 8 0 0116 0v2M4 14h3v6H5a1 1 0 01-1-1zM20 14h-3v6h2a1 1 0 001-1z", S: "M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3zM5 11a7 7 0 0014 0M12 18v3", R: "M3 5h7a3 3 0 013 3v12a2 2 0 00-2-2H3zM21 5h-7a3 3 0 00-3 3v12a2 2 0 012-2h8z", W: "M4 20h4L19 9l-4-4L4 16zM14 6l4 4" };
+const avgOf = a => a.reduce((s, x) => s + x, 0) / a.length;
+/* Listening: đề đầy đủ gần nhất; chưa có thì quy từ các phần đã làm (ít nhất 2 phần) */
+function lsBandEst() {
+  const t = Object.values(P.lsTests || {}).filter(x => x.band != null).sort((a, b) => a.date < b.date ? -1 : 1).slice(-2);
+  if (t.length) return roundBand(avgOf(t.map(x => x.band)));
+  const s = Object.entries(P.ls || {}).filter(([id, v]) => id !== "dict" && v.score != null && LS_BANK.some(x => x.id === id)).map(([, v]) => v.last ?? v.score);
+  return s.length >= 2 ? lsBand(Math.round(avgOf(s.slice(-6)) * 4)) : null;
+}
+function spBandEst() { loadSpeaks(); const s = SPEAKS.filter(x => x.result?.overall != null).slice(0, 2); return s.length ? roundBand(avgOf(s.map(x => x.result.overall))) : null; }
+const _sb4 = skillBands;
+skillBands = function () { const b = _sb4(); return { ...b, listening: lsBandEst(), speaking: spBandEst() }; };
+const tgOf = k => +(P.skillTarget?.[k] ?? P.target);
+
+/* ----- Điểm yếu từng kỹ năng (tính trên máy, không gọi AI) ----- */
+function sk4Weak() {
+  const out = { listening: [], reading: [], writing: [], speaking: [] };
+  const nd = Object.entries(P.ndStat || {}).filter(([, s]) => s[0] >= 5 && s[1] / s[0] < 0.75).sort((a, b) => a[1][1] / a[1][0] - b[1][1] / b[1][0]);
+  if (nd.length) out.listening.push({ t: `Số và đánh vần: ${ND_CAT[nd[0][0]][0]} mới đúng ${Math.round(nd[0][1][1] / nd[0][1][0] * 100)}%`, href: "#listen-nd" });
+  const qt = Object.entries(P.lsQt || {}).filter(([, s]) => s[0] >= 8).sort((a, b) => a[1][1] / a[1][0] - b[1][1] / b[1][0])[0];
+  if (qt && qt[1][1] / qt[1][0] < 0.75) { const L = { gap: ["Điền từ", "lp-limit"], mcq: ["Trắc nghiệm A/B/C", "lp-mcq"], match: ["Nối thông tin", "lp-match"] }[qt[0]]; if (L) out.listening.push({ t: `Dạng ${L[0]} mới đúng ${Math.round(qt[1][1] / qt[1][0] * 100)}%`, href: "#lp-" + L[1] }); }
+  const lpN = LP_PATH.find(l => !lpDone(l)); if (lpN) out.listening.push({ t: `Lộ trình Nghe: ${LP_PATH.filter(lpDone).length}/${LP_PATH.length} bài`, href: "#lp-" + lpN.id });
+  const lastW = [...WRIT].reverse().find(w => w.result?.criteria?.length);
+  if (lastW) { const c = lastW.result.criteria.slice().sort((a, b) => a.band - b.band)[0]; out.writing.push({ t: `Tiêu chí thấp nhất bài gần nhất: ${c.name} (${c.band})`, href: "#writing" }); }
+  const wl = WL.find(l => !P.lessons[l.id]?.done); if (wl) out.writing.push({ t: `Khóa Viết: còn ${WL.filter(l => !P.lessons[l.id]?.done).length} bài`, href: "#wl-" + wl.id });
+  const gram = MIST.filter(m => isGramErr(m) && !m.res && mGL(m)), gg = {}; for (const m of gram) gg[mGL(m)] = (gg[mGL(m)] || 0) + 1;
+  const gt = Object.entries(gg).sort((a, b) => b[1] - a[1])[0]; if (gt) out.writing.push({ t: `Lỗi ngữ pháp hay gặp: ${lessonById(gt[0]).title} (${gt[1]} lỗi)`, href: "#lesson-" + gt[0] });
+  const rl = RL.find(l => !P.lessons[l.id]?.done); if (rl) out.reading.push({ t: `Khóa Đọc: ${RL.filter(l => P.lessons[l.id]?.done).length}/${RL.length} bài`, href: "#rl-" + rl.id });
+  const rA = READS.flatMap(r => r.attempts || []).slice(-5); if (rA.length) out.reading.push({ t: `5 bài gần nhất đúng ${Math.round(rA.reduce((a, x) => a + x.score, 0) / Math.max(1, rA.reduce((a, x) => a + x.total, 0)) * 100)}% số câu`, href: "#reading" });
+  const sp = SPEAKS.find(x => x.result?.criteria?.length); if (sp) { const c = sp.result.criteria.slice().sort((a, b) => a.band - b.band)[0]; out.speaking.push({ t: `Tiêu chí thấp nhất lần thi gần nhất: ${c.name} (${c.band})`, href: "#speak" }); }
+  const weak = Object.entries(P.pron || {}).filter(([, v]) => v[0] >= 8 && v[1] / v[0] > 0.3).sort((a, b) => b[1][1] / b[1][0] - a[1][1] / a[1][0]).slice(0, 3);
+  if (weak.length) { const les = PR_LESSONS.find(l => l.ph.includes(weak[0][0])); out.speaking.push({ t: "Âm hay sai: " + weak.map(([b, v]) => `/${phIpa(b)}/ ${Math.round(v[1] / v[0] * 100)}%`).join(", "), href: les ? "#pr-" + les.id : "#ipa" }); }
+  const prN = PR_LESSONS.find(l => !prDone(l)); if (prN) out.speaking.push({ t: `Lộ trình phát âm: ${PR_LESSONS.filter(prDone).length}/${PR_LESSONS.length} bài`, href: "#pr-" + prN.id });
+  if (P.shStat?.n) out.speaking.push({ t: `Shadowing: ${P.shStat.n} câu, trung bình ${P.shStat.avg}/100`, href: "#speak-shadow" });
+  return out;
+}
+function sk4Brief() { const w = sk4Weak(); return "điểm yếu: " + SK4.map(([k, n]) => n + ": " + (w[k].map(x => x.t).join("; ") || "chưa có dữ liệu")).join(" | "); }
+/* Lộ trình đề xuất: kỹ năng xa mục tiêu nhất (hoặc chưa có điểm) đi trước */
+function sk4Next(sb) {
+  const gap = k => sb[k] == null ? 9 : tgOf(k) - sb[k], order = SK4.slice().sort((a, b) => gap(b[0]) - gap(a[0])), out = [];
+  for (const [k, name, href] of order) {
+    if (sb[k] == null) { out.push({ k, t: { listening: "Làm 1 đề Listening đầy đủ để biết band hiện tại", reading: "Làm 1 bài Reading ở chế độ thi", writing: "Viết 1 bài Task 2 để được chấm", speaking: "Vào phòng thi Speaking để có band đầu tiên" }[k], href: { listening: "#listen", reading: "#reading", writing: "#writing", speaking: "#speak-room" }[k] }); continue; }
+    const w = sk4Weak()[k][0]; if (gap(k) > 0 && w) out.push({ k, t: `${name} (${sb[k].toFixed(1)} → ${tgOf(k).toFixed(1)}): ${w.t}`, href: w.href });
+  }
+  return out.slice(0, 5);
+}
+function sk4Card(opt = {}) {
+  loadSpeaks();
+  const sb = skillBands(), w = sk4Weak(), nx = sk4Next(sb), have = SK4.filter(([k]) => sb[k] != null);
+  const ov = have.length === 4 ? roundBand(avgOf(SK4.map(([k]) => sb[k]))) : null;
+  return h("section", { class: "card stack sk4", style: "gap:12px" },
+    h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" }, h("h2", null, "Phân tích 4 kỹ năng"), h("span", { class: "small muted" }, ov != null ? `Band tổng ước tính ${ov.toFixed(1)} / mục tiêu ${(+P.target).toFixed(1)}` : `Đã có điểm ${have.length}/4 kỹ năng`)),
+    h("div", { class: "sk4-grid" }, SK4.map(([k, name, href, K]) => h("div", { class: "sk4-row" },
+      h("a", { class: "sk4-h", href }, h("span", { class: "pl-ic " + K, html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SK4_ICO[K]}"/></svg>` }), h("b", null, name), h("span", { class: "sk4-b" }, sb[k] == null ? "–" : sb[k].toFixed(1), h("small", null, " / " + tgOf(k).toFixed(1)))),
+      h("div", { class: "pl-bar" }, h("i", { style: `width:${sb[k] == null ? 0 : Math.min(100, sb[k] / tgOf(k) * 100)}%` })),
+      w[k].length ? h("ul", { class: "sk4-w" }, w[k].slice(0, opt.full ? 4 : 2).map(x => h("li", null, h("a", { href: x.href }, x.t)))) : h("span", { class: "small muted" }, "Chưa có dữ liệu, làm vài bài để web phân tích.")))),
+    nx.length ? h("div", { class: "stack", style: "gap:6px" }, h("h3", null, "Lộ trình đề xuất (ưu tiên kỹ năng xa mục tiêu nhất)"), h("ol", { class: "sk4-next" }, nx.map(x => h("li", null, h("a", { href: x.href }, x.t))))) : null,
+    h("p", { class: "small muted", style: "margin:0" }, "Tính ngay trên máy từ bài bạn đã làm, không tốn lượt AI. Band là ước tính để định hướng, không phải điểm thi."));
+}
+/* ----- Hôm nay: thêm Nghe và Nói/Phát âm, giữ cố định trong ngày ----- */
+PLAN_LINKS.push("listen", "speak", "listen-nd", "speak-shadow", "speak-room", "quota", ...LP_PATH.map(l => "lp-" + l.id), ...PR_LESSONS.map(l => "pr-" + l.id), ...SP_PATH.map(l => "sl-" + l.id));
+function today4(t) {
+  if (P.day4?.date === t) return P.day4;
+  const odd = new Date(t + "T00:00:00").getDate() % 2 === 1, lp = LP_PATH.find(l => !lpDone(l)), pr = PR_LESSONS.find(l => !prDone(l)), sl = SP_PATH.find(l => !splSt(l.id).done);
+  const ndWeak = Object.entries(P.ndStat || {}).some(([, s]) => s[0] >= 5 && s[1] / s[0] < 0.75), sec = LS_BANK.slice().sort((a, b) => ((P.ls || {})[a.id]?.n || 0) - ((P.ls || {})[b.id]?.n || 0) || a.test - b.test)[0];
+  const l = lp ? { k: "lp", id: lp.id } : ndWeak && odd ? { k: "nd" } : { k: "sec", id: sec.id };
+  const s = pr && (odd || !sl) ? { k: "pr", id: pr.id } : sl ? { k: "sl", id: sl.id } : { k: "sh" };
+  P.day4 = { date: t, l, s }; saveProfile(); return P.day4;
+}
+const _ti4 = todayItems;
+todayItems = function (t, lg) {
+  const items = _ti4(t, lg), D = today4(t), odd = new Date(t + "T00:00:00").getDate() % 2 === 1;
+  let L = null, S = null;
+  if (D.l.k === "lp") { const l = LP_PATH.find(x => x.id === D.l.id); L = { title: `Bài ${LP_PATH.indexOf(l) + 1}/${LP_PATH.length}: ${l.t}`, sub: "Hiểu kỹ năng nghe rồi làm bài ngắn, máy chấm · khoảng 15 phút", href: "#lp-" + l.id, ok: (P.lp || {})[l.id]?.done === t }; }
+  else if (D.l.k === "nd") L = { title: "Luyện số, ngày giờ và đánh vần", sub: "Một lượt 10 câu nghe ngắn, ưu tiên dạng bạn hay sai · khoảng 8 phút", href: "#listen-nd", ok: P.ndDay === t };
+  else { const s = LS_BANK.find(x => x.id === D.l.id); L = { title: `Đề ${s.test} · Section ${s.sec}: ${s.title}`, sub: "Nghe và làm 10 câu, xong mở lời thoại xem lại câu sai · khoảng 12 phút", href: "#ls-" + s.id, ok: (P.ls || {})[s.id]?.date === t }; }
+  if (D.s.k === "pr") { const l = PR_LESSONS.find(x => x.id === D.s.id); S = { tag: "Phát âm", title: `Bài ${PR_LESSONS.indexOf(l) + 1}/${PR_LESSONS.length}: ${l.t}`, sub: "Nghe chọn, đọc từng từ rồi đọc câu, máy chấm từng âm · khoảng 15 phút", href: "#pr-" + l.id, ok: (P.pr || {})[l.id]?.done === t }; }
+  else if (D.s.k === "sl") { const l = SP_PATH.find(x => x.id === D.s.id); S = { tag: "Nói", title: `Bài ${SP_PATH.indexOf(l) + 1}/${SP_PATH.length}: ${l.t}`, sub: "Học khung trả lời rồi nói, máy đo độ trôi chảy và phát âm · khoảng 15 phút", href: "#sl-" + l.id, ok: splSt(l.id).done === t }; }
+  else S = { tag: "Nói", title: "Shadowing 8 câu", sub: "Nghe từng câu rồi nói lại, máy chấm âm, nhịp và tốc độ · khoảng 10 phút", href: "#speak-shadow", ok: (P.shDay?.[t] || 0) >= 8 };
+  if (!P.dayLight || odd) items.push({ tag: "Nghe", min: 15, doneSub: "Đã xong hôm nay", ...L });
+  if (!P.dayLight || !odd) items.push({ min: 15, doneSub: "Đã xong hôm nay", ...S });
+  return items;
+};
+const _pt4 = pageToday;
+pageToday = function () {
+  const n = _pt4(), more = n.querySelector(".today-more");
+  if (more) more.before(sk4Card());
+  const lp = n.querySelector(".today-head + section .row .small.muted:not(.plan *)");
+  n.querySelectorAll("span.small.muted").forEach(el => { if (/Chế độ gọn: Đọc và Viết luân phiên|Chế độ đủ: mỗi ngày có cả Ngữ pháp, Đọc và Viết/.test(el.textContent)) el.textContent = P.dayLight ? "Chế độ gọn: ngày lẻ Đọc + Nghe, ngày chẵn Viết + Nói." : "Chế độ đủ: mỗi ngày có Từ vựng, Ngữ pháp, Đọc, Viết, Nghe và Nói."; });
+  return n;
+};
+const _wr4 = weekReport;
+weekReport = function () {
+  const t = today(), wid = weekOf(t), end = addDays(wid, 6), sb = skillBands(), f = x => x == null ? "chưa có" : x.toFixed(1);
+  const sp = SPEAKS.filter(x => { const d = new Date(x.created).toLocaleDateString("en-CA"); return d >= wid && d <= end; });
+  return _wr4().replace(/• Band ước tính:[^\n]*/, m => `• Band ước tính: Listening ${f(sb.listening)}, Reading ${f(sb.reading)}, Writing ${f(sb.writing)}, Speaking ${f(sb.speaking)}` + (m.includes(" · mục tiêu") ? m.slice(m.indexOf(" · mục tiêu")) : ""))
+    + `\n• Speaking: ${sp.length} lần thi` + (sp.length ? `, band gần nhất ${sp[0].result.overall.toFixed(1)}` : "") + `; phát âm: ${PR_LESSONS.filter(prDone).length}/${PR_LESSONS.length} bài` + `\n• Listening: lộ trình ${LP_PATH.filter(lpDone).length}/${LP_PATH.length} bài, ${Object.keys(P.lsTests || {}).length} đề đầy đủ đã làm`;
+};
+/* ----- Lộ trình: bảng 4 kỹ năng, biểu đồ và lịch sử có cả Nghe, Nói ----- */
+const _ph4 = planHistory;
+planHistory = function () {
+  const out = _ph4();
+  for (const [t, r] of Object.entries(P.lsTests || {})) out.push({ k: "L", badge: "Listening", t: Date.parse(r.date + "T12:00:00"), date: r.date, title: "Đề Listening " + t, band: r.band, sub: `${r.raw}/40 câu đúng · đề đầy đủ`, act: "Làm lại", go: () => goRoute("#lt-" + t) });
+  for (const s of SPEAKS) if (s.result?.overall != null) { const d = new Date(s.created).toLocaleDateString("en-CA"); out.push({ k: "S", badge: "Speaking", t: s.created, date: d, title: { full: "Thi thử đầy đủ", room: "Phòng thi Speaking", p1: "Speaking Part 1", p2: "Speaking Part 2", p3: "Speaking Part 3" }[s.kind] || "Speaking", band: s.result.overall, sub: s.result.criteria.map(c => c.name.split(" ")[0] + " " + c.band).join(" · "), act: "Xem kết quả", go: () => goRoute("#speak", () => { UI.spTab = "hist"; UI.spView = s.id; }) }); }
+  return out.sort((a, b) => a.t - b.t);
+};
+planChart = function (hist) {
+  const pts = hist.filter(x => x.k !== "M" && x.band != null);
+  if (pts.length < 2) return null;
+  const W = 760, H = 300, m = { l: 40, r: 18, t: 34, b: 40 }, n = pts.length, tgt = +P.target;
+  const vals = [...pts.map(p => p.band), tgt]; let lo = Math.max(0, Math.floor(Math.min(...vals)) - 1), hi = Math.min(9, Math.ceil(Math.max(...vals)) + 1); if (hi - lo < 3) { lo = Math.max(0, hi - 3); hi = lo + 3; }
+  const X = i => m.l + (W - m.l - m.r) * (i / (n - 1)), Y = b => H - m.b - (H - m.t - m.b) * (b - lo) / (hi - lo);
+  let s = "";
+  for (let b = lo; b <= hi; b++) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(b)}" y2="${Y(b)}" style="stroke:var(--line)"/><text x="${m.l - 8}" y="${Y(b) + 4}" text-anchor="end" font-size="12" style="fill:var(--muted)">${b}</text>`;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(tgt)}" y2="${Y(tgt)}" style="stroke:var(--coral)" stroke-width="2" stroke-dasharray="6 5"/><text x="${W - m.r}" y="${Y(tgt) - 7}" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--coral-ink)">Mục tiêu ${tgt.toFixed(1)}</text>`;
+  const step = Math.max(1, Math.ceil(n / 6)), lab = new Set(); for (let i = 0; i < n; i += step) lab.add(i); lab.add(n - 1);
+  lab.forEach(i => { const [, mo, d] = pts[i].date.split("-"); s += `<text x="${X(i)}" y="${H - m.b + 22}" text-anchor="middle" font-size="11" style="fill:var(--muted)">${d}/${mo}</text>`; });
+  const NAME = { L: "Listening", R: "Reading", W: "Writing", S: "Speaking" };
+  for (const [k, col] of [["L", "var(--s1)"], ["R", "var(--s3)"], ["W", "var(--s2)"], ["S", "var(--s5)"]]) {
+    const ser = pts.map((p, i) => [p, i]).filter(([p]) => p.k === k); if (!ser.length) continue;
+    s += `<path d="${ser.map(([p, i], j) => (j ? "L" : "M") + X(i).toFixed(1) + "," + Y(p.band).toFixed(1)).join("")}" fill="none" style="stroke:${col}" stroke-width="3" stroke-linejoin="round"/>`;
+    ser.forEach(([p, i], j) => { s += `<rect x="${X(i) - 5}" y="${Y(p.band) - 5}" width="10" height="10" style="fill:${j === ser.length - 1 ? col : "var(--surface)"};stroke:${col}" stroke-width="2.5"><title>${esc(p.date.split("-").reverse().join("/") + " · " + NAME[k] + " " + p.band.toFixed(1) + " · " + p.title)}</title></rect>`; });
+    const [lp, li] = ser[ser.length - 1]; s += `<text x="${X(li)}" y="${Y(lp.band) - 12}" text-anchor="${li === n - 1 ? "end" : "middle"}" font-size="13" font-weight="800" style="fill:${col}">${lp.band.toFixed(1)}</text>`;
+  }
+  return h("div", { class: "pl-chart", html: `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Band 4 kỹ năng qua các lần làm bài">${s}</svg>` });
+};
+const _pp4 = pagePlan;
+pagePlan = function () {
+  const n = _pp4(), sb = skillBands(), hist = planHistory();
+  const board = n.querySelector(".pl-board");
+  if (board) {
+    const have = SK4.filter(([k]) => sb[k] != null), ov = have.length === 4 ? roundBand(avgOf(SK4.map(([k]) => sb[k]))) : null;
+    const nOf = K => hist.filter(x => x.k === K).length;
+    const note = { listening: sb.listening == null ? "Chưa làm đề hay phần nghe nào" : Object.keys(P.lsTests || {}).length ? "Từ đề đầy đủ gần nhất" : "Quy từ các phần đã làm", reading: sb.reading == null ? "Chưa làm bài đọc nào" : `Ước tính từ ${Math.min(5, nOf("R")) || 1} bài gần nhất`, writing: sb.writing == null ? "Chưa có bài viết nào được chấm" : "Task 2 tính gấp đôi Task 1", speaking: sb.speaking == null ? "Chưa có lần thi Speaking nào" : "Trung bình 2 lần thi gần nhất" };
+    const cell = ([k, name, href, K]) => h("a", { class: "pl-cell", href }, h("span", { class: "pl-ch" }, h("span", { class: "pl-ic " + K, html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SK4_ICO[K]}"/></svg>` }), h("b", null, name)),
+      h("span", { class: "pl-big" }, sb[k] == null ? "–" : sb[k].toFixed(1), h("small", null, " / " + tgOf(k).toFixed(1))), h("div", { class: "pl-bar" }, h("i", { style: `width:${sb[k] == null ? 0 : Math.min(100, sb[k] / tgOf(k) * 100)}%` })), h("span", { class: "small muted" }, note[k]));
+    board.replaceWith(h("div", { class: "pl-board b4" },
+      h("div", { class: "pl-now" }, h("div", { class: "pl-nt" }, h("div", null, h("span", { class: "pl-lab" }, "Hiện tại"), h("span", { class: "pl-huge" }, ov == null ? "–" : ov.toFixed(1))), h("span", { class: "pl-arrow", "aria-hidden": "true" }, "→"), h("div", null, h("span", { class: "pl-lab coral" }, "Mục tiêu"), h("span", { class: "pl-huge coral" }, (+P.target).toFixed(1)))),
+        h("span", { class: "small muted" }, ov == null ? `Band tổng có khi đủ 4 kỹ năng (đang có ${have.length}/4).` : "Trung bình 4 kỹ năng, làm tròn như bài thi thật.")),
+      ...SK4.map(cell)));
+  }
+  const leg = n.querySelector(".pl-leg"); if (leg) leg.replaceChildren(...[["var(--s1)", "Listening"], ["var(--s3)", "Reading"], ["var(--s2)", "Writing"], ["var(--s5)", "Speaking"]].map(([c, t]) => h("span", null, h("i", { style: "background:" + c }), t)), h("span", null, h("i", { class: "dash" }), "Mục tiêu"));
+  const trs = n.querySelector(".pl-trs"); if (trs) for (const [K, name] of [["L", "Listening"], ["S", "Speaking"]]) { const tr = planTrend(hist, K); trs.append(h("div", { class: "pl-tr" }, h("span", { class: "pl-trk" }, name), tr ? [h("b", null, tr.a1.toFixed(1)), h("span", { class: "small muted" }, ` trung bình ${Math.min(5, tr.n)} bài gần nhất · ${tr.n} bài`)] : h("span", { class: "small muted" }, "chưa có bài"))); }
+  n.querySelectorAll(".empty span").forEach(el => { if (/Cần ít nhất 2 bài Reading hoặc Writing/.test(el.textContent)) el.textContent = "Cần ít nhất 2 bài đã chấm (Nghe, Đọc, Viết hoặc Nói) để vẽ đường tiến bộ."; });
+  n.querySelectorAll("p.small.muted").forEach(el => { if (/^Mỗi điểm là một lần làm bài\./.test(el.textContent)) el.textContent = "Mỗi điểm là một lần làm bài. Listening và Reading quy đổi từ số câu đúng theo bảng điểm thô tham khảo; Writing và Speaking do AI chấm. Di chuột vào điểm để xem tên bài."; });
+  n.querySelectorAll(".ph-k").forEach(el => { if (el.textContent === "Listening") el.classList.add("L"); if (el.textContent === "Speaking") el.classList.add("S"); });
+  const place = n.querySelector(".pl-board"); if (place) place.after(sk4Card({ full: true }));
+  return n;
+};
+/* Lối tắt từ Hôm nay / Lộ trình vào đúng thẻ */
+(function () {
+  const AL4 = { "listen-nd": () => { UI.lsTab = "nd"; return "#listen"; }, "speak-shadow": () => { UI.spTab = "shadow"; return "#speak"; }, "speak-room": () => { UI.spTab = "test"; if (!UI.room) roomNew(); return "#speak"; } };
+  const _or = onRoute;
+  onRoute = function () { const raw = (location.hash || "").slice(1); if (AL4[raw]) { const to = AL4[raw](); location.replace(to); if (UI.route === to.slice(1)) render(); else _or(); return; } return _or(); };
+  window.addEventListener("hashchange", () => { const raw = (location.hash || "").slice(1); if (AL4[raw]) onRoute(); });
 })();
 
 </script>
