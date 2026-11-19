@@ -1,0 +1,249 @@
+{
+ "id": "g31",
+ "title": "Cấu trúc song song và liên kết câu",
+ "use": "Câu cân đối, đoạn văn mạch lạc",
+ "focus": "cấu trúc song song (cùng dạng từ sau and / or / but, both…and, either…or, not only…but also), liên kết bằng đại từ và this / these + danh từ, thay thế (one, do so), lược bỏ, tránh lặp từ, trật tự thông tin cũ → mới",
+ "summary": [
+  "Các thành phần nối bằng and / or / but phải cùng dạng: danh từ – danh từ, V-ing – V-ing, to V – to V.",
+  "both A and B, either A or B, neither A nor B, not only A but also B: A và B cùng loại từ.",
+  "Nhắc lại ý trước bằng this / these + danh từ tóm tắt (this problem, these changes).",
+  "Tránh lặp: dùng đại từ, từ đồng nghĩa, do so, one; đặt thông tin cũ đầu câu, thông tin mới cuối câu."
+ ],
+ "theory_text": "1. Cấu trúc song song ✗ Social media helps teenagers to relax , making friends and learn new skills. ✓ Social media helps teenagers relax , make friends and learn new skills. Ba động từ cùng dạng nguyên mẫu. ✗ The course is interesting , cheap and it is flexible . ✓ The course is interesting , cheap and flexible . Cặp liên từ both / either / neither / not only + A + and / or / nor / but also + B (same type as A) ✗ This policy is not only expensive but also it is unfair . ✓ This policy is not only expensive but also unfair . 2. Liên kết bằng từ quy chiếu Cách Ví dụ Đại từ Teenagers spend hours online. They … this / these + danh từ tóm tắt Many young people sleep less. This trend worries doctors. such + danh từ Such problems are common in big cities. the former / the latter Buses and trains… The latter are faster. Mẹo Viết This problem / This change / These effects rõ nghĩa hơn chỉ viết This đứng một mình. 3. Thay thế và lược bỏ do so thay cho cụm động từ: Governments should invest in buses, and many cities have already done so . one / ones thay danh từ: new roads and old ones Lược bỏ phần lặp: Some students prefer online classes; others (prefer) face-to-face ones. Từ đồng nghĩa: young people → teenagers → the younger generation 4. Thông tin cũ trước, mới sau Kém mạch lạc Many teenagers use social media. Sleep problems are caused by this habit . Mạch lạc hơn Many teenagers use social media late at night. This habit can cause sleep problems. Lỗi hay gặp Lặp một danh từ 4–5 lần trong một đoạn (social media… social media… social media…) làm giảm điểm Lexical Resource và Coherence.",
+ "slow": {
+  "idea": "Bài này có hai kỹ năng giúp bài viết đọc trôi chảy, thứ mà giám khảo chấm ở tiêu chí Coherence and Cohesion.\nThứ nhất, *cấu trúc song song*: khi bạn liệt kê hoặc nối các ý bằng and, or, but, tất cả các ý phải ở *cùng một dạng ngữ pháp*. Tiếng Việt không đổi dạng từ nên không gặp vấn đề này. Tiếng Anh thì lẫn V-ing với to V là sai.\nThứ hai, *liên kết câu*: dùng các từ chỉ ngược lại ý trước (this, these, such, it) để các câu dính vào nhau.",
+  "steps": [
+   {
+    "t": "Song song khi liệt kê",
+    "say": "Hễ có and, or, but nối hai hay ba ý, hãy nhìn dạng của ý đầu tiên và viết các ý còn lại y như vậy: cùng là danh từ, cùng là V-ing, cùng là to V, hoặc cùng là tính từ.",
+    "ex": [
+     [
+      "She likes *reading*, *swimming* and *cooking*.",
+      "Cô ấy thích đọc sách, bơi và nấu ăn.",
+      "Ba ý đều là V-ing. Không viết \"reading, swimming and to cook\"."
+     ],
+     [
+      "The government should *build* more roads and *improve* public transport.",
+      "Chính phủ nên xây thêm đường và cải thiện giao thông công cộng.",
+      "Sau should là hai động từ nguyên mẫu: build và improve."
+     ]
+    ]
+   },
+   {
+    "t": "Song song với các cặp từ nối",
+    "say": "Các cặp: *both… and…, either… or…, neither… nor…, not only… but also…*. Thứ đứng ngay sau từ thứ nhất và thứ đứng ngay sau từ thứ hai phải cùng dạng.",
+    "ex": [
+     [
+      "Technology is both *useful* and *dangerous*.",
+      "Công nghệ vừa hữu ích vừa nguy hiểm.",
+      "Sau both là tính từ, sau and cũng là tính từ."
+     ],
+     [
+      "People can either *take* the bus or *ride* a bike.",
+      "Mọi người có thể đi xe buýt hoặc đạp xe.",
+      "Sau either và sau or đều là động từ nguyên mẫu."
+     ]
+    ]
+   },
+   {
+    "t": "Song song khi so sánh",
+    "say": "Hai thứ được đem ra so sánh cũng phải cùng dạng và cùng loại.",
+    "ex": [
+     [
+      "*Working* from home is cheaper than *commuting* to an office.",
+      "Làm việc ở nhà rẻ hơn đi lại tới văn phòng.",
+      "So V-ing với V-ing."
+     ]
+    ]
+   },
+   {
+    "t": "Liên kết: this / these + danh từ tóm tắt",
+    "say": "Cách nối câu hiệu quả nhất là mở đầu câu sau bằng *this / these + một danh từ gói lại ý của câu trước*: this problem, this trend, this approach, these changes, these measures. Người đọc thấy ngay câu sau nối với câu trước ở đâu.",
+    "ex": [
+     [
+      "More people are moving to cities. *This trend* puts pressure on housing.",
+      "Ngày càng nhiều người chuyển lên thành phố. Xu hướng này gây áp lực lên nhà ở.",
+      "\"This trend\" gói cả câu trước lại thành hai chữ."
+     ]
+    ]
+   },
+   {
+    "t": "Tránh lặp bằng đại từ và từ thay thế",
+    "say": "Dùng it, they, them thay cho danh từ đã nhắc. Dùng *one / ones* thay cho danh từ đếm được. Dùng *do so* thay cho cả cụm động từ. Dùng *the former* (cái nhắc trước) và *the latter* (cái nhắc sau) khi vừa nhắc hai thứ.\nLuôn kiểm tra: người đọc có biết chắc đại từ đó chỉ cái gì không?",
+    "ex": [
+     [
+      "Some people work from home; others cannot *do so*.",
+      "Một số người làm việc ở nhà; những người khác thì không thể làm vậy.",
+      "do so thay cho \"work from home\"."
+     ]
+    ]
+   },
+   {
+    "t": "Thông tin đã biết đứng trước, thông tin mới đứng sau",
+    "say": "Một câu dễ đọc khi nó bắt đầu bằng thứ người đọc vừa gặp ở câu trước, rồi mới đưa ra điều mới ở cuối câu. Điều mới đó lại làm điểm bắt đầu cho câu kế tiếp.",
+    "ex": [
+     [
+      "Cities attract young workers. *These workers* need affordable housing. *Such housing* is in short supply.",
+      "Thành phố thu hút lao động trẻ. Những lao động này cần nhà ở giá phải chăng. Loại nhà ở đó đang thiếu.",
+      "Mỗi câu bắt đầu bằng thứ vừa xuất hiện ở cuối câu trước, nên ba câu nối thành một chuỗi."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "He enjoys *playing* football and *to watch* films.",
+    "He enjoys *playing* football and *watching* films.",
+    "Hai ý nối bằng and phải cùng dạng."
+   ],
+   [
+    "The city is *crowded*, *noisy* and *has pollution*.",
+    "The city is *crowded*, *noisy* and *polluted*.",
+    "Hai ý đầu là tính từ thì ý thứ ba cũng phải là tính từ."
+   ],
+   [
+    "She *not only* speaks English *but also* French.",
+    "She speaks *not only* English *but also* French.",
+    "Sau not only là động từ, sau but also lại là danh từ: lệch dạng. Đặt not only ngay trước English để hai bên cùng là danh từ."
+   ]
+  ],
+  "check": [
+   [
+    "Sửa cho song song: \"The course teaches students to think critically, solving problems and how they can work in teams.\"",
+    "The course teaches students to think critically, (to) solve problems and (to) work in teams. Cả ba ý đều dùng to V."
+   ],
+   [
+    "Viết câu thứ hai nối với câu này bằng this + danh từ: \"Many teenagers spend hours on social media every day.\"",
+    "Ví dụ: This habit can affect their sleep. / This behaviour may harm their studies."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Song song",
+     "b:V-ing , b:V-ing + x:and + b:V-ing"
+    ],
+    [
+     "Song song",
+     "x:should + b:V + x:and + b:V"
+    ],
+    [
+     "Sai",
+     "n:V-ing and to V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "both",
+     "x:both + b:X + x:and + b:X"
+    ],
+    [
+     "either",
+     "x:either + b:X + x:or + b:X"
+    ],
+    [
+     "not only",
+     "x:not only + b:X + x:but also + b:X"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "So sánh",
+     "b:V-ing + v:is + o:cheaper + x:than + b:V-ing"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Liên kết",
+     "x:This / These + b:trend / problem / measures + v:V…"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "She likes swimming, reading and ___.",
+   "opts": [
+    "to cook",
+    "cooking",
+    "cook"
+   ],
+   "a": 1,
+   "why": "Song song V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "The plan is cheap, simple and ___.",
+   "opts": [
+    "it works well",
+    "effective",
+    "effectively"
+   ],
+   "a": 1,
+   "why": "Ba tính từ song song."
+  },
+  {
+   "t": "choice",
+   "q": "He is not only intelligent but also ___.",
+   "opts": [
+    "he works hard",
+    "hard-working"
+   ],
+   "a": 1,
+   "why": "not only + tính từ, but also + tính từ."
+  },
+  {
+   "t": "choice",
+   "q": "Many cities have built bike lanes. ___ has reduced traffic.",
+   "opts": [
+    "This change",
+    "It's change",
+    "These change"
+   ],
+   "a": 0,
+   "why": "this + danh từ tóm tắt (số ít)."
+  },
+  {
+   "t": "choice",
+   "q": "The government promised to cut taxes, but it has not ___.",
+   "opts": [
+    "done so",
+    "made so",
+    "done it so"
+   ],
+   "a": 0,
+   "why": "do so thay cho cụm động từ."
+  },
+  {
+   "t": "choice",
+   "q": "You can either take the bus ___ walk.",
+   "opts": [
+    "and",
+    "or",
+    "nor"
+   ],
+   "a": 1,
+   "why": "either … or."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào song song đúng?",
+   "opts": [
+    "Students need to study hard and getting enough sleep.",
+    "Students need to study hard and get enough sleep."
+   ],
+   "a": 1,
+   "why": "to study … and (to) get."
+  }
+ ],
+ "write": "Viết một đoạn 3–4 câu về mạng xã hội, có ít nhất một cấu trúc song song 3 thành phần, một cặp both … and / not only … but also, và một cụm this / these + danh từ để nối câu."
+}

@@ -1,0 +1,268 @@
+{
+ "id": "g17",
+ "title": "Câu phủ định, câu hỏi và câu hỏi đuôi",
+ "use": "Trợ động từ do, be, have, modal",
+ "focus": "trợ động từ (do/does/did, be, have, modal) trong câu phủ định và câu hỏi Yes/No, câu hỏi Wh-, câu hỏi chủ ngữ, câu hỏi đuôi",
+ "summary": [
+  "Câu phủ định và câu hỏi cần trợ động từ: do/does/did, be, have, hoặc modal.",
+  "Câu hỏi Wh-: Từ hỏi + trợ động từ + S + V?",
+  "Hỏi chủ ngữ (Who/What làm gì?) thì không đảo, không mượn do.",
+  "Câu hỏi đuôi: khẳng định → đuôi phủ định và ngược lại, dùng lại trợ động từ."
+ ],
+ "theory_text": "1. Trợ động từ Câu gốc có Phủ định Câu hỏi be (is, are, was…) She is not ready. Is she ready? động từ thường She does not like it. Does she like it? have/has + V3 They have not finished. Have they finished? modal (can, will, should…) You should not go. Should I go? 2. Câu hỏi Wh- Cấu trúc Wh-word + auxiliary + S + V + ? Từ hỏi Hỏi về Ví dụ What cái gì What do you study? Where ở đâu Where does she live? When khi nào When did you arrive? Why tại sao Why are prices rising? How thế nào How do you get to school? How long / often / much / many bao lâu / thường / bao nhiêu How long have you lived here? Which / Whose / Who(m) cái nào / của ai / ai Which subject do you prefer? 3. Câu hỏi chủ ngữ Hỏi tân ngữ (có do) Who did you meet? (Bạn gặp ai?) Hỏi chủ ngữ (không do) Who met you? (Ai gặp bạn?) What happened ? ✗ What did happen yesterday? ✓ What happened yesterday? What là chủ ngữ → không mượn did. 4. Câu hỏi đuôi You are a student, aren't you ? She doesn't drive, does she ? They have finished, haven't they ? Đặc biệt: I am right, aren't I ? Let's go, shall we ? Everyone is here, aren't they ? 5. Câu hỏi gián tiếp (lịch sự) ✗ Can you tell me where is the station ? ✓ Can you tell me where the station is ? Trong câu hỏi gián tiếp không đảo ngữ (xem thêm bài Mệnh đề danh từ). Mẹo Trong Task 2 có thể mở thân bài bằng một câu hỏi tu từ, nhưng chỉ nên dùng 1 lần: Why do so many young people start learning English so early?",
+ "slow": {
+  "idea": "Tiếng Việt tạo câu phủ định bằng chữ \"không\" và câu hỏi bằng chữ \"không?\" ở cuối, còn trật tự từ giữ nguyên. Tiếng Anh cần một từ đặc biệt gọi là *trợ động từ* (be, have, do, will, can…) để làm cả hai việc.\nQuy tắc chung rất gọn. Câu phủ định: gắn *not* vào sau trợ động từ. Câu hỏi: đưa trợ động từ ra trước chủ ngữ. Nếu trong câu chưa có trợ động từ nào thì mượn *do / does / did*.",
+  "steps": [
+   {
+    "t": "Câu đã có sẵn be, have (hoàn thành), will, can, should…",
+    "say": "Những từ này chính là trợ động từ. Phủ định thì thêm not ngay sau nó. Câu hỏi thì đảo nó lên trước chủ ngữ. Không cần mượn do.",
+    "ex": [
+     [
+      "She *is* working. → She *is not* working. → *Is* she working?",
+      "Cô ấy đang làm việc. → Cô ấy không đang làm việc. → Cô ấy đang làm việc à?",
+      "is có sẵn nên chỉ cần thêm not hoặc đảo is lên đầu."
+     ],
+     [
+      "They *can* swim. → They *cannot* swim. → *Can* they swim?",
+      "Họ biết bơi. → Họ không biết bơi. → Họ biết bơi không?",
+      "can là trợ động từ."
+     ]
+    ]
+   },
+   {
+    "t": "Câu chỉ có động từ thường: mượn do / does / did",
+    "say": "Hiện tại đơn và quá khứ đơn không có sẵn trợ động từ. Ta mượn *do* (I, you, we, they), *does* (he, she, it) cho hiện tại, và *did* cho quá khứ.\nKhi đã mượn, do / does / did mang luôn dấu của thì và của chủ ngữ, nên động từ chính quay về *nguyên mẫu*.",
+    "ex": [
+     [
+      "He *works* here. → He *does not work* here. → *Does* he *work* here?",
+      "Anh ấy làm ở đây. → Anh ấy không làm ở đây. → Anh ấy làm ở đây à?",
+      "Chữ s của works đã chuyển sang does, nên work không còn s."
+     ],
+     [
+      "They *went* home. → They *did not go* home. → *Did* they *go* home?",
+      "Họ đã về nhà. → Họ đã không về nhà. → Họ đã về nhà chưa?",
+      "did mang nghĩa quá khứ, nên went trở lại thành go."
+     ]
+    ]
+   },
+   {
+    "t": "Câu hỏi có từ để hỏi (what, where, why, how…)",
+    "say": "Đặt từ để hỏi lên đầu, rồi làm y như câu hỏi thường: *từ để hỏi + trợ động từ + chủ ngữ + động từ chính*.\nNgoại lệ: khi từ để hỏi (who, what) chính là chủ ngữ của câu thì không mượn do và không đảo gì cả.",
+    "ex": [
+     [
+      "*Where do* you *live*?",
+      "Bạn sống ở đâu?",
+      "Where + do + you + live."
+     ],
+     [
+      "*Who lives* here?",
+      "Ai sống ở đây?",
+      "Who là chủ ngữ (người thực hiện việc sống), nên dùng thẳng lives. Không viết \"Who does live here?\""
+     ]
+    ]
+   },
+   {
+    "t": "Câu hỏi đuôi",
+    "say": "Là phần hỏi ngắn ở cuối câu, nghĩa như \"phải không?\". Cách tạo: lấy lại đúng trợ động từ của câu, *đổi dấu* (câu khẳng định thì đuôi phủ định và ngược lại), rồi thêm đại từ.",
+    "ex": [
+     [
+      "It *is* cold, *isn't it*?",
+      "Trời lạnh nhỉ?",
+      "Câu khẳng định với is, nên đuôi phủ định: isn't it."
+     ],
+     [
+      "You *don't* smoke, *do you*?",
+      "Bạn không hút thuốc, phải không?",
+      "Câu phủ định với don't, nên đuôi khẳng định: do you."
+     ]
+    ]
+   },
+   {
+    "t": "Câu hỏi nằm trong một câu khác",
+    "say": "Khi câu hỏi đứng sau \"I don't know\", \"Could you tell me\", \"I wonder\"… thì nó không còn là câu hỏi trực tiếp nữa. Trật tự trở lại như câu kể: *chủ ngữ trước, động từ sau*, không đảo, không mượn do.",
+    "ex": [
+     [
+      "Where *is the station*? → Could you tell me where *the station is*?",
+      "Nhà ga ở đâu? → Bạn có thể cho tôi biết nhà ga ở đâu không?",
+      "Sau where, chủ ngữ the station đứng trước is."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "She *not like* coffee.",
+    "She *does not like* coffee.",
+    "Không thể gắn not thẳng vào động từ thường. Phải mượn does."
+   ],
+   [
+    "Why people *move* to cities?",
+    "Why *do* people move to cities?",
+    "Câu hỏi với động từ thường phải có do đứng trước chủ ngữ."
+   ],
+   [
+    "I don't know where *does he live*.",
+    "I don't know where *he lives*.",
+    "Câu hỏi nằm trong câu khác thì dùng trật tự của câu kể."
+   ]
+  ],
+  "check": [
+   [
+    "Đổi sang câu hỏi: \"She finished the report.\"",
+    "Did she finish the report? Quá khứ đơn nên mượn did, và finished trở về nguyên mẫu finish."
+   ],
+   [
+    "Vì sao \"What happened?\" đúng mà không cần did?",
+    "Vì What chính là chủ ngữ của câu (cái gì đã xảy ra). Khi từ để hỏi là chủ ngữ thì không mượn do / did và không đảo."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Phủ định",
+     "s:S + b:trợ động từ + n:not + v:V"
+    ],
+    [
+     "Câu hỏi",
+     "b:Trợ động từ + s:S + v:V + x:?"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Phủ định",
+     "s:S + b:don't / doesn't / didn't + v:V"
+    ],
+    [
+     "Câu hỏi",
+     "b:Do / Does / Did + s:S + v:V + x:?"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Hỏi thường",
+     "x:What / Where / Why + b:trợ động từ + s:S + v:V + x:?"
+    ],
+    [
+     "Hỏi chủ ngữ",
+     "b:Who / What + v:V (đã chia) + x:?"
+    ]
+   ],
+   "cut": [
+    ": *từ để hỏi + trợ động từ + chủ ngữ + động từ chính*"
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Khẳng định → đuôi phủ định",
+     "s:She + v:is + o:busy , b:isn't + s:she + x:?"
+    ],
+    [
+     "Phủ định → đuôi khẳng định",
+     "s:They + v:don't agree , b:do + s:they + x:?"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Câu hỏi nằm trong",
+     "x:I don't know + b:where / what / if + s:S + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "___ she speak French?",
+   "opts": [
+    "Do",
+    "Does",
+    "Is"
+   ],
+   "a": 1,
+   "why": "Ngôi 3 số ít, động từ thường → Does."
+  },
+  {
+   "t": "choice",
+   "q": "Where ___ you go last weekend?",
+   "opts": [
+    "do",
+    "did",
+    "were"
+   ],
+   "a": 1,
+   "why": "Quá khứ → did."
+  },
+  {
+   "t": "choice",
+   "q": "Who ___ the window?",
+   "opts": [
+    "did break",
+    "broke"
+   ],
+   "a": 1,
+   "why": "Hỏi chủ ngữ → không mượn did."
+  },
+  {
+   "t": "choice",
+   "q": "You are a student, ___?",
+   "opts": [
+    "are you",
+    "aren't you",
+    "don't you"
+   ],
+   "a": 1,
+   "why": "Khẳng định → đuôi phủ định với be."
+  },
+  {
+   "t": "choice",
+   "q": "She hasn't finished yet, ___?",
+   "opts": [
+    "has she",
+    "hasn't she",
+    "does she"
+   ],
+   "a": 0,
+   "why": "Phủ định → đuôi khẳng định, dùng has."
+  },
+  {
+   "t": "choice",
+   "q": "How long ___ you been learning English?",
+   "opts": [
+    "do",
+    "have",
+    "are"
+   ],
+   "a": 1,
+   "why": "HTHT tiếp diễn → have."
+  },
+  {
+   "t": "choice",
+   "q": "Can you tell me what time ___?",
+   "opts": [
+    "does the class start",
+    "the class starts"
+   ],
+   "a": 1,
+   "why": "Câu hỏi gián tiếp không đảo."
+  },
+  {
+   "t": "fill",
+   "q": "I ___ (not / understand) the question yesterday. (dạng đầy đủ hoặc rút gọn)",
+   "a": [
+    "did not understand",
+    "didn't understand"
+   ],
+   "why": "Quá khứ phủ định: did not + V."
+  }
+ ],
+ "write": "Viết 3 câu về việc học ngoại ngữ sớm: một câu hỏi tu từ Wh-, một câu phủ định, và một câu có câu hỏi đuôi (phong cách nói)."
+}

@@ -1,0 +1,234 @@
+{
+ "id": "l2",
+ "title": "Thì của động từ trong Task 1",
+ "use": "Biểu đồ có mốc thời gian, số liệu dự báo",
+ "focus": "chọn đúng thì: quá khứ đơn cho năm đã qua, hiện tại hoàn thành khi kéo dài đến nay, cấu trúc dự báo (is expected / predicted to + V) cho năm tương lai",
+ "theory_text": "Năm đã qua → quá khứ đơn: rose, fell, was, reached . Kéo dài tới hiện tại (since, so far) → hiện tại hoàn thành: has risen, have increased . Năm trong tương lai (số liệu dự báo) → is expected / predicted / projected to + động từ nguyên mẫu, hoặc will + động từ nguyên mẫu. Không có mốc thời gian (bảng một thời điểm, sơ đồ quy trình) → hiện tại đơn. Nguyên mẫu Quá khứ Phân từ (V3) rise rose risen fall fell fallen grow grew grown stand stood stood drop dropped dropped",
+ "slow": {
+  "idea": "Trong Task 1, hầu hết thứ bạn tả là *số*. Tiếng Anh có những quy tắc chặt về cách đi kèm giữa từ chỉ lượng và danh từ, và người Việt hay sai ở đây vì tiếng Việt chỉ nói \"số lượng\" cho mọi thứ.\nCâu hỏi gốc là: danh từ này *đếm được* hay *không đếm được*? Đếm được (people, cars) thì dùng number, many, fewer. Không đếm được (water, money) thì dùng amount, much, less.\nBài này cũng dạy cách đọc phần trăm và tỉ lệ, và giới từ đi với số.",
+  "steps": [
+   {
+    "t": "the number of và the amount of",
+    "say": "*the number of* + danh từ đếm được số nhiều.\n*the amount of* + danh từ không đếm được.\nLưu ý: chủ ngữ thật là \"the number\" hoặc \"the amount\", nên động từ luôn ở *số ít*.",
+    "ex": [
+     [
+      "The *number of students* *was* 500.",
+      "Số sinh viên là 500.",
+      "students đếm được nên dùng number. Động từ was theo \"the number\"."
+     ],
+     [
+      "The *amount of water* used *was* high.",
+      "Lượng nước được dùng ở mức cao.",
+      "water không đếm được nên dùng amount."
+     ]
+    ]
+   },
+   {
+    "t": "percentage, proportion và percent",
+    "say": "*percent* (hoặc ký hiệu %) chỉ đứng sau con số: 20 percent, 20%.\n*percentage* và *proportion* là danh từ, đứng sau the: the percentage of…, the proportion of… Không viết \"the percent of\".",
+    "ex": [
+     [
+      "*The percentage of* women in work rose to *60%*.",
+      "Tỉ lệ phụ nữ đi làm tăng lên 60%.",
+      "Danh từ dùng percentage. Sau con số dùng %."
+     ]
+    ]
+   },
+   {
+    "t": "Phân số và cách nói thay cho phần trăm",
+    "say": "Để tránh lặp con số, dùng: *a quarter* (25%), *a third* (khoảng 33%), *half* (50%), *two-thirds* (khoảng 67%), *three-quarters* (75%).\nThêm từ làm mềm khi số không tròn: *just over*, *just under*, *approximately*, *roughly*, *nearly*.",
+    "ex": [
+     [
+      "*Just under a third* of households owned a car.",
+      "Gần một phần ba số hộ gia đình có ô tô.",
+      "Ví dụ số thật là 31%: thấp hơn một phần ba một chút."
+     ]
+    ]
+   },
+   {
+    "t": "Giới từ đi với số",
+    "say": "*at*: đứng ở mức nào (stood at 20%).\n*to*: tăng hoặc giảm *tới* mức nào (rose to 50%).\n*by*: tăng hoặc giảm *một khoảng* bao nhiêu (rose by 10%).\n*from… to…*: từ mức này tới mức kia.\n*of*: sau danh từ chỉ thay đổi, nói độ lớn (a rise of 10%).",
+    "ex": [
+     [
+      "The figure rose *from* 20% *to* 30%, an increase *of* 10%.",
+      "Con số tăng từ 20% lên 30%, tức tăng 10%.",
+      "from… to… cho điểm đầu và điểm cuối. of cho độ lớn của mức tăng."
+     ],
+     [
+      "Sales fell *by* 5 million.",
+      "Doanh số giảm đi 5 triệu.",
+      "by cho biết giảm một khoảng bao nhiêu, không phải giảm xuống còn bao nhiêu."
+     ]
+    ]
+   },
+   {
+    "t": "Số lớn: million, thousand không thêm s",
+    "say": "Khi có con số cụ thể đứng trước, hundred, thousand, million, billion *không thêm s*: 5 million people. Chỉ thêm s khi nói chung chung: millions of people.",
+    "ex": [
+     [
+      "The city had *3 million* residents.",
+      "Thành phố có 3 triệu cư dân.",
+      "Có số 3 đứng trước nên million không có s."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The *amount of people* increased.",
+    "The *number of people* increased.",
+    "people đếm được."
+   ],
+   [
+    "The number of cars *were* high.",
+    "The number of cars *was* high.",
+    "Chủ ngữ là \"the number\", số ít."
+   ],
+   [
+    "The *percent* of students rose.",
+    "The *percentage* of students rose.",
+    "percent chỉ đứng sau con số."
+   ],
+   [
+    "It increased *to* 10% (ý là tăng thêm 10%).",
+    "It increased *by* 10%.",
+    "to là điểm đến, by là khoảng thay đổi."
+   ]
+  ],
+  "check": [
+   [
+    "Con số đi từ 40 lên 70. Điền giới từ: \"It rose ___ 30, ___ 40 ___ 70.\"",
+    "It rose by 30, from 40 to 70."
+   ],
+   [
+    "Chọn: \"the number / amount of electricity\"?",
+    "the amount of electricity, vì electricity không đếm được."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đếm được",
+     "x:the number of + s:N-s + v:was / is"
+    ],
+    [
+     "Không đếm được",
+     "x:the amount of + s:N + v:was / is"
+    ]
+   ],
+   "cut": [
+    "*the number of* + danh từ đếm được số nhiều.",
+    "*the amount of* + danh từ không đếm được."
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Danh từ",
+     "x:the percentage / proportion of + s:N"
+    ],
+    [
+     "Sau con số",
+     "o:20 + x:% / percent"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Đứng ở",
+     "v:stood + b:at + o:20%"
+    ],
+    [
+     "Tới mức",
+     "v:rose + b:to + o:50%"
+    ],
+    [
+     "Một khoảng",
+     "v:rose + b:by + o:10%"
+    ],
+    [
+     "Từ… đến",
+     "b:from + o:20% + b:to + o:30%"
+    ],
+    [
+     "Độ lớn",
+     "x:a rise + b:of + o:10%"
+    ]
+   ],
+   "cut": [
+    "*at*: đứng ở mức nào (stood at 20%).",
+    "*to*: tăng hoặc giảm *tới* mức nào (rose to 50%).",
+    "*by*: tăng hoặc giảm *một khoảng* bao nhiêu (rose by 10%).",
+    "*from… to…*: từ mức này tới mức kia.",
+    "*of*: sau danh từ chỉ thay đổi, nói độ lớn (a rise of 10%)."
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Có số",
+     "o:5 + b:million + s:people"
+    ],
+    [
+     "Chung chung",
+     "b:millions of + s:people"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "In 2015, sales of electric cars ___ only 5,000.",
+   "opts": [
+    "are",
+    "were",
+    "will be"
+   ],
+   "a": 1,
+   "why": "2015 là năm đã qua nên dùng quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "By 2035, sales of petrol cars ___ to 250,000.",
+   "opts": [
+    "fell",
+    "are expected to fall",
+    "have fallen"
+   ],
+   "a": 1,
+   "why": "2035 là số liệu dự báo."
+  },
+  {
+   "t": "fill",
+   "q": "Electric car sales ___ (rise, quá khứ) sharply between 2020 and 2025.",
+   "a": [
+    "rose"
+   ],
+   "why": "rise → rose (bất quy tắc)."
+  },
+  {
+   "t": "fill",
+   "q": "Petrol car sales ___ (fall, quá khứ) to 700,000 in 2025.",
+   "a": [
+    "fell"
+   ],
+   "why": "fall → fell."
+  },
+  {
+   "t": "choice",
+   "q": "Since 2015, the popularity of electric cars ___ steadily.",
+   "opts": [
+    "grows",
+    "has grown",
+    "grew up"
+   ],
+   "a": 1,
+   "why": "Since + mốc thời gian, kéo dài tới nay → hiện tại hoàn thành."
+  }
+ ],
+ "write": "Viết 2–3 câu mô tả xe điện và xe xăng, có cả năm đã qua và năm dự báo."
+}

@@ -1,0 +1,301 @@
+{
+ "id": "g28",
+ "title": "Câu tường thuật (reported speech)",
+ "use": "Thuật lại lời người khác",
+ "focus": "lùi thì khi tường thuật, đổi đại từ và trạng từ thời gian, nơi chốn, tường thuật câu hỏi (if / whether, wh-), câu mệnh lệnh (tell / ask sb to V), động từ tường thuật (say, tell, explain, suggest, warn, claim)",
+ "summary": [
+  "say (that) + mệnh đề; tell + người + (that) + mệnh đề.",
+  "Động từ tường thuật ở quá khứ → lùi một thì: am → was, will → would, has done → had done.",
+  "Câu hỏi tường thuật: asked + if / wh- + S + V (không đảo, không dấu ?).",
+  "Mệnh lệnh: told / asked + sb + (not) to V."
+ ],
+ "theory_text": "1. say và tell say She said (that) she was tired. (không có người nghe ngay sau say) tell She told me (that) she was tired. (tell + người nghe) 2. Lùi thì Câu trực tiếp Câu tường thuật hiện tại đơn: “I work .” He said he worked . hiện tại tiếp diễn: “I am working .” He said he was working . hiện tại hoàn thành / quá khứ đơn: “I have finished / finished .” He said he had finished . will would can could may might must had to (hoặc giữ must) Mẹo Không cần lùi thì khi điều được nói vẫn còn đúng: The teacher said that the Earth goes around the Sun. hoặc khi động từ tường thuật ở hiện tại: She says she is busy. 3. Đổi đại từ, thời gian, nơi chốn Trực tiếp Tường thuật now then today / tonight that day / that night yesterday the day before / the previous day tomorrow the next day / the following day last week the week before here / this there / that 4. Câu hỏi và mệnh lệnh Câu hỏi Yes/No S + asked (me) + if / whether + S + V Câu hỏi Wh- S + asked + wh- + S + V Mệnh lệnh S + told / asked + sb + (not) to V “Do you like English?” → She asked me if I liked English. “Where do you live?” → He asked where I lived . “Don't be late.” → The teacher told us not to be late. 5. Động từ tường thuật trong văn viết Experts claim / argue / suggest / point out that… The report warns that…; Researchers found that… suggest + V-ing / that sb (should) V; advise / warn + sb + (not) to V",
+ "slow": {
+  "idea": "Khi bạn kể lại lời người khác, có hai cách. Cách trực tiếp là chép nguyên văn trong ngoặc kép: He said, \"I am tired.\" Cách gián tiếp, gọi là *câu tường thuật*, là thuật lại bằng lời của mình: He said that he was tired.\nKhi tường thuật, bạn đang đứng ở một thời điểm khác và là một người khác so với người nói ban đầu. Vì vậy ba thứ có thể phải đổi: *thì* của động từ, *đại từ*, và *từ chỉ thời gian, nơi chốn*.\nTrong bài viết IELTS, phần cần nhất là các động từ tường thuật (argue, claim, suggest) để dẫn ý kiến của người khác.",
+  "steps": [
+   {
+    "t": "say và tell",
+    "say": "*say* + (that) + nội dung. Sau say không có người nghe đứng liền.\n*tell* + *người nghe* + (that) + nội dung. Sau tell bắt buộc có người nghe.",
+    "ex": [
+     [
+      "She *said* (that) she was busy.",
+      "Cô ấy nói rằng cô ấy bận.",
+      "Sau said là nội dung luôn."
+     ],
+     [
+      "She *told me* (that) she was busy.",
+      "Cô ấy bảo tôi rằng cô ấy bận.",
+      "Sau told phải có me. Không viết \"She said me\" hay \"She told that\"."
+     ]
+    ]
+   },
+   {
+    "t": "Lùi thì khi động từ tường thuật ở quá khứ",
+    "say": "Nếu động từ tường thuật ở quá khứ (said, told), động từ trong lời nói lùi một bậc về quá khứ:\nhiện tại đơn → quá khứ đơn · hiện tại tiếp diễn → quá khứ tiếp diễn · quá khứ đơn hoặc hiện tại hoàn thành → quá khứ hoàn thành · will → would · can → could · must → had to.",
+    "ex": [
+     [
+      "\"I *am* tired.\" → He said he *was* tired.",
+      "\"Tôi mệt.\" → Anh ấy nói anh ấy mệt.",
+      "am lùi thành was. I đổi thành he."
+     ],
+     [
+      "\"I *will* help.\" → She said she *would* help.",
+      "\"Tôi sẽ giúp.\" → Cô ấy nói cô ấy sẽ giúp.",
+      "will lùi thành would."
+     ]
+    ]
+   },
+   {
+    "t": "Khi nào không cần lùi thì",
+    "say": "Không lùi khi động từ tường thuật ở hiện tại (says, argue, believe). Đây là trường hợp phổ biến nhất trong Task 2. Cũng không bắt buộc lùi khi điều được nói là sự thật vẫn đúng đến bây giờ.",
+    "ex": [
+     [
+      "Some people *argue* that technology *makes* us lazy.",
+      "Một số người cho rằng công nghệ làm chúng ta lười.",
+      "argue ở hiện tại nên makes giữ nguyên."
+     ],
+     [
+      "The teacher said that the Earth *goes* round the Sun.",
+      "Giáo viên nói rằng Trái Đất quay quanh Mặt Trời.",
+      "Sự thật luôn đúng nên không cần lùi."
+     ]
+    ]
+   },
+   {
+    "t": "Đổi đại từ và từ chỉ thời gian, nơi chốn",
+    "say": "Đổi đại từ cho hợp với người đang kể: I → he / she, my → his / her, we → they.\nĐổi từ chỉ thời gian và nơi chốn: now → then · today → that day · yesterday → the day before · tomorrow → the next day · here → there · this → that.",
+    "ex": [
+     [
+      "\"I will call you *tomorrow*.\" → He said he would call me *the next day*.",
+      "\"Mai tôi sẽ gọi bạn.\" → Anh ấy nói hôm sau anh ấy sẽ gọi tôi.",
+      "Lúc kể lại thì \"tomorrow\" của anh ấy đã không còn là ngày mai của tôi nữa."
+     ]
+    ]
+   },
+   {
+    "t": "Tường thuật câu hỏi và câu yêu cầu",
+    "say": "Câu hỏi có/không: *asked + if / whether* + chủ ngữ + động từ. Câu hỏi có từ để hỏi: *asked + từ để hỏi* + chủ ngữ + động từ. Cả hai đều dùng trật tự câu kể, không đảo, không có dấu hỏi.\nCâu yêu cầu, lời khuyên: *told / asked / advised + người + (not) to V*.",
+    "ex": [
+     [
+      "\"Do you like coffee?\" → She asked *if I liked* coffee.",
+      "\"Bạn thích cà phê không?\" → Cô ấy hỏi tôi có thích cà phê không.",
+      "Thêm if, bỏ do, chủ ngữ I đứng trước liked."
+     ],
+     [
+      "\"Don't be late.\" → He told me *not to be* late.",
+      "\"Đừng đến muộn.\" → Anh ấy bảo tôi đừng đến muộn.",
+      "Câu yêu cầu phủ định dùng not to V."
+     ]
+    ]
+   },
+   {
+    "t": "Động từ tường thuật cho bài viết",
+    "say": "Đừng chỉ dùng say. Mỗi động từ sau đây cho biết thái độ của người nói: *argue* (lập luận), *claim* (khẳng định, người viết còn nghi ngờ), *suggest* (cho rằng, đề xuất), *point out* (chỉ ra), *admit* (thừa nhận), *deny* (phủ nhận), *state* (nêu rõ).",
+    "ex": [
+     [
+      "Critics *claim that* online learning is less effective.",
+      "Những người phản đối khẳng định rằng học trực tuyến kém hiệu quả hơn.",
+      "claim cho thấy người viết chưa chắc đồng ý với ý kiến này."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "He *said me* that he was busy.",
+    "He *told me* that… / He *said* that…",
+    "say không đi thẳng với người nghe."
+   ],
+   [
+    "She asked me where *did I live*.",
+    "She asked me where *I lived*.",
+    "Câu hỏi tường thuật dùng trật tự câu kể."
+   ],
+   [
+    "He said that he *will* come.",
+    "He said that he *would* come.",
+    "said ở quá khứ nên will lùi thành would."
+   ]
+  ],
+  "check": [
+   [
+    "Tường thuật: Tom said, \"I have finished my work.\"",
+    "Tom said (that) he had finished his work. Hiện tại hoàn thành lùi thành quá khứ hoàn thành. I đổi thành he, my đổi thành his."
+   ],
+   [
+    "Vì sao trong Task 2 thường viết \"Many people believe that children *are*…\" chứ không phải \"were\"?",
+    "Vì believe ở hiện tại. Chỉ lùi thì khi động từ tường thuật ở quá khứ."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "say",
+     "s:S + v:said + x:(that) + o:nội dung"
+    ],
+    [
+     "tell",
+     "s:S + v:told + b:người nghe + x:(that) + o:nội dung"
+    ]
+   ],
+   "cut": [
+    "*say* + (that) + nội dung. ",
+    "*tell* + *người nghe* + (that) + nội dung. "
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Hiện tại đơn",
+     "v:am / is / V-s → b:was / V2"
+    ],
+    [
+     "Hiện tại tiếp diễn",
+     "v:is V-ing → b:was V-ing"
+    ],
+    [
+     "Quá khứ, hoàn thành",
+     "v:V2 / have V3 → b:had V3"
+    ],
+    [
+     "will, can, must",
+     "v:will / can / must → b:would / could / had to"
+    ]
+   ],
+   "cut": [
+    "hiện tại đơn → quá khứ đơn · hiện tại tiếp diễn → quá khứ tiếp diễn · quá khứ đơn hoặc hiện tại hoàn thành → quá khứ hoàn thành · will → would · can → could · must → had to."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Thời gian",
+     "x:now → b:then"
+    ],
+    [
+     "",
+     "x:today → b:that day"
+    ],
+    [
+     "",
+     "x:yesterday → b:the day before"
+    ],
+    [
+     "",
+     "x:tomorrow → b:the next day"
+    ],
+    [
+     "Nơi chốn",
+     "x:here → b:there"
+    ],
+    [
+     "",
+     "x:this → b:that"
+    ]
+   ],
+   "cut": [
+    "now → then · today → that day · yesterday → the day before · tomorrow → the next day · here → there · this → that."
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Hỏi có / không",
+     "s:S + v:asked + b:if / whether + s:S + v:V"
+    ],
+    [
+     "Hỏi Wh-",
+     "s:S + v:asked + b:where / what + s:S + v:V"
+    ],
+    [
+     "Yêu cầu",
+     "s:S + v:told / asked + o:người + b:(not) to V"
+    ]
+   ],
+   "cut": [
+    "Câu hỏi có/không: *asked + if / whether* + chủ ngữ + động từ. Câu hỏi có từ để hỏi: *asked + từ để hỏi* + chủ ngữ + động từ. ",
+    "Câu yêu cầu, lời khuyên: *told / asked / advised + người + (not) to V*."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "She ___ me that she was busy.",
+   "opts": [
+    "said",
+    "told"
+   ],
+   "a": 1,
+   "why": "tell + người nghe."
+  },
+  {
+   "t": "choice",
+   "q": "“I am tired.” → He said he ___ tired.",
+   "opts": [
+    "is",
+    "was",
+    "has been"
+   ],
+   "a": 1,
+   "why": "Lùi thì: am → was."
+  },
+  {
+   "t": "choice",
+   "q": "“I will call you.” → She said she ___ call me.",
+   "opts": [
+    "will",
+    "would",
+    "can"
+   ],
+   "a": 1,
+   "why": "will → would."
+  },
+  {
+   "t": "choice",
+   "q": "“Do you live here?” → He asked me ___ there.",
+   "opts": [
+    "if I lived",
+    "do I live",
+    "if did I live"
+   ],
+   "a": 0,
+   "why": "if + S + V, lùi thì, here → there."
+  },
+  {
+   "t": "choice",
+   "q": "“Where are you going?” → She asked me where ___.",
+   "opts": [
+    "was I going",
+    "I was going"
+   ],
+   "a": 1,
+   "why": "Không đảo trong câu tường thuật."
+  },
+  {
+   "t": "choice",
+   "q": "“Don't use your phone.” → The teacher told us ___ our phones.",
+   "opts": [
+    "don't use",
+    "not to use",
+    "not using"
+   ],
+   "a": 1,
+   "why": "told + sb + not to V."
+  },
+  {
+   "t": "choice",
+   "q": "“I finished it yesterday.” → He said he had finished it ___.",
+   "opts": [
+    "yesterday",
+    "the day before",
+    "tomorrow"
+   ],
+   "a": 1,
+   "why": "yesterday → the day before."
+  }
+ ],
+ "write": "Viết 3 câu tường thuật kết quả một khảo sát về học trực tuyến: dùng said that, asked whether / if, và một động từ như claimed / warned / suggested."
+}

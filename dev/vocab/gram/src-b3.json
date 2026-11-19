@@ -1,0 +1,244 @@
+{
+ "id": "b3",
+ "title": "Danh từ: đếm được, không đếm được, số nhiều",
+ "use": "Tránh lỗi thêm -s sai chỗ",
+ "focus": "danh từ đếm được và không đếm được, cách thêm -s/-es, số nhiều bất quy tắc, sở hữu cách 's, lượng từ đi kèm",
+ "summary": [
+  "Danh từ đếm được số ít luôn cần a/an/the/my… đứng trước.",
+  "Danh từ không đếm được: không -s, không a/an, động từ số ít.",
+  "Muốn đếm danh từ không đếm được: a piece of / an item of …",
+  "people, children, women, men là số nhiều bất quy tắc."
+ ],
+ "theory_text": "1. Hai loại danh từ Đếm được (countable) có số ít, số nhiều: a job → two jobs, a person → people Không đếm được (uncountable) không có số nhiều: information, advice, equipment, furniture, accommodation, research, traffic, money, knowledge, evidence, homework, transport, news, luggage, pollution ✗ She gave me some useful advices . ✓ She gave me some useful advice / pieces of advice . advice không đếm được. ✗ The news are good. ✓ The news is good. news có -s nhưng là danh từ không đếm được, đi với động từ số ít. 2. Cách tạo số nhiều Quy tắc Ví dụ Thêm -s car → cars, student → students Tận cùng s, ss, sh, ch, x, o → -es bus → buses, class → classes, box → boxes, potato → potatoes Phụ âm + y → -ies city → cities, country → countries (nhưng day → days) f/fe → -ves shelf → shelves, life → lives, knife → knives Bất quy tắc man → men, woman → women, child → children, person → people, tooth → teeth, foot → feet, mouse → mice Giữ nguyên sheep, fish, species, series, means Gốc Latin/Hy Lạp phenomenon → phenomena, criterion → criteria, analysis → analyses 3. Đếm danh từ không đếm được a piece of advice / information / furniture / equipment a loaf of bread, a cup of coffee, a bottle of water an item of news / clothing Một số từ có cả hai nghĩa: time (thời gian, không đếm được) / three times (ba lần); paper (giấy) / a paper (bài báo). 4. Sở hữu cách Trường hợp Cách viết Danh từ số ít the student 's book Số nhiều có -s the students ' books Số nhiều bất quy tắc children 's education, people 's health Đồ vật, khái niệm thường dùng of: the cost of living, the roof of the house 5. Danh từ nói chung chung Khi nói chung về một loại, dùng số nhiều không có the hoặc danh từ không đếm được : Employees value flexibility. Technology changes quickly. Lỗi hay gặp people đã là số nhiều: viết people are , không viết peoples are (peoples = các dân tộc). Mẹo Viết xong, rà từng danh từ: số ít đếm được có mạo từ chưa? Số nhiều có -s chưa? Không đếm được có lỡ thêm -s không?",
+ "slow": {
+  "idea": "Tiếng Việt nói \"một thông tin\", \"hai lời khuyên\", \"nhiều đồ đạc\" đều được. Tiếng Anh thì chia danh từ thành hai nhóm và mỗi nhóm có luật riêng.\nNhóm *đếm được* là những thứ rời từng cái: a car, two cars. Nhóm *không đếm được* là những thứ tiếng Anh coi như một khối liền: water, traffic, information. Biết một danh từ thuộc nhóm nào thì mới biết có được thêm -s không, có dùng a/an không, và dùng many hay much.",
+  "steps": [
+   {
+    "t": "Danh từ đếm được: có số ít và số nhiều",
+    "say": "Số ít thì bắt buộc có một từ đứng trước như a, an, the, my, this. Không bao giờ để danh từ đếm được số ít đứng trơ trọi. Số nhiều thì thêm -s hoặc -es.",
+    "ex": [
+     [
+      "She is *a* student.",
+      "Cô ấy là sinh viên.",
+      "student đếm được, số ít, nên phải có a. Tiếng Việt không có chữ nào tương ứng nên người Việt rất hay quên."
+     ],
+     [
+      "Many *students* work part-time.",
+      "Nhiều sinh viên đi làm thêm.",
+      "Sau many là danh từ số nhiều, phải có -s."
+     ]
+    ]
+   },
+   {
+    "t": "Danh từ không đếm được: không a/an, không -s",
+    "say": "Nhóm này gồm chất lỏng, vật liệu (water, air, paper), và nhiều danh từ trừu tượng hoặc danh từ chỉ cả một nhóm đồ vật.\nNhững từ người Việt hay viết sai nhất, bạn nên thuộc: *information, advice, knowledge, research, evidence, equipment, furniture, traffic, pollution, homework, news, money, accommodation*.\nChúng luôn đi với động từ số ít.",
+    "ex": [
+     [
+      "This *information is* useful.",
+      "Thông tin này hữu ích.",
+      "information không đếm được: không thêm -s, và động từ là is."
+     ],
+     [
+      "There is too much *traffic*.",
+      "Có quá nhiều xe cộ.",
+      "traffic không đếm được, nên dùng much, không dùng many."
+     ]
+    ]
+   },
+   {
+    "t": "Muốn đếm thứ không đếm được thì thêm một đơn vị",
+    "say": "Giống như muốn đếm nước thì phải nói \"một cốc nước\". Tiếng Anh thêm cụm *a piece of*, *an item of*, *a cup of*… đứng trước. Lúc này thứ được đếm là \"piece\", \"cup\", còn danh từ chính vẫn giữ nguyên.",
+    "ex": [
+     [
+      "two *pieces of* advice",
+      "hai lời khuyên",
+      "Thêm -s vào piece, không thêm vào advice."
+     ],
+     [
+      "a *piece of* furniture",
+      "một món đồ nội thất",
+      "Không viết \"a furniture\"."
+     ]
+    ]
+   },
+   {
+    "t": "Chọn many hay much, few hay little",
+    "say": "Đếm được thì dùng *many, a few, few, a number of*. Không đếm được thì dùng *much, a little, little, an amount of*. Hai nhóm dùng chung được *some, any, a lot of*.\nNếu chưa chắc danh từ thuộc nhóm nào, dùng *a lot of* là an toàn.",
+    "ex": [
+     [
+      "*many* cars · *much* pollution · *a lot of* cars / pollution",
+      "nhiều xe · nhiều ô nhiễm",
+      "cars đếm được nên dùng many. pollution không đếm được nên dùng much."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "She gave me some useful *advices*.",
+    "She gave me some useful *advice*.",
+    "Tiếng Việt nói \"những lời khuyên\" nhưng advice không có số nhiều."
+   ],
+   [
+    "The news *are* good.",
+    "The news *is* good.",
+    "news có chữ s ở cuối nhưng đó không phải số nhiều. Nó là danh từ không đếm được, đi với is."
+   ],
+   [
+    "Many *people is* worried.",
+    "Many *people are* worried.",
+    "people không có -s nhưng là số nhiều của person, nên đi với are."
+   ]
+  ],
+  "check": [
+   [
+    "Vì sao nói \"a lot of research\" mà không nói \"many researches\"?",
+    "research là danh từ không đếm được, nên không thêm -s và không đi với many. Muốn đếm thì nói \"many studies\" (study đếm được)."
+   ],
+   [
+    "Câu \"I need a new furniture.\" sai ở đâu?",
+    "furniture không đếm được nên không đi với a. Sửa: \"I need some new furniture\" hoặc \"a new piece of furniture\"."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Số ít",
+     "x:a / the / my / this + s:N"
+    ],
+    [
+     "Số nhiều",
+     "s:N-s / N-es"
+    ],
+    [
+     "Sai",
+     "n:I have car."
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Không đếm được",
+     "s:N + v:V số ít"
+    ],
+    [
+     "Sai",
+     "n:an information"
+    ],
+    [
+     "Sai",
+     "n:informations"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Muốn đếm",
+     "x:a piece of / an item of / a cup of + s:N không đếm được"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Đếm được",
+     "x:many / a few / few / a number of + s:N-s"
+    ],
+    [
+     "Không đếm được",
+     "x:much / a little / little / an amount of + s:N"
+    ],
+    [
+     "Cả hai",
+     "x:some / any / a lot of + s:N"
+    ]
+   ],
+   "cut": [
+    "Đếm được thì dùng *many, a few, few, a number of*. Không đếm được thì dùng *much, a little, little, an amount of*. Hai nhóm dùng chung được *some, any, a lot of*."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "My teacher gave me some useful ___.",
+   "opts": [
+    "advices",
+    "advice",
+    "an advice"
+   ],
+   "a": 1,
+   "why": "advice không đếm được."
+  },
+  {
+   "t": "choice",
+   "q": "There ___ a lot of traffic in the city centre.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "traffic không đếm được → is."
+  },
+  {
+   "t": "choice",
+   "q": "People who work from home spend ___ money on transport.",
+   "opts": [
+    "fewer",
+    "less"
+   ],
+   "a": 1,
+   "why": "money không đếm được → less."
+  },
+  {
+   "t": "fill",
+   "q": "Companies should provide two ___ of equipment for each worker.",
+   "a": [
+    "pieces"
+   ],
+   "why": "two pieces of equipment."
+  },
+  {
+   "t": "fill",
+   "q": "Số nhiều của city: ___",
+   "a": [
+    "cities"
+   ],
+   "why": "Phụ âm + y → -ies."
+  },
+  {
+   "t": "fill",
+   "q": "Số nhiều của child: ___",
+   "a": [
+    "children"
+   ],
+   "why": "Bất quy tắc: child → children."
+  },
+  {
+   "t": "choice",
+   "q": "Parents care about their ___ education.",
+   "opts": [
+    "children's",
+    "childrens'",
+    "children"
+   ],
+   "a": 0,
+   "why": "children (số nhiều bất quy tắc) + 's."
+  },
+  {
+   "t": "choice",
+   "q": "The news ___ very surprising.",
+   "opts": [
+    "was",
+    "were"
+   ],
+   "a": 0,
+   "why": "news là danh từ không đếm được → was."
+  }
+ ],
+ "write": "Viết 2–3 câu về lợi ích của làm việc tại nhà, dùng đúng ít nhất 2 danh từ không đếm được (time, money, equipment, information…)."
+}

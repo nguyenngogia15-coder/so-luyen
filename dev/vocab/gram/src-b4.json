@@ -1,0 +1,251 @@
+{
+ "id": "b4",
+ "title": "Mạo từ a, an, the và không mạo từ",
+ "use": "Lỗi người Việt hay gặp nhất",
+ "focus": "dùng đúng a / an / the và không dùng mạo từ với danh từ nói chung chung",
+ "summary": [
+  "a/an: danh từ đếm được số ít, nhắc lần đầu hoặc nghĩa là một cái bất kỳ. Chọn theo âm đầu.",
+  "the: người nghe biết cái nào (đã nhắc, duy nhất, có cụm bổ nghĩa đi sau).",
+  "Không mạo từ: nói chung chung với danh từ số nhiều hoặc không đếm được.",
+  "Danh từ đếm được số ít không bao giờ đứng một mình."
+ ],
+ "theory_text": "1. Sơ đồ chọn mạo từ Danh từ đếm được số ít ? → bắt buộc có a/an/the/my/this… Người nghe đã biết cái nào chưa? Chưa → a/an . Rồi → the . Danh từ số nhiều hoặc không đếm được ? Nói chung chung → không mạo từ . Nói cụ thể → the . Nói chung Nói cụ thể Số ít đếm được A smartphone is useful. The smartphone I bought is broken. Số nhiều Smartphones are useful. The smartphones in this shop are cheap. Không đếm được Education is important. The education he received was excellent. 2. a hay an? Chọn theo âm đầu, không theo chữ cái. an + nguyên âm an apple, an hour (h câm), an MBA (/em/), an honest man a + phụ âm a university (/juː/), a European country, a one-way street, a useful tool 3. Khi nào dùng the Đã nhắc trước: I bought a book. The book is about history. Chỉ có một: the sun, the world, the internet, the environment, the government (của nước mình) Có cụm bổ nghĩa xác định đi sau: the subjects that students choose , the cost of living So sánh nhất, số thứ tự: the best, the first, the only Nhạc cụ, tên sông, biển, dãy núi, quốc gia số nhiều: the piano, the Mekong, the USA, the Philippines 4. Khi nào không dùng mạo từ Nói chung chung: Students need sleep. Pollution harms health. Tên riêng, thành phố, đa số quốc gia, môn học, bữa ăn, ngôn ngữ: Vietnam, Hanoi, maths, breakfast, English Cụm cố định: go to school / university / work / bed, by car, at home, in hospital ✗ The education is the key to success. ✓ Education is the key to success. Nói về giáo dục nói chung → không the. ✗ Many people use internet every day. ✓ Many people use the internet every day. internet là thứ duy nhất → the. Lỗi hay gặp Thiếu mạo từ trước danh từ số ít: She is student → She is a student .",
+ "slow": {
+  "idea": "Tiếng Việt không có từ nào giống a, an, the, nên đây là phần người Việt sai nhiều nhất và khó tự thấy lỗi nhất.\nBa lựa chọn (a/an, the, hoặc không dùng gì) trả lời đúng một câu hỏi: *người nghe có biết bạn đang nói đúng cái nào không?* Chưa biết, chỉ là một cái bất kỳ thì dùng a/an. Biết rồi thì dùng the. Đang nói chung về cả một loại thì không dùng gì.",
+  "steps": [
+   {
+    "t": "a / an: một cái bất kỳ, nhắc tới lần đầu",
+    "say": "a / an có nghĩa gốc là \"một\". Vì vậy nó chỉ đi với danh từ đếm được số ít. Dùng khi người nghe chưa biết là cái nào, hoặc cái nào cũng được.\nDùng *an* khi từ đứng sau bắt đầu bằng âm nguyên âm (nghe bằng tai, không nhìn chữ): an hour (chữ h câm), nhưng a university (đọc là \"diu\").",
+    "ex": [
+     [
+      "I bought *a* book yesterday.",
+      "Hôm qua tôi mua một cuốn sách.",
+      "Người nghe chưa biết cuốn nào. Lần đầu nhắc tới thì dùng a."
+     ],
+     [
+      "Pollution is *a* serious problem.",
+      "Ô nhiễm là một vấn đề nghiêm trọng.",
+      "problem đếm được, số ít, và đây là một trong nhiều vấn đề nghiêm trọng, nên dùng a."
+     ]
+    ]
+   },
+   {
+    "t": "the: cả hai người đều biết là cái nào",
+    "say": "Người nghe biết là cái nào trong bốn trường hợp sau:\nMột, bạn vừa nhắc tới nó ở câu trước. Hai, trên đời chỉ có một cái (the sun, the internet, the environment). Ba, ngay sau danh từ có một cụm nói rõ là cái nào (the number *of cars*, the city *where I live*). Bốn, có chữ \"nhất\", \"đầu tiên\", \"duy nhất\" (the highest, the first, the only).",
+    "ex": [
+     [
+      "I bought a book. *The* book is about history.",
+      "Tôi mua một cuốn sách. Cuốn sách đó nói về lịch sử.",
+      "Lần hai nhắc tới, người nghe đã biết là cuốn nào, nên đổi sang the."
+     ],
+     [
+      "*The* number of tourists increased.",
+      "Số lượng khách du lịch tăng.",
+      "Cụm \"of tourists\" đã nói rõ là con số nào, nên dùng the."
+     ]
+    ]
+   },
+   {
+    "t": "Không dùng mạo từ: nói chung về cả một loại",
+    "say": "Khi bạn nói về một thứ nói chung, không chỉ cái cụ thể nào, thì dùng danh từ số nhiều hoặc danh từ không đếm được và *không* đặt gì phía trước. Đây là kiểu câu xuất hiện nhiều nhất trong bài Writing Task 2.",
+    "ex": [
+     [
+      "*Children* need *sleep*.",
+      "Trẻ em cần ngủ.",
+      "Trẻ em nói chung, giấc ngủ nói chung. Không dùng the."
+     ],
+     [
+      "*Education* is important.",
+      "Giáo dục là quan trọng.",
+      "Giáo dục nói chung. Nếu viết \"The education\" thì người đọc sẽ hỏi: giáo dục nào?"
+     ]
+    ]
+   },
+   {
+    "t": "Ba câu hỏi để chọn, theo đúng thứ tự",
+    "say": "Câu 1: Người đọc có biết đúng cái nào không? Có thì dùng *the*, xong.\nCâu 2: Nếu không, danh từ có phải đếm được số ít không? Phải thì dùng *a / an*.\nCâu 3: Còn lại là số nhiều hoặc không đếm được, đang nói chung, thì *không dùng gì*.",
+    "ex": [
+     [
+      "___ unemployment is rising. → *Unemployment* is rising.",
+      "Thất nghiệp đang tăng.",
+      "Câu 1: không chỉ cái cụ thể nào. Câu 2: unemployment không đếm được. Vậy không dùng gì."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "She is student.",
+    "She is *a* student.",
+    "Danh từ đếm được số ít không được đứng trơ trọi. Đây là lỗi thiếu mạo từ phổ biến nhất."
+   ],
+   [
+    "*The* technology changes people's lives.",
+    "*Technology* changes people's lives.",
+    "Công nghệ nói chung thì không dùng the. Chỉ dùng the khi nói công nghệ cụ thể: the technology used in this phone."
+   ],
+   [
+    "Many people use *internet*.",
+    "Many people use *the* internet.",
+    "Chỉ có một mạng internet, ai cũng biết, nên dùng the."
+   ]
+  ],
+  "check": [
+   [
+    "Vì sao viết \"the cost of living\" mà lại viết \"Education is expensive\"?",
+    "Cụm \"of living\" đi sau đã nói rõ là chi phí nào, nên dùng the. Còn education ở câu kia là giáo dục nói chung, không có gì giới hạn, nên không dùng mạo từ."
+   ],
+   [
+    "Điền a, the hoặc để trống: \"___ government should build ___ new hospital in ___ rural areas.\"",
+    "The government (chính phủ của nước đang nói, ai cũng biết) · a new hospital (một bệnh viện mới bất kỳ, đếm được số ít) · rural areas (vùng nông thôn nói chung, số nhiều, để trống)."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "a",
+     "x:a + s:âm phụ âm (a car, a university)"
+    ],
+    [
+     "an",
+     "x:an + s:âm nguyên âm (an apple, an hour)"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Có cụm nói rõ",
+     "x:the + s:N + o:of… / where…"
+    ],
+    [
+     "Có chữ nhất",
+     "x:the + o:highest / first / only + s:N"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Nói chung",
+     "s:N-s (Cars pollute…)"
+    ],
+    [
+     "Nói chung",
+     "s:N không đếm được (Pollution is…)"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Câu 1",
+     "x:Người đọc biết đúng cái nào? → b:the"
+    ],
+    [
+     "Câu 2",
+     "x:Không. Đếm được số ít? → b:a / an"
+    ],
+    [
+     "Câu 3",
+     "x:Còn lại, đang nói chung → b:không dùng gì"
+    ]
+   ],
+   "cut": [
+    "Câu 1: Người đọc có biết đúng cái nào không? Có thì dùng *the*, xong.",
+    "Câu 2: Nếu không, danh từ có phải đếm được số ít không? Phải thì dùng *a / an*.",
+    "Câu 3: Còn lại là số nhiều hoặc không đếm được, đang nói chung, thì *không dùng gì*."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "___ education is the key to a better future.",
+   "opts": [
+    "The",
+    "An",
+    "(không mạo từ)"
+   ],
+   "a": 2,
+   "why": "Giáo dục nói chung, không đếm được → không mạo từ."
+  },
+  {
+   "t": "choice",
+   "q": "She wants to study at ___ university in Canada.",
+   "opts": [
+    "a",
+    "an",
+    "the"
+   ],
+   "a": 0,
+   "why": "university bắt đầu bằng âm /juː/ → a."
+  },
+  {
+   "t": "choice",
+   "q": "It takes ___ hour to get to school.",
+   "opts": [
+    "a",
+    "an"
+   ],
+   "a": 1,
+   "why": "h trong hour câm → an."
+  },
+  {
+   "t": "choice",
+   "q": "___ government should invest more in schools.",
+   "opts": [
+    "The",
+    "A",
+    "(không mạo từ)"
+   ],
+   "a": 0,
+   "why": "Chính phủ của nước mình, ai cũng biết là cái nào → the."
+  },
+  {
+   "t": "choice",
+   "q": "My brother is ___ engineer.",
+   "opts": [
+    "a",
+    "an",
+    "(không mạo từ)"
+   ],
+   "a": 1,
+   "why": "Nghề nghiệp, số ít, âm đầu nguyên âm → an."
+  },
+  {
+   "t": "choice",
+   "q": "I bought a laptop last week. ___ laptop is very fast.",
+   "opts": [
+    "A",
+    "The"
+   ],
+   "a": 1,
+   "why": "Đã nhắc trước → the."
+  },
+  {
+   "t": "choice",
+   "q": "Nói về sinh viên nói chung, câu nào đúng?",
+   "opts": [
+    "Students should be free to choose their subjects.",
+    "The students should be free to choose the subjects."
+   ],
+   "a": 0,
+   "why": "Nói chung → danh từ số nhiều, không the."
+  },
+  {
+   "t": "choice",
+   "q": "Everest is ___ highest mountain in the world.",
+   "opts": [
+    "a",
+    "the",
+    "(không mạo từ)"
+   ],
+   "a": 1,
+   "why": "So sánh nhất → the."
+  }
+ ],
+ "write": "Viết 2–3 câu nêu ý kiến của bạn về việc sinh viên có nên tự chọn ngành học không. Chú ý mạo từ trước mỗi danh từ."
+}

@@ -1,0 +1,275 @@
+{
+ "id": "c2",
+ "title": "Câu điều kiện và câu ước",
+ "use": "If, unless, wish, if only",
+ "focus": "câu điều kiện loại 0, 1, 2, 3 và hỗn hợp; unless, provided that, as long as, in case; đảo ngữ câu điều kiện; wish / if only cho hiện tại, quá khứ, tương lai",
+ "summary": [
+  "Loại 1 (có thể xảy ra): If + hiện tại, will + V.",
+  "Loại 2 (giả định hiện tại, khó xảy ra): If + quá khứ, would + V. Dùng were cho mọi ngôi.",
+  "Loại 3 (giả định quá khứ, đã không xảy ra): If + had V3, would have V3.",
+  "Không dùng will trong mệnh đề if. unless = if … not."
+ ],
+ "theory_text": "1. Bốn loại câu điều kiện Loại Mệnh đề If Mệnh đề chính Dùng khi 0 hiện tại đơn hiện tại đơn luôn đúng: If you heat ice, it melts. 1 hiện tại đơn will / can / may + V có thể xảy ra: If fares fall, more people will take the bus. 2 quá khứ đơn (were) would / could / might + V giả định trái hiện tại: If buses were free, I would use them. 3 had + V3 would / could have + V3 giả định trái quá khứ: If I had studied , I would have passed . Bây giờ Quá khứ Tương lai loại 3 loại 2 loại 1 Loại 3 nói về quá khứ, loại 2 về hiện tại (không thật), loại 1 về tương lai có thể xảy ra 2. Câu điều kiện hỗn hợp Quá khứ → kết quả hiện tại: If I had learned English earlier, I would be more confident now. Hiện tại → kết quả quá khứ: If I were more careful, I wouldn't have made that mistake. 3. Từ thay cho if Từ Nghĩa Ví dụ unless trừ khi = if … not Traffic won't improve unless fares fall. provided (that) / as long as miễn là You can go as long as you finish your work. in case phòng khi Take an umbrella in case it rains. otherwise nếu không thì Hurry, otherwise you'll be late. 4. Đảo ngữ (trang trọng) Loại 1: Should you need help, call me. Loại 2: Were public transport free, more people would use it. Loại 3: Had I known, I would have helped. 5. wish / if only Ước về Cấu trúc Ví dụ Hiện tại wish + quá khứ đơn I wish I had more time. Quá khứ wish + had + V3 I wish I had studied harder. Tương lai / phàn nàn wish + would + V I wish it would stop raining. ✗ If the government will build more bus lanes, traffic will improve. ✓ If the government builds more bus lanes, traffic will improve.",
+ "slow": {
+  "idea": "Câu điều kiện có hai phần: phần *if* nêu điều kiện, phần còn lại nêu kết quả.\nTiếng Việt dùng \"nếu… thì…\" cho mọi trường hợp. Tiếng Anh thay đổi thì của động từ để cho biết điều kiện đó *có thật hay không*. Quy luật chung: điều càng xa sự thật thì động từ càng lùi về quá khứ. Việc lùi thì ở đây không có nghĩa là thời gian quá khứ. Nó chỉ là dấu hiệu báo \"điều này không có thật\".\nTrong Task 2, câu điều kiện loại 1 và loại 2 rất hữu ích để nêu hậu quả và giải pháp.",
+  "steps": [
+   {
+    "t": "Loại 0: điều luôn đúng",
+    "say": "*If + hiện tại đơn, hiện tại đơn.* Dùng cho quy luật, sự thật: cứ có điều này là có điều kia.",
+    "ex": [
+     [
+      "If you *heat* ice, it *melts*.",
+      "Nếu bạn làm nóng đá, nó tan.",
+      "Lần nào cũng vậy, nên cả hai vế đều dùng hiện tại đơn."
+     ]
+    ]
+   },
+   {
+    "t": "Loại 1: có thể xảy ra",
+    "say": "*If + hiện tại đơn, will + động từ nguyên mẫu.* Điều kiện hoàn toàn có thể xảy ra ở hiện tại hoặc tương lai.\nNhớ: vế if không dùng will, dù nói về tương lai.",
+    "ex": [
+     [
+      "If the government *invests* in buses, traffic *will improve*.",
+      "Nếu chính phủ đầu tư vào xe buýt, giao thông sẽ cải thiện.",
+      "Việc đầu tư là có thể xảy ra. Vế if dùng hiện tại đơn, vế kết quả dùng will."
+     ]
+    ]
+   },
+   {
+    "t": "Loại 2: không có thật ở hiện tại, chỉ là tưởng tượng",
+    "say": "*If + quá khứ đơn, would + động từ nguyên mẫu.* Điều kiện trái với thực tế bây giờ, hoặc rất khó xảy ra.\nĐộng từ ở dạng quá khứ nhưng nghĩa là hiện tại. Với be, dùng *were* cho mọi chủ ngữ.",
+    "ex": [
+     [
+      "If I *had* more money, I *would travel* more.",
+      "Nếu tôi có nhiều tiền hơn, tôi sẽ đi du lịch nhiều hơn.",
+      "Thực tế: tôi không có nhiều tiền. \"had\" ở đây không nói về quá khứ, nó báo rằng đây là giả định."
+     ],
+     [
+      "If I *were* you, I *would study* harder.",
+      "Nếu tôi là bạn, tôi sẽ học chăm hơn.",
+      "Tôi không thể là bạn. Dùng were, không dùng was."
+     ]
+    ]
+   },
+   {
+    "t": "Loại 3: không có thật ở quá khứ, tiếc nuối",
+    "say": "*If + had + V3, would have + V3.* Nói về một việc đã qua, đã không xảy ra, và kết quả tưởng tượng của nó. Không thay đổi được nữa.",
+    "ex": [
+     [
+      "If I *had studied* harder, I *would have passed* the exam.",
+      "Nếu tôi đã học chăm hơn thì tôi đã thi đỗ.",
+      "Thực tế: tôi không học chăm và đã trượt. Cả hai vế đều lùi thêm một bậc so với loại 2."
+     ]
+    ]
+   },
+   {
+    "t": "Phân biệt loại 1 và loại 2 khi viết",
+    "say": "Cùng một ý, chọn loại 1 nếu bạn cho rằng điều đó có thể thành sự thật, chọn loại 2 nếu bạn coi đó là giả định xa vời.",
+    "ex": [
+     [
+      "If cities *ban* cars, the air *will be* cleaner.",
+      "Nếu các thành phố cấm ô tô, không khí sẽ sạch hơn.",
+      "Người viết coi việc cấm xe là khả thi."
+     ],
+     [
+      "If cities *banned* cars, the air *would be* cleaner.",
+      "Nếu các thành phố cấm ô tô (giả sử vậy), không khí sẽ sạch hơn.",
+      "Người viết coi đây chỉ là giả định, khó xảy ra."
+     ]
+    ]
+   },
+   {
+    "t": "unless và wish",
+    "say": "*unless* = if… not (trừ khi). Sau unless không dùng thêm not.\n*wish* dùng cách lùi thì giống câu điều kiện: ước cho hiện tại thì dùng quá khứ đơn, ước cho quá khứ thì dùng had + V3.",
+    "ex": [
+     [
+      "*Unless* we act now, the problem will get worse.",
+      "Trừ khi chúng ta hành động ngay, vấn đề sẽ tệ hơn.",
+      "= If we do not act now."
+     ],
+     [
+      "I wish I *had* more time.",
+      "Ước gì tôi có nhiều thời gian hơn.",
+      "Thực tế bây giờ tôi không có nhiều thời gian. Lùi về quá khứ đơn."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "If it *will rain*, I will stay home.",
+    "If it *rains*, I will stay home.",
+    "Vế if không có will."
+   ],
+   [
+    "If I *would have* money, I would buy it.",
+    "If I *had* money, I would buy it.",
+    "would chỉ nằm ở vế kết quả, không nằm ở vế if."
+   ],
+   [
+    "If I *was* rich, I *will* buy a house.",
+    "If I *were* rich, I *would* buy a house.",
+    "Không trộn loại: vế if đã lùi về quá khứ thì vế kia phải dùng would."
+   ]
+  ],
+  "check": [
+   [
+    "Bạn đang 20 tuổi và nói về việc làm tổng thống. Dùng loại nào: \"If I ___ president, I ___ education free.\"",
+    "Loại 2, vì đây là giả định không có thật: If I were president, I would make education free."
+   ],
+   [
+    "Câu \"If she had left earlier, she would have caught the train\" cho biết thực tế ra sao?",
+    "Thực tế cô ấy đã không đi sớm, và đã lỡ tàu. Loại 3 luôn nói ngược với điều đã xảy ra."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Loại 0",
+     "x:If + s:S + v:V (hiện tại) , s:S + v:V (hiện tại)"
+    ]
+   ],
+   "cut": [
+    "*If + hiện tại đơn, hiện tại đơn.* "
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Loại 1",
+     "x:If + s:S + v:V (hiện tại) , s:S + b:will + v:V"
+    ]
+   ],
+   "cut": [
+    "*If + hiện tại đơn, will + động từ nguyên mẫu.* "
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Loại 2",
+     "x:If + s:S + b:V2 / were , s:S + b:would + v:V"
+    ]
+   ],
+   "cut": [
+    "*If + quá khứ đơn, would + động từ nguyên mẫu.* "
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Loại 3",
+     "x:If + s:S + b:had V3 , s:S + b:would have + v:V3"
+    ]
+   ],
+   "cut": [
+    "*If + had + V3, would have + V3.* "
+   ]
+  },
+  "5": {
+   "f": [
+    [
+     "unless",
+     "b:Unless + s:S + v:V , s:S + v:will + v:V"
+    ],
+    [
+     "wish (bây giờ)",
+     "s:I + x:wish + s:S + b:V2 / were"
+    ],
+    [
+     "wish (quá khứ)",
+     "s:I + x:wish + s:S + b:had V3"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "If the city builds more roads, more people ___ cars.",
+   "opts": [
+    "buy",
+    "will buy",
+    "would bought"
+   ],
+   "a": 1,
+   "why": "Loại 1."
+  },
+  {
+   "t": "choice",
+   "q": "If public transport ___ free, more people would use it.",
+   "opts": [
+    "is",
+    "were",
+    "will be"
+   ],
+   "a": 1,
+   "why": "Loại 2: were."
+  },
+  {
+   "t": "choice",
+   "q": "If I ___ harder, I would have passed the exam.",
+   "opts": [
+    "studied",
+    "had studied",
+    "would study"
+   ],
+   "a": 1,
+   "why": "Loại 3: had + V3."
+  },
+  {
+   "t": "choice",
+   "q": "If the government ___ more bus lanes, traffic will improve.",
+   "opts": [
+    "will build",
+    "builds"
+   ],
+   "a": 1,
+   "why": "Không dùng will trong mệnh đề if."
+  },
+  {
+   "t": "fill",
+   "q": "Traffic will not improve ___ public transport becomes cheaper. (= if … not)",
+   "a": [
+    "unless"
+   ],
+   "why": "unless = if … not."
+  },
+  {
+   "t": "choice",
+   "q": "I wish I ___ more free time now.",
+   "opts": [
+    "have",
+    "had",
+    "will have"
+   ],
+   "a": 1,
+   "why": "Ước trái hiện tại → quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "___ I known about the problem, I would have helped.",
+   "opts": [
+    "If",
+    "Had",
+    "Should"
+   ],
+   "a": 1,
+   "why": "Đảo ngữ loại 3: Had + S + V3."
+  },
+  {
+   "t": "choice",
+   "q": "If she had taken the job, she ___ in London now.",
+   "opts": [
+    "would live",
+    "would have lived",
+    "will live"
+   ],
+   "a": 0,
+   "why": "Hỗn hợp: quá khứ → kết quả hiện tại."
+  }
+ ],
+ "write": "Viết 3 câu về chi tiêu cho giao thông công cộng: một câu điều kiện loại 1, một câu loại 2 và một câu dùng unless."
+}

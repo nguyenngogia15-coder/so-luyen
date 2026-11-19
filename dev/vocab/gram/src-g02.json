@@ -1,0 +1,241 @@
+{
+ "id": "g02",
+ "title": "Cấu trúc câu và trật tự từ",
+ "use": "Câu nào cũng cần chủ ngữ và động từ",
+ "focus": "5 mẫu câu cơ bản (S V, S V O, S V C, S V O O, S V O C), nội động từ và ngoại động từ, động từ nối (linking verbs), trật tự từ trong câu",
+ "summary": [
+  "Câu hoàn chỉnh luôn có ít nhất một chủ ngữ và một động từ đã chia.",
+  "Ngoại động từ cần tân ngữ (build a road); nội động từ thì không (prices rose).",
+  "Sau động từ nối (be, become, seem, look, feel) là tính từ hoặc danh từ, không phải trạng từ.",
+  "Trật tự chuẩn: Chủ ngữ + Động từ + Tân ngữ + Cách thức + Nơi chốn + Thời gian."
+ ],
+ "theory_text": "1. Năm mẫu câu cơ bản S + V Prices + rose S + V + O The city + built + a new bridge S + V + C The roads + are + crowded S + V + O + O The school + gave + students + free books S + V + O + C Traffic + makes + people + angry S = chủ ngữ (subject), V = động từ, O = tân ngữ (object), C = bổ ngữ (complement: tính từ hoặc danh từ nói về chủ ngữ / tân ngữ). 2. Nội động từ và ngoại động từ Ngoại động từ (cần tân ngữ) build, make, reduce, raise, solve, provide, discuss Nội động từ (không có tân ngữ) rise, fall, happen, occur, arrive, exist, remain Dùng được cả hai increase, decrease, change, improve, grow ✗ The government should discuss about this problem. ✓ The government should discuss this problem. discuss là ngoại động từ, không cần about. ✗ This problem is happened in many cities. ✓ This problem happens in many cities. happen là nội động từ, không có bị động. 3. Động từ nối (linking verbs) be, become, seem, appear, look, sound, feel, remain, stay, get + tính từ (hoặc danh từ). The city looks clean. (không viết looks cleanly ) Prices remained stable. She became a teacher. 4. Trật tự từ Thứ tự thường gặp (SVOMPT) S + V + O + Manner + Place + Time She studied English carefully at home last night . Trạng từ tần suất đứng trước động từ thường, sau be: People often drive. / They are often late. Lỗi hay gặp Không đặt trạng từ giữa động từ và tân ngữ: viết speak English well , không viết speak well English . Mẹo Mỗi câu kiểm tra 2 câu hỏi: Chủ ngữ là gì? Động từ đã chia là gì? Thiếu một trong hai là câu sai.",
+ "slow": {
+  "idea": "Câu tiếng Anh giống một hàng ghế có số: ai ngồi ghế nào là cố định. Ghế 1 là *chủ ngữ* (người hoặc vật được nói tới). Ghế 2 là *động từ*. Sau đó mới tới các phần khác.\nTiếng Việt cho phép bỏ động từ (\"Thành phố này rất đông\") và xếp từ khá tự do. Tiếng Anh thì câu nào cũng phải có đủ chủ ngữ và động từ, và các từ phải đứng đúng thứ tự. Hai lỗi nặng nhất của người Việt khi viết đều nằm ở đây: thiếu động từ và đặt sai chỗ.",
+  "steps": [
+   {
+    "t": "Câu nào cũng phải có chủ ngữ và một động từ đã chia",
+    "say": "Viết xong một câu, hãy tự hỏi hai câu: \"Ai hoặc cái gì?\" (đó là chủ ngữ) và \"làm gì, hoặc như thế nào?\" (đó phải là một động từ).\nKhi muốn tả chủ ngữ bằng một tính từ, tiếng Việt không cần động từ, nhưng tiếng Anh phải thêm *be* (am, is, are, was, were).",
+    "ex": [
+     [
+      "This city *is* very crowded.",
+      "Thành phố này rất đông.",
+      "crowded là tính từ, không phải động từ. Phải có is thì câu mới có động từ."
+     ],
+     [
+      "Many people *live* in big cities.",
+      "Nhiều người sống ở thành phố lớn.",
+      "Nếu viết \"Many people in big cities.\" thì mới chỉ có chủ ngữ, chưa nói họ làm gì, nên chưa thành câu."
+     ]
+    ]
+   },
+   {
+    "t": "Động từ quyết định phía sau cần thêm gì",
+    "say": "Có động từ tự nó đã đủ nghĩa, không cần gì theo sau: rise (tăng), happen (xảy ra), arrive (đến). Gọi là *nội động từ*.\nCó động từ bắt buộc phải có một *tân ngữ* (thứ bị tác động) đi sau, nếu không câu bị hụt: build (xây cái gì?), reduce (giảm cái gì?), discuss (thảo luận cái gì?). Gọi là *ngoại động từ*.\nCách thử: đọc động từ lên rồi hỏi \"cái gì?\". Nếu câu hỏi đó nghe có lý thì động từ cần tân ngữ.",
+    "ex": [
+     [
+      "Prices *rose*.",
+      "Giá tăng.",
+      "rose tự đủ nghĩa. Không viết \"rose the prices\"."
+     ],
+     [
+      "The government *raised* taxes.",
+      "Chính phủ tăng thuế.",
+      "raise là \"làm cho cái gì tăng\", nên phải có tân ngữ taxes."
+     ],
+     [
+      "We *discussed* the problem.",
+      "Chúng tôi thảo luận về vấn đề đó.",
+      "discuss đi thẳng với tân ngữ. Tiếng Việt có chữ \"về\" nhưng tiếng Anh không thêm about."
+     ]
+    ]
+   },
+   {
+    "t": "Thứ tự các phần trong câu",
+    "say": "Thứ tự chuẩn là: chủ ngữ → động từ → tân ngữ → cách thức → nơi chốn → thời gian.\nĐiều cần nhớ nhất: động từ và tân ngữ của nó luôn đứng sát nhau, không chen gì vào giữa. Các thông tin \"như thế nào, ở đâu, khi nào\" xếp phía sau.",
+    "ex": [
+     [
+      "She speaks *English* well.",
+      "Cô ấy nói tiếng Anh giỏi.",
+      "English là tân ngữ nên đứng sát speaks. well (cách thức) đứng sau. Không viết \"speaks well English\"."
+     ],
+     [
+      "Students use smartphones *in class* *every day*.",
+      "Học sinh dùng điện thoại trong lớp mỗi ngày.",
+      "Nơi chốn (in class) đứng trước thời gian (every day)."
+     ]
+    ]
+   },
+   {
+    "t": "Vị trí của các từ chỉ mức độ thường xuyên",
+    "say": "always, usually, often, sometimes, never đứng *trước* động từ thường, nhưng đứng *sau* be.",
+    "ex": [
+     [
+      "People *often* drive to work.",
+      "Mọi người thường lái xe đi làm.",
+      "drive là động từ thường, nên often đứng trước nó."
+     ],
+     [
+      "The roads are *often* crowded.",
+      "Đường thường đông.",
+      "Có be (are), nên often đứng sau be."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The traffic in Hanoi very bad.",
+    "The traffic in Hanoi *is* very bad.",
+    "Dịch từng chữ từ \"Giao thông ở Hà Nội rất tệ\" sẽ thiếu động từ. bad là tính từ, phải có is."
+   ],
+   [
+    "This problem *is happened* in many cities.",
+    "This problem *happens* in many cities.",
+    "happen là nội động từ: sự việc tự xảy ra, không ai \"làm xảy ra\" nó, nên không dùng dạng bị động."
+   ],
+   [
+    "I like *very much* football.",
+    "I like football *very much*.",
+    "Không chen gì vào giữa động từ like và tân ngữ football."
+   ]
+  ],
+  "check": [
+   [
+    "Câu \"There many reasons for this.\" sai ở đâu?",
+    "Thiếu động từ. Sửa: There *are* many reasons for this."
+   ],
+   [
+    "Vì sao viết \"The price rose\" nhưng lại viết \"They raised the price\"?",
+    "rise là nội động từ: tự tăng, không có tân ngữ. raise là ngoại động từ: ai đó làm cho cái gì tăng, nên phải có tân ngữ the price."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Câu tối thiểu",
+     "s:S + v:V (đã chia)"
+    ],
+    [
+     "Tả bằng tính từ",
+     "s:S + v:am / is / are / was / were + o:tính từ"
+    ],
+    [
+     "Sai",
+     "n:The city very crowded."
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Nội động từ",
+     "s:S + v:V"
+    ],
+    [
+     "Ngoại động từ",
+     "s:S + v:V + o:O (cái gì?)"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Thứ tự",
+     "s:Ai / cái gì + v:làm gì + o:cái gì + x:thế nào + x:ở đâu + x:khi nào"
+    ]
+   ],
+   "cut": [
+    "Thứ tự chuẩn là: chủ ngữ → động từ → tân ngữ → cách thức → nơi chốn → thời gian."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Động từ thường",
+     "s:S + b:always / often / never + v:V"
+    ],
+    [
+     "Với be",
+     "s:S + v:be + b:always / often / never"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "We should discuss about this issue.",
+    "We should discuss this issue."
+   ],
+   "a": 1,
+   "why": "discuss + tân ngữ, không có about."
+  },
+  {
+   "t": "choice",
+   "q": "The price of petrol ___ last year.",
+   "opts": [
+    "rose",
+    "raised",
+    "was risen"
+   ],
+   "a": 0,
+   "why": "rise là nội động từ: rose."
+  },
+  {
+   "t": "choice",
+   "q": "The new park looks ___.",
+   "opts": [
+    "beautifully",
+    "beautiful"
+   ],
+   "a": 1,
+   "why": "Sau động từ nối look → tính từ."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào có trật tự đúng?",
+   "opts": [
+    "She speaks very well English.",
+    "She speaks English very well."
+   ],
+   "a": 1,
+   "why": "Không chen trạng từ giữa động từ và tân ngữ."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào là câu hoàn chỉnh?",
+   "opts": [
+    "Many people in big cities.",
+    "Many people live in big cities."
+   ],
+   "a": 1,
+   "why": "Câu cần động từ đã chia."
+  },
+  {
+   "t": "choice",
+   "q": "Traffic jams make drivers ___.",
+   "opts": [
+    "stressful",
+    "stressed"
+   ],
+   "a": 1,
+   "why": "S + V + O + C: make drivers stressed (cảm thấy căng thẳng)."
+  },
+  {
+   "t": "choice",
+   "q": "Accidents ___ when drivers are tired.",
+   "opts": [
+    "are happened",
+    "happen"
+   ],
+   "a": 1,
+   "why": "happen không dùng bị động."
+  }
+ ],
+ "write": "Viết 3 câu về giao thông ở thành phố bạn, mỗi câu theo một mẫu khác nhau: S + V, S + V + O, S + V + O + C."
+}

@@ -1,0 +1,254 @@
+{
+ "id": "g29",
+ "title": "Câu giả định và các cấu trúc đặc biệt",
+ "use": "suggest that, it is essential that, would rather, it's time",
+ "focus": "thể giả định (subjunctive) sau suggest / recommend / insist / demand / it is essential that…, would rather, had better, it's (high) time, as if / as though",
+ "summary": [
+  "suggest / recommend / insist / demand / require + that + S + V nguyên mẫu (không -s, không chia thì).",
+  "It is essential / important / vital / necessary + that + S + V nguyên mẫu.",
+  "would rather + V; would rather + S + quá khứ đơn (muốn người khác làm).",
+  "It's (high) time + S + quá khứ đơn: đã đến lúc (lẽ ra phải làm rồi)."
+ ],
+ "theory_text": "1. Giả định sau động từ đề nghị, yêu cầu Cấu trúc S + suggest / recommend / insist / demand / propose + that + S + (should) + bare V Experts recommend that the government invest in public transport. (không viết invests ) The doctor insisted that he stop smoking. Anh-Anh hay thêm should: …that the government should invest … Phủ định: …that students not be allowed to… 2. Giả định sau tính từ Cấu trúc It is + essential / vital / important / necessary / crucial + that + S + bare V It is essential that every child have access to education. It is vital that action be taken now. (bị động: be + V3) 3. would rather, had better Cấu trúc Nghĩa Ví dụ would rather + V (than + V) thích làm … hơn I would rather walk than take the bus. would rather + S + quá khứ đơn muốn người khác làm I' d rather you didn't smoke here. had better + V tốt hơn hết nên (cảnh báo) You 'd better leave now or you'll miss the train. 4. It's time, as if Đã đến lúc It's (high / about) time + S + past simple Hoặc It's time + (for sb) to V Như thể as if / as though + S + past simple / had V3 It's high time the government took action on pollution. He talks as if he knew everything. (thật ra không biết) ✗ I suggest that she goes to the doctor. ✓ I suggest that she go / should go to the doctor. Mẹo Câu It is essential that… / It's high time… rất hợp phần đề xuất giải pháp của Task 2 dạng Problem – Solution.",
+ "slow": {
+  "idea": "Phần lớn câu tiếng Anh nói về điều có thật. Nhưng có lúc ta nói về điều *chưa có thật*: một đề nghị, một yêu cầu, một điều nên xảy ra, một mong muốn. Tiếng Anh đánh dấu những câu này bằng dạng động từ đặc biệt, gọi là *giả định*.\nCó hai cách đánh dấu. Cách 1: để động từ ở dạng *nguyên mẫu*, không chia gì cả. Cách này dùng sau các từ đề nghị, yêu cầu. Cách 2: *lùi thì về quá khứ*, giống câu điều kiện loại 2. Cách này dùng sau would rather, it's time, as if, wish.\nĐây là ngữ pháp nâng cao. Dùng đúng một hai lần trong bài viết là đủ để ghi điểm.",
+  "steps": [
+   {
+    "t": "Sau động từ đề nghị, yêu cầu: that + chủ ngữ + V nguyên mẫu",
+    "say": "Các động từ: *suggest, recommend, propose, demand, insist, request, require, ask*.\nSau that, động từ ở dạng nguyên mẫu với *mọi chủ ngữ*: không thêm -s, không chia quá khứ. Phủ định thì thêm *not* ngay trước động từ, không dùng don't / doesn't.\nTrong tiếng Anh kiểu Anh, có thể thêm should trước động từ. Cả hai cách đều đúng.",
+    "ex": [
+     [
+      "I suggest that he *see* a doctor.",
+      "Tôi đề nghị anh ấy đi khám bác sĩ.",
+      "Không viết \"sees\". Việc đi khám chưa xảy ra, mới là lời đề nghị."
+     ],
+     [
+      "Experts recommend that the government *invest* more in education.",
+      "Các chuyên gia khuyến nghị chính phủ đầu tư nhiều hơn vào giáo dục.",
+      "the government là số ít nhưng động từ vẫn là invest, không có -s."
+     ],
+     [
+      "They demanded that she *not be* punished.",
+      "Họ yêu cầu rằng cô ấy không bị phạt.",
+      "Phủ định: not đứng trước be nguyên mẫu."
+     ]
+    ]
+   },
+   {
+    "t": "Sau tính từ chỉ sự cần thiết: It is + tính từ + that…",
+    "say": "Các tính từ: *important, essential, vital, necessary, crucial, urgent*. Sau that cũng dùng V nguyên mẫu.",
+    "ex": [
+     [
+      "It is essential that every child *have* access to education.",
+      "Điều thiết yếu là mọi trẻ em đều được tiếp cận giáo dục.",
+      "Không viết \"has\". Đây là điều cần phải có, chưa chắc đã là sự thật."
+     ],
+     [
+      "It is important that the law *be* enforced.",
+      "Điều quan trọng là luật phải được thực thi.",
+      "Dạng bị động của giả định: be + V3."
+     ]
+    ]
+   },
+   {
+    "t": "would rather và had better",
+    "say": "*would rather + V nguyên mẫu*: thích làm việc này hơn. *would rather + người khác + quá khứ đơn*: muốn người khác làm gì (lùi thì vì điều đó chưa có thật).\n*had better + V nguyên mẫu*: nên làm, nếu không sẽ có hậu quả. Tuy có chữ had nhưng nghĩa là hiện tại hoặc tương lai.",
+    "ex": [
+     [
+      "I *would rather stay* at home.",
+      "Tôi thích ở nhà hơn.",
+      "Cùng một người, dùng V nguyên mẫu."
+     ],
+     [
+      "I *would rather you came* tomorrow.",
+      "Tôi muốn bạn đến vào ngày mai hơn.",
+      "Chủ ngữ khác (you), nên dùng quá khứ đơn came, dù nói về ngày mai."
+     ],
+     [
+      "You *had better leave* now.",
+      "Bạn nên đi ngay bây giờ.",
+      "Sau had better là V nguyên mẫu, không có to."
+     ]
+    ]
+   },
+   {
+    "t": "It's time và as if",
+    "say": "*It's (high) time + chủ ngữ + quá khứ đơn*: đã đến lúc ai đó phải làm gì (hàm ý lẽ ra phải làm rồi).\n*as if / as though + quá khứ đơn*: như thể là (nhưng thật ra không phải vậy).",
+    "ex": [
+     [
+      "It's time the government *took* action.",
+      "Đã đến lúc chính phủ phải hành động.",
+      "took là dạng quá khứ nhưng nghĩa là bây giờ. Câu hàm ý chính phủ đang chậm trễ."
+     ],
+     [
+      "He talks as if he *knew* everything.",
+      "Anh ta nói như thể cái gì cũng biết.",
+      "Thực tế anh ta không biết hết. Lùi thì để báo điều không có thật."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "I suggest that she *goes* home.",
+    "I suggest that she *go* home.",
+    "Sau suggest that, động từ ở nguyên mẫu."
+   ],
+   [
+    "It is important that he *is* on time.",
+    "It is important that he *be* on time.",
+    "Dạng giả định của be là be cho mọi chủ ngữ."
+   ],
+   [
+    "You had better *to go*.",
+    "You had better *go*.",
+    "Sau had better không có to."
+   ],
+   [
+    "I suggest *him to see* a doctor.",
+    "I suggest *that he see* a doctor. / I suggest *seeing* a doctor.",
+    "suggest không đi với \"người + to V\"."
+   ]
+  ],
+  "check": [
+   [
+    "Chọn dạng đúng: \"The teacher insisted that every student ___ (hand) in the essay on time.\"",
+    "hand. Sau insist that, động từ ở nguyên mẫu, không thêm -s dù chủ ngữ là every student."
+   ],
+   [
+    "Vì sao \"It's time we went home\" dùng went dù nói về bây giờ?",
+    "Sau It's time, tiếng Anh lùi thì về quá khứ để báo rằng việc đó chưa xảy ra nhưng lẽ ra nên xảy ra rồi. Thì quá khứ ở đây không chỉ thời gian quá khứ."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đề nghị",
+     "s:S + v:suggest / recommend / insist + x:that + s:S + b:V nguyên mẫu"
+    ],
+    [
+     "Phủ định",
+     "x:that + s:S + n:not + b:V nguyên mẫu"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Cần thiết",
+     "x:It is + o:essential / important + x:that + s:S + b:V nguyên mẫu"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Tự mình",
+     "s:S + x:would rather + b:V"
+    ],
+    [
+     "Người khác",
+     "s:S + x:would rather + s:S2 + b:V2"
+    ],
+    [
+     "Nên",
+     "s:S + x:had better + b:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Đã đến lúc",
+     "x:It's time + s:S + b:V2"
+    ],
+    [
+     "Như thể",
+     "x:as if + s:S + b:V2 / were"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The teacher suggested that he ___ more.",
+   "opts": [
+    "reads",
+    "read",
+    "reading"
+   ],
+   "a": 1,
+   "why": "suggest that + S + V nguyên mẫu."
+  },
+  {
+   "t": "choice",
+   "q": "It is essential that every student ___ a laptop.",
+   "opts": [
+    "has",
+    "have",
+    "had"
+   ],
+   "a": 1,
+   "why": "It is essential that + V nguyên mẫu."
+  },
+  {
+   "t": "choice",
+   "q": "It's high time the government ___ this problem.",
+   "opts": [
+    "solves",
+    "solved",
+    "solve"
+   ],
+   "a": 1,
+   "why": "It's time + S + quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "I would rather ___ at home tonight.",
+   "opts": [
+    "stay",
+    "to stay",
+    "staying"
+   ],
+   "a": 0,
+   "why": "would rather + V nguyên mẫu."
+  },
+  {
+   "t": "choice",
+   "q": "I'd rather you ___ me the truth.",
+   "opts": [
+    "tell",
+    "told",
+    "will tell"
+   ],
+   "a": 1,
+   "why": "would rather + S + quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "You ___ hurry, or you'll miss the bus.",
+   "opts": [
+    "had better",
+    "would rather",
+    "had rather"
+   ],
+   "a": 0,
+   "why": "had better + V: lời cảnh báo."
+  },
+  {
+   "t": "choice",
+   "q": "It is vital that action ___ now.",
+   "opts": [
+    "is taken",
+    "be taken",
+    "takes"
+   ],
+   "a": 1,
+   "why": "Giả định bị động: be + V3."
+  }
+ ],
+ "write": "Viết 2–3 câu đề xuất giải pháp cho kẹt xe, dùng It is essential / vital that…, recommend / suggest that… và It's high time…"
+}

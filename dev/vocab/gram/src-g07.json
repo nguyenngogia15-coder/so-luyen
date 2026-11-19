@@ -1,0 +1,241 @@
+{
+ "id": "g07",
+ "title": "Hòa hợp chủ ngữ và động từ",
+ "use": "Chia động từ theo đúng chủ ngữ",
+ "focus": "chia động từ số ít / số nhiều theo danh từ chính, chủ ngữ dài, either…or, each/every, the number of / a number of, danh từ tập hợp, V-ing làm chủ ngữ",
+ "summary": [
+  "Động từ chia theo danh từ chính, không theo danh từ đứng gần nhất.",
+  "V-ing và mệnh đề làm chủ ngữ → số ít.",
+  "The number of + N số nhiều → số ít; A number of + N số nhiều → số nhiều.",
+  "Either…or / Neither…nor: chia theo chủ ngữ gần động từ hơn."
+ ],
+ "theory_text": "1. Tìm danh từ chính Ví dụ The quality + of online courses + is + improving The cost of living in big cities is rising. Students who live far from school spend more on transport. One of the main problems is traffic. (danh từ chính: one) Lỗi hay gặp Bị “lừa” bởi danh từ ngay trước động từ: The quality of the courses are … → The quality … is . 2. Bảng các trường hợp đặc biệt Chủ ngữ Động từ Ví dụ V-ing / to V / mệnh đề số ít Learning online requires discipline. What students need is support. each / every / everyone / nobody / something số ít Everyone wants a good job. The number of + N số nhiều số ít The number of online students has doubled. A number of + N số nhiều (= many) số nhiều A number of universities offer online degrees. Danh từ không đếm được số ít Information is easy to find. A and B số nhiều Time and money are limited. Either A or B / Neither A nor B theo B Neither the teacher nor the students were ready. A as well as / along with / together with B theo A The teacher, along with her students, is online. Danh từ tập hợp (family, team, government) thường số ít (Anh-Anh có thể số nhiều) The government has announced a plan. Phần trăm / phân số + of + N theo N 60% of the money was spent. 60% of students were … 3. There is / There are Chia theo danh từ đứng sau: There is a problem. There are many problems. There is a lot of traffic. Mẹo Chủ ngữ dài → gạch bỏ cụm giới từ (of…, in…, with…) và mệnh đề quan hệ (who…, which…) trong đầu, còn lại danh từ chính.",
+ "slow": {
+  "idea": "Trong tiếng Anh, động từ phải \"khớp số\" với chủ ngữ. Chủ ngữ là một (số ít) thì động từ ở hiện tại thêm -s: he works, it is, it has. Chủ ngữ là nhiều (số nhiều) thì không thêm: they work, they are, they have.\nTiếng Việt không đổi động từ kiểu này nên rất dễ quên. Chỗ khó là khi chủ ngữ dài, có nhiều danh từ: bạn phải tìm ra *danh từ chính* rồi chia động từ theo nó.",
+  "steps": [
+   {
+    "t": "Quy tắc gốc: một thì thêm -s, nhiều thì không",
+    "say": "Chỉ áp dụng ở thì hiện tại (và với was / were ở quá khứ). Mẹo nhớ: chữ s chỉ xuất hiện ở một trong hai bên. Danh từ có -s (số nhiều) thì động từ không có -s. Danh từ không có -s (số ít) thì động từ có -s.",
+    "ex": [
+     [
+      "The student *works*. · The students *work*.",
+      "Sinh viên đó làm việc. · Các sinh viên làm việc.",
+      "student không -s nên works có -s. students có -s nên work không có."
+     ]
+    ]
+   },
+   {
+    "t": "Chủ ngữ dài: tìm danh từ chính, bỏ qua phần đứng sau giới từ",
+    "say": "Khi chủ ngữ có dạng \"danh từ + of / in / with… + danh từ khác\", danh từ chính là danh từ đứng *trước* giới từ. Phần sau giới từ chỉ bổ sung thông tin, không quyết định động từ.\nCách làm: lấy tay che phần từ giới từ trở đi, rồi chia động từ theo phần còn lại.",
+    "ex": [
+     [
+      "The *number* of cars *is* increasing.",
+      "Số lượng ô tô đang tăng.",
+      "Che \"of cars\" đi còn \"The number\", là một con số, số ít, nên dùng is."
+     ],
+     [
+      "The *students* in my class *are* friendly.",
+      "Các học sinh trong lớp tôi thân thiện.",
+      "Che \"in my class\" đi còn \"The students\", số nhiều, nên dùng are."
+     ]
+    ]
+   },
+   {
+    "t": "Các trường hợp phải nhớ riêng",
+    "say": "*The number of* + danh từ số nhiều: nói về con số, động từ số ít. *A number of* + danh từ số nhiều: nghĩa là \"nhiều\", động từ số nhiều.\n*Each, every, everyone, everybody, nobody, someone*: luôn đi với động từ số ít.\nChủ ngữ là một việc (V-ing hoặc to V): số ít.\nHai chủ ngữ nối bằng *and*: số nhiều.",
+    "ex": [
+     [
+      "*A number of* students *are* absent.",
+      "Nhiều học sinh vắng mặt.",
+      "A number of = nhiều, nên dùng are."
+     ],
+     [
+      "*Everyone has* a phone.",
+      "Ai cũng có điện thoại.",
+      "everyone nghĩa là \"mọi người\" nhưng ngữ pháp coi là số ít, nên dùng has."
+     ],
+     [
+      "*Watching* too much TV *is* harmful.",
+      "Xem TV quá nhiều thì có hại.",
+      "Chủ ngữ là việc \"xem TV\", một việc, nên dùng is."
+     ]
+    ]
+   },
+   {
+    "t": "There is / There are",
+    "say": "Sau There, động từ nhìn vào danh từ đứng ngay sau nó.",
+    "ex": [
+     [
+      "There *is* a problem. · There *are* two problems.",
+      "Có một vấn đề. · Có hai vấn đề.",
+      "a problem số ít nên dùng is. two problems số nhiều nên dùng are."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The number of students *are* rising.",
+    "The number of students *is* rising.",
+    "Thứ đang tăng là con số, không phải các sinh viên. Danh từ chính là number."
+   ],
+   [
+    "People in my city *likes* coffee.",
+    "People in my city *like* coffee.",
+    "people là số nhiều dù không có -s."
+   ],
+   [
+    "One of my friends *live* abroad.",
+    "One of my friends *lives* abroad.",
+    "Danh từ chính là One (một người), không phải friends."
+   ]
+  ],
+  "check": [
+   [
+    "Chọn is hay are: \"The quality of these products ___ poor.\"",
+    "is. Che \"of these products\" đi, danh từ chính là quality, số ít."
+   ],
+   [
+    "Vì sao \"Everybody *knows* this\" mà không phải \"know\"?",
+    "everybody tuy mang nghĩa \"mọi người\" nhưng tiếng Anh coi là số ít (từng người một), nên động từ thêm -s."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Số ít",
+     "s:N + v:V-s"
+    ],
+    [
+     "Số nhiều",
+     "s:N-s + v:V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Chủ ngữ dài",
+     "b:N chính + x:of / in / with + o:N khác (bỏ qua) + v:V chia theo N chính"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Con số",
+     "x:The number of + o:N-s + v:V số ít"
+    ],
+    [
+     "Nhiều",
+     "x:A number of + o:N-s + v:V số nhiều"
+    ],
+    [
+     "Một việc",
+     "s:V-ing / To V + v:V số ít"
+    ],
+    [
+     "Hai thứ",
+     "s:A + x:and + s:B + v:V số nhiều"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Số ít",
+     "x:There + v:is + s:N số ít"
+    ],
+    [
+     "Số nhiều",
+     "x:There + v:are + s:N-s"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The quality of these courses ___ improving.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "Danh từ chính: quality (số ít)."
+  },
+  {
+   "t": "choice",
+   "q": "A number of students ___ online classes.",
+   "opts": [
+    "prefers",
+    "prefer"
+   ],
+   "a": 1,
+   "why": "A number of = many → số nhiều."
+  },
+  {
+   "t": "choice",
+   "q": "The number of online students ___ increased.",
+   "opts": [
+    "has",
+    "have"
+   ],
+   "a": 0,
+   "why": "The number → số ít."
+  },
+  {
+   "t": "choice",
+   "q": "Studying abroad ___ expensive.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "V-ing làm chủ ngữ → số ít."
+  },
+  {
+   "t": "choice",
+   "q": "Everyone ___ to be successful.",
+   "opts": [
+    "want",
+    "wants"
+   ],
+   "a": 1,
+   "why": "everyone → số ít."
+  },
+  {
+   "t": "choice",
+   "q": "Neither the students nor the teacher ___ happy with the result.",
+   "opts": [
+    "was",
+    "were"
+   ],
+   "a": 0,
+   "why": "Chia theo chủ ngữ gần nhất: the teacher."
+  },
+  {
+   "t": "choice",
+   "q": "Students who live in the city centre ___ less time commuting.",
+   "opts": [
+    "spends",
+    "spend"
+   ],
+   "a": 1,
+   "why": "Danh từ chính: students (số nhiều)."
+  },
+  {
+   "t": "choice",
+   "q": "There ___ a lot of information online.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "information không đếm được → is."
+  }
+ ],
+ "write": "Viết 3 câu về học trực tuyến, có ít nhất một chủ ngữ dài (có cụm of… hoặc who…) và một chủ ngữ là V-ing. Chú ý chia động từ."
+}

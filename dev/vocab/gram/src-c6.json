@@ -1,0 +1,239 @@
+{
+ "id": "c6",
+ "title": "Đảo ngữ và câu nhấn mạnh",
+ "use": "Cấu trúc nâng điểm Grammatical Range",
+ "focus": "đảo ngữ với trạng từ phủ định (Never, Rarely, Seldom, Hardly, Not only, Only by / Only when, No sooner), đảo ngữ câu điều kiện, câu chẻ It is … that, câu What … is, not only … but also",
+ "summary": [
+  "Trạng từ phủ định / hạn chế đứng đầu câu → đảo trợ động từ lên trước chủ ngữ.",
+  "Mượn do / does / did khi câu không có trợ động từ: Rarely do people…",
+  "It is / was + phần nhấn mạnh + that / who + phần còn lại.",
+  "What + S + V + is / was + phần nhấn mạnh."
+ ],
+ "theory_text": "1. Đảo ngữ với từ phủ định Cấu trúc Negative word + auxiliary + S + V Mở đầu Ví dụ Never / Rarely / Seldom Rarely do young people read newspapers today. Not only … but also Not only does working from home save time, but it also reduces stress. Only by + V-ing / Only when / Only if Only by investing in education can we reduce poverty. Hardly / Scarcely … when; No sooner … than No sooner had I arrived than it started to rain. Under no circumstances / In no way Under no circumstances should students cheat. Little Little did they know about the risks. ✗ Not only working from home saves time, but… ✓ Not only does working from home save time, but… Mượn does, động từ về nguyên mẫu. 2. Đảo ngữ câu điều kiện Should you have any questions, please contact us. (= If you have…) Were I the mayor, I would ban cars. (= If I were…) Had they invested earlier, the problem would have been solved. 3. Câu chẻ It is … that Cấu trúc It is / was + focus + that / who + the rest Lack of contact worries employees. → It is the lack of contact that worries employees. It was in 2020 that remote work became common. 4. Câu What … is Cấu trúc What + S + V + is / was + focus What remote workers miss most is face-to-face contact. What the government should do is (to) invest in training. Mẹo Một bài Writing chỉ nên có 1–2 câu đảo ngữ / nhấn mạnh. Dùng nhiều quá làm bài thiếu tự nhiên, và dùng sai thì mất điểm.",
+ "slow": {
+  "idea": "Trật tự bình thường của câu tiếng Anh là chủ ngữ rồi mới tới động từ. Khi muốn *nhấn mạnh* một phần nào đó, người viết có thể phá trật tự này. Chính sự khác thường khiến người đọc chú ý.\nBài này có hai công cụ. *Đảo ngữ*: đưa một từ mang nghĩa phủ định hoặc hạn chế lên đầu câu, rồi phần sau đảo như câu hỏi. *Câu chẻ*: dùng khung \"It is… that…\" hoặc \"What… is…\" để làm nổi bật đúng một phần của câu.\nĐây là ngữ pháp nâng cao, chủ yếu dùng trong văn viết. Một câu dùng đúng trong bài Task 2 là đủ.",
+  "steps": [
+   {
+    "t": "Đảo ngữ với từ phủ định đứng đầu câu",
+    "say": "Các từ và cụm: *Never, Rarely, Seldom, Hardly, Little, Not only, Only when, Only by, Under no circumstances, At no time*.\nCách làm: đặt từ đó lên đầu, rồi phần còn lại đảo *giống hệt câu hỏi*: trợ động từ đứng trước chủ ngữ. Nếu câu gốc không có trợ động từ thì mượn do / does / did.",
+    "ex": [
+     [
+      "I have *never* seen such a crowd. → *Never have I* seen such a crowd.",
+      "Chưa bao giờ tôi thấy một đám đông như vậy.",
+      "Câu gốc có have. Đưa Never lên đầu, rồi đảo have lên trước I."
+     ],
+     [
+      "People *rarely* think about this. → *Rarely do people* think about this.",
+      "Hiếm khi người ta nghĩ về điều này.",
+      "Câu gốc không có trợ động từ, nên mượn do."
+     ]
+    ]
+   },
+   {
+    "t": "Not only… but also…",
+    "say": "Đây là mẫu đảo ngữ hữu ích nhất cho Task 2. Chỉ vế có *Not only* bị đảo. Vế sau \"but… also\" giữ trật tự bình thường.",
+    "ex": [
+     [
+      "*Not only does* pollution harm health, *but* it *also* damages the economy.",
+      "Ô nhiễm không chỉ gây hại cho sức khoẻ mà còn làm tổn hại nền kinh tế.",
+      "Vế đầu: mượn does, và harm trở về nguyên mẫu. Vế sau: it damages, trật tự bình thường."
+     ]
+    ]
+   },
+   {
+    "t": "Only + cụm từ ở đầu câu",
+    "say": "Với *Only when…, Only after…, Only by…, Only if…*, phần bị đảo là *mệnh đề chính*, tức phần đứng sau cả cụm only.",
+    "ex": [
+     [
+      "*Only by* investing in education *can we* reduce poverty.",
+      "Chỉ bằng cách đầu tư vào giáo dục, chúng ta mới có thể giảm nghèo.",
+      "Cụm \"Only by investing in education\" đứng đầu. Mệnh đề chính đảo can lên trước we."
+     ]
+    ]
+   },
+   {
+    "t": "Câu chẻ: It is / was… that…",
+    "say": "Muốn nhấn vào một phần của câu (ai, cái gì, khi nào, ở đâu), đặt phần đó vào giữa *It is* và *that*. Phần còn lại của câu đặt sau that.",
+    "ex": [
+     [
+      "The government should solve this problem. → *It is the government that* should solve this problem.",
+      "Chính chính phủ mới là bên nên giải quyết vấn đề này.",
+      "Nhấn vào \"the government\": là chính phủ, không phải ai khác."
+     ],
+     [
+      "*It was in 2010 that* sales reached a peak.",
+      "Chính vào năm 2010 doanh số đạt đỉnh.",
+      "Nhấn vào thời gian."
+     ]
+    ]
+   },
+   {
+    "t": "Câu chẻ: What… is…",
+    "say": "Dùng *What + chủ ngữ + động từ + is / was +* phần muốn nhấn. Phần muốn nhấn nằm ở cuối câu.",
+    "ex": [
+     [
+      "*What cities need is* better public transport.",
+      "Điều các thành phố cần là giao thông công cộng tốt hơn.",
+      "Nhấn vào \"better public transport\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "Never *I have* seen this.",
+    "Never *have I* seen this.",
+    "Sau từ phủ định ở đầu câu, phải đảo trợ động từ lên trước chủ ngữ."
+   ],
+   [
+    "Not only *it is* cheap, but also fast.",
+    "Not only *is it* cheap, but it is also fast.",
+    "Vế Not only phải đảo: is đứng trước it."
+   ],
+   [
+    "Only when I arrived *I realised* the problem.",
+    "Only when I arrived *did I realise* the problem.",
+    "Mệnh đề chính phải đảo: mượn did, và realise trở về nguyên mẫu."
+   ]
+  ],
+  "check": [
+   [
+    "Viết lại bắt đầu bằng Rarely: \"We rarely see such results.\"",
+    "Rarely do we see such results. Mượn do vì câu gốc chỉ có động từ thường."
+   ],
+   [
+    "Dùng câu chẻ để nhấn vào \"parents\": \"Parents should teach children good manners.\"",
+    "It is parents that (who) should teach children good manners."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đảo ngữ",
+     "b:Never / Rarely / Seldom + v:trợ động từ + s:S + v:V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Not only",
+     "b:Not only + v:does / is + s:S + v:V… , x:but + s:S + x:also + v:V"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Only",
+     "b:Only by / when… + v:trợ động từ + s:S + v:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Câu chẻ",
+     "x:It is / was + b:phần nhấn + x:that + o:phần còn lại"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Câu chẻ",
+     "x:What + s:S + v:V + v:is / was + b:phần nhấn"
+    ]
+   ],
+   "cut": [
+    "Dùng *What + chủ ngữ + động từ + is / was +* phần muốn nhấn. "
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Not only ___ time, but it also reduces costs.",
+   "opts": [
+    "working from home saves",
+    "does working from home save"
+   ],
+   "a": 1,
+   "why": "Not only đầu câu → đảo does."
+  },
+  {
+   "t": "choice",
+   "q": "Rarely ___ such a beautiful view.",
+   "opts": [
+    "I have seen",
+    "have I seen"
+   ],
+   "a": 1,
+   "why": "Rarely đầu câu → đảo have."
+  },
+  {
+   "t": "choice",
+   "q": "Only by setting clear goals ___ productive.",
+   "opts": [
+    "companies can stay",
+    "can companies stay"
+   ],
+   "a": 1,
+   "why": "Only by … → đảo can."
+  },
+  {
+   "t": "choice",
+   "q": "No sooner had I sat down ___ the phone rang.",
+   "opts": [
+    "when",
+    "than",
+    "that"
+   ],
+   "a": 1,
+   "why": "No sooner … than."
+  },
+  {
+   "t": "fill",
+   "q": "It is the lack of contact ___ worries many employees.",
+   "a": [
+    "that"
+   ],
+   "why": "It is … that …"
+  },
+  {
+   "t": "choice",
+   "q": "___ remote workers miss most is face-to-face contact.",
+   "opts": [
+    "What",
+    "That",
+    "Which"
+   ],
+   "a": 0,
+   "why": "What … is …"
+  },
+  {
+   "t": "choice",
+   "q": "___ you need any help, please call me.",
+   "opts": [
+    "Should",
+    "Would",
+    "Had"
+   ],
+   "a": 0,
+   "why": "Đảo ngữ loại 1: Should + S + V."
+  },
+  {
+   "t": "choice",
+   "q": "Under no circumstances ___ use your phone in the exam.",
+   "opts": [
+    "you should",
+    "should you"
+   ],
+   "a": 1,
+   "why": "Under no circumstances → đảo should."
+  }
+ ],
+ "write": "Viết 2 câu về làm việc tại nhà: một câu đảo ngữ (Not only does… / Only by…), một câu nhấn mạnh It is … that hoặc What … is."
+}

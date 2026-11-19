@@ -1,0 +1,247 @@
+{
+ "id": "g05",
+ "title": "Đại từ: nhân xưng, sở hữu, phản thân, chỉ định",
+ "use": "Thay danh từ để khỏi lặp",
+ "focus": "đại từ nhân xưng (I/me), tính từ và đại từ sở hữu (my/mine), đại từ phản thân (myself), this/that/these/those, one/ones, it và there làm chủ ngữ giả",
+ "summary": [
+  "Chủ ngữ dùng I/he/they; tân ngữ dùng me/him/them.",
+  "my/your/their + danh từ; mine/yours/theirs đứng một mình.",
+  "Đại từ phản thân khi chủ ngữ và tân ngữ là một người: enjoy yourself.",
+  "There is/are giới thiệu cái gì đó tồn tại; It is dùng cho thời tiết, thời gian, khoảng cách và chủ ngữ giả."
+ ],
+ "theory_text": "1. Bảng đại từ Chủ ngữ Tân ngữ Tính từ sở hữu Đại từ sở hữu Phản thân I me my mine myself you you your yours yourself / yourselves he him his his himself she her her hers herself it it its — itself we us our ours ourselves they them their theirs themselves ✗ This book is my . ✓ This book is mine . Đứng một mình, không có danh từ theo sau → đại từ sở hữu. ✗ Social media affects it's users. ✓ Social media affects its users. its = của nó; it's = it is. 2. Đại từ phản thân Chủ ngữ và tân ngữ là một: Teenagers compare themselves with others online. Nhấn mạnh: The students organised the event themselves . by + phản thân = một mình: She lives by herself . 3. this / that / these / those Gần Xa / đã nhắc Số ít, không đếm được this that Số nhiều these those Dùng this / these để nhắc lại ý vừa nói, giúp liên kết câu: Many teenagers spend hours online. This can affect their sleep. those who = những người mà: Those who use social media less tend to sleep better. Thay danh từ khi so sánh: The cost of living in Hanoi is lower than that in London. 4. one / ones Thay danh từ đếm được đã nhắc: I don't like this phone. I prefer the black one . / Old buildings are often more beautiful than new ones . 5. It và There làm chủ ngữ giả There is / are + danh từ giới thiệu sự tồn tại: There are many benefits. Động từ chia theo danh từ đứng sau. It is + tính từ + to V / that… It is difficult to find a job. It is clear that… It cho thời gian, thời tiết, khoảng cách It is 5 km from here. It is raining. Lỗi hay gặp Tiếng Việt nói “Có nhiều…” nên người Việt hay viết It has many benefits . Đúng là There are many benefits . Mẹo Tránh lặp danh từ trong bài viết bằng it / they / this / these / those / one, nhưng phải rõ đại từ đó thay cho từ nào.",
+ "slow": {
+  "idea": "*Đại từ* là những từ ngắn dùng thay cho danh từ để khỏi lặp lại: he, them, their, this…\nTiếng Việt dùng một chữ \"họ\" cho mọi vị trí: \"họ học\", \"tôi giúp họ\", \"sách của họ\". Tiếng Anh thì cùng là \"họ\" nhưng đứng ở vị trí nào trong câu phải dùng đúng dạng của vị trí đó: they, them, their. Chọn sai dạng là sai ngữ pháp, dù nghĩa vẫn hiểu được.",
+  "steps": [
+   {
+    "t": "Bốn vị trí, bốn dạng",
+    "say": "Đứng trước động từ, làm chủ ngữ: *I, he, she, we, they*.\nĐứng sau động từ hoặc sau giới từ, làm tân ngữ: *me, him, her, us, them*.\nĐứng trước một danh từ để nói \"của ai\": *my, his, her, our, their*.\nĐứng một mình thay cho cả cụm \"của ai + danh từ\": *mine, his, hers, ours, theirs*.",
+    "ex": [
+     [
+      "*They* study hard, so the teacher helps *them*.",
+      "Họ học chăm nên giáo viên giúp họ.",
+      "they đứng trước động từ study. them đứng sau động từ helps."
+     ],
+     [
+      "This is *my* book. That one is *yours*.",
+      "Đây là sách của tôi. Cuốn kia là của bạn.",
+      "my đứng trước danh từ book. yours đứng một mình, thay cho \"your book\"."
+     ]
+    ]
+   },
+   {
+    "t": "Đại từ kết thúc bằng -self: chính mình",
+    "say": "Dùng khi người làm và người nhận hành động là một: myself, himself, themselves… Nếu chủ ngữ và tân ngữ là hai người khác nhau thì dùng me, him, them như bình thường.",
+    "ex": [
+     [
+      "Teenagers compare *themselves* with others.",
+      "Thanh thiếu niên so sánh bản thân với người khác.",
+      "Người so sánh và người bị so sánh là một, nên dùng themselves, không dùng them."
+     ]
+    ]
+   },
+   {
+    "t": "this, these, that, those: nối câu sau với câu trước",
+    "say": "Trong bài viết, this và these rất có ích: chúng chỉ lại ý vừa nói ở câu trước, giúp hai câu dính vào nhau. Viết *this / these + một danh từ tóm tắt* sẽ rõ hơn viết it.\nthis, that đi với danh từ số ít. these, those đi với danh từ số nhiều.",
+    "ex": [
+     [
+      "Many cities have banned cars. *This policy* has reduced pollution.",
+      "Nhiều thành phố đã cấm ô tô. Chính sách này đã làm giảm ô nhiễm.",
+      "\"This policy\" gói cả câu trước lại. Người đọc biết ngay \"this\" là việc cấm ô tô."
+     ]
+    ]
+   },
+   {
+    "t": "It và There khi câu không có ai làm chủ ngữ",
+    "say": "Tiếng Anh không cho phép bỏ trống chỗ chủ ngữ. Khi muốn nói \"có cái gì đó\", dùng *There is / There are*. Khi muốn nhận xét về một việc, dùng *It is + tính từ + to V*.\nSau There, động từ chia theo danh từ đứng sau nó.",
+    "ex": [
+     [
+      "*There are* many benefits.",
+      "Có nhiều lợi ích.",
+      "benefits là số nhiều nên dùng are. Đây là \"có\" theo nghĩa tồn tại."
+     ],
+     [
+      "*It is* difficult to find a job.",
+      "Tìm việc thì khó.",
+      "It chỉ giữ chỗ chủ ngữ. Ý thật nằm ở \"to find a job\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "*It has* many reasons for this.",
+    "*There are* many reasons for this.",
+    "\"Có nhiều lý do\" là nói sự tồn tại, dùng There are. It has chỉ đúng khi it đang thay cho một vật đã nhắc, ví dụ: The plan is good. It has many benefits."
+   ],
+   [
+    "Social media affects *it's* users.",
+    "Social media affects *its* users.",
+    "its (không dấu ') là \"của nó\". it's là viết tắt của it is."
+   ],
+   [
+    "Me and my friend *goes* to school.",
+    "My friend and *I go* to school.",
+    "Đứng trước động từ, làm chủ ngữ thì dùng I, không dùng me."
+   ]
+  ],
+  "check": [
+   [
+    "Vì sao viết \"The teacher gave *us* homework\" mà không viết \"gave we\"?",
+    "Từ này đứng sau động từ gave, là người nhận, nên phải dùng dạng tân ngữ us. we chỉ đứng trước động từ."
+   ],
+   [
+    "Chọn: \"Their / There / They're are three main causes.\"",
+    "There. \"There are\" nghĩa là \"có\". their là \"của họ\", they're là viết tắt của they are."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Làm chủ ngữ",
+     "b:I / he / she / we / they + v:V"
+    ],
+    [
+     "Làm tân ngữ",
+     "v:V / giới từ + b:me / him / her / us / them"
+    ],
+    [
+     "Của ai",
+     "b:my / his / her / our / their + s:N"
+    ],
+    [
+     "Đứng một mình",
+     "b:mine / his / hers / ours / theirs"
+    ]
+   ],
+   "cut": [
+    "Đứng trước động từ, làm chủ ngữ: *I, he, she, we, they*.",
+    "Đứng sau động từ hoặc sau giới từ, làm tân ngữ: *me, him, her, us, them*.",
+    "Đứng trước một danh từ để nói \"của ai\": *my, his, her, our, their*.",
+    "Đứng một mình thay cho cả cụm \"của ai + danh từ\": *mine, his, hers, ours, theirs*."
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Cùng một người",
+     "s:She + v:taught + b:herself"
+    ],
+    [
+     "Hai người khác",
+     "s:She + v:taught + b:me"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Số ít",
+     "x:this / that + s:N"
+    ],
+    [
+     "Số nhiều",
+     "x:these / those + s:N-s"
+    ],
+    [
+     "Nối câu",
+     "x:This / These + b:danh từ tóm tắt + v:V…"
+    ]
+   ],
+   "cut": [
+    "this, that đi với danh từ số ít. these, those đi với danh từ số nhiều."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Có cái gì",
+     "x:There + v:is / are + s:N"
+    ],
+    [
+     "Nhận xét",
+     "x:It + v:is + o:tính từ + b:to V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "___ are many advantages of online learning.",
+   "opts": [
+    "It has",
+    "There are",
+    "They have"
+   ],
+   "a": 1,
+   "why": "Giới thiệu sự tồn tại → There are."
+  },
+  {
+   "t": "choice",
+   "q": "Is this laptop yours or ___?",
+   "opts": [
+    "my",
+    "mine",
+    "me"
+   ],
+   "a": 1,
+   "why": "Đứng một mình → mine."
+  },
+  {
+   "t": "choice",
+   "q": "The company changed ___ policy last year.",
+   "opts": [
+    "it's",
+    "its",
+    "their's"
+   ],
+   "a": 1,
+   "why": "its = của nó."
+  },
+  {
+   "t": "fill",
+   "q": "Teenagers often compare ___ with celebrities. (chính họ)",
+   "a": [
+    "themselves"
+   ],
+   "why": "Chủ ngữ teenagers = tân ngữ → themselves."
+  },
+  {
+   "t": "choice",
+   "q": "___ who exercise regularly are usually healthier.",
+   "opts": [
+    "Those",
+    "These",
+    "They"
+   ],
+   "a": 0,
+   "why": "those who = những người mà."
+  },
+  {
+   "t": "choice",
+   "q": "The price of houses in cities is higher than ___ in the countryside.",
+   "opts": [
+    "it",
+    "that",
+    "those"
+   ],
+   "a": 1,
+   "why": "that thay cho the price (số ít)."
+  },
+  {
+   "t": "choice",
+   "q": "I don't need a new phone; my old ___ works fine.",
+   "opts": [
+    "one",
+    "ones",
+    "it"
+   ],
+   "a": 0,
+   "why": "one thay cho phone (số ít)."
+  }
+ ],
+ "write": "Viết 3 câu về thói quen dùng mạng xã hội, dùng ít nhất: There are…, một đại từ phản thân, và This/These để nhắc lại ý câu trước."
+}

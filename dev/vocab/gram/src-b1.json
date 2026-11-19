@@ -1,0 +1,227 @@
+{
+ "id": "b1",
+ "title": "Từ loại và cách tạo từ",
+ "use": "Biết từ nào đứng ở đâu trong câu",
+ "focus": "8 từ loại, vị trí của danh từ, động từ, tính từ, trạng từ trong câu, và hậu tố để đổi từ loại",
+ "summary": [
+  "Danh từ đứng sau a/an/the, sau tính từ, làm chủ ngữ hoặc tân ngữ.",
+  "Tính từ đứng trước danh từ hoặc sau be/become/seem.",
+  "Trạng từ bổ nghĩa cho động từ, tính từ, trạng từ khác hoặc cả câu.",
+  "Nhìn hậu tố để đoán từ loại: -tion/-ment/-ness (danh từ), -ful/-ous/-ive/-al (tính từ), -ly (trạng từ), -ize/-ify/-en (động từ)."
+ ],
+ "theory_text": "1. Tám từ loại trong tiếng Anh Từ loại Vai trò Ví dụ Danh từ (noun) Chỉ người, vật, ý niệm student, city, pollution, happiness Đại từ (pronoun) Thay cho danh từ I, they, it, this, which Động từ (verb) Chỉ hành động, trạng thái go, become, increase, be Tính từ (adjective) Mô tả danh từ big, serious, polluted Trạng từ (adverb) Mô tả động từ, tính từ, câu quickly, very, however Giới từ (preposition) Nối danh từ với phần khác in, on, at, by, of Liên từ (conjunction) Nối từ, cụm, mệnh đề and, but, because, although Thán từ (interjection) Bộc lộ cảm xúc (ít dùng khi viết) oh, wow 2. Vị trí quyết định từ loại Cùng một gốc từ có nhiều dạng. Muốn chọn đúng, nhìn chỗ trống đứng ở đâu trong câu. Danh từ a/an/the/my + (adj) + NOUN Động từ S + VERB + … Tính từ be/become/seem/look + ADJECTIVE Trạng từ V + ADVERB The pollution (danh từ) in big cities is serious (tính từ sau be). Cars pollute (động từ) the air heavily (trạng từ bổ nghĩa cho động từ). The air is extremely (trạng từ bổ nghĩa cho tính từ) polluted . 3. Hậu tố giúp nhận ra từ loại Từ loại Hậu tố thường gặp Ví dụ Danh từ -tion, -sion, -ment, -ness, -ity, -ance, -ence, -er/-or, -ism pollution, development, happiness, ability, importance Tính từ -al, -ful, -less, -ous, -ive, -able/-ible, -ic, -y national, useful, dangerous, effective, reliable Động từ -ize/-ise, -ify, -en, -ate modernise, simplify, strengthen, motivate Trạng từ tính từ + -ly quick → quickly, significant → significantly pollute (v) pollution (n) · polluted (adj) develop (v) development (n) · developing / developed (adj) benefit (n, v) beneficial (adj) strong (adj) strength (n) · strengthen (v) · strongly (adv) significant (adj) significance (n) · significantly (adv) economy (n) economic (thuộc kinh tế) · economical (tiết kiệm) 4. Những trường hợp dễ nhầm ✗ The number of cars has increased rapid . ✓ The number of cars has increased rapidly . Bổ nghĩa cho động từ increased → trạng từ. ✗ Traffic jams are a seriously problem. ✓ Traffic jams are a serious problem. Đứng trước danh từ problem → tính từ. Lỗi hay gặp Một số từ có đuôi -ly nhưng là tính từ : friendly, lovely, costly, likely. Một số trạng từ không có -ly: fast, hard, late, well (good → well). Mẹo Gặp chỗ trống, hỏi: sau nó là gì, trước nó là gì? Trước danh từ → tính từ. Sau động từ thường → trạng từ. Sau a/the → danh từ.",
+ "slow": {
+  "idea": "Mỗi từ tiếng Anh thuộc một *từ loại*, giống như mỗi người có một nghề. Danh từ gọi tên người và vật, động từ nói việc xảy ra, tính từ tả danh từ, trạng từ tả hành động.\nTiếng Việt dùng nguyên một chữ cho mọi vai: \"ô nhiễm\" trong \"sự ô nhiễm\", \"bị ô nhiễm\", \"gây ô nhiễm\" đều viết y như nhau. Tiếng Anh thì phải đổi đuôi của từ theo vai: pollution, polluted, pollute. Vì vậy trước khi viết một từ, bạn phải biết chỗ đó cần từ loại gì.",
+  "steps": [
+   {
+    "t": "Bốn từ loại chính và câu hỏi để nhận ra chúng",
+    "say": "Bạn chỉ cần nắm chắc bốn loại. Mỗi loại trả lời một câu hỏi riêng:\nDanh từ trả lời \"ai? cái gì?\". Động từ trả lời \"làm gì? xảy ra chuyện gì?\". Tính từ trả lời \"người đó, vật đó như thế nào?\". Trạng từ trả lời \"làm việc đó như thế nào?\".",
+    "ex": [
+     [
+      "The *city* *grew* *quickly*.",
+      "Thành phố phát triển nhanh.",
+      "city: cái gì → danh từ. grew: xảy ra chuyện gì → động từ. quickly: phát triển như thế nào → trạng từ."
+     ],
+     [
+      "It is a *big* city.",
+      "Đó là một thành phố lớn.",
+      "big: thành phố như thế nào → tính từ, vì nó tả danh từ city."
+     ]
+    ]
+   },
+   {
+    "t": "Nhìn hai từ đứng cạnh để biết chỗ trống cần từ loại gì",
+    "say": "Đây là kỹ năng quan trọng nhất của bài. Đừng dịch nghĩa rồi đoán. Hãy nhìn từ đứng ngay trước và ngay sau chỗ trống.\nSau a, an, the, my hoặc sau một tính từ thì cần *danh từ*. Đứng trước một danh từ thì cần *tính từ*. Sau be, become, seem, look cũng cần *tính từ*, vì nó tả chủ ngữ. Đứng sau một động từ thường để nói hành động diễn ra thế nào thì cần *trạng từ*.",
+    "ex": [
+     [
+      "a rapid ___ (develop) → a rapid *development*",
+      "một sự phát triển nhanh",
+      "Trước chỗ trống là a + tính từ rapid, nên chỗ trống phải là danh từ."
+     ],
+     [
+      "Prices rose ___ (sharp) → Prices rose *sharply*.",
+      "Giá tăng mạnh.",
+      "rose là động từ thường. Từ đứng sau tả việc tăng diễn ra thế nào, nên là trạng từ."
+     ],
+     [
+      "The air is ___ (pollute) → The air is *polluted*.",
+      "Không khí bị ô nhiễm.",
+      "Sau is cần một từ tả chủ ngữ the air, nên là tính từ."
+     ]
+    ]
+   },
+   {
+    "t": "Đuôi của từ cho biết từ loại",
+    "say": "Cùng một gốc từ, gắn đuôi khác nhau sẽ ra từ loại khác nhau. Bạn không cần thuộc hết, chỉ cần quen mặt các đuôi hay gặp.\nĐuôi của danh từ: -tion, -ment, -ness, -ity. Đuôi của tính từ: -al, -ful, -ous, -ive, -able. Đuôi của trạng từ: tính từ + -ly. Đuôi của động từ: -ize, -ify, -en.",
+    "ex": [
+     [
+      "develop → develop*ment* → develop*ed* / develop*ing*",
+      "phát triển (động từ) → sự phát triển (danh từ) → đã phát triển / đang phát triển (tính từ)",
+      "Một gốc cho ra ba từ loại. Viết sai đuôi là sai từ loại, dù nghĩa tiếng Việt nghe vẫn đúng."
+     ],
+     [
+      "significant → significant*ly*",
+      "đáng kể (tính từ) → một cách đáng kể (trạng từ)",
+      "Thêm -ly vào tính từ thì được trạng từ."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The number of cars increased *rapid*.",
+    "The number of cars increased *rapidly*.",
+    "Tiếng Việt nói \"tăng nhanh\", chữ \"nhanh\" không đổi dạng. Tiếng Anh thì từ đứng sau động từ increased phải là trạng từ, có -ly."
+   ],
+   [
+    "Traffic is a *seriously* problem.",
+    "Traffic is a *serious* problem.",
+    "Đứng trước danh từ problem là tính từ. Thấy -ly đừng vội dùng: -ly là của trạng từ."
+   ],
+   [
+    "She is very *friend*.",
+    "She is very *friendly*.",
+    "friendly có -ly nhưng là tính từ, vì -ly ở đây gắn vào danh từ friend chứ không phải vào tính từ. Tương tự: lovely, costly, likely."
+   ]
+  ],
+  "check": [
+   [
+    "Trong \"an *effective* solution\", vì sao dùng effective mà không dùng effectively?",
+    "Vì từ này đứng trước danh từ solution để tả nó, nên phải là tính từ. effectively là trạng từ, chỉ dùng để tả hành động, ví dụ: The plan works effectively."
+   ],
+   [
+    "Điền dạng đúng của *succeed*: \"Hard work leads to ___.\"",
+    "success. Sau giới từ to cần một danh từ. succeed là động từ, successful là tính từ, successfully là trạng từ."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "1": {
+   "f": [
+    [
+     "Cần danh từ",
+     "x:a / an / the / my + o:(tính từ) + b:danh từ"
+    ],
+    [
+     "Cần tính từ",
+     "x:a / the + b:tính từ + s:danh từ"
+    ],
+    [
+     "Cần tính từ",
+     "s:S + v:be / become / seem / look + b:tính từ"
+    ],
+    [
+     "Cần trạng từ",
+     "s:S + v:động từ thường + o:(tân ngữ) + b:trạng từ"
+    ]
+   ],
+   "cut": [
+    "Sau a, an, the, my hoặc sau một tính từ thì cần *danh từ*. Đứng trước một danh từ thì cần *tính từ*. Sau be, become, seem, look cũng cần *tính từ*, vì nó tả chủ ngữ. Đứng sau một động từ thường để nói hành động diễn ra thế nào thì cần *trạng từ*."
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Danh từ",
+     "x:gốc + s:-tion / -ment / -ness / -ity"
+    ],
+    [
+     "Tính từ",
+     "x:gốc + o:-al / -ful / -ous / -ive / -able"
+    ],
+    [
+     "Trạng từ",
+     "o:tính từ + a:-ly"
+    ],
+    [
+     "Động từ",
+     "x:gốc + v:-ize / -ify / -en"
+    ]
+   ],
+   "cut": [
+    "Đuôi của danh từ: -tion, -ment, -ness, -ity. Đuôi của tính từ: -al, -ful, -ous, -ive, -able. Đuôi của trạng từ: tính từ + -ly. Đuôi của động từ: -ize, -ify, -en."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Air ___ is a major problem in big cities.",
+   "opts": [
+    "pollute",
+    "pollution",
+    "polluted"
+   ],
+   "a": 1,
+   "why": "Cần danh từ làm chủ ngữ."
+  },
+  {
+   "t": "choice",
+   "q": "The number of cars has increased ___.",
+   "opts": [
+    "rapid",
+    "rapidly",
+    "rapidity"
+   ],
+   "a": 1,
+   "why": "Bổ nghĩa cho động từ increased → trạng từ."
+  },
+  {
+   "t": "choice",
+   "q": "Public transport is more ___ than driving. (tiết kiệm hơn)",
+   "opts": [
+    "economy",
+    "economic",
+    "economical"
+   ],
+   "a": 2,
+   "why": "economical = tiết kiệm; economic = thuộc về kinh tế."
+  },
+  {
+   "t": "fill",
+   "q": "Regular exercise is ___ (benefit) for health.",
+   "a": [
+    "beneficial"
+   ],
+   "why": "Sau is cần tính từ: beneficial."
+  },
+  {
+   "t": "fill",
+   "q": "The government should ___ (strong) its public transport system.",
+   "a": [
+    "strengthen"
+   ],
+   "why": "Sau should cần động từ: strengthen."
+  },
+  {
+   "t": "choice",
+   "q": "She is a very ___ person. (thân thiện)",
+   "opts": [
+    "friend",
+    "friendly",
+    "friendlily"
+   ],
+   "a": 1,
+   "why": "friendly là tính từ dù có đuôi -ly."
+  },
+  {
+   "t": "choice",
+   "q": "He works very ___.",
+   "opts": [
+    "hard",
+    "hardly"
+   ],
+   "a": 0,
+   "why": "hard (chăm chỉ) vừa là tính từ vừa là trạng từ; hardly = hầu như không."
+  },
+  {
+   "t": "fill",
+   "q": "There has been a rapid ___ (develop) of technology.",
+   "a": [
+    "development"
+   ],
+   "why": "Sau tính từ rapid cần danh từ: development."
+  }
+ ],
+ "write": "Viết 2–3 câu nêu một vấn đề do xe cá nhân gây ra. Dùng ít nhất 2 cặp từ cùng gốc khác loại (ví dụ pollute / pollution)."
+}

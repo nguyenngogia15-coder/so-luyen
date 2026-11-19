@@ -1,0 +1,218 @@
+{
+ "id": "l7",
+ "title": "Liên từ đối lập và nối câu",
+ "use": "So sánh hai đối tượng",
+ "focus": "từ nối đối lập: while / whereas (trong một câu), However / In contrast (đầu câu mới), although (không đi với but), despite + danh từ",
+ "theory_text": "while / whereas + mệnh đề: nối hai vế trong MỘT câu, thường có dấu phẩy. Cycling rose in Weston, whereas it fell slightly in Easton. However / In contrast / By contrast : mở đầu câu MỚI, theo sau là dấu phẩy. although / even though + mệnh đề. Không viết Although …, but … trong cùng một câu. despite / in spite of + danh từ hoặc V-ing: Despite a small fall, Easton remained second. Thêm ý cùng chiều: Similarly, Likewise, also .",
+ "slow": {
+  "idea": "Đề bản đồ (map) thường cho hai bản đồ của cùng một nơi ở hai thời điểm, và bạn tả những gì đã thay đổi. Đôi khi là một bản đồ hiện tại và một bản kế hoạch tương lai.\nBạn cần ba nhóm ngôn ngữ: *từ chỉ vị trí* (cái gì ở đâu), *động từ chỉ thay đổi* (xây thêm, phá bỏ, mở rộng), và *thì đúng* cho từng loại đề.",
+  "steps": [
+   {
+    "t": "Chọn thì theo thời gian của bản đồ",
+    "say": "Hai bản đồ đều trong quá khứ: dùng *quá khứ đơn*.\nMột bản quá khứ, một bản hiện tại: dùng *hiện tại hoàn thành* cho các thay đổi (vì kết quả còn thấy đến nay).\nMột bản hiện tại, một bản tương lai: dùng *will be + V3* hoặc *is planned to be + V3*.",
+    "ex": [
+     [
+      "The old factory *has been demolished*, and a park *has been built* in its place.",
+      "Nhà máy cũ đã bị phá bỏ, và một công viên đã được xây ở chỗ đó.",
+      "Bản đồ thứ hai là hiện tại, kết quả còn đó, nên dùng hiện tại hoàn thành."
+     ],
+     [
+      "A new car park *will be constructed* next to the station.",
+      "Một bãi đỗ xe mới sẽ được xây cạnh nhà ga.",
+      "Bản kế hoạch tương lai."
+     ]
+    ]
+   },
+   {
+    "t": "Động từ chỉ thay đổi, thường ở bị động",
+    "say": "Xây thêm: *build, construct, add, erect*.\nPhá bỏ: *demolish, knock down, remove*. Chặt cây: *cut down*.\nThay thế: *replace A with B*; *be replaced by*.\nMở rộng: *extend, expand, enlarge*. Thu nhỏ: *reduce in size*.\nChuyển đổi: *convert A into B*. Dời chỗ: *relocate, move*.\nToà nhà, con đường không tự xây hay tự phá, nên các động từ này gần như luôn ở *bị động*.",
+    "ex": [
+     [
+      "The farmland *was replaced by* a housing estate.",
+      "Đất nông nghiệp đã được thay bằng một khu nhà ở.",
+      "be replaced by + thứ mới."
+     ],
+     [
+      "The school *was extended* and the playground *was converted into* a car park.",
+      "Ngôi trường được mở rộng và sân chơi được chuyển thành bãi đỗ xe.",
+      "convert into: biến thành."
+     ]
+    ]
+   },
+   {
+    "t": "Từ chỉ vị trí và phương hướng",
+    "say": "Phương hướng: *in the north / south / east / west of*; *in the north-east corner*; *to the north of* (ở phía bắc, bên ngoài).\nVị trí tương đối: *next to, beside, opposite, between A and B, in front of, behind, near, along the river, in the centre of, on the site of* (trên nền đất của).",
+    "ex": [
+     [
+      "A supermarket was built *to the south of* the river, *opposite* the school.",
+      "Một siêu thị được xây ở phía nam con sông, đối diện trường học.",
+      "Hai mốc vị trí giúp người đọc hình dung chính xác."
+     ]
+    ]
+   },
+   {
+    "t": "Cấu trúc There is / was để nói cái gì tồn tại",
+    "say": "Dùng *There was / were…* cho bản đồ cũ và *There is / are now…* cho bản đồ mới. Cũng có thể dùng *… no longer exists* hoặc *… remained unchanged* cho thứ không đổi.",
+    "ex": [
+     [
+      "In 1990, *there was* a farm in the north. Today, the farm *no longer exists*.",
+      "Năm 1990 có một trang trại ở phía bắc. Ngày nay trang trại đó không còn nữa.",
+      "So hai thời điểm bằng hai thì khác nhau."
+     ]
+    ]
+   },
+   {
+    "t": "Tổng quan cho bản đồ",
+    "say": "Nêu mức độ thay đổi chung và hướng thay đổi lớn nhất: nơi này trở nên hiện đại hơn, đông dân hơn, ít cây xanh hơn, nhiều tiện ích hơn.",
+    "ex": [
+     [
+      "Overall, the town *became far more residential*, with farmland giving way to housing and new roads.",
+      "Nhìn chung, thị trấn trở nên nhiều nhà ở hơn hẳn, với đất nông nghiệp nhường chỗ cho nhà ở và đường mới.",
+      "Không tả chi tiết từng công trình trong tổng quan."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "A new road *built* in 2010.",
+    "A new road *was built* in 2010.",
+    "Con đường được xây, cần be + V3."
+   ],
+   [
+    "The trees *have cut* down.",
+    "The trees *have been cut* down.",
+    "Bị động của hiện tại hoàn thành: have been + V3."
+   ],
+   [
+    "*in* the north of the river (ý là phía bắc, bên kia sông)",
+    "*to* the north of the river",
+    "in the north of = nằm trong phần phía bắc của một vùng. to the north of = nằm ở phía bắc, bên ngoài."
+   ]
+  ],
+  "check": [
+   [
+    "Bản đồ 1: có rừng. Bản đồ 2 (hiện tại): chỗ đó là sân golf. Viết một câu.",
+    "The forest has been cut down and replaced by a golf course. / A golf course has been built on the site of the forest."
+   ],
+   [
+    "Hai bản đồ là năm 1980 và 2000. Dùng thì gì cho các thay đổi?",
+    "Quá khứ đơn (bị động): A hotel was built…, vì cả hai mốc đều đã qua."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Hai bản đều quá khứ",
+     "s:A + b:was / were + v:V3"
+    ],
+    [
+     "Quá khứ → nay",
+     "s:A + b:has / have been + v:V3"
+    ],
+    [
+     "Kế hoạch",
+     "s:A + b:will be + v:V3"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Thay thế",
+     "s:A + b:was replaced by + o:B"
+    ],
+    [
+     "Chuyển đổi",
+     "s:A + b:was converted into + o:B"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Phương hướng",
+     "b:to the north of + o:the river"
+    ],
+    [
+     "Vị trí",
+     "b:opposite / next to + o:the school"
+    ],
+    [
+     "Ở giữa",
+     "b:between + o:A + x:and + o:B"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Bản cũ",
+     "x:There was / were + s:N"
+    ],
+    [
+     "Bản mới",
+     "x:There is / are now + s:N"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "___ Northport's rate rose, Easton's fell.",
+   "opts": [
+    "While",
+    "However",
+    "Despite"
+   ],
+   "a": 0,
+   "why": "Hai vế trong một câu → While."
+  },
+  {
+   "t": "choice",
+   "q": "Northport increased. ___, Easton decreased.",
+   "opts": [
+    "Whereas",
+    "However",
+    "Although"
+   ],
+   "a": 1,
+   "why": "Câu mới + dấu phẩy → However."
+  },
+  {
+   "t": "choice",
+   "q": "___ a slight fall, Easton was still above Southbay.",
+   "opts": [
+    "Although",
+    "Despite",
+    "But"
+   ],
+   "a": 1,
+   "why": "Theo sau là cụm danh từ → Despite."
+  },
+  {
+   "t": "choice",
+   "q": "Although Weston started low, ___ it overtook Easton.",
+   "opts": [
+    "but",
+    "(không cần từ nối)",
+    "so"
+   ],
+   "a": 1,
+   "why": "Không dùng although … but."
+  },
+  {
+   "t": "fill",
+   "q": "Weston's rate doubled, ___ Southbay's barely changed.",
+   "a": [
+    "whereas",
+    "while"
+   ],
+   "why": "Đối lập trong một câu: whereas / while."
+  }
+ ],
+ "write": "So sánh hai thành phố bất kỳ trong bảng bằng 2 câu: một câu dùng whereas hoặc while, một câu dùng However hoặc In contrast."
+}

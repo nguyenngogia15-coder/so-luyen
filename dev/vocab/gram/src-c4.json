@@ -1,0 +1,241 @@
+{
+ "id": "c4",
+ "title": "Mệnh đề danh từ và câu hỏi gián tiếp",
+ "use": "that, what, whether, wh- làm chủ ngữ, tân ngữ",
+ "focus": "mệnh đề danh từ bắt đầu bằng that / what / whether / if / wh-word, làm chủ ngữ, tân ngữ, bổ ngữ; câu hỏi gián tiếp không đảo ngữ; the fact that; cấu trúc It is … that",
+ "summary": [
+  "Mệnh đề danh từ đóng vai trò như một danh từ: chủ ngữ, tân ngữ, bổ ngữ.",
+  "that + mệnh đề sau believe, argue, suggest, it is clear…",
+  "what = điều mà; whether / if = liệu có … không.",
+  "Câu hỏi gián tiếp giữ trật tự S + V, không đảo, không mượn do."
+ ],
+ "theory_text": "1. Mệnh đề danh từ làm gì trong câu Vai trò Ví dụ Tân ngữ Many people believe that online learning is effective . Chủ ngữ What students need most is guidance. Whether the plan works depends on funding. Bổ ngữ (sau be) The problem is that tuition fees are too high . Sau tính từ It is clear that … / I am sure that … 2. Các từ mở đầu that rằng: Experts argue that… (thường bỏ được khi là tân ngữ, nhưng nên giữ trong văn viết) what điều mà: What surprised me was the cost. whether / if liệu có hay không: It is unclear whether online exams are fair. (đầu câu chỉ dùng whether) wh- (why, how, where…) Nobody knows why prices rose. 3. Câu hỏi gián tiếp Trật tự Do you know / I wonder + wh- / if + S + V ✗ I don't know what does he want . ✓ I don't know what he wants . ✗ Can you tell me where is the library ? ✓ Can you tell me where the library is ? 4. Cấu trúc khách quan và the fact that It is often argued that online courses will replace classrooms. It is undeniable that technology has changed education. The fact that online courses are cheaper makes them attractive. Mẹo Mở bài Task 2: It is often argued that… / Some people believe that… . Nêu quan điểm: I believe that… / I partly agree that…",
+ "slow": {
+  "idea": "Thông thường chủ ngữ và tân ngữ là một danh từ: \"I know *the answer*\". Nhưng đôi khi thứ bạn biết, nghĩ, hay tin lại là cả một ý có chủ ngữ và động từ: \"I know *that he is right*\".\nCả cụm \"that he is right\" đang đứng ở chỗ của một danh từ, nên được gọi là *mệnh đề danh từ*. Loại mệnh đề này có mặt trong gần như mọi câu nêu ý kiến của Task 2: \"Many people believe that…\", \"It is clear that…\".\nĐiều cần nhớ nhất: bên trong mệnh đề danh từ, trật tự từ là của *câu kể* (chủ ngữ rồi mới tới động từ), kể cả khi nó bắt đầu bằng what, where, why.",
+  "steps": [
+   {
+    "t": "Ba kiểu từ mở đầu",
+    "say": "*that*: mở đầu một lời khẳng định. Nghĩa là \"rằng\".\n*whether / if*: mở đầu một điều chưa biết có hay không. Nghĩa là \"liệu… có… hay không\".\n*what, where, when, why, how, who*: mở đầu một thông tin cụ thể chưa biết.",
+    "ex": [
+     [
+      "Many people believe *that* technology improves life.",
+      "Nhiều người tin rằng công nghệ cải thiện cuộc sống.",
+      "Sau believe là cả một ý có chủ ngữ (technology) và động từ (improves)."
+     ],
+     [
+      "I don't know *whether* he will come.",
+      "Tôi không biết liệu anh ấy có đến không.",
+      "Chưa biết có hay không, nên dùng whether."
+     ],
+     [
+      "Nobody knows *why* prices rose.",
+      "Không ai biết vì sao giá tăng.",
+      "Thông tin chưa biết là lý do."
+     ]
+    ]
+   },
+   {
+    "t": "Trật tự từ: luôn là chủ ngữ trước, động từ sau",
+    "say": "Khi một câu hỏi được đặt vào trong một câu khác, nó không còn là câu hỏi nữa. Vì vậy: không đảo trợ động từ lên trước, không mượn do / does / did, và cuối câu không có dấu hỏi (trừ khi cả câu lớn là câu hỏi).",
+    "ex": [
+     [
+      "Where *does he live*? → I don't know where *he lives*.",
+      "Anh ấy sống ở đâu? → Tôi không biết anh ấy sống ở đâu.",
+      "Bỏ does. Động từ lives trở lại dạng có -s như trong câu kể."
+     ],
+     [
+      "What *is the problem*? → Please explain what *the problem is*.",
+      "Vấn đề là gì? → Hãy giải thích vấn đề là gì.",
+      "Chủ ngữ the problem đứng trước is."
+     ]
+    ]
+   },
+   {
+    "t": "Mệnh đề danh từ làm chủ ngữ",
+    "say": "Cả mệnh đề có thể đứng đầu câu làm chủ ngữ. Khi đó nó được coi là số ít. Kiểu câu này dùng để nhấn mạnh.",
+    "ex": [
+     [
+      "*What young people need* is practical experience.",
+      "Điều giới trẻ cần là kinh nghiệm thực tế.",
+      "\"What young people need\" là chủ ngữ. Động từ chính là is, số ít."
+     ],
+     [
+      "*Whether this policy works* remains unclear.",
+      "Chính sách này có hiệu quả hay không thì vẫn chưa rõ.",
+      "Cả mệnh đề whether là chủ ngữ của remains."
+     ]
+    ]
+   },
+   {
+    "t": "Các mẫu câu Task 2 dùng mệnh đề danh từ",
+    "say": "*It is + tính từ + that…*: It is clear / true / likely that…\n*The fact that…*: việc mà…\n*There is no doubt that…*: không còn nghi ngờ gì rằng…\n*Some people argue / claim / believe that…*",
+    "ex": [
+     [
+      "*It is clear that* cities are becoming more crowded.",
+      "Rõ ràng là các thành phố đang ngày càng đông đúc.",
+      "It là chủ ngữ giả. Nội dung thật nằm sau that."
+     ],
+     [
+      "*The fact that* many graduates are unemployed is worrying.",
+      "Việc nhiều người tốt nghiệp bị thất nghiệp thật đáng lo.",
+      "Cụm \"The fact that…\" làm chủ ngữ, động từ chính là is."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "I don't know what *is his name*.",
+    "I don't know what *his name is*.",
+    "Trong mệnh đề danh từ, chủ ngữ (his name) đứng trước động từ."
+   ],
+   [
+    "Can you tell me where *did she go*?",
+    "Can you tell me where *she went*?",
+    "Không mượn did. Động từ tự mang thì quá khứ: went."
+   ],
+   [
+    "I wonder *that* he is at home.",
+    "I wonder *whether / if* he is at home.",
+    "wonder nói về điều chưa biết có hay không, nên dùng whether hoặc if, không dùng that."
+   ]
+  ],
+  "check": [
+   [
+    "Đặt câu hỏi \"How much does it cost?\" vào sau \"I'd like to know…\".",
+    "I'd like to know how much it costs. Bỏ does, đưa chủ ngữ it ra trước động từ, và động từ thêm -s."
+   ],
+   [
+    "Vì sao \"What he said *was* true\" dùng was chứ không phải were?",
+    "Chủ ngữ là cả mệnh đề \"What he said\" (điều anh ấy nói). Một mệnh đề làm chủ ngữ được coi là số ít."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Khẳng định",
+     "s:S + v:believe / know + b:that + s:S + v:V"
+    ],
+    [
+     "Có hay không",
+     "s:S + v:wonder / don't know + b:whether / if + s:S + v:V"
+    ],
+    [
+     "Thông tin cụ thể",
+     "s:S + v:know + b:what / why / where + s:S + v:V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Đúng",
+     "x:I don't know + b:where + s:he + v:lives"
+    ],
+    [
+     "Sai",
+     "n:I don't know where does he live"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Làm chủ ngữ",
+     "b:What + s:S + v:V + v:is / remains + o:…"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Mẫu",
+     "x:It is + o:clear / true / likely + b:that + s:S + v:V"
+    ],
+    [
+     "Mẫu",
+     "b:The fact that + s:S + v:V + v:is + o:…"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "___ that online learning will replace schools.",
+   "opts": [
+    "It is argued",
+    "It argues",
+    "This is argued"
+   ],
+   "a": 0,
+   "why": "Cấu trúc khách quan."
+  },
+  {
+   "t": "choice",
+   "q": "___ students need most is motivation.",
+   "opts": [
+    "That",
+    "What",
+    "Which"
+   ],
+   "a": 1,
+   "why": "What + mệnh đề làm chủ ngữ."
+  },
+  {
+   "t": "choice",
+   "q": "It is not clear ___ online exams are fair.",
+   "opts": [
+    "whether",
+    "what"
+   ],
+   "a": 0,
+   "why": "whether = liệu có hay không."
+  },
+  {
+   "t": "choice",
+   "q": "I don't know where ___.",
+   "opts": [
+    "does she live",
+    "she lives"
+   ],
+   "a": 1,
+   "why": "Câu hỏi gián tiếp không đảo."
+  },
+  {
+   "t": "choice",
+   "q": "___ the plan will work is still uncertain.",
+   "opts": [
+    "If",
+    "Whether"
+   ],
+   "a": 1,
+   "why": "Đầu câu làm chủ ngữ → Whether."
+  },
+  {
+   "t": "choice",
+   "q": "The problem is ___ many students cannot afford laptops.",
+   "opts": [
+    "that",
+    "what"
+   ],
+   "a": 0,
+   "why": "Bổ ngữ là cả mệnh đề hoàn chỉnh → that."
+  },
+  {
+   "t": "fill",
+   "q": "Some people ___ (cho rằng) that schools are no longer necessary.",
+   "a": [
+    "believe",
+    "argue",
+    "claim",
+    "think",
+    "feel"
+   ],
+   "why": "believe / argue / claim + that."
+  }
+ ],
+ "write": "Viết đoạn mở bài 2 câu cho đề trên: câu 1 dùng It is … that…, câu 2 nêu quan điểm của bạn bằng I believe that / I partly agree that… Thêm một câu có What … is."
+}

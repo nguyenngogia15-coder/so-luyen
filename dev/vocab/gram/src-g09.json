@@ -1,0 +1,275 @@
+{
+ "id": "g09",
+ "title": "So sánh",
+ "use": "So sánh hơn, nhất, bằng, gấp lần",
+ "focus": "so sánh hơn và nhất (tính từ ngắn, dài, bất quy tắc), so sánh bằng as…as, gấp mấy lần, so sánh kép the more…the more, mức độ chênh lệch",
+ "summary": [
+  "Tính từ ngắn: -er / the -est. Tính từ dài: more / the most.",
+  "Bất quy tắc: good-better-best, bad-worse-worst, far-further-furthest, little-less-least, much/many-more-most.",
+  "Bằng nhau: as + tính từ + as; gấp lần: twice / three times as … as.",
+  "Càng… càng: The + so sánh hơn, the + so sánh hơn."
+ ],
+ "theory_text": "1. Cách tạo so sánh Loại tính từ So sánh hơn So sánh nhất 1 âm tiết tall → taller; big → bigger (gấp đôi phụ âm) the tallest; the biggest 2 âm tiết tận cùng -y easy → easier, busy → busier the easiest 2 âm tiết trở lên more popular, more expensive the most popular Bất quy tắc good → better; bad → worse; far → further the best; the worst; the furthest Hơn A + be/V + comparative + than + B Nhất A + be/V + the + superlative + (in/of…) 2. So sánh bằng và gấp lần Bằng as + adj / adv + as Không bằng not as / not so + adj + as Gấp lần twice / three times + as + adj / many + N / much + N + as Giống the same (+ N) as Cycling is as fast as driving in the city centre. Young people spent three times as many hours online as older people. My phone is the same as yours. 3. Mức độ chênh lệch Chênh nhiều: much / far / significantly / considerably + so sánh hơn: far more popular Chênh ít: slightly / a little / a bit + so sánh hơn: slightly higher Nhất: by far the most…: by far the most popular Lỗi hay gặp Không dùng very trước so sánh hơn: very higher → much higher . Không dùng hai lần: more easier → easier . 4. So sánh kép và more/less/fewer Càng… càng The + comparative + S + V + , the + comparative + S + V The more you practise, the better your English becomes. Ngày càng: more and more popular, bigger and bigger fewer + đếm được (fewer hours); less + không đếm được (less time).",
+ "slow": {
+  "idea": "So sánh là đặt hai hay nhiều thứ cạnh nhau rồi nói cái nào hơn, cái nào nhất, hay hai cái bằng nhau.\nTiếng Việt chỉ cần thêm chữ \"hơn\", \"nhất\". Tiếng Anh có hai cách tạo, tuỳ tính từ *ngắn hay dài*: từ ngắn thì gắn đuôi (-er, -est), từ dài thì thêm một chữ đứng trước (more, most). Không bao giờ dùng cả hai cách cùng lúc.",
+  "steps": [
+   {
+    "t": "Từ ngắn gắn đuôi, từ dài thêm more / most",
+    "say": "Tính từ một âm tiết (big, high, cheap) và tính từ hai âm tiết kết thúc bằng -y (easy, happy): thêm *-er* cho \"hơn\", *-est* cho \"nhất\".\nTính từ từ hai âm tiết trở lên (expensive, important, crowded): dùng *more* cho \"hơn\", *most* cho \"nhất\".\nVài từ bất quy tắc phải thuộc: good → better → best; bad → worse → worst; far → further → furthest; many / much → more → most; little → less → least.",
+    "ex": [
+     [
+      "cheap → cheap*er* → the cheap*est*",
+      "rẻ → rẻ hơn → rẻ nhất",
+      "cheap có một âm tiết nên gắn đuôi."
+     ],
+     [
+      "expensive → *more* expensive → the *most* expensive",
+      "đắt → đắt hơn → đắt nhất",
+      "expensive có ba âm tiết nên thêm more, most. Không viết \"expensiver\"."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh hơn: luôn có than",
+    "say": "Khuôn: A + be + tính từ so sánh hơn + *than* + B. Chữ \"hơn\" của tiếng Việt tương ứng với cả đuôi -er (hoặc more) lẫn chữ than.",
+    "ex": [
+     [
+      "Hanoi is *bigger than* Hue.",
+      "Hà Nội lớn hơn Huế.",
+      "big ngắn nên thành bigger (gấp đôi chữ g), và có than trước thứ được đem ra so."
+     ],
+     [
+      "Flats are *more expensive than* houses here.",
+      "Ở đây căn hộ đắt hơn nhà.",
+      "expensive dài nên dùng more, vẫn có than."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh nhất: luôn có the",
+    "say": "Khi nói \"nhất\" thì chỉ còn đúng một thứ, nên luôn có *the* đứng trước. Sau đó thường là in + nơi chốn hoặc of + nhóm.",
+    "ex": [
+     [
+      "It is *the largest* city *in* Vietnam.",
+      "Đó là thành phố lớn nhất Việt Nam.",
+      "Chỉ có một thành phố lớn nhất nên có the. Dùng in trước tên nơi chốn."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh bằng và gấp bao nhiêu lần",
+    "say": "Bằng nhau: *as + tính từ + as*. Không bằng: *not as + tính từ + as*. Tính từ ở giữa giữ nguyên dạng gốc, không thêm -er.\nGấp lần: đặt *twice, three times*… ngay trước as.",
+    "ex": [
+     [
+      "Rent in A is *as high as* in B.",
+      "Tiền thuê ở A cao bằng ở B.",
+      "high giữ nguyên, kẹp giữa hai chữ as."
+     ],
+     [
+      "The figure for A was *twice as high as* that for B.",
+      "Con số của A cao gấp đôi con số của B.",
+      "twice đứng trước cụm as high as."
+     ]
+    ]
+   },
+   {
+    "t": "Nói chênh nhiều hay ít",
+    "say": "Đặt *much, far, significantly* (hơn nhiều) hoặc *slightly, a little* (hơn một chút) ngay trước tính từ so sánh hơn. Không dùng very ở đây.",
+    "ex": [
+     [
+      "Costs were *much higher* in 2020.",
+      "Chi phí cao hơn nhiều vào năm 2020.",
+      "much đứng trước higher. Không viết \"very higher\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "This city is *more bigger* than that one.",
+    "This city is *bigger* than that one.",
+    "Chỉ chọn một cách: đã có đuôi -er thì không thêm more."
+   ],
+   [
+    "He is the *most tall* in the class.",
+    "He is the *tallest* in the class.",
+    "tall là từ ngắn, phải gắn -est."
+   ],
+   [
+    "Life in the city is more stressful *as* in the countryside.",
+    "Life in the city is more stressful *than* in the countryside.",
+    "So sánh hơn đi với than. as chỉ dùng trong cặp as … as."
+   ]
+  ],
+  "check": [
+   [
+    "So sánh hơn của \"easy\" và của \"modern\" là gì?",
+    "easier (hai âm tiết, tận cùng -y: đổi y thành i rồi thêm -er) và more modern (hai âm tiết, không tận cùng -y)."
+   ],
+   [
+    "Câu \"Car sales were higher than motorbikes\" có vấn đề gì?",
+    "Câu này đang so doanh số với xe máy, hai thứ khác loại. Phải so doanh số với doanh số: \"Car sales were higher than motorbike sales\" hoặc \"than those of motorbikes\"."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Từ ngắn, hơn",
+     "o:tính từ + b:-er + x:than"
+    ],
+    [
+     "Từ ngắn, nhất",
+     "x:the + o:tính từ + b:-est"
+    ],
+    [
+     "Từ dài, hơn",
+     "b:more + o:tính từ + x:than"
+    ],
+    [
+     "Từ dài, nhất",
+     "x:the + b:most + o:tính từ"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Hơn",
+     "s:A + v:be + o:tính từ-er / more tính từ + b:than + s:B"
+    ]
+   ],
+   "cut": [
+    "Khuôn: A + be + tính từ so sánh hơn + *than* + B. "
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Nhất",
+     "b:the + o:tính từ-est / most tính từ + x:in / of + s:nhóm"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Bằng",
+     "x:as + o:tính từ + x:as"
+    ],
+    [
+     "Không bằng",
+     "x:not as + o:tính từ + x:as"
+    ],
+    [
+     "Gấp lần",
+     "b:twice / three times + x:as + o:tính từ + x:as"
+    ]
+   ],
+   "cut": [
+    "Bằng nhau: *as + tính từ + as*. Không bằng: *not as + tính từ + as*. ",
+    "Gấp lần: đặt *twice, three times*… ngay trước as."
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Hơn nhiều",
+     "b:much / far / significantly + o:tính từ-er + x:than"
+    ],
+    [
+     "Hơn chút",
+     "b:slightly / a little + o:tính từ-er + x:than"
+    ],
+    [
+     "Sai",
+     "n:very tính từ-er"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Social media was ___ activity among 16–24-year-olds.",
+   "opts": [
+    "the most popular",
+    "the popularest",
+    "more popular"
+   ],
+   "a": 0,
+   "why": "popular là tính từ dài: the most popular."
+  },
+  {
+   "t": "choice",
+   "q": "This test was ___ than the last one.",
+   "opts": [
+    "more easy",
+    "easier",
+    "more easier"
+   ],
+   "a": 1,
+   "why": "easy → easier."
+  },
+  {
+   "t": "choice",
+   "q": "Prices in 2020 were ___ higher than in 2010.",
+   "opts": [
+    "very",
+    "much"
+   ],
+   "a": 1,
+   "why": "much + so sánh hơn."
+  },
+  {
+   "t": "fill",
+   "q": "The 45+ group spent twice as many hours reading ___ the 25–44 group.",
+   "a": [
+    "as"
+   ],
+   "why": "twice as many … as."
+  },
+  {
+   "t": "choice",
+   "q": "People aged 45+ spent ___ time on exercise than on reading.",
+   "opts": [
+    "less",
+    "fewer"
+   ],
+   "a": 0,
+   "why": "time không đếm được nên dùng less."
+  },
+  {
+   "t": "fill",
+   "q": "The more you read, the ___ (good) your vocabulary becomes.",
+   "a": [
+    "better"
+   ],
+   "why": "good → better."
+  },
+  {
+   "t": "choice",
+   "q": "This is the ___ result we have ever had.",
+   "opts": [
+    "worse",
+    "worst",
+    "baddest"
+   ],
+   "a": 1,
+   "why": "bad → the worst."
+  },
+  {
+   "t": "choice",
+   "q": "Cycling is not ___ fast as driving on the motorway.",
+   "opts": [
+    "so",
+    "more",
+    "than"
+   ],
+   "a": 0,
+   "why": "not as/so … as."
+  }
+ ],
+ "write": "Viết 3 câu so sánh đi xe buýt, tàu điện và ô tô riêng: dùng một so sánh hơn có mức độ (much / slightly), một so sánh nhất và một cấu trúc as … as hoặc The more…, the more…"
+}

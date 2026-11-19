@@ -1,0 +1,218 @@
+{
+ "id": "b5",
+ "title": "Câu đơn, câu ghép, câu phức và dấu câu",
+ "use": "Viết câu dài mà không sai",
+ "focus": "mệnh đề độc lập và mệnh đề phụ, câu đơn / ghép / phức / phức hợp, liên từ FANBOYS, dấu phẩy và dấu chấm phẩy, lỗi nối câu bằng dấu phẩy và câu cụt",
+ "summary": [
+  "Mệnh đề = có chủ ngữ + động từ. Mệnh đề độc lập đứng một mình được; mệnh đề phụ (because…, although…) thì không.",
+  "Câu ghép: hai mệnh đề độc lập + , and / but / so / or / yet (hoặc dấu chấm phẩy).",
+  "Câu phức: mệnh đề chính + mệnh đề phụ. Mệnh đề phụ đứng đầu → có dấu phẩy.",
+  "Không nối hai câu chỉ bằng dấu phẩy; không dùng hai từ nối cho một quan hệ (although…but)."
+ ],
+ "theory_text": "1. Bốn loại câu Loại Cấu tạo Ví dụ Câu đơn 1 mệnh đề độc lập Public transport reduces traffic. Câu ghép 2 mệnh đề độc lập + liên từ Buses are cheap , but they are often crowded. Câu phức mệnh đề chính + mệnh đề phụ Although buses are cheap, many people prefer cars. Câu phức hợp ghép + phức If fares fall, more people will take the bus , and roads will be less crowded. 2. Liên từ đẳng lập (FANBOYS) For And Nor But Or Yet So Câu ghép Clause 1 + , and / but / so / or / yet + Clause 2 Dùng dấu chấm phẩy khi hai câu liên quan chặt và không có liên từ: Buses are cheap; trains are faster. Hoặc dấu chấm phẩy + trạng từ nối: Buses are cheap; however , they are slow. 3. Liên từ phụ thuộc Ý nghĩa Liên từ Thời gian when, while, before, after, as soon as, until, since Lý do because, since, as Nhượng bộ although, even though, though, while, whereas Điều kiện if, unless, provided that, as long as Mục đích so that, in order that Mệnh đề phụ đứng đầu → có phẩy When roads are built, more people drive. Mệnh đề phụ đứng sau → thường không phẩy More people drive when roads are built. 4. Ba lỗi lớn ✗ Roads are crowded , the government should act. ✓ Roads are crowded , so the government should act. / Roads are crowded . The government should act. Lỗi nối câu bằng dấu phẩy (comma splice). ✗ Because roads are crowded. ✓ Because roads are crowded, many people take the metro. Câu cụt: mệnh đề phụ đứng một mình. ✗ Although buses are cheap, but they are slow. ✓ Although buses are cheap, they are slow. / Buses are cheap, but they are slow. Một quan hệ chỉ dùng một từ nối.",
+ "slow": {
+  "idea": "Một *mệnh đề* là một nhóm từ có đủ chủ ngữ và động từ đã chia, ví dụ \"prices rose\". Một câu có thể gồm một mệnh đề, hoặc nhiều mệnh đề nối với nhau.\nTrong tiếng Việt, hai ý có thể đặt cạnh nhau, chỉ cách bằng dấu phẩy. Tiếng Anh *không cho phép* nối hai mệnh đề đầy đủ chỉ bằng dấu phẩy: phải có một từ nối, hoặc phải tách thành hai câu. Hiểu điều này giúp bạn tránh ba lỗi câu nặng nhất trong bài viết, và viết được câu dài mà vẫn đúng.",
+  "steps": [
+   {
+    "t": "Câu đơn: một mệnh đề",
+    "say": "Có một chủ ngữ và một động từ chia. Câu đơn có thể dài, vì có thêm cụm giới từ hay cụm danh từ, nhưng vẫn chỉ có một cặp chủ ngữ và động từ.",
+    "ex": [
+     [
+      "Many young people in big cities *live* alone.",
+      "Nhiều người trẻ ở thành phố lớn sống một mình.",
+      "Chỉ có một động từ chia là live, nên đây là câu đơn."
+     ]
+    ]
+   },
+   {
+    "t": "Câu ghép: hai mệnh đề ngang hàng",
+    "say": "Hai mệnh đề đều đứng một mình được, nối bằng: *and* (và), *but* (nhưng), *or* (hoặc), *so* (nên). Đặt *dấu phẩy trước* từ nối.",
+    "ex": [
+     [
+      "Cars are convenient, *but* they pollute the air.",
+      "Ô tô tiện lợi, nhưng chúng làm ô nhiễm không khí.",
+      "Hai vế đều có đủ chủ ngữ và động từ. Có dấu phẩy và but ở giữa."
+     ]
+    ]
+   },
+   {
+    "t": "Câu phức: một mệnh đề chính và một mệnh đề phụ",
+    "say": "Mệnh đề phụ bắt đầu bằng *because, although, when, if, while, since, unless, that, who, which*… Nó không đứng một mình được: phải bám vào một mệnh đề chính.\nVề dấu phẩy: mệnh đề phụ đứng *trước* thì có dấu phẩy sau nó. Mệnh đề phụ đứng *sau* thì thường không cần dấu phẩy.",
+    "ex": [
+     [
+      "*Although* cars are convenient, they pollute the air.",
+      "Mặc dù ô tô tiện lợi, chúng làm ô nhiễm không khí.",
+      "Mệnh đề although đứng trước nên có dấu phẩy."
+     ],
+     [
+      "Many people drive *because* public transport is poor.",
+      "Nhiều người lái xe vì giao thông công cộng kém.",
+      "Mệnh đề because đứng sau nên không có dấu phẩy."
+     ]
+    ]
+   },
+   {
+    "t": "Ba lỗi lớn và cách sửa",
+    "say": "*Lỗi 1, câu thiếu*: chỉ có mệnh đề phụ rồi chấm câu. Sửa bằng cách nối nó vào mệnh đề chính.\n*Lỗi 2, nối bằng dấu phẩy*: hai mệnh đề đầy đủ chỉ cách nhau một dấu phẩy. Sửa bằng một trong ba cách: thay dấu phẩy bằng dấu chấm; thêm and, but, so; hoặc biến một vế thành mệnh đề phụ.\n*Lỗi 3, dùng however như but*: however không nối được hai mệnh đề trong cùng một câu. Trước nó phải là dấu chấm hoặc dấu chấm phẩy, sau nó là dấu phẩy.",
+    "ex": [
+     [
+      "✗ Because it was raining. → *Because it was raining, we stayed at home.*",
+      "Vì trời mưa, chúng tôi ở nhà.",
+      "\"Because it was raining.\" mới là nửa câu, người đọc còn chờ vế sau."
+     ],
+     [
+      "✗ Cars are useful, they cause pollution. → Cars are useful, *but* they cause pollution.",
+      "Ô tô hữu ích, nhưng chúng gây ô nhiễm.",
+      "Hai mệnh đề đầy đủ cần một từ nối, không chỉ dấu phẩy."
+     ],
+     [
+      "Cars are useful. *However,* they cause pollution.",
+      "Ô tô hữu ích. Tuy nhiên, chúng gây ô nhiễm.",
+      "however mở đầu một câu mới."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "*Although* it is expensive, *but* many people buy it.",
+    "*Although* it is expensive, many people buy it.",
+    "Tiếng Việt nói \"mặc dù… nhưng…\", còn tiếng Anh chỉ dùng một trong hai: although hoặc but."
+   ],
+   [
+    "*Because* the weather was bad, *so* we stayed home.",
+    "*Because* the weather was bad, we stayed home.",
+    "Tương tự: \"vì… nên…\" chỉ dùng because hoặc so, không dùng cả hai."
+   ],
+   [
+    "Pollution is serious, however, few people care.",
+    "Pollution is serious. However, few people care.",
+    "Trước however phải là dấu chấm hoặc dấu chấm phẩy."
+   ]
+  ],
+  "check": [
+   [
+    "Câu \"When people move to cities.\" có đúng không?",
+    "Không. Đây là một mệnh đề phụ đứng một mình, câu chưa xong. Cần thêm mệnh đề chính: \"When people move to cities, they earn more money.\""
+   ],
+   [
+    "Sửa bằng hai cách: \"The city is crowded, the rent is high.\"",
+    "Cách 1: The city is crowded, and the rent is high. Cách 2: The city is crowded. The rent is high. (Hoặc: Because the city is crowded, the rent is high.)"
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Câu đơn",
+     "s:S + v:V + o:…"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Câu ghép",
+     "s:S + v:V , b:and / but / or / so + s:S + v:V"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Phụ đứng trước",
+     "b:Because / Although… + s:S + v:V , s:S + v:V"
+    ],
+    [
+     "Phụ đứng sau",
+     "s:S + v:V + b:because / although… + s:S + v:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "however",
+     "s:S + v:V + x:. hoặc ; + b:However , s:S + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "Roads are crowded, people waste time.",
+    "Roads are crowded, so people waste time."
+   ],
+   "a": 1,
+   "why": "Hai mệnh đề cần liên từ, không chỉ dấu phẩy."
+  },
+  {
+   "t": "choice",
+   "q": "___ trains are fast, they are expensive in some countries.",
+   "opts": [
+    "Although",
+    "But",
+    "Because"
+   ],
+   "a": 0,
+   "why": "Đối lập, mệnh đề phụ đứng đầu."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào là câu hoàn chỉnh?",
+   "opts": [
+    "Because buses are cheap.",
+    "Many students take the bus because it is cheap."
+   ],
+   "a": 1,
+   "why": "Câu cần mệnh đề chính."
+  },
+  {
+   "t": "choice",
+   "q": "Buses are cheap, ___ they are often late.",
+   "opts": [
+    "but",
+    "although",
+    "because"
+   ],
+   "a": 0,
+   "why": "Câu ghép đối lập: , but."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào đặt dấu phẩy đúng?",
+   "opts": [
+    "When new roads are built more people drive.",
+    "When new roads are built, more people drive."
+   ],
+   "a": 1,
+   "why": "Mệnh đề phụ đứng đầu → có dấu phẩy."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "Although it rained, but we went out.",
+    "Although it rained, we went out."
+   ],
+   "a": 1,
+   "why": "Không dùng although … but."
+  },
+  {
+   "t": "choice",
+   "q": "Trains are fast; ___, they are expensive.",
+   "opts": [
+    "however",
+    "but",
+    "although"
+   ],
+   "a": 0,
+   "why": "Sau dấu chấm phẩy dùng trạng từ nối + phẩy."
+  }
+ ],
+ "write": "Viết 3 câu trả lời đề trên: một câu ghép (, but / , so), một câu phức bắt đầu bằng Although hoặc If, và một câu phức có because."
+}

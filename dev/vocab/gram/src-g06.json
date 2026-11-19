@@ -1,0 +1,270 @@
+{
+ "id": "g06",
+ "title": "Lượng từ và hạn định từ",
+ "use": "some, any, much, many, few, all, each…",
+ "focus": "lượng từ với danh từ đếm được và không đếm được (much/many, few/little, a few/a little), some/any/no, all/most/both/either/neither/each/every",
+ "summary": [
+  "many/few/a number of + danh từ đếm được số nhiều; much/little/an amount of + không đếm được.",
+  "a few / a little = một ít (tích cực); few / little = rất ít (tiêu cực).",
+  "each / every + danh từ số ít, động từ số ít.",
+  "most + danh từ (nói chung); most of the + danh từ (cụ thể)."
+ ],
+ "theory_text": "1. Theo loại danh từ Đếm được số nhiều Không đếm được Cả hai many much a lot of / lots of a (large) number of a (large) amount of / a great deal of plenty of few / a few little / a little some / any / no fewer / the fewest less / the least more / most several, both, a couple of — all, enough Mẹo Trong câu khẳng định, văn viết hay dùng a large number of / a significant amount of thay cho a lot of ; much thường dùng trong câu phủ định và câu hỏi. 2. few, a few, little, a little a few / a little một ít, đủ dùng (tích cực): I have a few friends here, so I'm not lonely. few / little rất ít, gần như không (tiêu cực): Few tourists visit the area in winter. There is little evidence. 3. some, any, no some : câu khẳng định, lời mời, đề nghị: Would you like some tea? any : câu phủ định và câu hỏi: There aren't any parks. Câu khẳng định: any = bất kỳ: Any student can join. no + danh từ = not any: There are no parks. 4. all, most, both, either, neither, each, every Từ Đi với Ví dụ all / most / some / many danh từ số nhiều (nói chung) hoặc of the + danh từ (cụ thể) Most tourists… / Most of the tourists in the survey… each / every danh từ số ít, động từ số ít Every student has a laptop. each of / every one of the + danh từ số nhiều, động từ số ít Each of the cities has a museum. both hai cái, số nhiều Both cities are popular. either / neither một trong hai / không cái nào trong hai, số ít Neither option is perfect. ✗ Most of tourists come in summer. ✓ Most tourists come in summer. / Most of the tourists we interviewed… most of luôn đi với the/my/these… trước danh từ. ✗ Every students have a card. ✓ Every student has a card. every + danh từ số ít, động từ số ít.",
+ "slow": {
+  "idea": "*Lượng từ* là những từ nói \"bao nhiêu\": many, much, a few, some, most, every…\nCó hai việc phải làm đúng. Thứ nhất, lượng từ phải hợp với loại danh từ đi sau (đếm được hay không đếm được). Thứ hai, một số cặp trông gần giống nhau nhưng nghĩa ngược nhau, ví dụ few và a few.",
+  "steps": [
+   {
+    "t": "Ghép lượng từ với đúng loại danh từ",
+    "say": "Danh từ đếm được số nhiều đi với: *many, a few, few, several, a number of*.\nDanh từ không đếm được đi với: *much, a little, little, an amount of*.\nDùng được cho cả hai: *some, any, a lot of, plenty of, most, all*.\nNếu bạn chưa chắc về phần đếm được và không đếm được, hãy xem lại bài Danh từ trước.",
+    "ex": [
+     [
+      "*many* students · *much* time",
+      "nhiều sinh viên · nhiều thời gian",
+      "students đếm được nên dùng many. time (thời gian) không đếm được nên dùng much."
+     ],
+     [
+      "a large *number* of cars · a large *amount* of money",
+      "một số lượng lớn xe · một lượng lớn tiền",
+      "number đi với thứ đếm được. amount đi với thứ không đếm được."
+     ]
+    ]
+   },
+   {
+    "t": "few và a few, little và a little",
+    "say": "Có chữ *a* thì nghĩa là \"có một ít, đủ dùng\" (ý tích cực). Không có a thì nghĩa là \"gần như không có\" (ý tiêu cực, phàn nàn).\nfew, a few đi với danh từ đếm được. little, a little đi với danh từ không đếm được.",
+    "ex": [
+     [
+      "He has *a few* friends.",
+      "Anh ấy có vài người bạn.",
+      "Có a: có bạn, ổn."
+     ],
+     [
+      "He has *few* friends.",
+      "Anh ấy hầu như không có bạn.",
+      "Không có a: ý là ít quá, đáng buồn."
+     ],
+     [
+      "There is *little* evidence for this.",
+      "Hầu như không có bằng chứng cho việc này.",
+      "evidence không đếm được, và ý là gần như không có."
+     ]
+    ]
+   },
+   {
+    "t": "each, every đi với số ít",
+    "say": "each và every nhìn vào *từng* cái một, nên danh từ đi sau ở số ít và động từ cũng số ít. all thì nhìn cả nhóm, nên đi với số nhiều.",
+    "ex": [
+     [
+      "*Every student has* a laptop.",
+      "Mỗi học sinh đều có một máy tính xách tay.",
+      "Sau every là student (không -s) và has (không phải have)."
+     ],
+     [
+      "*All students have* laptops.",
+      "Tất cả học sinh đều có máy tính xách tay.",
+      "all đi với danh từ số nhiều và động từ số nhiều."
+     ]
+    ]
+   },
+   {
+    "t": "most hay most of the?",
+    "say": "Nói chung về cả một loại thì dùng *most + danh từ*. Nói về một nhóm cụ thể đã biết thì dùng *most of the + danh từ*. Không viết \"most of people\".",
+    "ex": [
+     [
+      "*Most people* use smartphones.",
+      "Hầu hết mọi người dùng điện thoại thông minh.",
+      "Người nói chung, không có the, không có of."
+     ],
+     [
+      "*Most of the people* in my class use smartphones.",
+      "Hầu hết những người trong lớp tôi dùng điện thoại thông minh.",
+      "Một nhóm cụ thể (trong lớp tôi), nên dùng most of the."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "There are *much* problems.",
+    "There are *many* problems.",
+    "problems đếm được nên dùng many."
+   ],
+   [
+    "*Most of* students agree.",
+    "*Most* students agree. / *Most of the* students agree.",
+    "Sau most of phải có the, these, my… Còn nói chung thì bỏ of."
+   ],
+   [
+    "*Every students have* to wear uniforms.",
+    "*Every student has* to wear a uniform.",
+    "every đi với danh từ số ít và động từ số ít."
+   ]
+  ],
+  "check": [
+   [
+    "\"She has little money\" và \"She has a little money\" khác nhau thế nào?",
+    "little money: cô ấy gần như không có tiền (ý tiêu cực). a little money: cô ấy có một ít tiền, đủ để làm gì đó (ý tích cực)."
+   ],
+   [
+    "Vì sao nói \"the number of cars\" mà không nói \"the amount of cars\"?",
+    "cars đếm được nên đi với number. amount dành cho thứ không đếm được: the amount of traffic."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đếm được",
+     "x:many / a few / few / several / a number of + s:N-s"
+    ],
+    [
+     "Không đếm được",
+     "x:much / a little / little / an amount of + s:N"
+    ],
+    [
+     "Cả hai",
+     "x:some / any / a lot of / plenty of / most / all + s:N"
+    ]
+   ],
+   "cut": [
+    "Danh từ đếm được số nhiều đi với: *many, a few, few, several, a number of*.",
+    "Danh từ không đếm được đi với: *much, a little, little, an amount of*.",
+    "Dùng được cho cả hai: *some, any, a lot of, plenty of, most, all*."
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Có một ít (tốt)",
+     "b:a few + s:N-s"
+    ],
+    [
+     "Có một ít (tốt)",
+     "b:a little + s:N không đếm được"
+    ],
+    [
+     "Gần như không (xấu)",
+     "b:few + s:N-s"
+    ],
+    [
+     "Gần như không (xấu)",
+     "b:little + s:N không đếm được"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Từng cái",
+     "x:each / every + s:N số ít + v:V-s"
+    ],
+    [
+     "Cả nhóm",
+     "x:all + s:N-s + v:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Nói chung",
+     "x:most + s:N"
+    ],
+    [
+     "Nhóm cụ thể",
+     "x:most of the + s:N"
+    ],
+    [
+     "Sai",
+     "n:most of people"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "There isn't ___ time left before the exam.",
+   "opts": [
+    "many",
+    "much"
+   ],
+   "a": 1,
+   "why": "time không đếm được, câu phủ định → much."
+  },
+  {
+   "t": "choice",
+   "q": "___ tourists visit the island in winter, so it is very quiet.",
+   "opts": [
+    "Few",
+    "A few",
+    "Little"
+   ],
+   "a": 0,
+   "why": "Gần như không có (nên rất yên) → Few + danh từ đếm được."
+  },
+  {
+   "t": "choice",
+   "q": "I have ___ money left, so I can buy a coffee.",
+   "opts": [
+    "little",
+    "a little",
+    "few"
+   ],
+   "a": 1,
+   "why": "Một ít, đủ dùng, không đếm được → a little."
+  },
+  {
+   "t": "choice",
+   "q": "Every city ___ its own problems.",
+   "opts": [
+    "have",
+    "has"
+   ],
+   "a": 1,
+   "why": "every + số ít → has."
+  },
+  {
+   "t": "choice",
+   "q": "___ of the students passed the test.",
+   "opts": [
+    "Most",
+    "Most of",
+    "Almost"
+   ],
+   "a": 0,
+   "why": "Most of the students: chỗ trống đứng trước of → Most."
+  },
+  {
+   "t": "choice",
+   "q": "There is ___ evidence that this policy works. (rất ít)",
+   "opts": [
+    "little",
+    "few",
+    "a few"
+   ],
+   "a": 0,
+   "why": "evidence không đếm được, nghĩa tiêu cực → little."
+  },
+  {
+   "t": "choice",
+   "q": "Neither of the options ___ cheap.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "neither → động từ số ít (văn trang trọng)."
+  },
+  {
+   "t": "fill",
+   "q": "A large ___ of people moved to cities. (lượng từ với danh từ đếm được)",
+   "a": [
+    "number"
+   ],
+   "why": "a large number of + danh từ số nhiều."
+  }
+ ],
+ "write": "Viết 2–3 câu về ảnh hưởng của du lịch, dùng ít nhất 3 lượng từ khác nhau (many, much, few, a large amount of, most…)."
+}

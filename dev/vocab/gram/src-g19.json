@@ -1,0 +1,268 @@
+{
+ "id": "g19",
+ "title": "Câu bị động",
+ "use": "Khi hành động quan trọng hơn người làm",
+ "focus": "cấu trúc bị động be + V3 ở mọi thì, bị động với modal, động từ có hai tân ngữ, bị động khách quan (It is said that / S is said to), have/get something done, khi nào nên dùng bị động",
+ "summary": [
+  "Bị động = be (chia theo thì) + V3. Tân ngữ của câu chủ động thành chủ ngữ.",
+  "Dùng khi không biết, không cần nói người làm, hoặc muốn giọng khách quan.",
+  "Chỉ ngoại động từ mới có bị động (không có “is happened”).",
+  "It is said / believed that… và S is said / believed to + V: giọng học thuật."
+ ],
+ "theory_text": "1. Từ chủ động sang bị động Chủ động The council built a new bridge . Bị động A new bridge was built (by the council). Công thức old O → new S + be (any tense) + V3 + (by + agent) 2. Bị động ở các thì Thì Bị động Ví dụ Hiện tại đơn am/is/are + V3 English is spoken worldwide. Hiện tại tiếp diễn am/is/are being + V3 A new road is being built . Hiện tại hoàn thành have/has been + V3 Many trees have been cut down. Quá khứ đơn was/were + V3 The school was founded in 1990. Quá khứ tiếp diễn was/were being + V3 The bridge was being repaired . Quá khứ hoàn thành had been + V3 The tickets had been sold out. Tương lai will be + V3 The results will be announced soon. Modal modal + be + V3 Plastic bags should be banned . 3. Khi nào dùng bị động Không biết hoặc không quan trọng ai làm: My bike was stolen . Quy trình, báo cáo khoa học: The glass is melted at 1,500°C. Giọng khách quan, trang trọng: Measures should be taken to protect local culture. Lỗi hay gặp Chỉ giữ by + người làm khi thông tin đó quan trọng. Câu như …was built by people là thừa. 4. Động từ có hai tân ngữ They gave the students a prize . → The students were given a prize. (thường dùng) hoặc A prize was given to the students. 5. Bị động khách quan Cách 1 It + is said / believed / thought / reported + that + clause Cách 2 S + is said / believed + to V / to have V3 It is believed that tourism creates jobs. Tourism is believed to create jobs. The temple is said to have been built in the 11th century. 6. have / get something done Nhờ / thuê ai làm S + have / get + sth + V3 I had my hair cut yesterday. (thợ cắt, không phải tôi) We need to get the car repaired . ✗ The accident was happened at night. ✓ The accident happened at night. happen, occur, arrive, rise là nội động từ, không có bị động.",
+ "slow": {
+  "idea": "Câu thường gặp có dạng \"ai làm gì\": The city built a bridge. Gọi là câu *chủ động*. Nhưng nhiều khi bạn không biết ai làm, hoặc người làm không quan trọng, mà thứ bạn muốn nói tới là cây cầu. Khi đó bạn đưa \"a bridge\" lên làm chủ ngữ và dùng câu *bị động*: A bridge was built.\nTiếng Việt dùng chữ \"bị\" hoặc \"được\". Tiếng Anh dùng khuôn *be + V3*. Điều cần nhớ: be là phần đổi dạng theo thì, còn V3 thì luôn giữ nguyên.",
+  "steps": [
+   {
+    "t": "Ba bước đổi từ chủ động sang bị động",
+    "say": "Bước 1: đưa tân ngữ của câu chủ động lên đầu, làm chủ ngữ mới.\nBước 2: đổi động từ thành *be + V3*. be phải cùng thì với động từ gốc, và chia theo chủ ngữ mới.\nBước 3: người làm, nếu cần nhắc, đặt sau *by*. Thường thì bỏ luôn.",
+    "ex": [
+     [
+      "The city *built* a bridge. → A bridge *was built* (by the city).",
+      "Thành phố xây một cây cầu. → Một cây cầu đã được xây.",
+      "built là quá khứ đơn nên be là was. A bridge là số ít nên was chứ không phải were."
+     ],
+     [
+      "People *speak* English here. → English *is spoken* here.",
+      "Người ta nói tiếng Anh ở đây. → Tiếng Anh được nói ở đây.",
+      "speak là hiện tại đơn nên be là is. \"by people\" không cho thêm thông tin gì nên bỏ."
+     ]
+    ]
+   },
+   {
+    "t": "Bị động ở các thì: chỉ be thay đổi",
+    "say": "Bạn không cần học dạng bị động riêng cho từng thì. Chỉ cần chia *be* theo thì đó, rồi thêm V3.\nHiện tại đơn: *is / are* built. Quá khứ đơn: *was / were* built. Tiếp diễn: *is being* built. Hoàn thành: *has been* built. Tương lai: *will be* built. Sau can, should, must: *can be* built.",
+    "ex": [
+     [
+      "A new school *is being built*.",
+      "Một ngôi trường mới đang được xây.",
+      "Tiếp diễn (is + being) cộng V3 built."
+     ],
+     [
+      "More trees *should be planted*.",
+      "Nên trồng thêm cây.",
+      "Sau should là be nguyên mẫu, rồi tới V3 planted. Mẫu câu này rất hay dùng để nêu giải pháp."
+     ]
+    ]
+   },
+   {
+    "t": "Khi nào nên dùng bị động",
+    "say": "Dùng khi: không biết ai làm; ai làm không quan trọng hoặc đã quá rõ; hoặc khi muốn giữ sự chú ý vào thứ nhận hành động.\nTrong Task 1 dạng quy trình, gần như mọi bước đều dùng bị động, vì người làm không quan trọng.",
+    "ex": [
+     [
+      "The bottles *are collected* and *taken* to a factory.",
+      "Chai lọ được thu gom và đưa tới nhà máy.",
+      "Không cần biết ai thu gom. Câu tập trung vào chai lọ."
+     ]
+    ]
+   },
+   {
+    "t": "Động từ không có tân ngữ thì không có bị động",
+    "say": "Chỉ những động từ có tân ngữ mới đổi sang bị động được, vì phải có tân ngữ để đưa lên làm chủ ngữ. Các động từ *happen, occur, rise, fall, exist, arrive, appear, die* tự xảy ra, không có tân ngữ, nên không bao giờ ở dạng bị động.",
+    "ex": [
+     [
+      "The accident *happened* at night.",
+      "Vụ tai nạn xảy ra vào ban đêm.",
+      "Không viết \"was happened\". Tiếng Việt cũng không nói \"bị xảy ra\"."
+     ],
+     [
+      "Prices *rose* sharply.",
+      "Giá tăng mạnh.",
+      "Không viết \"were risen\". Giá tự tăng."
+     ]
+    ]
+   },
+   {
+    "t": "Mẫu câu khách quan cho Task 2",
+    "say": "Thay vì viết \"People say that…\", bạn có thể viết *It is said / believed / argued that…*. Mẫu này trang trọng hơn và hay được dùng để mở bài.",
+    "ex": [
+     [
+      "*It is widely believed that* technology improves education.",
+      "Nhiều người tin rằng công nghệ cải thiện giáo dục.",
+      "It đứng làm chủ ngữ giả. Phần sau that là nội dung được tin."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The problem *is happened* in many countries.",
+    "The problem *happens* in many countries.",
+    "happen không có tân ngữ nên không có bị động."
+   ],
+   [
+    "The bridge *built* in 1990.",
+    "The bridge *was built* in 1990.",
+    "Thiếu be. Cây cầu không tự xây, nó được xây, nên phải có was."
+   ],
+   [
+    "The data *was collect* by researchers.",
+    "The data *was collected* by researchers.",
+    "Sau be phải là V3."
+   ]
+  ],
+  "check": [
+   [
+    "Đổi sang bị động: \"The government has introduced a new law.\"",
+    "A new law has been introduced (by the government). Hiện tại hoàn thành nên be thành has been, cộng V3 introduced."
+   ],
+   [
+    "Vì sao \"The number of cars was increased\" thường không tự nhiên?",
+    "increase có thể tự xảy ra (số xe tự tăng), nên dùng chủ động: \"The number of cars increased.\" Chỉ dùng bị động khi muốn nói có ai đó chủ động làm cho nó tăng."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Chủ động",
+     "s:Workers + v:built + o:the bridge"
+    ],
+    [
+     "Bị động",
+     "s:The bridge + b:was built + o:(by workers)"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Mọi thì",
+     "s:S + b:be (chia theo thì) + v:V3"
+    ],
+    [
+     "Hiện tại",
+     "s:S + b:is / are + v:built"
+    ],
+    [
+     "Quá khứ",
+     "s:S + b:was / were + v:built"
+    ],
+    [
+     "Đang",
+     "s:S + b:is being + v:built"
+    ],
+    [
+     "Hoàn thành",
+     "s:S + b:has been + v:built"
+    ],
+    [
+     "Tương lai",
+     "s:S + b:will be + v:built"
+    ],
+    [
+     "Sau can, should",
+     "s:S + b:can be + v:built"
+    ]
+   ],
+   "cut": [
+    "Hiện tại đơn: *is / are* built. Quá khứ đơn: *was / were* built. Tiếp diễn: *is being* built. Hoàn thành: *has been* built. Tương lai: *will be* built. Sau can, should, must: *can be* built."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Sai",
+     "n:It was happened"
+    ],
+    [
+     "Đúng",
+     "s:It + v:happened"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Mẫu",
+     "x:It + v:is + b:said / believed / argued + x:that + s:S + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "fill",
+   "q": "English ___ (speak) in many countries.",
+   "a": [
+    "is spoken"
+   ],
+   "why": "Hiện tại đơn bị động: is + V3."
+  },
+  {
+   "t": "fill",
+   "q": "The bridge ___ (build) in 1995.",
+   "a": [
+    "was built"
+   ],
+   "why": "Quá khứ đơn bị động."
+  },
+  {
+   "t": "choice",
+   "q": "A new hospital ___ at the moment.",
+   "opts": [
+    "is building",
+    "is being built",
+    "has built"
+   ],
+   "a": 1,
+   "why": "Hiện tại tiếp diễn bị động: is being + V3."
+  },
+  {
+   "t": "choice",
+   "q": "Many trees ___ down since 2010.",
+   "opts": [
+    "have cut",
+    "have been cut",
+    "were cut"
+   ],
+   "a": 1,
+   "why": "since → HTHT bị động: have been + V3."
+  },
+  {
+   "t": "choice",
+   "q": "Plastic bags should ___.",
+   "opts": [
+    "ban",
+    "be banned",
+    "banned"
+   ],
+   "a": 1,
+   "why": "modal + be + V3."
+  },
+  {
+   "t": "choice",
+   "q": "The accident ___ at midnight.",
+   "opts": [
+    "was happened",
+    "happened"
+   ],
+   "a": 1,
+   "why": "happen không có bị động."
+  },
+  {
+   "t": "choice",
+   "q": "Tourism ___ to create millions of jobs.",
+   "opts": [
+    "is believed",
+    "believes",
+    "is believing"
+   ],
+   "a": 0,
+   "why": "S + is believed to + V."
+  },
+  {
+   "t": "choice",
+   "q": "I ___ my phone repaired last week.",
+   "opts": [
+    "had",
+    "was",
+    "did"
+   ],
+   "a": 0,
+   "why": "have something done."
+  }
+ ],
+ "write": "Viết 3 câu về tác hại của du lịch: một câu bị động hiện tại hoàn thành, một câu It is argued / believed that…, một câu bị động với should."
+}

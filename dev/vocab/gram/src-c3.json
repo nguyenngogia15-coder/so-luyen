@@ -1,0 +1,277 @@
+{
+ "id": "c3",
+ "title": "V-ing, to V và V nguyên mẫu",
+ "use": "Động từ theo sau động từ khác",
+ "focus": "V-ing làm chủ ngữ và sau giới từ, động từ + V-ing, động từ + to V, động từ + tân ngữ + to V, make/let/help + V nguyên mẫu, động từ đổi nghĩa (stop, remember, forget, try), It is + tính từ + to V, to V chỉ mục đích",
+ "summary": [
+  "Sau giới từ luôn là V-ing (kể cả to trong look forward to, be used to, object to).",
+  "enjoy, avoid, consider, suggest, finish, keep, mind + V-ing; want, decide, plan, hope, need, learn, afford, fail + to V.",
+  "make / let + tân ngữ + V nguyên mẫu; allow / encourage / force + tân ngữ + to V.",
+  "stop / remember / forget / try đổi nghĩa khi đi với V-ing hoặc to V."
+ ],
+ "theory_text": "1. V-ing (danh động từ) Làm chủ ngữ: Learning a language takes time. Sau giới từ: interested in learning , by practising , instead of studying , before starting Sau một số động từ (bảng dưới) 2. Bảng động từ + V-ing + to V + tân ngữ + to V enjoy, avoid, finish want, would like, hope allow, encourage, force consider, suggest, recommend decide, plan, choose ask, tell, advise keep, practise, mind need, learn, manage expect, require, persuade deny, admit, risk afford, fail, refuse enable, teach, remind can't help, can't stand agree, promise, seem want sb to, would like sb to 3. V nguyên mẫu không to make / let make / let + O + bare V help help + O + (to) V Giác quan see / hear / watch + O + bare V / V-ing Teachers make students do homework. (không viết make them to do ) Parents should let children choose . Bị động của make thì có to: Students are made to do homework. 4. Động từ đổi nghĩa Động từ + V-ing + to V stop ngừng làm: stop smoking dừng lại để làm: stop to buy water remember nhớ đã làm: I remember locking the door. nhớ phải làm: Remember to lock the door. forget quên đã làm quên phải làm: Don't forget to call. try thử làm xem: Try restarting it. cố gắng: Try to sleep early. regret hối tiếc đã làm lấy làm tiếc phải báo: We regret to inform you… 5. Các cấu trúc với to V Chủ ngữ giả It + is + adj + (for sb) + to V Mục đích … + to / in order to / so as to + V It is easier for children to learn pronunciation. Many students work part-time (in order) to pay for their studies. Lỗi hay gặp look forward to, be used to, get used to, object to, be committed to : to ở đây là giới từ → V-ing. I look forward to hearing from you. ✗ I suggest to go by bus. ✓ I suggest going by bus. / I suggest (that) we go by bus. suggest + V-ing, không + to V.",
+ "slow": {
+  "idea": "Khi hai động từ đứng liền nhau, động từ thứ hai không được chia thì nữa. Nó phải ở một trong ba dạng: *to V* (to go), *V-ing* (going), hoặc *V nguyên mẫu* (go). Chọn dạng nào là do động từ thứ nhất quyết định.\nTiếng Việt cứ đặt hai động từ cạnh nhau là xong (\"tôi muốn đi\", \"tôi thích đi\"), nên đây là điểm người Việt hay sai.\nCó một ý chung giúp bạn đoán được phần lớn trường hợp: *to V* thường chỉ việc *chưa xảy ra*, còn hướng tới. *V-ing* thường chỉ việc *có thật, đã hoặc đang trải qua*.",
+  "steps": [
+   {
+    "t": "Nhóm đi với to V: việc hướng tới, chưa xảy ra",
+    "say": "Các động từ nói về mong muốn, dự định, quyết định: *want, hope, plan, decide, agree, promise, expect, need, would like, learn, manage, fail, refuse*.\nLúc \"muốn\" hay \"quyết định\" thì việc kia chưa xảy ra, nên dùng to V.",
+    "ex": [
+     [
+      "I *decided to study* abroad.",
+      "Tôi quyết định đi du học.",
+      "Lúc quyết định, việc đi du học còn ở phía trước."
+     ],
+     [
+      "They *hope to find* a job.",
+      "Họ hy vọng tìm được việc.",
+      "Việc tìm được việc chưa xảy ra."
+     ]
+    ]
+   },
+   {
+    "t": "Nhóm đi với V-ing: việc có thật, đã trải qua",
+    "say": "Các động từ: *enjoy, finish, avoid, mind, suggest, keep, practise, consider, admit, deny, miss, risk, give up*.\nBạn chỉ \"thích\", \"làm xong\", \"tránh\" được một việc khi việc đó là có thật với bạn.",
+    "ex": [
+     [
+      "I *enjoy reading*.",
+      "Tôi thích đọc sách.",
+      "Phải từng đọc rồi mới thích được."
+     ],
+     [
+      "She *finished writing* the report.",
+      "Cô ấy viết xong bản báo cáo.",
+      "Chỉ làm xong được một việc đang làm."
+     ]
+    ]
+   },
+   {
+    "t": "Ba trường hợp chắc chắn, không cần đoán",
+    "say": "Một: sau *giới từ* (in, on, of, for, about, without, by…) luôn là V-ing.\nHai: động từ đứng làm *chủ ngữ* của câu thì dùng V-ing.\nBa: sau *can, should, must, will* và sau *make, let* + tân ngữ thì dùng V nguyên mẫu, không có to.",
+    "ex": [
+     [
+      "She is interested *in learning* English.",
+      "Cô ấy thích học tiếng Anh.",
+      "in là giới từ nên theo sau là learning."
+     ],
+     [
+      "*Smoking* is harmful.",
+      "Hút thuốc có hại.",
+      "Động từ làm chủ ngữ dùng V-ing."
+     ],
+     [
+      "Parents should *let* their children *choose*.",
+      "Cha mẹ nên để con cái tự chọn.",
+      "Sau let + tân ngữ là choose, không có to."
+     ]
+    ]
+   },
+   {
+    "t": "Những động từ đi được với cả hai, nhưng đổi nghĩa",
+    "say": "Ý chung ở trên giải thích được sự khác nhau này.\n*remember / forget + to V*: nhớ hoặc quên làm một việc cần làm (việc ở phía trước). *+ V-ing*: nhớ hoặc quên một việc đã làm rồi.\n*stop + to V*: dừng lại để làm việc khác. *+ V-ing*: thôi không làm việc đó nữa.\n*try + to V*: cố gắng làm. *+ V-ing*: thử làm xem sao.",
+    "ex": [
+     [
+      "*Remember to lock* the door.",
+      "Nhớ khoá cửa nhé.",
+      "Việc khoá cửa chưa làm."
+     ],
+     [
+      "I *remember locking* the door.",
+      "Tôi nhớ là đã khoá cửa rồi.",
+      "Việc khoá cửa đã xảy ra."
+     ],
+     [
+      "He *stopped smoking*. · He *stopped to smoke*.",
+      "Anh ấy bỏ thuốc. · Anh ấy dừng lại để hút thuốc.",
+      "Hai câu nghĩa ngược nhau."
+     ]
+    ]
+   },
+   {
+    "t": "to V để nói mục đích",
+    "say": "Muốn nói \"để làm gì\", dùng *to V* (hoặc in order to V). Không dùng for + V.",
+    "ex": [
+     [
+      "Many people move to cities *to find* work.",
+      "Nhiều người chuyển lên thành phố để tìm việc.",
+      "to find trả lời câu hỏi \"để làm gì?\". Không viết \"for find\" hay \"for finding\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "I enjoy *to read* books.",
+    "I enjoy *reading* books.",
+    "enjoy luôn đi với V-ing."
+   ],
+   [
+    "She wants *going* home.",
+    "She wants *to go* home.",
+    "want luôn đi với to V."
+   ],
+   [
+    "They are good at *solve* problems.",
+    "They are good at *solving* problems.",
+    "Sau giới từ at là V-ing."
+   ],
+   [
+    "My parents made me *to study*.",
+    "My parents made me *study*.",
+    "Sau make + tân ngữ là V nguyên mẫu, không có to."
+   ]
+  ],
+  "check": [
+   [
+    "Vì sao \"look forward to *seeing* you\" dùng V-ing dù có chữ to?",
+    "Vì to ở đây là giới từ thuộc cụm \"look forward to\", không phải to của to V. Sau giới từ luôn là V-ing. Tương tự: be used to doing, contribute to solving."
+   ],
+   [
+    "\"I forgot to send the email\" và \"I forgot sending the email\" khác nhau thế nào?",
+    "forgot to send: tôi quên, nên đã không gửi. forgot sending: tôi đã gửi rồi nhưng không còn nhớ là mình đã gửi."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Hướng tới",
+     "s:S + v:want / plan / decide + b:to V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Đã có thật",
+     "s:S + v:enjoy / avoid / finish + b:V-ing"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Sau giới từ",
+     "x:in / of / without / by + b:V-ing"
+    ],
+    [
+     "Làm chủ ngữ",
+     "b:V-ing + v:V"
+    ],
+    [
+     "Sau can, make, let",
+     "x:can / should / make sb / let sb + b:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Việc phía trước",
+     "x:remember / forget / stop / try + b:to V"
+    ],
+    [
+     "Việc đã làm, đang làm",
+     "x:remember / forget / stop / try + b:V-ing"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Mục đích",
+     "s:S + v:V + b:to / in order to + v:V"
+    ],
+    [
+     "Sai",
+     "n:for V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Children enjoy ___ songs in English.",
+   "opts": [
+    "to sing",
+    "singing"
+   ],
+   "a": 1,
+   "why": "enjoy + V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "Many parents decide ___ their children to language centres.",
+   "opts": [
+    "sending",
+    "to send"
+   ],
+   "a": 1,
+   "why": "decide + to V."
+  },
+  {
+   "t": "choice",
+   "q": "Students can improve by ___ every day.",
+   "opts": [
+    "practise",
+    "practising",
+    "to practise"
+   ],
+   "a": 1,
+   "why": "Sau giới từ by → V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "Teachers should let students ___ their own topics.",
+   "opts": [
+    "choose",
+    "to choose",
+    "choosing"
+   ],
+   "a": 0,
+   "why": "let + tân ngữ + V nguyên mẫu."
+  },
+  {
+   "t": "choice",
+   "q": "The new law forces companies ___ more taxes.",
+   "opts": [
+    "pay",
+    "to pay",
+    "paying"
+   ],
+   "a": 1,
+   "why": "force + tân ngữ + to V."
+  },
+  {
+   "t": "choice",
+   "q": "He stopped ___ because it was bad for his health.",
+   "opts": [
+    "smoking",
+    "to smoke"
+   ],
+   "a": 0,
+   "why": "stop + V-ing = ngừng làm."
+  },
+  {
+   "t": "fill",
+   "q": "I look forward to ___ (hear) from you.",
+   "a": [
+    "hearing"
+   ],
+   "why": "look forward to + V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "Don't forget ___ the door when you leave.",
+   "opts": [
+    "locking",
+    "to lock"
+   ],
+   "a": 1,
+   "why": "forget to V = quên phải làm."
+  }
+ ],
+ "write": "Viết 2–3 câu nêu lợi ích của việc học ngoại ngữ từ sớm, dùng V-ing làm chủ ngữ, một cấu trúc It is + tính từ + to V, và let / make + tân ngữ + V."
+}

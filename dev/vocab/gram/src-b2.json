@@ -1,0 +1,248 @@
+{
+ "id": "b2",
+ "title": "Hiện tại đơn và hiện tại tiếp diễn",
+ "use": "Sự thật, thói quen và việc đang diễn ra",
+ "focus": "hiện tại đơn cho sự thật, thói quen; hiện tại tiếp diễn cho việc đang diễn ra và xu hướng đang thay đổi; động từ trạng thái không dùng -ing",
+ "summary": [
+  "Hiện tại đơn: sự thật, thói quen, lịch trình. Ngôi 3 số ít thêm -s/-es.",
+  "Hiện tại tiếp diễn: am/is/are + V-ing; việc đang xảy ra, tạm thời, xu hướng đang thay đổi.",
+  "Động từ trạng thái (know, believe, want, need, like, belong, seem) không dùng -ing.",
+  "Phủ định và câu hỏi hiện tại đơn mượn do/does; sau does động từ không có -s."
+ ],
+ "theory_text": "1. Hiện tại đơn (Present Simple) Bây giờ Quá khứ Tương lai Lặp đi lặp lại, đúng ở mọi thời điểm Khẳng định S + V / V-s, V-es + O Phủ định S + do not / does not + V Câu hỏi Do / Does + S + V + ? Sự thật chung: Water boils at 100°C. Thói quen: Many teenagers use social media every day. Lịch trình: The train leaves at 7. Ý kiến, cảm xúc: I believe that… Cách thêm -s/-es (he, she, it, danh từ số ít) Ví dụ Thường: + s works, plays -s, -sh, -ch, -x, -o: + es watches, goes, fixes phụ âm + y → ies study → studies have → has She has two jobs. Dấu hiệu always usually often sometimes rarely never every day once a week generally 2. Hiện tại tiếp diễn (Present Continuous) Bây giờ Quá khứ Tương lai đang diễn ra Đang xảy ra quanh thời điểm nói, chưa kết thúc Khẳng định S + am / is / are + V-ing Phủ định S + am / is / are + not + V-ing Câu hỏi Am / Is / Are + S + V-ing + ? Đang xảy ra lúc nói: She is studying now. Tạm thời: I am living with my aunt this term. Xu hướng đang thay đổi: More people are working from home. Kế hoạch tương lai gần đã sắp xếp: We are meeting tomorrow. Dấu hiệu now right now at the moment currently these days nowadays increasingly Look! Listen! 3. Động từ trạng thái Động từ chỉ suy nghĩ, cảm xúc, sở hữu, giác quan thường không dùng dạng tiếp diễn . Suy nghĩ know, believe, think (= cho rằng), understand, remember, mean Cảm xúc, mong muốn like, love, hate, want, need, prefer Sở hữu, tồn tại have (= sở hữu), own, belong, contain, consist, seem, depend ✗ I am believing that children need more sleep. ✓ I believe that children need more sleep. Mẹo think ở nghĩa “đang cân nhắc” thì dùng được -ing: I am thinking about my future. have ở nghĩa “ăn, trải qua” cũng được: We are having lunch. 4. Đặt cạnh nhau Hiện tại đơn Hiện tại tiếp diễn I work in a bank. (lâu dài) I am working in a café this summer. (tạm thời) Prices rise every year. (quy luật) Prices are rising quickly. (xu hướng hiện nay) Lỗi hay gặp Quên -s ngôi 3: Social media allow … → Social media allows … . Thêm -s sau does: Does she works ? → Does she work ?",
+ "slow": {
+  "idea": "Tiếng Việt nói thời gian bằng các chữ thêm vào: \"đang\", \"thường\", \"hôm qua\". Tiếng Anh thì đổi ngay hình dạng của động từ. Mỗi hình dạng đó gọi là một *thì*.\nBài này học hai thì của hiện tại. *Hiện tại đơn* nói điều luôn đúng hoặc lặp đi lặp lại: sự thật, thói quen. *Hiện tại tiếp diễn* nói việc đang diễn ra dở dang quanh lúc nói, hoặc chỉ tạm thời. Câu hỏi để chọn: việc này *lúc nào cũng vậy*, hay *chỉ đang diễn ra lúc này*?",
+  "steps": [
+   {
+    "t": "Hiện tại đơn: sự thật và thói quen",
+    "say": "Dạng: động từ nguyên mẫu. Riêng khi chủ ngữ là he, she, it hoặc một danh từ số ít thì thêm *-s / -es*.\nPhủ định: do not (don't) / does not (doesn't) + động từ nguyên mẫu. Câu hỏi: Do / Does + chủ ngữ + động từ nguyên mẫu?\nKhi đã có does thì động từ chính trở về nguyên mẫu, vì does đã mang chữ s rồi.\nTừ hay đi kèm: always, usually, often, sometimes, every day.",
+    "ex": [
+     [
+      "Water *boils* at 100°C.",
+      "Nước sôi ở 100 độ C.",
+      "Sự thật luôn đúng. Chủ ngữ water là số ít nên thêm -s."
+     ],
+     [
+      "She *doesn't work* on Sundays.",
+      "Cô ấy không làm việc vào Chủ nhật.",
+      "Thói quen. Đã có doesn't thì work không thêm -s nữa."
+     ]
+    ]
+   },
+   {
+    "t": "Hiện tại tiếp diễn: đang diễn ra, tạm thời",
+    "say": "Dạng: *am / is / are + V-ing*. Phải có đủ cả hai phần. Thiếu be hoặc thiếu -ing đều sai.\nDùng cho: việc đang xảy ra ngay lúc nói; việc tạm thời trong giai đoạn này; và một xu hướng đang thay đổi (rất hay dùng trong IELTS).\nTừ hay đi kèm: now, at the moment, currently, these days.",
+    "ex": [
+     [
+      "She *is working* from home this week.",
+      "Tuần này cô ấy làm việc ở nhà.",
+      "Chỉ tạm thời trong tuần này, không phải lúc nào cũng vậy."
+     ],
+     [
+      "The number of electric cars *is increasing*.",
+      "Số xe điện đang tăng.",
+      "Một xu hướng đang thay đổi ở hiện tại."
+     ]
+    ]
+   },
+   {
+    "t": "Đặt hai thì cạnh nhau",
+    "say": "Cùng một động từ, đổi thì là đổi nghĩa. Hãy đọc từng cặp và để ý sự khác nhau.",
+    "ex": [
+     [
+      "I *live* in Hanoi.",
+      "Tôi sống ở Hà Nội.",
+      "Đó là nơi ở cố định của tôi."
+     ],
+     [
+      "I *am living* in Hanoi.",
+      "Hiện tôi đang ở Hà Nội.",
+      "Chỉ tạm thời, có thể sắp chuyển đi."
+     ]
+    ]
+   },
+   {
+    "t": "Những động từ không dùng với -ing",
+    "say": "Một số động từ không tả hành động mà tả *trạng thái trong đầu hoặc sự sở hữu*: know, understand, believe, think (cho rằng), like, love, hate, want, need, prefer, own, belong, seem.\nTrạng thái thì không có \"đang diễn ra dở dang\", nên các động từ này chỉ dùng thì đơn, kể cả khi nói về lúc này.",
+    "ex": [
+     [
+      "I *know* the answer.",
+      "Tôi biết câu trả lời.",
+      "Không viết \"I am knowing\". Biết là trạng thái, không phải hành động đang làm."
+     ],
+     [
+      "Many people *believe* that …",
+      "Nhiều người tin rằng …",
+      "Câu mở ý quen thuộc trong Task 2. Không viết \"are believing\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "She *work* in a bank.",
+    "She *works* in a bank.",
+    "Chủ ngữ she thì động từ hiện tại đơn phải thêm -s."
+   ],
+   [
+    "I *am agree* with this idea.",
+    "I *agree* with this idea.",
+    "agree đã là động từ, không cần am. Chỉ dùng be khi sau đó là tính từ, danh từ hoặc V-ing."
+   ],
+   [
+    "He *doesn't likes* coffee.",
+    "He *doesn't like* coffee.",
+    "Sau doesn't là động từ nguyên mẫu."
+   ]
+  ],
+  "check": [
+   [
+    "\"Nowadays, more people ___ (shop) online.\" Dùng thì nào và vì sao?",
+    "are shopping. \"Nowadays\" và \"more\" cho thấy đây là một xu hướng đang thay đổi, nên dùng hiện tại tiếp diễn. (Nếu chỉ nói một sự thật chung thì \"shop\" cũng được.)"
+   ],
+   [
+    "Vì sao \"I am wanting a new phone\" sai?",
+    "want là động từ trạng thái (mong muốn trong đầu), không dùng với -ing. Sửa: I want a new phone."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Khẳng định",
+     "s:I / You / We / They + v:V"
+    ],
+    [
+     "Khẳng định",
+     "s:He / She / It + v:V-s / es"
+    ],
+    [
+     "Phủ định",
+     "s:S + x:don't / doesn't + v:V"
+    ],
+    [
+     "Câu hỏi",
+     "x:Do / Does + s:S + v:V + x:?"
+    ]
+   ],
+   "cut": [
+    "Dạng: động từ nguyên mẫu. Riêng khi chủ ngữ là he, she, it hoặc một danh từ số ít thì thêm *-s / -es*.",
+    "Phủ định: do not (don't) / does not (doesn't) + động từ nguyên mẫu. Câu hỏi: Do / Does + chủ ngữ + động từ nguyên mẫu?"
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Khẳng định",
+     "s:S + v:am / is / are + v:V-ing"
+    ],
+    [
+     "Phủ định",
+     "s:S + v:am / is / are + n:not + v:V-ing"
+    ],
+    [
+     "Câu hỏi",
+     "v:Am / Is / Are + s:S + v:V-ing + x:?"
+    ]
+   ],
+   "cut": [
+    "Dạng: *am / is / are + V-ing*. "
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Sai",
+     "n:I am knowing"
+    ],
+    [
+     "Đúng",
+     "s:I + v:know"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Social media ___ people to share information quickly.",
+   "opts": [
+    "allow",
+    "allows",
+    "allowing"
+   ],
+   "a": 1,
+   "why": "Social media là chủ ngữ số ít → allows."
+  },
+  {
+   "t": "choice",
+   "q": "More and more people ___ from home these days.",
+   "opts": [
+    "work",
+    "are working"
+   ],
+   "a": 1,
+   "why": "Xu hướng đang diễn ra → hiện tại tiếp diễn."
+  },
+  {
+   "t": "choice",
+   "q": "I ___ that children need more outdoor activities.",
+   "opts": [
+    "am believing",
+    "believe"
+   ],
+   "a": 1,
+   "why": "believe là động từ trạng thái."
+  },
+  {
+   "t": "choice",
+   "q": "Water ___ at 100°C.",
+   "opts": [
+    "boils",
+    "is boiling"
+   ],
+   "a": 0,
+   "why": "Sự thật chung → hiện tại đơn."
+  },
+  {
+   "t": "choice",
+   "q": "Look! It ___.",
+   "opts": [
+    "rains",
+    "is raining"
+   ],
+   "a": 1,
+   "why": "Look! → đang xảy ra."
+  },
+  {
+   "t": "choice",
+   "q": "___ your brother live in Hanoi?",
+   "opts": [
+    "Do",
+    "Does",
+    "Is"
+   ],
+   "a": 1,
+   "why": "Ngôi 3 số ít, động từ thường → Does."
+  },
+  {
+   "t": "fill",
+   "q": "She ___ (study) English every evening.",
+   "a": [
+    "studies"
+   ],
+   "why": "study → studies (phụ âm + y)."
+  },
+  {
+   "t": "fill",
+   "q": "They ___ (not / like) fast food. (viết dạng rút gọn hoặc đầy đủ)",
+   "a": [
+    "don't like",
+    "do not like"
+   ],
+   "why": "Phủ định: do not + V."
+  }
+ ],
+ "write": "Viết 3 câu về thói quen dùng mạng xã hội của giới trẻ: hai câu hiện tại đơn (một câu phủ định) và một câu hiện tại tiếp diễn chỉ xu hướng."
+}
