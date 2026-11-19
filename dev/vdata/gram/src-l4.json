@@ -1,0 +1,211 @@
+{
+ "id": "l4",
+ "title": "Giới từ với số liệu",
+ "use": "Mọi dạng có con số",
+ "focus": "giới từ đi với số liệu: to, by, at, of, from…to, between…and, in/by + năm",
+ "theory_text": "Giới từ Nghĩa Ví dụ to mức đạt tới rose to 120,000 by mức chênh lệch rose by 80,000 at đứng ở mức stood at 5,000 of sau danh từ a rise of 80,000; a peak of 520,000 from … to từ … đến from 5,000 to 40,000 between … and giữa hai mốc between 2015 and 2025 in / by + năm trong năm / muộn nhất là in 2020; by 2035",
+ "slow": {
+  "idea": "Đề Task 1 luôn yêu cầu \"make comparisons where relevant\". Nghĩa là liệt kê số từng thứ một là chưa đủ, bạn phải đặt các số *cạnh nhau* để người đọc thấy cái nào hơn, cái nào kém, hơn bao nhiêu.\nBài này áp dụng bài So sánh vào số liệu. Bạn cần bốn công cụ: so sánh hơn, so sánh nhất, so sánh gấp bao nhiêu lần, và các từ nối chỉ sự đối lập.",
+  "steps": [
+   {
+    "t": "So sánh hơn với số liệu",
+    "say": "Dùng *higher / lower than* cho con số và tỉ lệ. Dùng *more / fewer + danh từ đếm được* và *more / less + danh từ không đếm được*.\nThêm từ chỉ mức chênh trước từ so sánh: *much, far, significantly* (hơn nhiều), *slightly, marginally* (hơn một chút).",
+    "ex": [
+     [
+      "The figure for Japan was *significantly higher than* that for Korea.",
+      "Số liệu của Nhật cao hơn đáng kể so với của Hàn.",
+      "\"that\" thay cho \"the figure\" để khỏi lặp. Phải so số liệu với số liệu."
+     ],
+     [
+      "Women spent *slightly less* time on sport *than* men.",
+      "Phụ nữ dành ít thời gian cho thể thao hơn nam giới một chút.",
+      "time không đếm được nên dùng less."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh nhất",
+    "say": "*the highest / the lowest + danh từ*, *the most / the least popular*. Dùng trong câu tổng quan để nêu thứ nổi bật nhất.\nMuốn nói hạng hai, hạng ba: *the second highest*, *the third most popular*.",
+    "ex": [
+     [
+      "China had *the highest* level of emissions, while India had *the second highest*.",
+      "Trung Quốc có mức phát thải cao nhất, còn Ấn Độ cao thứ hai.",
+      "Số thứ tự đặt trước dạng so sánh nhất."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh gấp bao nhiêu lần",
+    "say": "*twice / three times as + tính từ + as*: gấp hai, gấp ba.\n*double / triple* dùng làm động từ: con số tăng gấp đôi, gấp ba.\n*half as… as*: bằng một nửa.",
+    "ex": [
+     [
+      "The UK spent *twice as much* on health *as* Spain.",
+      "Anh chi cho y tế gấp đôi Tây Ban Nha.",
+      "Số lần đặt trước as… as."
+     ],
+     [
+      "The number of users *doubled* between 2010 and 2015.",
+      "Số người dùng tăng gấp đôi từ 2010 đến 2015.",
+      "doubled là động từ, không cần thêm \"twice\"."
+     ]
+    ]
+   },
+   {
+    "t": "Nói hai thứ giống nhau",
+    "say": "*similar to*, *the same as*, *as + tính từ + as*, *almost identical*.",
+    "ex": [
+     [
+      "The pattern for men was *similar to* that for women.",
+      "Xu hướng ở nam giới tương tự ở nữ giới.",
+      "similar đi với to. the same đi với as."
+     ]
+    ]
+   },
+   {
+    "t": "Từ nối chỉ sự đối lập",
+    "say": "*while / whereas* nối hai mệnh đề trong một câu.\n*In contrast, / By contrast, / However,* đứng đầu câu mới, sau nó có dấu phẩy.\n*compared with / compared to* + danh từ.",
+    "ex": [
+     [
+      "Sales in Asia rose, *whereas* those in Europe fell.",
+      "Doanh số ở châu Á tăng, trong khi ở châu Âu giảm.",
+      "whereas nối hai mệnh đề, trước nó có dấu phẩy."
+     ],
+     [
+      "30% of men cycled to work, *compared with* 12% of women.",
+      "30% nam giới đạp xe đi làm, so với 12% nữ giới.",
+      "Sau compared with là cụm danh từ, không phải mệnh đề."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The figure for Japan was higher than *Korea*.",
+    "…higher than *that for Korea*.",
+    "Phải so số liệu với số liệu, không so số liệu với một nước."
+   ],
+   [
+    "*more higher* than",
+    "*higher* than / *much higher* than",
+    "higher đã là so sánh hơn, không thêm more."
+   ],
+   [
+    "twice *more than*",
+    "twice *as much as*",
+    "Số lần đi với as… as."
+   ],
+   [
+    "the same *with*",
+    "the same *as*",
+    "the same luôn đi với as."
+   ]
+  ],
+  "check": [
+   [
+    "A = 60%, B = 20%. Viết một câu so sánh gấp lần.",
+    "The figure for A was three times as high as that for B. / A was three times higher than B."
+   ],
+   [
+    "Chọn từ nối: \"Men preferred football. ___, women preferred tennis.\"",
+    "In contrast / By contrast / However. Vì đây là câu mới nên không dùng while hay whereas."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Hơn",
+     "s:A + v:was + b:much / slightly + o:higher / lower + x:than + s:that for B"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Nhất, nhì",
+     "x:the + b:second + o:highest + s:N"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Gấp lần",
+     "b:twice / three times + x:as + o:much / high + x:as"
+    ],
+    [
+     "Gấp đôi",
+     "s:N + b:doubled / tripled"
+    ]
+   ],
+   "cut": [
+    "*twice / three times as + tính từ + as*: gấp hai, gấp ba."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Giống",
+     "s:A + v:was + b:similar to / the same as + s:that for B"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Trong một câu",
+     "s:A + v:rose , b:while / whereas + s:B + v:fell"
+    ],
+    [
+     "Câu mới",
+     "s:A + v:rose + x:. + b:In contrast , s:B + v:fell"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "fill",
+   "q": "Electric car sales stood ___ 40,000 in 2020.",
+   "a": [
+    "at"
+   ],
+   "why": "stand at + mức."
+  },
+  {
+   "t": "fill",
+   "q": "Petrol car sales are expected to fall ___ 250,000 in 2035. (mức đạt tới)",
+   "a": [
+    "to"
+   ],
+   "why": "to chỉ mức đạt tới."
+  },
+  {
+   "t": "fill",
+   "q": "Electric car sales rose ___ 80,000 between 2020 and 2025. (mức chênh)",
+   "a": [
+    "by"
+   ],
+   "why": "40,000 → 120,000: chênh 80,000, dùng by."
+  },
+  {
+   "t": "fill",
+   "q": "There was a fall ___ 200,000 in petrol car sales between 2015 and 2025.",
+   "a": [
+    "of"
+   ],
+   "why": "Sau danh từ a fall dùng of."
+  },
+  {
+   "t": "fill",
+   "q": "Sales are predicted to reach 520,000 ___ 2035.",
+   "a": [
+    "by",
+    "in"
+   ],
+   "why": "by 2035 (muộn nhất là) hoặc in 2035."
+  }
+ ],
+ "write": "Viết 2 câu so sánh số liệu năm 2020 và 2025, dùng ít nhất 3 giới từ khác nhau."
+}

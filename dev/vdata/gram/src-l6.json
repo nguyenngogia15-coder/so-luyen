@@ -1,0 +1,198 @@
+{
+ "id": "l6",
+ "title": "Phân số, tỉ lệ và lượng từ",
+ "use": "Biểu đồ tròn",
+ "focus": "phân số và tỉ lệ (a quarter, just over a third), account for / make up, lượng từ với danh từ đếm được và không đếm được",
+ "theory_text": "Số liệu Cách nói 25% a quarter khoảng 33% a third, one in three 50% half khoảng 66% two-thirds 75% three-quarters 10% a tenth, one in ten trên 50% the majority, just over half Ước lượng: nearly / almost (gần tới), just over / slightly more than (nhỉnh hơn), approximately / around . Động từ: account for, make up, represent . Không dùng occupy cho phần trăm. percent đứng sau số (30 percent); percentage là danh từ (the percentage of). Lượng từ: đếm được dùng many, a large number of, few (households, people); không đếm được dùng much, a large amount of, little (money, spending, furniture, accommodation).",
+ "slow": {
+  "idea": "Đề quy trình (process) cho bạn một sơ đồ các bước làm ra một thứ gì đó hoặc một vòng đời tự nhiên. Không có con số và không có xu hướng. Việc của bạn là kể lại các bước theo đúng thứ tự.\nHai công cụ ngữ pháp chính: *câu bị động* (vì ta không quan tâm ai làm, chỉ quan tâm cái gì được làm) và *từ nối trình tự* (để người đọc theo được thứ tự).\nThì dùng là hiện tại đơn, vì quy trình lặp lại như vậy mọi lần.",
+  "steps": [
+   {
+    "t": "Quy trình sản xuất: dùng bị động hiện tại đơn",
+    "say": "Công thức: *vật + is / are + V3*. Trong quy trình do con người thực hiện, người làm không quan trọng nên bị lược đi.",
+    "ex": [
+     [
+      "The clay *is dug* from the ground and *is transported* to the factory.",
+      "Đất sét được đào từ lòng đất và được vận chuyển tới nhà máy.",
+      "Đất sét không tự đào mình. Ai đào không quan trọng."
+     ]
+    ]
+   },
+   {
+    "t": "Quy trình tự nhiên: dùng chủ động",
+    "say": "Với vòng đời hay hiện tượng tự nhiên (mưa, vòng đời con ếch), sự vật tự làm, nên dùng chủ động hiện tại đơn.",
+    "ex": [
+     [
+      "Water *evaporates* from the sea and *forms* clouds.",
+      "Nước bốc hơi từ biển và tạo thành mây.",
+      "Nước tự bốc hơi, không ai làm việc đó cho nó."
+     ]
+    ]
+   },
+   {
+    "t": "Từ nối trình tự",
+    "say": "Bắt đầu: *First, / To begin with, / In the first stage,*\nTiếp theo: *Next, / Then, / After that, / Following this, / Subsequently,*\nCùng lúc: *At the same time, / Meanwhile,*\nKết thúc: *Finally, / In the final stage,*",
+    "ex": [
+     [
+      "*First,* the beans are picked. *After that,* they are dried in the sun.",
+      "Đầu tiên, hạt được hái. Sau đó, chúng được phơi nắng.",
+      "Từ nối đứng đầu câu, sau nó có dấu phẩy."
+     ]
+    ]
+   },
+   {
+    "t": "Nối hai bước trong một câu",
+    "say": "*Once / After / When + bước 1, bước 2.*\n*before / after + V-ing*: before being packed, after drying.\n*, where…* để nói điều xảy ra ở một nơi.\n*, which is then…* để nối bước kế tiếp.",
+    "ex": [
+     [
+      "*Once* the bricks have been shaped, they *are placed* in a kiln.",
+      "Khi gạch đã được tạo hình, chúng được đặt vào lò nung.",
+      "Once + hiện tại hoàn thành cho thấy bước 1 xong rồi mới tới bước 2."
+     ],
+     [
+      "The mixture is heated *before being poured* into moulds.",
+      "Hỗn hợp được đun nóng trước khi được đổ vào khuôn.",
+      "Sau before là being + V3 vì hỗn hợp bị đổ."
+     ]
+    ]
+   },
+   {
+    "t": "Mở bài và tổng quan cho quy trình",
+    "say": "Mở bài: The diagram illustrates *how … is produced* / *the process by which …* / *the life cycle of …*\nTổng quan: nêu *số bước* và *điểm đầu, điểm cuối*.",
+    "ex": [
+     [
+      "Overall, there are *six main stages* in the process, *beginning with* digging the clay *and ending with* delivery.",
+      "Nhìn chung, quy trình có sáu giai đoạn chính, bắt đầu bằng việc đào đất sét và kết thúc bằng việc giao hàng.",
+      "Sau beginning with và ending with là danh từ hoặc V-ing."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The bottles *collect* and *wash*.",
+    "The bottles *are collected* and *washed*.",
+    "Chai không tự thu gom, phải dùng bị động."
+   ],
+   [
+    "The water *is evaporated* from the sea.",
+    "The water *evaporates* from the sea.",
+    "Hiện tượng tự nhiên, nước tự bốc hơi, dùng chủ động."
+   ],
+   [
+    "The tea leaves *were* picked.",
+    "The tea leaves *are* picked.",
+    "Quy trình dùng hiện tại đơn, không dùng quá khứ."
+   ]
+  ],
+  "check": [
+   [
+    "Chuyển sang câu quy trình: \"Workers pack the bottles into boxes.\"",
+    "The bottles are packed into boxes."
+   ],
+   [
+    "Nối hai bước bằng Once: \"The paper is dried. It is cut into sheets.\"",
+    "Once the paper has been dried, it is cut into sheets."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Người làm",
+     "s:Vật + b:is / are + v:V3"
+    ]
+   ],
+   "cut": [
+    "Công thức: *vật + is / are + V3*. "
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Tự nhiên",
+     "s:Water + b:evaporates"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Trình tự",
+     "b:First , s:S + v:V… → b:Next , s:… → b:Finally , s:…"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Once",
+     "b:Once + s:S + v:has been V3 , s:S + v:is / are V3"
+    ],
+    [
+     "before",
+     "s:S + v:is V3 + b:before being + v:V3"
+    ]
+   ],
+   "cut": [
+    "*Once / After / When + bước 1, bước 2.*"
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "25% = ___",
+   "opts": [
+    "a quarter",
+    "a third",
+    "a half"
+   ],
+   "a": 0,
+   "why": "1/4 = 25%."
+  },
+  {
+   "t": "choice",
+   "q": "Housing ___ 35% of spending in 2020.",
+   "opts": [
+    "accounted for",
+    "occupied",
+    "took"
+   ],
+   "a": 0,
+   "why": "account for + phần trăm."
+  },
+  {
+   "t": "choice",
+   "q": "In 2020, ___ of the budget went on transport (17%).",
+   "opts": [
+    "less than a fifth",
+    "more than a quarter",
+    "half"
+   ],
+   "a": 0,
+   "why": "17% nhỏ hơn 20% = một phần năm."
+  },
+  {
+   "t": "choice",
+   "q": "Families spent too ___ money on housing.",
+   "opts": [
+    "much",
+    "many"
+   ],
+   "a": 0,
+   "why": "money không đếm được nên dùng much."
+  },
+  {
+   "t": "fill",
+   "q": "The ___ of income spent on entertainment rose from 10% to 14%.",
+   "a": [
+    "percentage",
+    "proportion"
+   ],
+   "why": "Danh từ: the percentage / proportion of."
+  }
+ ],
+ "write": "Viết 2–3 câu mô tả thay đổi của Food và Housing, dùng phân số và account for / make up."
+}

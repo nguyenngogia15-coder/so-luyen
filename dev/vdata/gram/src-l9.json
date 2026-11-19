@@ -1,0 +1,187 @@
+{
+ "id": "l9",
+ "title": "Mệnh đề quan hệ và cụm V-ing",
+ "use": "Gộp câu, tăng điểm ngữ pháp",
+ "focus": "mệnh đề quan hệ không xác định (, which …) và rút gọn bằng V-ing (…, accounting for …) để gộp câu",
+ "theory_text": "which / that cho vật, who cho người. , which (có dấu phẩy) thêm thông tin cho cả vế trước: Housing rose to 35%, which was the largest share. Rút gọn bằng V-ing khi hai vế cùng chủ ngữ: Housing rose to 35%, accounting for over a third of spending. Gộp hai câu ngắn thành một câu phức giúp tăng điểm Grammatical Range. Lỗi hay gặp: dùng that sau dấu phẩy. Viết …, which was … , không viết …, that was … .",
+ "slow": {
+  "idea": "Số liệu trên biểu đồ nhiều khi không đọc được chính xác, và số liệu tương lai chỉ là dự báo. Viết quá chắc chắn trong các trường hợp đó là không chính xác.\nBài này dạy hai kỹ năng: *nói xấp xỉ* (khoảng, gần, hơn một chút) và *nói thận trọng* về dự báo. Đây là thứ làm bài viết nghe có tính học thuật và chính xác.\nLưu ý: chỉ làm mềm ở chỗ cần. Số liệu đọc được rõ ràng thì cứ viết thẳng.",
+  "steps": [
+   {
+    "t": "Từ chỉ xấp xỉ",
+    "say": "Khoảng: *approximately, about, around, roughly*.\nGần tới: *nearly, almost, just under, slightly less than*.\nHơn một chút: *just over, slightly more than*.\nHơn nhiều, kém nhiều: *well over, well under*.\nCác từ này đứng *trước con số*.",
+    "ex": [
+     [
+      "*Approximately* 40% of people travelled by car.",
+      "Khoảng 40% người dân đi lại bằng ô tô.",
+      "Cột trên biểu đồ nằm gần mức 40 nhưng không đọc được chính xác."
+     ],
+     [
+      "The figure was *just under* 50 million.",
+      "Con số gần 50 triệu.",
+      "Ví dụ số thật là 48 hoặc 49 triệu."
+     ]
+    ]
+   },
+   {
+    "t": "Làm tròn bằng phân số",
+    "say": "Thay vì 24%, 52%, 74%, có thể viết: *almost a quarter*, *just over half*, *nearly three-quarters*. Cách này vừa xấp xỉ vừa tránh lặp ký hiệu %.",
+    "ex": [
+     [
+      "*Just over half* of the students chose science.",
+      "Hơn một nửa số sinh viên chọn khoa học.",
+      "Ví dụ số thật là 52%."
+     ]
+    ]
+   },
+   {
+    "t": "Nói về dự báo",
+    "say": "Dùng bị động với động từ dự đoán: *is expected to / is predicted to / is projected to / is forecast to + V*.\nHoặc: *is likely to + V*, *will probably + V*.\nHoặc mở đầu bằng: *It is predicted that… will…*",
+    "ex": [
+     [
+      "The number of elderly people *is projected to double* by 2050.",
+      "Số người cao tuổi được dự báo sẽ tăng gấp đôi vào năm 2050.",
+      "Đây là dự báo trên biểu đồ, chưa phải sự thật."
+     ],
+     [
+      "*It is predicted that* sales *will* fall next year.",
+      "Người ta dự đoán doanh số sẽ giảm vào năm tới.",
+      "It là chủ ngữ giả."
+     ]
+    ]
+   },
+   {
+    "t": "Động từ và cụm từ làm mềm nhận định",
+    "say": "Khi bạn nêu một nhận xét chung chứ không phải đọc số, có thể dùng: *appear to / seem to + V*, *tend to + V* (có xu hướng), *generally*, *in most cases*.",
+    "ex": [
+     [
+      "Older people *tend to* spend more on health.",
+      "Người lớn tuổi có xu hướng chi nhiều hơn cho y tế.",
+      "Đây là xu hướng chung, không đúng cho từng người."
+     ]
+    ]
+   },
+   {
+    "t": "Không làm mềm quá mức",
+    "say": "Một câu chỉ cần *một* từ làm mềm. Chồng nhiều từ lên nhau làm câu yếu và rối. Và đừng dùng từ xấp xỉ với số đã ghi rõ trên bảng.",
+    "ex": [
+     [
+      "✗ It seems that the figure may possibly be approximately around 40%. → ✓ The figure was approximately 40%.",
+      "Con số vào khoảng 40%.",
+      "Bốn từ làm mềm cho một con số là thừa."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The figure was 40% *approximately around*.",
+    "The figure was *approximately* 40%.",
+    "Từ xấp xỉ đứng trước con số, và chỉ dùng một từ."
+   ],
+   [
+    "The population *is expected reach* 9 billion.",
+    "The population *is expected to reach* 9 billion.",
+    "is expected + to V."
+   ],
+   [
+    "The population *will be expected to* rise.",
+    "The population *is expected to* rise.",
+    "Việc dự đoán diễn ra bây giờ, nên dùng is. Ý tương lai đã nằm trong \"to rise\"."
+   ]
+  ],
+  "check": [
+   [
+    "Số thật là 74%. Viết bằng phân số.",
+    "almost / nearly three-quarters."
+   ],
+   [
+    "Viết lại cho thận trọng hơn: \"Sales will reach 10 million in 2040.\"",
+    "Sales are expected (predicted / projected) to reach 10 million in 2040."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Xấp xỉ",
+     "b:approximately / about / nearly / just over + o:40%"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Dự báo",
+     "s:S + v:is + b:expected / predicted / projected + x:to V"
+    ],
+    [
+     "Dự báo",
+     "x:It is predicted that + s:S + v:will + v:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Làm mềm",
+     "s:S + b:tend to / appear to + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Housing rose to 35%, ___ was the highest figure.",
+   "opts": [
+    "which",
+    "that",
+    "who"
+   ],
+   "a": 0,
+   "why": "Sau dấu phẩy dùng which."
+  },
+  {
+   "t": "choice",
+   "q": "Food fell to 18%, ___ its position as the largest category.",
+   "opts": [
+    "losing",
+    "lost",
+    "to lose"
+   ],
+   "a": 0,
+   "why": "Rút gọn cùng chủ ngữ: V-ing."
+  },
+  {
+   "t": "fill",
+   "q": "Transport rose slightly, ___ (reach) 17% in 2020.",
+   "a": [
+    "reaching"
+   ],
+   "why": "reach → reaching."
+  },
+  {
+   "t": "choice",
+   "q": "The people ___ took part in the survey were adults.",
+   "opts": [
+    "who",
+    "which"
+   ],
+   "a": 0,
+   "why": "Chỉ người dùng who."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "Food fell to 18%, that was a big drop.",
+    "Food fell to 18%, which was a big drop."
+   ],
+   "a": 1,
+   "why": "Sau dấu phẩy không dùng that."
+  }
+ ],
+ "write": "Gộp hai câu sau thành một: 'Entertainment rose from 10% to 14%. This was the biggest relative change.' Sau đó viết thêm một câu dùng V-ing."
+}

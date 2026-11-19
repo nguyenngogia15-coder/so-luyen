@@ -1,0 +1,296 @@
+[
+ {
+  "id": "b1",
+  "group": "a",
+  "title": "Từ loại và cách tạo từ",
+  "use": "Biết từ nào đứng ở đâu trong câu",
+  "focus": "8 từ loại, vị trí của danh từ, động từ, tính từ, trạng từ trong câu, và hậu tố để đổi từ loại"
+ },
+ {
+  "id": "g02",
+  "group": "a",
+  "title": "Cấu trúc câu và trật tự từ",
+  "use": "Câu nào cũng cần chủ ngữ và động từ",
+  "focus": "5 mẫu câu cơ bản (S V, S V O, S V C, S V O O, S V O C), nội động từ và ngoại động từ, động từ nối (linking verbs), trật tự từ trong câu"
+ },
+ {
+  "id": "b3",
+  "group": "a",
+  "title": "Danh từ: đếm được, không đếm được, số nhiều",
+  "use": "Tránh lỗi thêm -s sai chỗ",
+  "focus": "danh từ đếm được và không đếm được, cách thêm -s/-es, số nhiều bất quy tắc, sở hữu cách 's, lượng từ đi kèm"
+ },
+ {
+  "id": "b4",
+  "group": "a",
+  "title": "Mạo từ a, an, the và không mạo từ",
+  "use": "Lỗi người Việt hay gặp nhất",
+  "focus": "dùng đúng a / an / the và không dùng mạo từ với danh từ nói chung chung"
+ },
+ {
+  "id": "g05",
+  "group": "a",
+  "title": "Đại từ: nhân xưng, sở hữu, phản thân, chỉ định",
+  "use": "Thay danh từ để khỏi lặp",
+  "focus": "đại từ nhân xưng (I/me), tính từ và đại từ sở hữu (my/mine), đại từ phản thân (myself), this/that/these/those, one/ones, it và there làm chủ ngữ giả"
+ },
+ {
+  "id": "g06",
+  "group": "a",
+  "title": "Lượng từ và hạn định từ",
+  "use": "some, any, much, many, few, all, each…",
+  "focus": "lượng từ với danh từ đếm được và không đếm được (much/many, few/little, a few/a little), some/any/no, all/most/both/either/neither/each/every"
+ },
+ {
+  "id": "g07",
+  "group": "a",
+  "title": "Hòa hợp chủ ngữ và động từ",
+  "use": "Chia động từ theo đúng chủ ngữ",
+  "focus": "chia động từ số ít / số nhiều theo danh từ chính, chủ ngữ dài, either…or, each/every, the number of / a number of, danh từ tập hợp, V-ing làm chủ ngữ"
+ },
+ {
+  "id": "g08",
+  "group": "a",
+  "title": "Tính từ và trạng từ",
+  "use": "Mô tả rõ, đúng vị trí",
+  "focus": "vị trí tính từ, trật tự nhiều tính từ, tính từ -ed và -ing, trạng từ chỉ cách thức và tần suất, so/such, too/enough"
+ },
+ {
+  "id": "g09",
+  "group": "a",
+  "title": "So sánh",
+  "use": "So sánh hơn, nhất, bằng, gấp lần",
+  "focus": "so sánh hơn và nhất (tính từ ngắn, dài, bất quy tắc), so sánh bằng as…as, gấp mấy lần, so sánh kép the more…the more, mức độ chênh lệch"
+ },
+ {
+  "id": "g10",
+  "group": "a",
+  "title": "Giới từ: thời gian, nơi chốn và cụm cố định",
+  "use": "in/on/at và giới từ đi kèm",
+  "focus": "giới từ thời gian in/on/at, for/since/during/by/until, giới từ nơi chốn in/on/at, giới từ đi sau tính từ, động từ, danh từ"
+ },
+ {
+  "id": "g32",
+  "group": "a",
+  "title": "Cụm danh từ",
+  "use": "Viết và đọc chủ ngữ dài mà không lạc",
+  "focus": "danh từ chính, bổ nghĩa đứng trước (hạn định, lượng từ, tính từ, danh từ bổ nghĩa), bổ nghĩa đứng sau (cụm giới từ, V-ing, V3, to V, mệnh đề quan hệ, đồng vị ngữ), sở hữu 's và of, the + tính từ, chia động từ theo danh từ chính"
+ },
+ {
+  "id": "b2",
+  "group": "v",
+  "title": "Hiện tại đơn và hiện tại tiếp diễn",
+  "use": "Sự thật, thói quen và việc đang diễn ra",
+  "focus": "hiện tại đơn cho sự thật, thói quen; hiện tại tiếp diễn cho việc đang diễn ra và xu hướng đang thay đổi; động từ trạng thái không dùng -ing"
+ },
+ {
+  "id": "g12",
+  "group": "v",
+  "title": "Hiện tại hoàn thành và hoàn thành tiếp diễn",
+  "use": "Từ quá khứ kéo tới bây giờ",
+  "focus": "hiện tại hoàn thành (have/has + V3) cho trải nghiệm, thay đổi tới nay, hành động bắt đầu trong quá khứ còn tiếp tục; hiện tại hoàn thành tiếp diễn nhấn mạnh quá trình; phân biệt với quá khứ đơn"
+ },
+ {
+  "id": "g13",
+  "group": "v",
+  "title": "Quá khứ đơn, quá khứ tiếp diễn, used to",
+  "use": "Kể việc đã xảy ra",
+  "focus": "quá khứ đơn cho việc đã kết thúc ở thời điểm xác định, quá khứ tiếp diễn cho việc đang diễn ra tại một lúc trong quá khứ, when/while, used to và would cho thói quen cũ"
+ },
+ {
+  "id": "g14",
+  "group": "v",
+  "title": "Quá khứ hoàn thành",
+  "use": "Việc xảy ra trước một việc khác trong quá khứ",
+  "focus": "quá khứ hoàn thành (had + V3) cho việc xảy ra trước một thời điểm hoặc một việc khác trong quá khứ, by + mốc quá khứ, before/after/by the time, quá khứ hoàn thành tiếp diễn"
+ },
+ {
+  "id": "g15",
+  "group": "v",
+  "title": "Các cách nói về tương lai",
+  "use": "will, be going to, tương lai tiếp diễn, hoàn thành",
+  "focus": "will cho dự đoán, quyết định tức thì, lời hứa; be going to cho dự định và dự đoán có căn cứ; hiện tại tiếp diễn và hiện tại đơn mang nghĩa tương lai; tương lai tiếp diễn và tương lai hoàn thành; be expected to cho số liệu dự báo"
+ },
+ {
+  "id": "g16",
+  "group": "v",
+  "title": "Tổng hợp 12 thì và cách chọn thì",
+  "use": "Nhìn một bảng là chọn được thì",
+  "focus": "bảng 12 thì (hiện tại, quá khứ, tương lai × đơn, tiếp diễn, hoàn thành, hoàn thành tiếp diễn), cách chọn thì theo thời điểm và khía cạnh, giữ thì nhất quán trong đoạn văn"
+ },
+ {
+  "id": "g17",
+  "group": "v",
+  "title": "Câu phủ định, câu hỏi và câu hỏi đuôi",
+  "use": "Trợ động từ do, be, have, modal",
+  "focus": "trợ động từ (do/does/did, be, have, modal) trong câu phủ định và câu hỏi Yes/No, câu hỏi Wh-, câu hỏi chủ ngữ, câu hỏi đuôi"
+ },
+ {
+  "id": "c1",
+  "group": "m",
+  "title": "Động từ khuyết thiếu (modal verbs)",
+  "use": "can, could, may, might, must, should, will, would",
+  "focus": "modal + V nguyên mẫu: khả năng (can/could/be able to), xin phép, bắt buộc (must/have to), cấm (mustn't), không cần (don't have to/needn't), lời khuyên (should/ought to), suy đoán (must/may/might/can't), modal hoàn thành (should have, must have, could have)"
+ },
+ {
+  "id": "g19",
+  "group": "m",
+  "title": "Câu bị động",
+  "use": "Khi hành động quan trọng hơn người làm",
+  "focus": "cấu trúc bị động be + V3 ở mọi thì, bị động với modal, động từ có hai tân ngữ, bị động khách quan (It is said that / S is said to), have/get something done, khi nào nên dùng bị động"
+ },
+ {
+  "id": "c3",
+  "group": "m",
+  "title": "V-ing, to V và V nguyên mẫu",
+  "use": "Động từ theo sau động từ khác",
+  "focus": "V-ing làm chủ ngữ và sau giới từ, động từ + V-ing, động từ + to V, động từ + tân ngữ + to V, make/let/help + V nguyên mẫu, động từ đổi nghĩa (stop, remember, forget, try), It is + tính từ + to V, to V chỉ mục đích"
+ },
+ {
+  "id": "g21",
+  "group": "m",
+  "title": "Cụm động từ (phrasal verbs)",
+  "use": "Động từ + tiểu từ, nghĩa thay đổi",
+  "focus": "cấu tạo cụm động từ (động từ + giới từ / trạng từ), loại tách được và không tách được, vị trí đại từ, cụm động từ hay dùng trong IELTS và từ trang trọng tương đương"
+ },
+ {
+  "id": "b5",
+  "group": "x",
+  "title": "Câu đơn, câu ghép, câu phức và dấu câu",
+  "use": "Viết câu dài mà không sai",
+  "focus": "mệnh đề độc lập và mệnh đề phụ, câu đơn / ghép / phức / phức hợp, liên từ FANBOYS, dấu phẩy và dấu chấm phẩy, lỗi nối câu bằng dấu phẩy và câu cụt"
+ },
+ {
+  "id": "c5",
+  "group": "x",
+  "title": "Mệnh đề trạng ngữ và từ nối",
+  "use": "Nguyên nhân, kết quả, đối lập, mục đích, ví dụ",
+  "focus": "từ nối theo chức năng và theo loại từ theo sau: + mệnh đề (because, although), + cụm danh từ (because of, despite), trạng từ nối đầu câu (However, Therefore); nguyên nhân, kết quả, đối lập, nhượng bộ, mục đích, bổ sung, ví dụ"
+ },
+ {
+  "id": "g24",
+  "group": "x",
+  "title": "Mệnh đề quan hệ",
+  "use": "who, which, that, whose, where, when",
+  "focus": "đại từ quan hệ who / which / that / whom / whose, trạng từ quan hệ where / when / why, mệnh đề xác định và không xác định (có dấu phẩy), lược bỏ đại từ quan hệ, giới từ + which / whom, which thay cho cả mệnh đề"
+ },
+ {
+  "id": "g25",
+  "group": "x",
+  "title": "Rút gọn mệnh đề và cụm phân từ",
+  "use": "Câu gọn hơn với V-ing, V3, to V",
+  "focus": "rút gọn mệnh đề quan hệ bằng V-ing (chủ động), V3 (bị động), to V (sau the first / the only), cụm phân từ đầu câu cùng chủ ngữ, Having + V3, lỗi dangling (chủ ngữ không khớp)"
+ },
+ {
+  "id": "c2",
+  "group": "x",
+  "title": "Câu điều kiện và câu ước",
+  "use": "If, unless, wish, if only",
+  "focus": "câu điều kiện loại 0, 1, 2, 3 và hỗn hợp; unless, provided that, as long as, in case; đảo ngữ câu điều kiện; wish / if only cho hiện tại, quá khứ, tương lai"
+ },
+ {
+  "id": "c4",
+  "group": "x",
+  "title": "Mệnh đề danh từ và câu hỏi gián tiếp",
+  "use": "that, what, whether, wh- làm chủ ngữ, tân ngữ",
+  "focus": "mệnh đề danh từ bắt đầu bằng that / what / whether / if / wh-word, làm chủ ngữ, tân ngữ, bổ ngữ; câu hỏi gián tiếp không đảo ngữ; the fact that; cấu trúc It is … that"
+ },
+ {
+  "id": "g28",
+  "group": "x",
+  "title": "Câu tường thuật (reported speech)",
+  "use": "Thuật lại lời người khác",
+  "focus": "lùi thì khi tường thuật, đổi đại từ và trạng từ thời gian, nơi chốn, tường thuật câu hỏi (if / whether, wh-), câu mệnh lệnh (tell / ask sb to V), động từ tường thuật (say, tell, explain, suggest, warn, claim)"
+ },
+ {
+  "id": "g29",
+  "group": "t",
+  "title": "Câu giả định và các cấu trúc đặc biệt",
+  "use": "suggest that, it is essential that, would rather, it's time",
+  "focus": "thể giả định (subjunctive) sau suggest / recommend / insist / demand / it is essential that…, would rather, had better, it's (high) time, as if / as though"
+ },
+ {
+  "id": "c6",
+  "group": "t",
+  "title": "Đảo ngữ và câu nhấn mạnh",
+  "use": "Cấu trúc nâng điểm Grammatical Range",
+  "focus": "đảo ngữ với trạng từ phủ định (Never, Rarely, Seldom, Hardly, Not only, Only by / Only when, No sooner), đảo ngữ câu điều kiện, câu chẻ It is … that, câu What … is, not only … but also"
+ },
+ {
+  "id": "g31",
+  "group": "t",
+  "title": "Cấu trúc song song và liên kết câu",
+  "use": "Câu cân đối, đoạn văn mạch lạc",
+  "focus": "cấu trúc song song (cùng dạng từ sau and / or / but, both…and, either…or, not only…but also), liên kết bằng đại từ và this / these + danh từ, thay thế (one, do so), lược bỏ, tránh lặp từ, trật tự thông tin cũ → mới"
+ },
+ {
+  "id": "g33",
+  "group": "t",
+  "title": "Danh từ hoá và chủ ngữ giả It / There",
+  "use": "Viết câu học thuật gọn, khách quan",
+  "focus": "danh từ hoá (động từ, tính từ → danh từ), increase in / of, động từ + danh từ cố định (have an impact on, make a decision), chủ ngữ giả It (It is + adj + to V / that), There is / There are, khi nào không nên danh từ hoá"
+ },
+ {
+  "id": "l1",
+  "group": "l",
+  "title": "Chủ ngữ số liệu và động từ chia",
+  "use": "Câu mở đầu, câu tổng quan",
+  "focus": "chủ ngữ số liệu (the number of / the amount of / the percentage of) và chia động từ theo danh từ chính"
+ },
+ {
+  "id": "l2",
+  "group": "l",
+  "title": "Thì của động từ trong Task 1",
+  "use": "Biểu đồ có mốc thời gian, số liệu dự báo",
+  "focus": "chọn đúng thì: quá khứ đơn cho năm đã qua, hiện tại hoàn thành khi kéo dài đến nay, cấu trúc dự báo (is expected / predicted to + V) cho năm tương lai"
+ },
+ {
+  "id": "l3",
+  "group": "l",
+  "title": "Từ chỉ xu hướng",
+  "use": "Biểu đồ đường",
+  "focus": "động từ và danh từ chỉ xu hướng, viết theo hai cách: động từ + trạng từ (rose sharply) và tính từ + danh từ (a sharp rise)"
+ },
+ {
+  "id": "l4",
+  "group": "l",
+  "title": "Giới từ với số liệu",
+  "use": "Mọi dạng có con số",
+  "focus": "giới từ đi với số liệu: to, by, at, of, from…to, between…and, in/by + năm"
+ },
+ {
+  "id": "l5",
+  "group": "l",
+  "title": "So sánh hơn và so sánh nhất",
+  "use": "Biểu đồ cột, bảng",
+  "focus": "so sánh hơn, so sánh nhất, gấp mấy lần (twice as … as), more/less/fewer"
+ },
+ {
+  "id": "l6",
+  "group": "l",
+  "title": "Phân số, tỉ lệ và lượng từ",
+  "use": "Biểu đồ tròn",
+  "focus": "phân số và tỉ lệ (a quarter, just over a third), account for / make up, lượng từ với danh từ đếm được và không đếm được"
+ },
+ {
+  "id": "l7",
+  "group": "l",
+  "title": "Liên từ đối lập và nối câu",
+  "use": "So sánh hai đối tượng",
+  "focus": "từ nối đối lập: while / whereas (trong một câu), However / In contrast (đầu câu mới), although (không đi với but), despite + danh từ"
+ },
+ {
+  "id": "l8",
+  "group": "l",
+  "title": "Câu bị động cho quy trình",
+  "use": "Sơ đồ quy trình, bản đồ",
+  "focus": "câu bị động hiện tại đơn (is/are + V3) và từ nối thứ tự (First, Next, Once, Finally)"
+ },
+ {
+  "id": "l9",
+  "group": "l",
+  "title": "Mệnh đề quan hệ và cụm V-ing",
+  "use": "Gộp câu, tăng điểm ngữ pháp",
+  "focus": "mệnh đề quan hệ không xác định (, which …) và rút gọn bằng V-ing (…, accounting for …) để gộp câu"
+ }
+]

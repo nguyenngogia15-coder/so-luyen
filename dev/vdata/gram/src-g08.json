@@ -1,0 +1,261 @@
+{
+ "id": "g08",
+ "title": "Tính từ và trạng từ",
+ "use": "Mô tả rõ, đúng vị trí",
+ "focus": "vị trí tính từ, trật tự nhiều tính từ, tính từ -ed và -ing, trạng từ chỉ cách thức và tần suất, so/such, too/enough",
+ "summary": [
+  "Tính từ đứng trước danh từ hoặc sau động từ nối; không thêm -s.",
+  "-ed: cảm xúc của người; -ing: tính chất của vật/việc gây ra cảm xúc.",
+  "Trạng từ tần suất: trước động từ thường, sau be.",
+  "too + tính từ + to V (quá… không thể); tính từ + enough + to V (đủ… để)."
+ ],
+ "theory_text": "1. Vị trí tính từ Trước danh từ: a difficult language Sau động từ nối: English is difficult . It seems easy . Tính từ không có số nhiều: two young children , không viết youngs . Trật tự khi có nhiều tính từ: OSASCOMP O pinion ý kiến S ize kích cỡ A ge tuổi S hape hình dạng C olour màu O rigin nguồn gốc M aterial chất liệu P urpose mục đích + noun a beautiful old Japanese house a small red plastic box 2. Tính từ -ed và -ing -ed: người cảm thấy I am bored . Students feel interested . She was surprised . -ing: vật / việc gây cảm giác The lesson is boring . An interesting topic. Surprising results. ✗ I am boring with this lesson. ✓ I am bored with this lesson. Người cảm thấy chán → bored. 3. Trạng từ Loại Vị trí Ví dụ Cách thức (-ly) sau động từ / tân ngữ She speaks English fluently . Tần suất (always, usually, often, sometimes, rarely, never) trước động từ thường, sau be và trợ động từ Children often learn faster. They are rarely afraid. I have never been. Mức độ (very, quite, extremely, rather) trước tính từ / trạng từ extremely useful Liên kết (however, therefore) đầu câu + dấu phẩy However , … Trạng từ bất quy tắc: good → well , fast → fast, hard → hard (hardly = hầu như không), late → late (lately = gần đây). 4. so / such, too / enough so so + adj / adv + that… such such (a/an) + adj + N + that… too too + adj + (for sb) to V enough adj + enough + to V enough + N enough + N + to V The test was so difficult that many failed. / It was such a difficult test that … Children are too young to understand grammar rules. They are old enough to choose. / We don't have enough teachers. Lỗi hay gặp Viết old enough , không viết enough old . enough đứng sau tính từ nhưng trước danh từ.",
+ "slow": {
+  "idea": "*Tính từ* tả một danh từ (người, vật). *Trạng từ* tả một hành động, hoặc tả mức độ của một tính từ.\nTiếng Việt dùng cùng một chữ cho cả hai: \"một sự gia tăng *nhanh*\" và \"tăng *nhanh*\". Tiếng Anh tách ra: a *rapid* increase, increase *rapidly*. Muốn chọn đúng, chỉ cần hỏi một câu: *từ này đang tả cái gì?* Tả danh từ thì dùng tính từ. Tả hành động thì dùng trạng từ.",
+  "steps": [
+   {
+    "t": "Tính từ đứng ở hai chỗ",
+    "say": "Chỗ thứ nhất: ngay *trước* danh từ. Lưu ý thứ tự ngược với tiếng Việt: tiếng Việt nói \"vấn đề nghiêm trọng\", tiếng Anh nói \"serious problem\".\nChỗ thứ hai: *sau* be, become, seem, look, feel, remain. Lúc này tính từ tả chủ ngữ.",
+    "ex": [
+     [
+      "a *serious* problem",
+      "một vấn đề nghiêm trọng",
+      "serious đứng trước danh từ problem."
+     ],
+     [
+      "The problem is *serious*. · Prices remained *stable*.",
+      "Vấn đề đó nghiêm trọng. · Giá vẫn ổn định.",
+      "Sau is và remained là tính từ tả chủ ngữ. Không viết \"remained stably\"."
+     ]
+    ]
+   },
+   {
+    "t": "Trạng từ tả hành động và tả mức độ",
+    "say": "Phần lớn trạng từ được tạo bằng tính từ + -ly. Trạng từ tả hành động thường đứng sau động từ (hoặc sau tân ngữ nếu có). Trạng từ chỉ mức độ (very, extremely, quite, fairly) đứng trước tính từ.\nVài trạng từ không có -ly: *fast, hard, late, well* (well là trạng từ của good).",
+    "ex": [
+     [
+      "Sales increased *dramatically*.",
+      "Doanh số tăng mạnh.",
+      "dramatically tả việc tăng diễn ra thế nào."
+     ],
+     [
+      "The city is *extremely* crowded.",
+      "Thành phố cực kỳ đông.",
+      "extremely tả mức độ của tính từ crowded."
+     ],
+     [
+      "He works *hard*.",
+      "Anh ấy làm việc chăm chỉ.",
+      "hard vừa là tính từ vừa là trạng từ. hardly là từ khác hẳn, nghĩa là \"hầu như không\"."
+     ]
+    ]
+   },
+   {
+    "t": "Tính từ đuôi -ed và đuôi -ing",
+    "say": "Hai đuôi này làm nhiều người rối. Cách phân biệt:\nĐuôi *-ed* tả *cảm giác của người*: tôi cảm thấy thế nào. Đuôi *-ing* tả *thứ gây ra cảm giác đó*: cái đó như thế nào.\nHãy hỏi: từ này đang tả người có cảm xúc, hay tả thứ gây ra cảm xúc?",
+    "ex": [
+     [
+      "I am *bored*. The film is *boring*.",
+      "Tôi thấy chán. Bộ phim thì chán.",
+      "Tôi là người có cảm giác nên dùng bored. Bộ phim là thứ gây chán nên dùng boring."
+     ],
+     [
+      "The results were *surprising*. We were *surprised*.",
+      "Kết quả gây ngạc nhiên. Chúng tôi ngạc nhiên.",
+      "Kết quả gây ra sự ngạc nhiên (-ing). Chúng tôi nhận cảm giác đó (-ed)."
+     ]
+    ]
+   },
+   {
+    "t": "so và such, too và enough",
+    "say": "*so* + tính từ hoặc trạng từ. *such* + (a / an) + tính từ + danh từ. Nhìn xem phía sau có danh từ hay không là chọn được.\n*too* + tính từ: quá mức, nên không làm được. Tính từ + *enough*: đủ. Lưu ý enough đứng *sau* tính từ.",
+    "ex": [
+     [
+      "The traffic is *so* bad. · It is *such* a bad problem.",
+      "Giao thông tệ quá. · Đó là một vấn đề tệ đến thế.",
+      "Sau so chỉ có tính từ bad. Sau such có cả cụm danh từ \"a bad problem\"."
+     ],
+     [
+      "He is not old *enough* to drive.",
+      "Cậu ấy chưa đủ tuổi lái xe.",
+      "enough đứng sau tính từ old. Không viết \"enough old\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The economy grew *quick*.",
+    "The economy grew *quickly*.",
+    "Từ này tả việc \"grew\" (phát triển) diễn ra thế nào, nên phải là trạng từ."
+   ],
+   [
+    "I am *interesting* in history.",
+    "I am *interested* in history.",
+    "Tôi là người có cảm giác thích thú, nên dùng -ed. \"I am interesting\" nghĩa là \"tôi là người thú vị\"."
+   ],
+   [
+    "She speaks English very *good*.",
+    "She speaks English very *well*.",
+    "Tả việc nói, cần trạng từ. Trạng từ của good là well."
+   ]
+  ],
+  "check": [
+   [
+    "\"He looked *careful* at the map\" hay \"*carefully*\"?",
+    "carefully. Ở đây look là hành động nhìn (nhìn vào bản đồ), nên cần trạng từ tả cách nhìn. Còn \"He looked tired\" thì look nghĩa là \"trông có vẻ\", theo sau là tính từ."
+   ],
+   [
+    "Vì sao nói \"a tiring day\" nhưng \"a tired worker\"?",
+    "Ngày làm việc là thứ gây ra mệt mỏi nên dùng -ing. Người công nhân là người cảm thấy mệt nên dùng -ed."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Trước danh từ",
+     "b:tính từ + s:N"
+    ],
+    [
+     "Sau động từ nối",
+     "s:S + v:be / seem / look / become + b:tính từ"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Tả hành động",
+     "s:S + v:V + o:(O) + a:trạng từ -ly"
+    ],
+    [
+     "Tả mức độ",
+     "a:very / extremely + o:tính từ"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Người cảm thấy",
+     "s:Người + v:be + b:bored / interested (-ed)"
+    ],
+    [
+     "Thứ gây ra",
+     "s:Vật + v:be + b:boring / interesting (-ing)"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "so",
+     "x:so + o:tính từ / trạng từ"
+    ],
+    [
+     "such",
+     "x:such + x:(a / an) + o:tính từ + s:N"
+    ],
+    [
+     "too",
+     "x:too + o:tính từ + x:(to V)"
+    ],
+    [
+     "enough",
+     "o:tính từ + x:enough + x:(to V)"
+    ]
+   ],
+   "cut": [
+    "*so* + tính từ hoặc trạng từ. *such* + (a / an) + tính từ + danh từ. ",
+    "*too* + tính từ: quá mức, nên không làm được. Tính từ + *enough*: đủ. "
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The lecture was very ___.",
+   "opts": [
+    "bored",
+    "boring"
+   ],
+   "a": 1,
+   "why": "Bài giảng gây chán → boring."
+  },
+  {
+   "t": "choice",
+   "q": "Students feel ___ when lessons are fun.",
+   "opts": [
+    "interested",
+    "interesting"
+   ],
+   "a": 0,
+   "why": "Người cảm thấy → interested."
+  },
+  {
+   "t": "choice",
+   "q": "Children ___ learn new words quickly.",
+   "opts": [
+    "usually",
+    "are usually"
+   ],
+   "a": 0,
+   "why": "Trạng từ tần suất trước động từ thường."
+  },
+  {
+   "t": "choice",
+   "q": "She speaks English very ___.",
+   "opts": [
+    "good",
+    "well"
+   ],
+   "a": 1,
+   "why": "Bổ nghĩa cho động từ speaks → well."
+  },
+  {
+   "t": "choice",
+   "q": "He is not ___ to drive.",
+   "opts": [
+    "enough old",
+    "old enough"
+   ],
+   "a": 1,
+   "why": "tính từ + enough."
+  },
+  {
+   "t": "choice",
+   "q": "It was ___ interesting book that I read it twice.",
+   "opts": [
+    "so",
+    "such an",
+    "such"
+   ],
+   "a": 1,
+   "why": "such a/an + tính từ + danh từ số ít."
+  },
+  {
+   "t": "choice",
+   "q": "The box is ___ heavy for me to carry.",
+   "opts": [
+    "too",
+    "enough",
+    "so"
+   ],
+   "a": 0,
+   "why": "too + tính từ + to V: quá… không thể."
+  },
+  {
+   "t": "choice",
+   "q": "a ___ house",
+   "opts": [
+    "wooden big old",
+    "big old wooden"
+   ],
+   "a": 1,
+   "why": "Size – Age – Material (kích cỡ – tuổi – chất liệu)."
+  }
+ ],
+ "write": "Viết 3 câu về việc học ngoại ngữ từ nhỏ: dùng một cặp -ed/-ing, một trạng từ tần suất và một cấu trúc too… to hoặc enough to."
+}

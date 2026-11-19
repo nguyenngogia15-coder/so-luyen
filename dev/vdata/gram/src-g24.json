@@ -1,0 +1,280 @@
+{
+ "id": "g24",
+ "title": "Mệnh đề quan hệ",
+ "use": "who, which, that, whose, where, when",
+ "focus": "đại từ quan hệ who / which / that / whom / whose, trạng từ quan hệ where / when / why, mệnh đề xác định và không xác định (có dấu phẩy), lược bỏ đại từ quan hệ, giới từ + which / whom, which thay cho cả mệnh đề",
+ "summary": [
+  "who: người; which: vật; that: người hoặc vật (chỉ trong mệnh đề xác định); whose: của ai / của cái gì.",
+  "Mệnh đề xác định (không phẩy) cho biết đang nói ai / cái nào; không xác định (có phẩy) chỉ thêm thông tin.",
+  "Sau dấu phẩy không dùng that.",
+  "Có thể bỏ đại từ quan hệ khi nó là tân ngữ: the book (that) I read."
+ ],
+ "theory_text": "1. Đại từ và trạng từ quan hệ Từ Thay cho Ví dụ who người (chủ ngữ / tân ngữ) Students who work hard succeed. whom người (tân ngữ, trang trọng) The teacher whom I admire… which vật, sự việc The course which I chose… that người, vật (chỉ mệnh đề xác định) The subjects that students choose… whose sở hữu (của ai / cái gì) Students whose parents are teachers… where nơi chốn (= in/at which) The city where I was born… when thời gian (= in/on which) The year when I started school… why lý do (the reason why) The reason why he left… Ghép câu N + who / which / that + (S) + V… 2. Xác định và không xác định Xác định (không dấu phẩy) cần thiết để biết ai / cái nào: Students who study abroad become more independent. (chỉ những sinh viên đó) Không xác định (có dấu phẩy) chỉ thêm thông tin, bỏ đi câu vẫn đủ nghĩa: My sister, who studies in Japan , speaks Japanese well. ✗ Hanoi , that is the capital, is very busy. ✓ Hanoi , which is the capital, is very busy. Sau dấu phẩy không dùng that. 3. Lược bỏ đại từ quan hệ Khi là tân ngữ trong mệnh đề xác định: The book ( that ) I read was useful. Không bỏ khi là chủ ngữ: The man who lives here… (không bỏ who) 4. Giới từ + which / whom The company for which she works… = The company (which) she works for … The people with whom I live… (trang trọng) Không dùng for that , with who . 5. which thay cho cả mệnh đề Many graduates cannot find jobs, which is worrying. (which = việc nhiều người không tìm được việc) Lỗi hay gặp Lặp đại từ: The course which I chose it was hard → bỏ it .",
+ "slow": {
+  "idea": "*Mệnh đề quan hệ* là một mệnh đề đặt ngay sau một danh từ để nói rõ thêm về danh từ đó: người nào, cái nào.\nTiếng Việt chỉ dùng chữ \"mà\", hoặc không cần từ nào: \"người đàn ông (mà) sống cạnh nhà tôi\". Tiếng Anh phải dùng một từ mở đầu, gọi là *đại từ quan hệ*: who, which, that, whose, where. Từ này thay cho danh từ đứng ngay trước nó.\nCông dụng: gộp hai câu ngắn thành một câu, thứ mà giám khảo tìm khi chấm ngữ pháp.",
+  "steps": [
+   {
+    "t": "Cách gộp hai câu, làm từng bước",
+    "say": "Bước 1: tìm từ chỉ cùng một người hoặc vật ở hai câu.\nBước 2: ở câu thứ hai, thay từ đó bằng *who* (nếu là người) hoặc *which* (nếu là vật). Dùng *that* thay cho cả hai cũng được.\nBước 3: đặt cả câu thứ hai ngay sau danh từ mà nó nói tới.",
+    "ex": [
+     [
+      "Students work part-time. *They* have less free time. → Students *who work part-time* have less free time.",
+      "Những sinh viên đi làm thêm có ít thời gian rảnh hơn.",
+      "\"They\" và \"Students\" là một. Thay they bằng who, rồi đặt \"who work part-time\" ngay sau Students."
+     ],
+     [
+      "I bought a phone. *It* was expensive. → The phone *which I bought* was expensive.",
+      "Chiếc điện thoại mà tôi mua thì đắt.",
+      "it là vật nên thay bằng which."
+     ]
+    ]
+   },
+   {
+    "t": "Chọn từ mở đầu",
+    "say": "*who*: thay cho người. *which*: thay cho vật hoặc sự việc. *that*: thay cho cả người lẫn vật.\n*whose* + danh từ: \"của người đó\", \"của cái đó\". Dùng khi câu thứ hai có his, her, their, its.\n*where*: thay cho \"ở đó\", đi sau từ chỉ nơi chốn. *when*: thay cho \"lúc đó\", đi sau từ chỉ thời gian.",
+    "ex": [
+     [
+      "Students *whose* parents are teachers often read more.",
+      "Những học sinh có bố mẹ là giáo viên thường đọc nhiều hơn.",
+      "Câu gốc: Their parents are teachers. Thay their bằng whose."
+     ],
+     [
+      "This is the town *where* I grew up.",
+      "Đây là thị trấn nơi tôi lớn lên.",
+      "Câu gốc: I grew up there. Thay there bằng where."
+     ]
+    ]
+   },
+   {
+    "t": "Có dấu phẩy hay không",
+    "say": "Hãy hỏi: nếu bỏ mệnh đề quan hệ đi, người đọc có còn biết bạn đang nói ai, cái gì không?\n*Không biết nữa* thì mệnh đề đó là bắt buộc, *không dùng dấu phẩy*. Loại này dùng được who, which, that.\n*Vẫn biết*, vì danh từ là tên riêng hoặc chỉ có một, thì mệnh đề chỉ thêm thông tin, phải có *dấu phẩy hai bên*. Loại này *không dùng that*.",
+    "ex": [
+     [
+      "Students *who study abroad* become more independent.",
+      "Những sinh viên đi du học trở nên tự lập hơn.",
+      "Bỏ \"who study abroad\" thì thành \"sinh viên trở nên tự lập hơn\", sai ý: không phải sinh viên nào cũng vậy. Mệnh đề này bắt buộc, không có phẩy."
+     ],
+     [
+      "Hanoi, *which is the capital*, is very crowded.",
+      "Hà Nội, thủ đô, rất đông.",
+      "Bỏ đi thì vẫn biết là Hà Nội. Đây là thông tin thêm nên có phẩy, và không dùng that."
+     ]
+    ]
+   },
+   {
+    "t": "Khi nào được bỏ who, which, that",
+    "say": "Nhìn ngay sau từ đó. Nếu sau nó là một *chủ ngữ khác* (I, he, people…) thì bỏ được. Nếu sau nó là *động từ* thì không được bỏ, vì chính nó đang làm chủ ngữ.",
+    "ex": [
+     [
+      "The book *(that) I read* was useful.",
+      "Cuốn sách tôi đọc rất bổ ích.",
+      "Sau that là I, một chủ ngữ khác, nên bỏ that được."
+     ],
+     [
+      "The man *who lives* next door is kind.",
+      "Người đàn ông sống cạnh nhà rất tốt bụng.",
+      "Sau who là động từ lives, nên who là chủ ngữ, không bỏ được."
+     ]
+    ]
+   },
+   {
+    "t": ", which để nhận xét cả câu trước",
+    "say": "Đặt *, which* sau cả một câu để nói thêm về toàn bộ ý của câu đó. Luôn có dấu phẩy. Động từ sau which ở số ít.",
+    "ex": [
+     [
+      "Many graduates cannot find jobs, *which is worrying*.",
+      "Nhiều người tốt nghiệp không tìm được việc, điều này đáng lo ngại.",
+      "which không thay cho jobs. Nó thay cho cả việc \"nhiều người không tìm được việc\"."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The course which I chose *it* was hard.",
+    "The course which I chose was hard.",
+    "which đã thay cho \"the course\" rồi, nên không nhắc lại bằng it."
+   ],
+   [
+    "Hanoi, *that* is the capital, is busy.",
+    "Hanoi, *which* is the capital, is busy.",
+    "Sau dấu phẩy không dùng that."
+   ],
+   [
+    "People *which* live in cities…",
+    "People *who* live in cities…",
+    "Người thì dùng who (hoặc that), không dùng which."
+   ],
+   [
+    "The city *where* I visited was beautiful.",
+    "The city *which / that* I visited was beautiful.",
+    "where nghĩa là \"ở đó\". Nhưng visit cần tân ngữ trực tiếp (thăm cái gì), không phải \"thăm ở đó\". Chỉ dùng where khi câu gốc có there: the city where I live (I live there)."
+   ]
+  ],
+  "check": [
+   [
+    "Gộp hai câu: \"The government introduced a law. The law reduced pollution.\"",
+    "The government introduced a law which (that) reduced pollution. \"The law\" ở câu hai là vật nên thay bằng which, rồi đặt sau \"a law\"."
+   ],
+   [
+    "Vì sao \"My father, who is a doctor, works long hours\" có dấu phẩy?",
+    "Tôi chỉ có một người bố, nên bỏ \"who is a doctor\" đi người nghe vẫn biết là ai. Đây là thông tin thêm, nên có dấu phẩy hai bên."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Gộp",
+     "s:N + b:who / which / that + v:V…"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Người",
+     "s:N chỉ người + b:who + v:V"
+    ],
+    [
+     "Vật",
+     "s:N chỉ vật + b:which + v:V"
+    ],
+    [
+     "Của ai",
+     "s:N + b:whose + o:N + v:V"
+    ],
+    [
+     "Nơi",
+     "s:N chỉ nơi + b:where + s:S + v:V"
+    ],
+    [
+     "Lúc",
+     "s:N chỉ thời gian + b:when + s:S + v:V"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Bắt buộc, không phẩy",
+     "s:The students + b:who + v:passed…"
+    ],
+    [
+     "Thêm thông tin, có phẩy",
+     "s:Hanoi + x:, + b:which + v:is… + x:,"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Bỏ được",
+     "s:the book + b:(that) + s:I + v:read"
+    ],
+    [
+     "Không bỏ",
+     "s:the man + b:who + v:lives…"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Nhận xét cả câu",
+     "s:S + v:V… + x:, + b:which + v:V-s"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The teacher ___ taught me English is from Australia.",
+   "opts": [
+    "who",
+    "which",
+    "whose"
+   ],
+   "a": 0,
+   "why": "Người, chủ ngữ → who."
+  },
+  {
+   "t": "choice",
+   "q": "Hanoi, ___ is the capital, has a long history.",
+   "opts": [
+    "that",
+    "which",
+    "where"
+   ],
+   "a": 1,
+   "why": "Sau dấu phẩy dùng which."
+  },
+  {
+   "t": "choice",
+   "q": "Students ___ parents are teachers often read more.",
+   "opts": [
+    "who",
+    "whose",
+    "which"
+   ],
+   "a": 1,
+   "why": "Sở hữu → whose."
+  },
+  {
+   "t": "choice",
+   "q": "This is the town ___ I grew up.",
+   "opts": [
+    "which",
+    "where",
+    "when"
+   ],
+   "a": 1,
+   "why": "Nơi chốn → where."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "The book which I bought it is good.",
+    "The book which I bought is good."
+   ],
+   "a": 1,
+   "why": "Không lặp đại từ it."
+  },
+  {
+   "t": "choice",
+   "q": "Many young people cannot afford houses, ___ is a serious problem.",
+   "opts": [
+    "that",
+    "which",
+    "what"
+   ],
+   "a": 1,
+   "why": "which thay cho cả mệnh đề trước."
+  },
+  {
+   "t": "choice",
+   "q": "The company ___ she works is very large.",
+   "opts": [
+    "for which",
+    "for that",
+    "which"
+   ],
+   "a": 0,
+   "why": "Giới từ + which (không dùng for that)."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào có thể bỏ đại từ quan hệ?",
+   "opts": [
+    "The film that I watched was long.",
+    "The man who lives next door is kind."
+   ],
+   "a": 0,
+   "why": "that là tân ngữ của watched → bỏ được."
+  }
+ ],
+ "write": "Viết 3 câu về việc chọn ngành học: một mệnh đề quan hệ xác định (who / that), một mệnh đề không xác định (, which / , who), và một câu có whose."
+}

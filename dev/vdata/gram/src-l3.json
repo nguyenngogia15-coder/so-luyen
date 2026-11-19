@@ -1,0 +1,211 @@
+{
+ "id": "l3",
+ "title": "Từ chỉ xu hướng",
+ "use": "Biểu đồ đường",
+ "focus": "động từ và danh từ chỉ xu hướng, viết theo hai cách: động từ + trạng từ (rose sharply) và tính từ + danh từ (a sharp rise)",
+ "theory_text": "Ý nghĩa Động từ Danh từ Tăng rise, increase, grow, climb a rise, an increase, growth Giảm fall, decrease, decline, drop a fall, a decrease, a decline, a drop Lên xuống fluctuate a fluctuation Không đổi remain stable, level off — Đỉnh / đáy peak at, hit a low of a peak of, a low of Mức độ: dramatically, sharply, significantly (mạnh) · steadily, gradually (đều) · slightly (nhẹ). Cách 1 , động từ + trạng từ: Visitors to City C rose sharply. Cách 2 , tính từ + danh từ: There was a sharp rise in visitors to City C. hoặc City C saw a sharp rise in visitors. Lỗi hay gặp: rise là tự tăng, không có tân ngữ; raise là nâng cái gì lên. Viết The number rose , không viết The number raised .",
+ "slow": {
+  "idea": "Phần lớn biểu đồ có thời gian đều kể một câu chuyện: con số *lên*, *xuống*, *đứng yên* hay *dao động*. Bài này cho bạn bộ từ để kể chuyện đó.\nMỗi thay đổi có thể viết theo hai cách. Cách 1 dùng *động từ + trạng từ*: Sales rose sharply. Cách 2 dùng *tính từ + danh từ*: There was a sharp rise in sales. Hai cách cùng nghĩa. Dùng xen kẽ cả hai giúp bài không lặp cấu trúc.",
+  "steps": [
+   {
+    "t": "Nhóm động từ theo hướng",
+    "say": "Lên: *rise, increase, grow, climb, go up*.\nXuống: *fall, decrease, decline, drop, go down*.\nĐứng yên: *remain stable, stay the same, level off* (chững lại sau khi thay đổi).\nLên xuống thất thường: *fluctuate*.\nĐạt đỉnh: *peak at, reach a peak of*. Chạm đáy: *hit a low of*.\nNhớ dạng quá khứ bất quy tắc: rise → *rose*, fall → *fell*, grow → *grew*.",
+    "ex": [
+     [
+      "The price *rose* in 2010 and then *levelled off*.",
+      "Giá tăng vào năm 2010 rồi chững lại.",
+      "rose là quá khứ của rise."
+     ]
+    ]
+   },
+   {
+    "t": "Trạng từ và tính từ chỉ mức độ, tốc độ",
+    "say": "Mạnh, nhanh: *sharply / sharp, dramatically / dramatic, significantly / significant, rapidly / rapid*.\nVừa phải, đều: *steadily / steady, gradually / gradual*.\nNhẹ: *slightly / slight*.\nTrạng từ (đuôi -ly) đi với động từ. Tính từ đi với danh từ.",
+    "ex": [
+     [
+      "The number *increased slightly*. = There was *a slight increase* in the number.",
+      "Con số tăng nhẹ.",
+      "slightly đi với động từ increased. slight đi với danh từ increase."
+     ]
+    ]
+   },
+   {
+    "t": "Cách 1: chủ ngữ + động từ + trạng từ",
+    "say": "Công thức: *thứ thay đổi + động từ + trạng từ + số liệu + thời gian*.",
+    "ex": [
+     [
+      "Car sales *fell sharply* to 2 million in 2009.",
+      "Doanh số ô tô giảm mạnh xuống 2 triệu vào năm 2009.",
+      "Thứ thay đổi là car sales, đứng làm chủ ngữ."
+     ]
+    ]
+   },
+   {
+    "t": "Cách 2: There was + a + tính từ + danh từ + in",
+    "say": "Công thức: *There was a / an + tính từ + danh từ chỉ thay đổi + in + thứ thay đổi*.\nMột biến thể: *thứ thay đổi + saw / experienced + a + tính từ + danh từ*.",
+    "ex": [
+     [
+      "*There was a sharp fall in* car sales in 2009.",
+      "Có một sự sụt giảm mạnh về doanh số ô tô vào năm 2009.",
+      "Sau danh từ chỉ thay đổi là in + thứ thay đổi."
+     ],
+     [
+      "Car sales *saw a sharp fall* in 2009.",
+      "Doanh số ô tô chứng kiến một sự sụt giảm mạnh vào năm 2009.",
+      "Cùng nghĩa, thêm một cấu trúc nữa để đổi."
+     ]
+    ]
+   },
+   {
+    "t": "Giới từ thời gian",
+    "say": "*in* + năm, tháng (in 2010). *from… to… / between… and…* cho một giai đoạn. *over / during the period* cho cả giai đoạn. *by* + năm: tính đến năm đó.",
+    "ex": [
+     [
+      "*Between* 2000 *and* 2010, the figure doubled.",
+      "Từ 2000 đến 2010, con số tăng gấp đôi.",
+      "between đi với and, from đi với to. Không trộn lẫn."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "There was a *sharply* rise.",
+    "There was a *sharp* rise.",
+    "rise ở đây là danh từ nên cần tính từ."
+   ],
+   [
+    "The price *rised* / *raised* in 2010.",
+    "The price *rose* in 2010.",
+    "Quá khứ của rise là rose. raise là \"nâng cái gì đó lên\" và cần tân ngữ."
+   ],
+   [
+    "an increase *of* sales",
+    "an increase *in* sales",
+    "in + thứ tăng. of + lượng tăng."
+   ],
+   [
+    "between 2000 *to* 2010",
+    "between 2000 *and* 2010",
+    "between… and…; from… to…"
+   ]
+  ],
+  "check": [
+   [
+    "Viết lại bằng cách 2: \"Prices dropped slightly in 2015.\"",
+    "There was a slight drop in prices in 2015."
+   ],
+   [
+    "Con số đi 20 → 35 → 20 → 40 → 25. Dùng động từ nào?",
+    "fluctuate: The figure fluctuated between 20 and 40."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "2": {
+   "f": [
+    [
+     "Cách 1",
+     "s:N + v:rose / fell + a:sharply + o:to 50% + x:in 2010"
+    ]
+   ],
+   "cut": [
+    "Công thức: *thứ thay đổi + động từ + trạng từ + số liệu + thời gian*."
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Cách 2",
+     "x:There was + x:a + o:sharp + b:rise / fall + x:in + s:N"
+    ],
+    [
+     "Biến thể",
+     "s:N + v:saw / experienced + x:a + o:sharp + b:rise"
+    ]
+   ],
+   "cut": [
+    "Công thức: *There was a / an + tính từ + danh từ chỉ thay đổi + in + thứ thay đổi*.",
+    "Một biến thể: *thứ thay đổi + saw / experienced + a + tính từ + danh từ*."
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Năm, tháng",
+     "b:in + o:2010"
+    ],
+    [
+     "Giai đoạn",
+     "b:from + o:2000 + b:to + o:2010"
+    ],
+    [
+     "Giai đoạn",
+     "b:between + o:2000 + b:and + o:2010"
+    ],
+    [
+     "Cả giai đoạn",
+     "b:over / during + o:the period"
+    ],
+    [
+     "Tính đến",
+     "b:by + o:2020"
+    ]
+   ],
+   "cut": [
+    "*in* + năm, tháng (in 2010). *from… to… / between… and…* cho một giai đoạn. *over / during the period* cho cả giai đoạn. *by* + năm: tính đến năm đó."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The number of visitors ___ sharply.",
+   "opts": [
+    "raised",
+    "rose"
+   ],
+   "a": 1,
+   "why": "rise không cần tân ngữ; raise thì cần."
+  },
+  {
+   "t": "fill",
+   "q": "rose sharply → there was a ___ rise",
+   "a": [
+    "sharp"
+   ],
+   "why": "Trạng từ sharply đổi thành tính từ sharp."
+  },
+  {
+   "t": "fill",
+   "q": "a gradual decline → the figure declined ___",
+   "a": [
+    "gradually"
+   ],
+   "why": "Tính từ gradual đổi thành trạng từ gradually."
+  },
+  {
+   "t": "choice",
+   "q": "Visitors to City B ___ at about 3.5 million from 2000 to 2010.",
+   "opts": [
+    "remained stable",
+    "fluctuated wildly",
+    "peaked"
+   ],
+   "a": 0,
+   "why": "3.5 → 3.4 → 3.6: gần như không đổi."
+  },
+  {
+   "t": "choice",
+   "q": "City C ___ 5.3 million in 2020.",
+   "opts": [
+    "reached a peak of",
+    "peaked of",
+    "raised to"
+   ],
+   "a": 0,
+   "why": "reach a peak of + số; hoặc peak at + số."
+  }
+ ],
+ "write": "Mô tả City A và City B: mỗi thành phố viết một câu theo Cách 1 và một câu theo Cách 2."
+}

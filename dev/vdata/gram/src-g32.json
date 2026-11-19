@@ -1,0 +1,262 @@
+{
+ "id": "g32",
+ "title": "Cụm danh từ",
+ "use": "Viết và đọc chủ ngữ dài mà không lạc",
+ "focus": "danh từ chính, bổ nghĩa đứng trước (hạn định, lượng từ, tính từ, danh từ bổ nghĩa), bổ nghĩa đứng sau (cụm giới từ, V-ing, V3, to V, mệnh đề quan hệ, đồng vị ngữ), sở hữu 's và of, the + tính từ, chia động từ theo danh từ chính",
+ "summary": [
+  "Cụm danh từ = một danh từ chính + các từ bổ nghĩa đứng trước và đứng sau.",
+  "Đứng trước, theo thứ tự: hạn định → lượng từ → tính từ → danh từ bổ nghĩa → danh từ chính.",
+  "Đứng sau: cụm giới từ (of…, in…), V-ing (chủ động), V3 (bị động), to V, mệnh đề which / who.",
+  "Động từ chia theo danh từ chính, không theo danh từ đứng gần nó nhất.",
+  "Danh từ đứng trước để bổ nghĩa thì không thêm -s: car owners, a ten-year plan."
+ ],
+ "theory_text": "1. Khung của một cụm danh từ Cụm danh từ det + (quantifier) + (adj) + (N bổ nghĩa) + head N + (bổ nghĩa sau) Hạn định / lượng từ Tính từ Danh từ bổ nghĩa Danh từ chính Bổ nghĩa sau the rapid population growth in Asian cities a significant rise in the number of cars many young people living in rural areas the energy bills paid by students Mẹo Cả khối này đứng vào một ô của câu (chủ ngữ, tân ngữ, sau giới từ), giống như một danh từ đơn. 2. Bổ nghĩa đứng trước Hạn định đứng đầu: a / an / the / this / my / some (xem bài Mạo từ và bài Lượng từ). Tính từ: a serious problem ; nhiều tính từ thì theo OSASCOMP (bài Tính từ và trạng từ). Danh từ bổ nghĩa cho danh từ (danh từ ghép): water pollution, car ownership, energy consumption, a traffic jam . ✗ She took a three-years course. ✓ She took a three-year course. Số + danh từ nối bằng gạch ngang đứng trước danh từ là một tính từ, nên không thêm -s. Dùng 's Dùng of người, tổ chức, quốc gia: the government's plan, Vietnam's economy đồ vật, khái niệm: the cost of living, the roof of the building thời gian: today's news, a week's holiday cụm dài: the opinion of most people in the survey 3. Bổ nghĩa đứng sau Loại Ví dụ Nghĩa Cụm giới từ the price of rice , a rise in unemployment của, về cái gì V-ing students living on campus chủ động (= who live) V3 products made in Vietnam bị động (= which are made) to V the decision to close the factory · the first country to ban plastic bags nội dung của danh từ / sau the first, the only which / who people who work from home mệnh đề quan hệ (bài Mệnh đề quan hệ) Đồng vị ngữ Da Lat, a city in the Central Highlands , is cool all year. một cụm danh từ khác giải thích, đặt giữa hai dấu phẩy 4. Tìm danh từ chính rồi mới chia động từ Che phần từ of / in / for , V-ing , V3 , which / who trở về sau. Danh từ cuối cùng còn lại là danh từ chính. Chia động từ theo danh từ chính đó. ✗ The number of cars are rising. ✓ The number of cars is rising. Danh từ chính là number (số ít). Riêng a number of = many nên đi với động từ số nhiều: A number of cars are … ✗ The quality of these products are poor. ✓ The quality of these products is poor. Danh từ chính là quality. 5. the + tính từ = một nhóm người the rich, the poor, the young, the elderly, the unemployed, the disabled The elderly need more support. (động từ số nhiều) Lỗi hay gặp Không thêm -s: viết the poor , không viết the poors .",
+ "slow": {
+  "idea": "*Cụm danh từ* là một danh từ cùng với tất cả những từ bổ sung thông tin cho nó, ví dụ: \"the rapid growth of online shopping in Asia\".\nTrong bài viết học thuật, phần lớn thông tin nằm trong các cụm danh từ dài như vậy. Hiểu cấu tạo của chúng giúp bạn làm được hai việc: đọc đúng câu dài, và viết câu chứa nhiều thông tin mà không sai động từ.\nĐiểm ngược với tiếng Việt: tiếng Việt đặt danh từ chính ở đầu (\"sự tăng trưởng nhanh của…\"), còn tiếng Anh đặt nó ở *giữa*, có từ đứng trước và có cụm đứng sau.",
+  "steps": [
+   {
+    "t": "Khung của cụm danh từ",
+    "say": "Thứ tự cố định là: *từ mở đầu* (a, the, my, this, some…) → *từ tả đứng trước* (tính từ, hoặc một danh từ khác) → *DANH TỪ CHÍNH* → *phần nói thêm đứng sau* (bắt đầu bằng giới từ, who / which / that, V-ing hoặc V3).\nDanh từ chính là từ mà nếu bỏ đi thì cả cụm vô nghĩa.",
+    "ex": [
+     [
+      "the rapid *growth* of online shopping",
+      "sự tăng trưởng nhanh của mua sắm trực tuyến",
+      "the: từ mở đầu. rapid: tính từ đứng trước. growth: danh từ chính. of online shopping: phần nói thêm đứng sau."
+     ]
+    ]
+   },
+   {
+    "t": "Phần đứng trước: tính từ và danh từ làm nhãn",
+    "say": "Đứng trước danh từ chính có thể là tính từ (a *serious* problem) hoặc một danh từ khác dùng như nhãn phân loại (a *traffic* problem: vấn đề thuộc loại giao thông).\nDanh từ làm nhãn luôn ở số ít, kể cả khi có con số đi kèm.",
+    "ex": [
+     [
+      "a *car* park · *city* centres",
+      "bãi đỗ xe · các trung tâm thành phố",
+      "car và city là nhãn nên không thêm -s. Chỉ danh từ chính (park, centres) mới chia số."
+     ],
+     [
+      "a *five-year* plan",
+      "một kế hoạch năm năm",
+      "five-year là nhãn đứng trước plan nên year không có -s."
+     ]
+    ]
+   },
+   {
+    "t": "Phần đứng sau: ba kiểu hay gặp",
+    "say": "Kiểu 1, giới từ + danh từ: the number *of cars*, people *in rural areas*.\nKiểu 2, V-ing, khi danh từ chính tự làm việc đó: people *living in cities* (những người sống ở thành phố).\nKiểu 3, V3, khi danh từ chính bị làm việc đó: goods *produced in China* (hàng được sản xuất ở Trung Quốc).",
+    "ex": [
+     [
+      "students *studying* abroad",
+      "những sinh viên đang học ở nước ngoài",
+      "Sinh viên tự học, nên dùng V-ing."
+     ],
+     [
+      "the data *collected* in 2020",
+      "dữ liệu được thu thập năm 2020",
+      "Dữ liệu không tự thu thập, nó được người ta thu thập, nên dùng V3."
+     ]
+    ]
+   },
+   {
+    "t": "Chia động từ theo danh từ chính",
+    "say": "Khi cụm danh từ làm chủ ngữ, động từ chỉ nhìn vào danh từ chính. Các danh từ khác nằm trong phần đứng trước hay đứng sau đều không tính.\nCách làm: gạch chân danh từ chính, bỏ qua hết phần sau giới từ, rồi mới chia động từ.",
+    "ex": [
+     [
+      "The *number* of people living in cities *is* rising.",
+      "Số người sống ở thành phố đang tăng.",
+      "Danh từ chính là number (số ít). people và cities chỉ nằm trong phần nói thêm."
+     ],
+     [
+      "The *reasons* for this change *are* complex.",
+      "Các lý do của sự thay đổi này thì phức tạp.",
+      "Danh từ chính là reasons (số nhiều). change không quyết định động từ."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "a *ten-years-old* boy",
+    "a *ten-year-old* boy",
+    "Cụm đứng trước danh từ là nhãn, nên year không có -s. Chỉ nói \"He is ten years old\" khi cụm đó đứng sau be."
+   ],
+   [
+    "The quality of the products *are* low.",
+    "The quality of the products *is* low.",
+    "Danh từ chính là quality, không phải products."
+   ],
+   [
+    "the problems *causing* by traffic",
+    "the problems *caused* by traffic",
+    "Các vấn đề bị gây ra bởi giao thông, nên dùng V3."
+   ]
+  ],
+  "check": [
+   [
+    "Tìm danh từ chính trong \"the main advantages of working from home\". Động từ đi sau là is hay are?",
+    "Danh từ chính là advantages (số nhiều), nên dùng are. \"of working from home\" chỉ là phần nói thêm."
+   ],
+   [
+    "Vì sao viết \"people *affected* by the flood\" nhưng \"people *living* near the river\"?",
+    "Người dân bị trận lũ tác động (bị động) nên dùng V3 affected. Người dân tự sống gần sông (chủ động) nên dùng V-ing living."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Khung",
+     "x:a / the / my + o:tính từ / danh từ nhãn + b:DANH TỪ CHÍNH + o:of… / who… / V-ing / V3"
+    ]
+   ],
+   "cut": [
+    "Thứ tự cố định là: *từ mở đầu* (a, the, my, this, some…) → *từ tả đứng trước* (tính từ, hoặc một danh từ khác) → *DANH TỪ CHÍNH* → *phần nói thêm đứng sau* (bắt đầu bằng giới từ, who / which / that, V-ing hoặc V3)."
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Danh từ làm nhãn",
+     "x:a + o:traffic + b:problem"
+    ],
+    [
+     "Có số",
+     "x:a + o:five-year + b:plan"
+    ],
+    [
+     "Sai",
+     "n:a five-years plan"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Giới từ",
+     "b:N + x:of / in + o:N"
+    ],
+    [
+     "Tự làm",
+     "b:N + v:V-ing…"
+    ],
+    [
+     "Bị làm",
+     "b:N + v:V3…"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Chia theo N chính",
+     "x:The + b:number + o:of cars + v:is"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The number of students ___ online courses is rising.",
+   "opts": [
+    "taking",
+    "taken",
+    "take"
+   ],
+   "a": 0,
+   "why": "Sinh viên tự học (chủ động) → V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "The cost of these new materials ___ too high.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "Danh từ chính là cost (số ít), không phải materials."
+  },
+  {
+   "t": "choice",
+   "q": "A number of residents ___ against the plan.",
+   "opts": [
+    "has protested",
+    "have protested"
+   ],
+   "a": 1,
+   "why": "a number of = many → động từ số nhiều."
+  },
+  {
+   "t": "choice",
+   "q": "She enrolled in a ___ course.",
+   "opts": [
+    "two-years",
+    "two-year"
+   ],
+   "a": 1,
+   "why": "Số + danh từ đứng trước danh từ là tính từ → không -s."
+  },
+  {
+   "t": "choice",
+   "q": "Goods ___ in this factory are exported to Japan.",
+   "opts": [
+    "producing",
+    "produced",
+    "produce"
+   ],
+   "a": 1,
+   "why": "Hàng hoá được sản xuất (bị động) → V3."
+  },
+  {
+   "t": "choice",
+   "q": "___ often find it hard to use online banking.",
+   "opts": [
+    "The elderly",
+    "The elderlies",
+    "Elderly"
+   ],
+   "a": 0,
+   "why": "the + tính từ chỉ nhóm người, không thêm -s."
+  },
+  {
+   "t": "choice",
+   "q": "Danh từ chính của cụm “the rising price of rice in rural areas” là:",
+   "opts": [
+    "price",
+    "rice",
+    "areas"
+   ],
+   "a": 0,
+   "why": "Che từ of trở về sau, còn lại the rising price."
+  },
+  {
+   "t": "choice",
+   "q": "Chọn cụm đúng:",
+   "opts": [
+    "water pollution",
+    "waters pollution",
+    "pollution waters"
+   ],
+   "a": 0,
+   "why": "Danh từ bổ nghĩa đứng trước danh từ chính và không thêm -s."
+  },
+  {
+   "t": "fill",
+   "q": "Rút gọn: people who live in cities → people ___ in cities",
+   "a": [
+    "living"
+   ],
+   "why": "Chủ động → V-ing."
+  },
+  {
+   "t": "fill",
+   "q": "Viết thành danh từ ghép: the consumption of energy → ___ consumption",
+   "a": [
+    "energy"
+   ],
+   "why": "Danh từ bổ nghĩa đứng trước: energy consumption."
+  }
+ ],
+ "write": "Viết 3 câu về giao thông trong thành phố. Mỗi câu có chủ ngữ là một cụm danh từ dài (có bổ nghĩa đứng sau như of…, V-ing hoặc V3). Kiểm tra động từ chia theo danh từ chính."
+}

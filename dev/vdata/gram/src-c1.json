@@ -1,0 +1,251 @@
+{
+ "id": "c1",
+ "title": "Động từ khuyết thiếu (modal verbs)",
+ "use": "can, could, may, might, must, should, will, would",
+ "focus": "modal + V nguyên mẫu: khả năng (can/could/be able to), xin phép, bắt buộc (must/have to), cấm (mustn't), không cần (don't have to/needn't), lời khuyên (should/ought to), suy đoán (must/may/might/can't), modal hoàn thành (should have, must have, could have)",
+ "summary": [
+  "Modal + V nguyên mẫu, không to, không -s, không chia theo thì.",
+  "must: bắt buộc từ người nói; have to: bắt buộc từ bên ngoài; mustn't = cấm; don't have to = không cần.",
+  "Suy đoán: must (chắc chắn đúng) > may/might/could (có thể) > can't (chắc chắn không).",
+  "Modal + have + V3 nói về quá khứ: should have done (lẽ ra nên), must have done (chắc hẳn đã)."
+ ],
+ "theory_text": "1. Quy tắc chung Khẳng định S + modal + bare V Phủ định S + modal + not + V Câu hỏi Modal + S + V + ? Bị động S + modal + be + V3 ✗ The government should to invest / should invests more. ✓ The government should invest more. 2. Bảng ý nghĩa Ý nghĩa Modal Ví dụ Khả năng can, could (quá khứ), be able to She can speak three languages. I could swim when I was five. Xin phép, cho phép can, could, may May I come in? You can leave now. Bắt buộc must, have to Students must wear uniforms. I have to work on Saturdays. Cấm must not (mustn't) You mustn't smoke here. Không cần don't have to, needn't You don't have to come. (không bắt buộc) Lời khuyên, đề xuất should, ought to, had better The government should invest in buses. Khả năng xảy ra may, might, could This policy may reduce traffic. Suy đoán chắc chắn must / can't He must be tired. That can't be true. Lịch sự, giả định would, could Would you help me? It would be better to… 3. mustn't và don't have to mustn't = cấm You mustn't use your phone in the exam. don't have to = không cần You don't have to bring a dictionary; we have one. 4. Mức độ chắc chắn must (≈ 95%) should / ought to may / could might can't (≈ 0%) Mẹo Trong Task 2, dùng may / might / could / can để ý kiến bớt tuyệt đối: This could lead to… nghe học thuật hơn This will definitely lead to… 5. Modal + have + V3 (nói về quá khứ) Cấu trúc Nghĩa Ví dụ should have + V3 lẽ ra nên (nhưng đã không) I should have studied harder. must have + V3 chắc hẳn đã She must have missed the bus. may / might have + V3 có lẽ đã They might have forgotten . can't have + V3 không thể nào đã He can't have finished already. could have + V3 lẽ ra đã có thể The accident could have been avoided.",
+ "slow": {
+  "idea": "*Động từ khuyết thiếu* (can, could, may, might, must, should, will, would) là những từ đứng trước động từ chính để thêm một tầng nghĩa: việc đó *có thể*, *nên*, *phải*, hay *chắc chắn* xảy ra.\nChúng rất có ích trong bài viết: nhờ chúng mà câu của bạn không quá tuyệt đối. \"Technology *can* cause problems\" nghe hợp lý và học thuật hơn \"Technology causes problems\".\nVề ngữ pháp, chúng dễ: không đổi dạng theo chủ ngữ, và luôn theo sau là động từ nguyên mẫu.",
+  "steps": [
+   {
+    "t": "Ba quy tắc về dạng",
+    "say": "Một, không thêm -s dù chủ ngữ là he, she, it.\nHai, sau nó là động từ nguyên mẫu *không có to*.\nBa, phủ định thì thêm not ngay sau nó, câu hỏi thì đảo nó lên trước chủ ngữ. Không mượn do.",
+    "ex": [
+     [
+      "She *can speak* three languages.",
+      "Cô ấy nói được ba thứ tiếng.",
+      "Không viết \"cans\", không viết \"can to speak\", không viết \"can speaks\"."
+     ]
+    ]
+   },
+   {
+    "t": "Nói về khả năng, sự cho phép và lời khuyên",
+    "say": "*can*: có khả năng, hoặc được phép. *could*: khả năng trong quá khứ, hoặc lời đề nghị lịch sự.\n*should*: nên (lời khuyên, đề xuất). Đây là từ dùng nhiều nhất khi đưa giải pháp trong Task 2.\n*must / have to*: phải, bắt buộc.",
+    "ex": [
+     [
+      "Governments *should invest* in public transport.",
+      "Chính phủ nên đầu tư vào giao thông công cộng.",
+      "Đưa ra đề xuất."
+     ],
+     [
+      "Students *must wear* uniforms.",
+      "Học sinh phải mặc đồng phục.",
+      "Quy định bắt buộc."
+     ]
+    ]
+   },
+   {
+    "t": "mustn't và don't have to: nghĩa khác hẳn nhau",
+    "say": "*mustn't* nghĩa là *cấm*, không được làm. *don't have to* nghĩa là *không cần*, làm hay không tuỳ bạn. Tiếng Việt đều có thể nói \"không phải\", nên rất dễ lẫn.",
+    "ex": [
+     [
+      "You *mustn't* park here.",
+      "Bạn không được đỗ xe ở đây.",
+      "Bị cấm."
+     ],
+     [
+      "You *don't have to* come early.",
+      "Bạn không cần đến sớm.",
+      "Không bắt buộc. Đến sớm cũng được, không đến sớm cũng được."
+     ]
+    ]
+   },
+   {
+    "t": "Nói về mức độ chắc chắn",
+    "say": "Cùng một câu, đổi động từ khuyết thiếu là đổi mức độ bạn tin vào điều mình nói. Xếp từ chắc nhất đến ít chắc nhất: *will* (chắc chắn) → *must* (gần như chắc, do suy luận) → *should* (nhiều khả năng) → *may / could* (có thể) → *might* (có thể, nhưng ít khả năng hơn).\nTrong Task 2, dùng may, might, could, can để tránh nói quá chắc.",
+    "ex": [
+     [
+      "This policy *may reduce* traffic.",
+      "Chính sách này có thể làm giảm giao thông.",
+      "Bạn không khẳng định chắc chắn, câu nghe thận trọng và thuyết phục hơn."
+     ]
+    ]
+   },
+   {
+    "t": "Nói về quá khứ: thêm have + V3",
+    "say": "Động từ khuyết thiếu không có dạng quá khứ riêng (trừ can → could). Muốn suy đoán hoặc nhận xét về một việc đã qua, dùng: *động từ khuyết thiếu + have + V3*.\n*should have + V3*: lẽ ra nên làm, nhưng thực tế đã không làm. *must have + V3*: chắc hẳn đã. *might have + V3*: có lẽ đã.",
+    "ex": [
+     [
+      "I *should have studied* harder.",
+      "Lẽ ra tôi nên học chăm hơn.",
+      "Thực tế là tôi đã không học chăm. Câu này thể hiện sự tiếc nuối."
+     ],
+     [
+      "He *must have forgotten*.",
+      "Chắc hẳn anh ấy đã quên.",
+      "Suy đoán chắc chắn về một việc trong quá khứ."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "He *cans* swim. / He can *to* swim.",
+    "He *can swim*.",
+    "Không thêm -s, không thêm to."
+   ],
+   [
+    "You *don't must* go.",
+    "You *don't have to* go. / You *mustn't* go.",
+    "must không đi với don't. Chọn theo nghĩa: không cần thì dùng don't have to, bị cấm thì dùng mustn't."
+   ],
+   [
+    "I *must* go to the doctor yesterday.",
+    "I *had to* go to the doctor yesterday.",
+    "must không có dạng quá khứ. Nghĩa \"đã phải\" dùng had to."
+   ]
+  ],
+  "check": [
+   [
+    "\"She might be at home\" và \"She must be at home\" khác nhau thế nào?",
+    "might: có thể cô ấy ở nhà, người nói không chắc. must: người nói gần như chắc chắn, vì có căn cứ (ví dụ thấy đèn sáng)."
+   ],
+   [
+    "Dịch: \"Lẽ ra chính phủ nên hành động sớm hơn.\"",
+    "The government should have acted earlier. should have + V3 nói về việc nên làm trong quá khứ nhưng đã không làm."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Dạng",
+     "s:S + b:can / should / must + v:V"
+    ],
+    [
+     "Phủ định",
+     "s:S + b:can / should + n:not + v:V"
+    ],
+    [
+     "Câu hỏi",
+     "b:Can / Should + s:S + v:V + x:?"
+    ],
+    [
+     "Sai",
+     "n:He cans go / must to go"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Cấm",
+     "s:You + b:mustn't + v:V"
+    ],
+    [
+     "Không cần",
+     "s:You + b:don't have to + v:V"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Chắc → ít chắc",
+     "b:will → b:must → b:should → b:may / could → b:might"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Về quá khứ",
+     "s:S + b:should / must / might + v:have + v:V3"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The government should ___ more buses.",
+   "opts": [
+    "to provide",
+    "provide",
+    "provides"
+   ],
+   "a": 1,
+   "why": "Modal + V nguyên mẫu."
+  },
+  {
+   "t": "choice",
+   "q": "Cars ___ from the city centre at weekends.",
+   "opts": [
+    "should ban",
+    "should be banned"
+   ],
+   "a": 1,
+   "why": "Xe bị cấm → should be + V3."
+  },
+  {
+   "t": "choice",
+   "q": "You ___ smoke in the hospital. It's forbidden.",
+   "opts": [
+    "mustn't",
+    "don't have to"
+   ],
+   "a": 0,
+   "why": "Cấm → mustn't."
+  },
+  {
+   "t": "choice",
+   "q": "Tomorrow is a holiday, so we ___ go to school.",
+   "opts": [
+    "mustn't",
+    "don't have to"
+   ],
+   "a": 1,
+   "why": "Không cần → don't have to."
+  },
+  {
+   "t": "choice",
+   "q": "Her light is on. She ___ be at home.",
+   "opts": [
+    "must",
+    "can't",
+    "mustn't"
+   ],
+   "a": 0,
+   "why": "Suy đoán chắc chắn đúng → must."
+  },
+  {
+   "t": "choice",
+   "q": "That ___ be Tom; he's in London now.",
+   "opts": [
+    "must",
+    "can't",
+    "should"
+   ],
+   "a": 1,
+   "why": "Chắc chắn không → can't."
+  },
+  {
+   "t": "choice",
+   "q": "I failed the test. I ___ harder.",
+   "opts": [
+    "should study",
+    "should have studied"
+   ],
+   "a": 1,
+   "why": "Hối tiếc về quá khứ → should have + V3."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào thận trọng hơn, hợp văn học thuật?",
+   "opts": [
+    "This will solve the problem completely.",
+    "This may help to reduce the problem."
+   ],
+   "a": 1,
+   "why": "may làm ý kiến bớt tuyệt đối."
+  }
+ ],
+ "write": "Đề xuất 2 giải pháp cho vấn đề kẹt xe, dùng should, một modal thận trọng (may / could / might) và một câu bị động với modal (should be + V3)."
+}

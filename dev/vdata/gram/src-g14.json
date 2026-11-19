@@ -1,0 +1,221 @@
+{
+ "id": "g14",
+ "title": "Quá khứ hoàn thành",
+ "use": "Việc xảy ra trước một việc khác trong quá khứ",
+ "focus": "quá khứ hoàn thành (had + V3) cho việc xảy ra trước một thời điểm hoặc một việc khác trong quá khứ, by + mốc quá khứ, before/after/by the time, quá khứ hoàn thành tiếp diễn",
+ "summary": [
+  "had + V3: “quá khứ của quá khứ”, xảy ra trước một mốc hoặc một việc khác đã qua.",
+  "Hay đi với by 2020, by the time, before, after, already.",
+  "Việc xảy ra trước → had + V3; việc xảy ra sau → quá khứ đơn.",
+  "had been + V-ing: việc kéo dài tới một mốc trong quá khứ."
+ ],
+ "theory_text": "1. Quá khứ hoàn thành (Past Perfect) Bây giờ Quá khứ Tương lai had left I arrived Khi tôi đến (quá khứ đơn), xe buýt đã đi rồi (quá khứ hoàn thành) Khẳng định S + had + V3 Phủ định S + had not (hadn't) + V3 Câu hỏi Had + S + V3 + ? When I arrived, the bus had already left . By the time the police came, the thief had escaped . She had never seen snow before she moved to Canada. Dấu hiệu by + mốc quá khứ by the time before after already when (việc trước) never … before 2. Dùng trong Task 1 By 2020 , spending on food had fallen to 18%. Food, which had been the largest category in 1990, dropped to second place. Mẹo Không cần dùng quá khứ hoàn thành khi thứ tự đã rõ bằng after/before: After he finished, he left. vẫn đúng. 3. Quá khứ hoàn thành tiếp diễn Bây giờ Quá khứ Tương lai had been working she quit Cấu trúc S + had been + V-ing She had been working there for ten years before she quit. 4. So sánh các thì quá khứ Thì Dùng khi Ví dụ Quá khứ đơn việc đã xong ở thời điểm xác định Prices rose in 2010. Quá khứ tiếp diễn đang diễn ra tại một lúc Prices were rising when… Quá khứ hoàn thành xảy ra trước một mốc / việc khác By 2010, prices had risen. Lỗi hay gặp Dùng had + V3 cho mọi câu quá khứ là sai. Chỉ dùng khi cần nói rõ việc nào xảy ra trước.",
+ "slow": {
+  "idea": "Khi kể hai việc trong quá khứ, đôi khi bạn cần nói rõ việc nào xảy ra *trước*. *Quá khứ hoàn thành* (had + V3) dùng cho việc xảy ra trước. Việc xảy ra sau dùng quá khứ đơn.\nCó thể hình dung: bạn đang đứng ở một điểm trong quá khứ và ngoái lại nhìn một việc còn xưa hơn nữa. Nếu chỉ có một việc, hoặc các việc được kể đúng theo thứ tự thời gian, thì không cần thì này.",
+  "steps": [
+   {
+    "t": "Cách tạo",
+    "say": "*had + V3* cho mọi chủ ngữ, không phân biệt số ít hay số nhiều. Phủ định: had not (hadn't) + V3. Câu hỏi: Had + chủ ngữ + V3?\nNếu bạn đã học hiện tại hoàn thành (have + V3) thì đây chính là dạng đó, chỉ đổi have thành had.",
+    "ex": [
+     [
+      "The train *had left*.",
+      "Tàu đã rời đi rồi.",
+      "leave – left – left. had + left."
+     ]
+    ]
+   },
+   {
+    "t": "Việc trước dùng had + V3, việc sau dùng quá khứ đơn",
+    "say": "Hãy xác định trong hai việc, việc nào xảy ra trước trên thực tế. Việc đó dùng had + V3, bất kể nó được nhắc trước hay sau trong câu.\nHay đi với: when, before, after, by the time, already.",
+    "ex": [
+     [
+      "When I *arrived*, the train *had left*.",
+      "Khi tôi đến nơi thì tàu đã rời đi rồi.",
+      "Tàu rời đi trước, tôi đến sau. Vì vậy tôi không kịp tàu."
+     ],
+     [
+      "She *had finished* her work before she *went* out.",
+      "Cô ấy đã làm xong việc trước khi ra ngoài.",
+      "Làm xong việc xảy ra trước, ra ngoài xảy ra sau."
+     ]
+    ]
+   },
+   {
+    "t": "So sánh để thấy vì sao cần thì này",
+    "say": "Đổi thì là đổi thứ tự sự việc, tức là đổi nghĩa câu.",
+    "ex": [
+     [
+      "When I arrived, the train *left*.",
+      "Khi tôi đến thì tàu rời đi.",
+      "Hai việc gần như cùng lúc: tôi đến, rồi tàu đi. Tôi có thể vẫn kịp."
+     ],
+     [
+      "When I arrived, the train *had left*.",
+      "Khi tôi đến thì tàu đã đi mất rồi.",
+      "Tàu đi trước khi tôi đến. Tôi lỡ tàu."
+     ]
+    ]
+   },
+   {
+    "t": "Dùng trong Task 1 với by + năm",
+    "say": "Khi tả số liệu \"tính đến một năm trong quá khứ\", dùng *by + năm* với had + V3.",
+    "ex": [
+     [
+      "*By 2010*, the figure *had doubled*.",
+      "Đến năm 2010, con số đã tăng gấp đôi.",
+      "Việc tăng gấp đôi hoàn tất trước hoặc đúng mốc 2010, một mốc trong quá khứ."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "Yesterday I *had gone* to the cinema.",
+    "Yesterday I *went* to the cinema.",
+    "Chỉ có một việc trong quá khứ thì dùng quá khứ đơn. Không dùng had + V3 chỉ vì việc đó \"đã\" xảy ra."
+   ],
+   [
+    "After he *finished* dinner, he *had watched* TV.",
+    "After he *had finished* dinner, he *watched* TV.",
+    "Ăn xong là việc trước, phải dùng had finished. Xem TV là việc sau."
+   ],
+   [
+    "She had *went* home.",
+    "She had *gone* home.",
+    "Sau had là V3 (gone)."
+   ]
+  ],
+  "check": [
+   [
+    "\"By the time the police arrived, the thief ___ (escape).\" Chia thế nào và vì sao?",
+    "had escaped. Tên trộm trốn thoát trước, cảnh sát đến sau. Việc xảy ra trước dùng had + V3."
+   ],
+   [
+    "Khi nào KHÔNG cần quá khứ hoàn thành dù có hai việc trong quá khứ?",
+    "Khi hai việc được kể đúng thứ tự thời gian và nối bằng and / then, ví dụ: \"He got up, had breakfast and left.\" Thứ tự đã rõ nên chỉ cần quá khứ đơn."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Khẳng định",
+     "s:Mọi chủ ngữ + v:had + v:V3"
+    ],
+    [
+     "Phủ định",
+     "s:S + v:hadn't + v:V3"
+    ],
+    [
+     "Câu hỏi",
+     "v:Had + s:S + v:V3 + x:?"
+    ]
+   ],
+   "cut": [
+    "*had + V3* cho mọi chủ ngữ, không phân biệt số ít hay số nhiều. ",
+    "Phủ định: had not (hadn't) + V3. Câu hỏi: Had + chủ ngữ + V3?"
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Việc trước",
+     "v:had + v:V3"
+    ],
+    [
+     "Việc sau",
+     "v:V2 (quá khứ đơn)"
+    ],
+    [
+     "Ghép",
+     "x:When + s:I + v:arrived , s:the train + b:had left"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Task 1",
+     "x:By 2010 , s:sales + b:had doubled"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "When we arrived at the cinema, the film ___.",
+   "opts": [
+    "already started",
+    "had already started"
+   ],
+   "a": 1,
+   "why": "Phim bắt đầu trước khi chúng tôi đến → had + V3."
+  },
+  {
+   "t": "choice",
+   "q": "By 2020, the figure ___ to 18%.",
+   "opts": [
+    "has fallen",
+    "had fallen",
+    "falls"
+   ],
+   "a": 1,
+   "why": "By + mốc quá khứ → quá khứ hoàn thành."
+  },
+  {
+   "t": "choice",
+   "q": "She ___ never ___ abroad before she went to university.",
+   "opts": [
+    "has / been",
+    "had / been",
+    "was / being"
+   ],
+   "a": 1,
+   "why": "Trước một việc trong quá khứ → had been."
+  },
+  {
+   "t": "fill",
+   "q": "By the time the firefighters came, the house ___ (burn) down.",
+   "a": [
+    "had burned",
+    "had burnt"
+   ],
+   "why": "had + V3."
+  },
+  {
+   "t": "choice",
+   "q": "He ___ for two hours when the bus finally came.",
+   "opts": [
+    "had been waiting",
+    "has been waiting",
+    "waits"
+   ],
+   "a": 0,
+   "why": "Kéo dài tới một mốc trong quá khứ → had been + V-ing."
+  },
+  {
+   "t": "choice",
+   "q": "After she ___ her homework, she went out.",
+   "opts": [
+    "had finished",
+    "has finished"
+   ],
+   "a": 0,
+   "why": "Việc trước trong quá khứ → had finished (hoặc finished)."
+  },
+  {
+   "t": "choice",
+   "q": "I didn't recognise him because he ___ a lot.",
+   "opts": [
+    "changed",
+    "had changed",
+    "has changed"
+   ],
+   "a": 1,
+   "why": "Thay đổi xảy ra trước lúc tôi gặp → had changed."
+  }
+ ],
+ "write": "Viết 2 câu mô tả Food và Housing trong biểu đồ, có ít nhất một câu dùng By 2020, … had + V3."
+}

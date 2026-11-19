@@ -1,0 +1,233 @@
+{
+ "id": "g16",
+ "title": "Tổng hợp 12 thì và cách chọn thì",
+ "use": "Nhìn một bảng là chọn được thì",
+ "focus": "bảng 12 thì (hiện tại, quá khứ, tương lai × đơn, tiếp diễn, hoàn thành, hoàn thành tiếp diễn), cách chọn thì theo thời điểm và khía cạnh, giữ thì nhất quán trong đoạn văn",
+ "summary": [
+  "Hai câu hỏi chọn thì: Khi nào (quá khứ, hiện tại, tương lai)? Nhìn việc thế nào (một lần / đang diễn ra / đã xong trước mốc / kéo dài tới mốc)?",
+  "Đơn: sự thật, việc trọn vẹn. Tiếp diễn: đang diễn ra. Hoàn thành: xong trước một mốc. Hoàn thành tiếp diễn: kéo dài tới một mốc.",
+  "Trong một đoạn, giữ thì nhất quán; chỉ đổi thì khi thời gian thật sự đổi."
+ ],
+ "theory_text": "1. Bảng 12 thì Quá khứ Hiện tại Tương lai Đơn V2 / V-ed I worked. V / V-s I work. will + V I will work. Tiếp diễn was/were + V-ing I was working. am/is/are + V-ing I am working. will be + V-ing I will be working. Hoàn thành had + V3 I had worked. have/has + V3 I have worked. will have + V3 I will have worked. HT tiếp diễn had been + V-ing I had been working. have/has been + V-ing I have been working. will have been + V-ing I will have been working. 2. Ý nghĩa của từng “khía cạnh” Đơn việc trọn vẹn, sự thật, thói quen Tiếp diễn (be + V-ing) đang diễn ra, chưa xong, tạm thời Hoàn thành (have + V3) đã xong trước một mốc, nhìn lại từ mốc đó Hoàn thành tiếp diễn (have been + V-ing) kéo dài liên tục đến một mốc Bây giờ Quá khứ Tương lai QK hoàn thành HTHT tiếp diễn QK đơn TL đơn 3. Quy trình chọn thì Tìm mốc thời gian trong câu (yesterday, since, by 2030, now…). Xác định thời : quá khứ, hiện tại hay tương lai. Xác định khía cạnh : trọn vẹn, đang diễn ra, xong trước mốc, hay kéo dài tới mốc. Ghép lại theo bảng ở trên. Tình huống Thì Sự thật về giới trẻ hiện nay Hiện tại đơn Xu hướng đang thay đổi Hiện tại tiếp diễn Thay đổi từ trước tới giờ Hiện tại hoàn thành Số liệu năm đã qua (Task 1) Quá khứ đơn Dự báo tương lai will / be expected to 4. Giữ thì nhất quán ✗ Ten years ago, few people use smartphones, but now almost everyone had one. ✓ Ten years ago, few people used smartphones, but now almost everyone has one. Thì đổi theo mốc thời gian, không đổi tùy tiện. Mẹo Trong Task 2, phần lớn câu dùng hiện tại đơn; hiện tại hoàn thành để nói thay đổi gần đây; will / modal để nói hậu quả và giải pháp.",
+ "slow": {
+  "idea": "Mười hai thì trông có vẻ nhiều, nhưng thật ra chỉ là sự kết hợp của hai lựa chọn.\nLựa chọn 1, *khi nào*: quá khứ, hiện tại hay tương lai.\nLựa chọn 2, *nhìn hành động theo kiểu nào*: nhìn như một sự việc trọn vẹn (đơn), nhìn lúc đang dở dang (tiếp diễn), nhìn lại một việc đã xong trước mốc đó (hoàn thành), hay nhìn một việc kéo dài đến mốc đó (hoàn thành tiếp diễn).\nBa mốc nhân bốn kiểu nhìn ra mười hai thì. Bạn không cần thuộc mười hai bộ dấu hiệu. Chỉ cần trả lời hai câu hỏi đó rồi ghép lại.",
+  "steps": [
+   {
+    "t": "Bốn kiểu nhìn và dạng của chúng",
+    "say": "*Đơn*: chỉ có động từ chính (work / works, worked, will work). Nói sự thật, thói quen, hoặc một việc xong trọn vẹn.\n*Tiếp diễn*: be + V-ing. Việc đang dở dang tại mốc đó.\n*Hoàn thành*: have + V3. Việc đã xong trước mốc đó, và kết quả còn liên quan tới mốc đó.\n*Hoàn thành tiếp diễn*: have been + V-ing. Việc kéo dài liên tục cho tới mốc đó.",
+    "ex": [
+     [
+      "She *works*. · She *is working*. · She *has worked*. · She *has been working*.",
+      "Cô ấy làm việc (nói chung). · Cô ấy đang làm việc. · Cô ấy đã làm việc (tính đến nay). · Cô ấy đã làm việc liên tục (đến giờ).",
+      "Cùng mốc hiện tại, bốn kiểu nhìn khác nhau."
+     ]
+    ]
+   },
+   {
+    "t": "Chỉ từ đứng đầu cụm động từ đổi theo mốc thời gian",
+    "say": "Đây là mẹo giúp bạn không phải nhớ mười hai công thức. Trong cụm động từ, chỉ *từ đầu tiên* đổi dạng theo mốc thời gian. Mọi từ đứng sau giữ nguyên.\nTiếp diễn: *am / is / are* working → *was / were* working → *will be* working.\nHoàn thành: *have / has* worked → *had* worked → *will have* worked.",
+    "ex": [
+     [
+      "It *is* raining. → It *was* raining. → It *will be* raining.",
+      "Trời đang mưa. → (Lúc đó) trời đang mưa. → (Lúc đó) trời sẽ đang mưa.",
+      "Chỉ be đổi dạng. raining đứng yên."
+     ]
+    ]
+   },
+   {
+    "t": "Quy trình chọn thì trong ba bước",
+    "say": "Bước 1: Việc này thuộc mốc nào? Tìm từ chỉ thời gian trong câu: yesterday, now, next year…\nBước 2: Nó là một việc trọn vẹn, đang dở, đã xong trước mốc, hay kéo dài đến mốc?\nBước 3: Ghép dạng, rồi chia từ đầu tiên theo mốc và theo chủ ngữ.",
+    "ex": [
+     [
+      "\"từ năm 2010 đến nay, dân số tăng\" → The population *has increased* since 2010.",
+      "Dân số đã tăng từ năm 2010.",
+      "Bước 1: kéo đến hiện tại. Bước 2: việc tính từ quá khứ đến mốc hiện tại, tức hoàn thành. Bước 3: has + increased."
+     ],
+     [
+      "\"lúc 9 giờ tối qua tôi đang học\" → I *was studying* at 9 p.m. yesterday.",
+      "Lúc 9 giờ tối qua tôi đang học.",
+      "Bước 1: quá khứ. Bước 2: đang dở, tức tiếp diễn. Bước 3: was + studying."
+     ]
+    ]
+   },
+   {
+    "t": "Bốn thì dùng nhiều nhất khi viết IELTS",
+    "say": "Bạn không cần dùng cả mười hai. Trong bài viết, hầu hết các câu chỉ cần bốn thì.\n*Hiện tại đơn*: nêu ý kiến, sự thật, tả biểu đồ không có năm.\n*Quá khứ đơn*: tả số liệu của năm đã qua, kể ví dụ.\n*Hiện tại hoàn thành*: nói sự thay đổi từ trước đến nay.\n*Tương lai với will*: dự đoán, nêu hậu quả.",
+    "ex": [
+     [
+      "Many people *believe* … · Sales *rose* in 2015. · Technology *has changed* … · This *will lead* to …",
+      "Nhiều người tin … · Doanh số tăng năm 2015. · Công nghệ đã thay đổi … · Điều này sẽ dẫn tới …",
+      "Bốn mẫu câu này phủ gần hết nhu cầu của Task 1 và Task 2."
+     ]
+    ]
+   },
+   {
+    "t": "Giữ thì nhất quán trong một đoạn",
+    "say": "Đã chọn một mốc thời gian để kể thì giữ nó. Chỉ đổi thì khi thời gian thật sự thay đổi, và thường có một từ báo hiệu (in 2010, now, in the future).",
+    "ex": [
+     [
+      "In 2000, the figure *was* 10%. It then *rose* to 20% in 2010.",
+      "Năm 2000 con số là 10%. Sau đó nó tăng lên 20% vào năm 2010.",
+      "Cả hai câu đều ở quá khứ. Không tự nhiên nhảy sang hiện tại (\"rises\")."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The chart *showed* the number of students. (đang tả biểu đồ trước mặt)",
+    "The chart *shows* the number of students.",
+    "Biểu đồ đang nằm trước mặt bạn, nên \"cho thấy\" là hiện tại đơn. Chỉ số liệu của các năm đã qua mới dùng quá khứ."
+   ],
+   [
+    "In 2010, sales *have increased*.",
+    "In 2010, sales *increased*.",
+    "Có năm đã qua thì dùng quá khứ đơn, không dùng hiện tại hoàn thành."
+   ],
+   [
+    "She *is work* now.",
+    "She *is working* now.",
+    "Tiếp diễn phải đủ hai phần: be và V-ing."
+   ]
+  ],
+  "check": [
+   [
+    "Câu \"By 2030, the number of cars will have doubled\" thuộc mốc nào và kiểu nhìn nào?",
+    "Mốc tương lai (2030), kiểu nhìn hoàn thành: việc tăng gấp đôi sẽ xong trước hoặc đúng mốc đó. Dạng: will have + V3."
+   ],
+   [
+    "Chọn thì cho ý: \"hiện nay ngày càng nhiều người làm việc ở nhà\".",
+    "Hiện tại tiếp diễn: \"More and more people are working from home.\" Mốc hiện tại, và đây là xu hướng đang thay đổi."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đơn",
+     "v:V / V-s / V2 / will V"
+    ],
+    [
+     "Tiếp diễn",
+     "v:be + v:V-ing"
+    ],
+    [
+     "Hoàn thành",
+     "v:have + v:V3"
+    ],
+    [
+     "Hoàn thành tiếp diễn",
+     "v:have been + v:V-ing"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Tiếp diễn",
+     "b:am / is / are · was / were · will be + v:working"
+    ],
+    [
+     "Hoàn thành",
+     "b:have / has · had · will have + v:worked"
+    ]
+   ],
+   "cut": [
+    "Tiếp diễn: *am / is / are* working → *was / were* working → *will be* working.",
+    "Hoàn thành: *have / has* worked → *had* worked → *will have* worked."
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "I ___ English for five years, and I still find it hard.",
+   "opts": [
+    "study",
+    "have been studying",
+    "studied"
+   ],
+   "a": 1,
+   "why": "Kéo dài tới giờ → HTHT tiếp diễn."
+  },
+  {
+   "t": "choice",
+   "q": "By the end of next year, she ___ her degree.",
+   "opts": [
+    "will finish",
+    "will have finished",
+    "finishes"
+   ],
+   "a": 1,
+   "why": "Xong trước mốc tương lai."
+  },
+  {
+   "t": "choice",
+   "q": "When the teacher came in, the students ___ loudly.",
+   "opts": [
+    "talked",
+    "were talking",
+    "have talked"
+   ],
+   "a": 1,
+   "why": "Đang diễn ra lúc việc khác xảy ra."
+  },
+  {
+   "t": "choice",
+   "q": "The Earth ___ around the Sun.",
+   "opts": [
+    "goes",
+    "is going",
+    "went"
+   ],
+   "a": 0,
+   "why": "Sự thật → hiện tại đơn."
+  },
+  {
+   "t": "choice",
+   "q": "Before he moved to Hanoi, he ___ in Hue for ten years.",
+   "opts": [
+    "has lived",
+    "had lived",
+    "lives"
+   ],
+   "a": 1,
+   "why": "Trước một việc trong quá khứ."
+  },
+  {
+   "t": "choice",
+   "q": "Ten years ago, few people ___ smartphones.",
+   "opts": [
+    "use",
+    "used",
+    "have used"
+   ],
+   "a": 1,
+   "why": "Ten years ago → quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "Prices ___ quickly at the moment.",
+   "opts": [
+    "rise",
+    "are rising",
+    "rose"
+   ],
+   "a": 1,
+   "why": "at the moment → hiện tại tiếp diễn."
+  },
+  {
+   "t": "choice",
+   "q": "I ___ my keys. I can't find them anywhere.",
+   "opts": [
+    "lost",
+    "have lost",
+    "had lost"
+   ],
+   "a": 1,
+   "why": "Việc trong quá khứ còn kết quả bây giờ → HTHT."
+  }
+ ],
+ "write": "Viết một đoạn 4 câu về sự thay đổi trong cách giới trẻ giải trí: dùng quá khứ đơn (trước đây), hiện tại đơn (bây giờ), hiện tại hoàn thành (thay đổi tới nay) và will (dự đoán)."
+}

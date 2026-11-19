@@ -1,0 +1,268 @@
+{
+ "id": "g12",
+ "title": "Hiện tại hoàn thành và hoàn thành tiếp diễn",
+ "use": "Từ quá khứ kéo tới bây giờ",
+ "focus": "hiện tại hoàn thành (have/has + V3) cho trải nghiệm, thay đổi tới nay, hành động bắt đầu trong quá khứ còn tiếp tục; hiện tại hoàn thành tiếp diễn nhấn mạnh quá trình; phân biệt với quá khứ đơn",
+ "summary": [
+  "have/has + V3: kết nối quá khứ với hiện tại; không nói thời điểm cụ thể.",
+  "for + khoảng thời gian; since + mốc.",
+  "have/has been + V-ing: nhấn mạnh việc kéo dài, liên tục đến giờ.",
+  "Có thời điểm xác định trong quá khứ (yesterday, in 2019, ago) → dùng quá khứ đơn."
+ ],
+ "theory_text": "1. Hiện tại hoàn thành (Present Perfect) Bây giờ Quá khứ Tương lai kết quả còn tới nay Không quan tâm chính xác lúc nào, quan tâm kết quả bây giờ Khẳng định S + have / has + V3 (past participle) Phủ định S + have / has + not + V3 Câu hỏi Have / Has + S + V3 + ? Trải nghiệm: I have visited Japan twice. Thay đổi tới nay: The internet has changed the way we work. Kéo dài tới nay: She has lived here for ten years / since 2015. Vừa xảy ra, còn kết quả: I have just lost my keys. Dấu hiệu for since already yet just ever never so far recently in recent years over the past decade 2. Hiện tại hoàn thành tiếp diễn Bây giờ Quá khứ Tương lai liên tục đến giờ Cấu trúc S + have / has been + V-ing I have been studying for three hours. (nhấn mạnh quá trình, có thể mệt) It has been raining all morning. Hoàn thành Hoàn thành tiếp diễn I have written three essays. (kết quả, số lượng) I have been writing all day. (quá trình) 3. Hiện tại hoàn thành hay quá khứ đơn? Bây giờ Quá khứ Tương lai tới nay: HTHT 2019: quá khứ đơn Quá khứ đơn có thời điểm xác định, đã kết thúc: I visited Japan in 2019 . Hiện tại hoàn thành không nói lúc nào, hoặc còn kéo tới nay: I have visited Japan twice. ✗ I have visited Da Lat last year. ✓ I visited Da Lat last year. last year là mốc quá khứ xác định. ✗ I live here since 2015. ✓ I have lived here since 2015. since → hiện tại hoàn thành. 4. Động từ bất quy tắc hay gặp (V3) V1 V2 V3 be was/were been become became become begin began begun grow grew grown rise rose risen fall fell fallen take took taken make made made write wrote written choose chose chosen spend spent spent bring brought brought Mẹo Task 2 hay mở bài bằng hiện tại hoàn thành: In recent years, working from home has become increasingly common.",
+ "slow": {
+  "idea": "*Hiện tại hoàn thành* (have / has + V3) là thì khó nhất với người Việt, vì tiếng Việt không có thì nào tương ứng: \"đã\" có thể dịch thành cả quá khứ đơn lẫn hiện tại hoàn thành.\nÝ cốt lõi: thì này nối quá khứ với hiện tại. Việc bắt đầu hoặc xảy ra trong quá khứ, nhưng điều bạn quan tâm là *bây giờ*: nó còn tiếp tục, hoặc kết quả của nó vẫn còn. Còn quá khứ đơn nói một việc đã xong hẳn, ở một thời điểm đã qua.\nCâu hỏi để chọn: câu này có nói rõ *lúc nào trong quá khứ* không? Có thì dùng quá khứ đơn. Không, và có liên quan tới hiện tại, thì dùng hiện tại hoàn thành.",
+  "steps": [
+   {
+    "t": "Cách tạo",
+    "say": "*have / has + V3*. Dùng has với he, she, it và danh từ số ít. V3 là cột thứ ba trong bảng động từ bất quy tắc (go – went – *gone*). Động từ có quy tắc thì V3 là dạng thêm -ed.\nPhủ định: have not / has not + V3. Câu hỏi: Have / Has + chủ ngữ + V3?",
+    "ex": [
+     [
+      "The city *has changed* a lot.",
+      "Thành phố đã thay đổi nhiều.",
+      "the city là số ít nên dùng has. change có quy tắc nên V3 là changed."
+     ]
+    ]
+   },
+   {
+    "t": "Cách dùng 1: việc bắt đầu trong quá khứ, đến nay vẫn còn",
+    "say": "Đi với *for* + độ dài thời gian, hoặc *since* + mốc bắt đầu. Tiếng Việt nói \"được ba năm rồi\", \"từ năm 2020\".",
+    "ex": [
+     [
+      "I *have lived* here *for* three years.",
+      "Tôi sống ở đây được ba năm rồi.",
+      "Bắt đầu ba năm trước và bây giờ vẫn đang sống ở đây."
+     ],
+     [
+      "Prices *have risen* *since* 2020.",
+      "Giá đã tăng từ năm 2020.",
+      "Việc tăng kéo từ 2020 đến hiện tại."
+     ]
+    ]
+   },
+   {
+    "t": "Cách dùng 2: việc đã xảy ra, không nói lúc nào, kết quả còn đến giờ",
+    "say": "Người nói không quan tâm việc xảy ra khi nào, chỉ quan tâm tình hình hiện tại do nó tạo ra. Hay đi với: already, just, yet, recently, ever, never, so far.",
+    "ex": [
+     [
+      "I *have lost* my keys.",
+      "Tôi làm mất chìa khoá rồi.",
+      "Ý muốn nói: bây giờ tôi không có chìa khoá."
+     ],
+     [
+      "Technology *has changed* the way people work.",
+      "Công nghệ đã thay đổi cách con người làm việc.",
+      "Không nói năm nào, và kết quả là cách làm việc ngày nay. Câu rất hay dùng trong Task 2."
+     ]
+    ]
+   },
+   {
+    "t": "Phân biệt với quá khứ đơn",
+    "say": "Hễ câu có *thời điểm quá khứ đã kết thúc* (yesterday, last year, in 2015, two days ago, when I was a child) thì bắt buộc dùng quá khứ đơn, không dùng have + V3.",
+    "ex": [
+     [
+      "I *visited* Japan *in 2019*.",
+      "Tôi đã đi Nhật năm 2019.",
+      "Có năm cụ thể đã qua, nên dùng quá khứ đơn."
+     ],
+     [
+      "I *have visited* Japan twice.",
+      "Tôi đã đi Nhật hai lần.",
+      "Không nói khi nào, chỉ nói kinh nghiệm tính đến nay, nên dùng hiện tại hoàn thành."
+     ]
+    ]
+   },
+   {
+    "t": "Hiện tại hoàn thành tiếp diễn",
+    "say": "Dạng: *have / has been + V-ing*. Dùng khi muốn nhấn vào việc *kéo dài liên tục* đến tận bây giờ, thường là vừa mới ngừng hoặc vẫn đang làm.",
+    "ex": [
+     [
+      "It *has been raining* all day.",
+      "Trời mưa suốt cả ngày.",
+      "Nhấn vào việc mưa liên tục, kéo dài."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "I *have seen* that film *last week*.",
+    "I *saw* that film last week.",
+    "\"last week\" là thời điểm đã qua, phải dùng quá khứ đơn."
+   ],
+   [
+    "I *live* here since 2020.",
+    "I *have lived* here since 2020.",
+    "Tiếng Việt nói \"tôi sống ở đây từ 2020\" bằng thì hiện tại, nhưng tiếng Anh có since thì phải dùng hiện tại hoàn thành."
+   ],
+   [
+    "She has *went* to school.",
+    "She has *gone* to school.",
+    "Sau have / has là V3 (gone), không phải dạng quá khứ ở cột hai (went)."
+   ]
+  ],
+  "check": [
+   [
+    "Chọn thì: \"The population ___ (grow) rapidly over the past ten years.\"",
+    "has grown. \"over the past ten years\" là khoảng thời gian kéo đến hiện tại, nên dùng hiện tại hoàn thành."
+   ],
+   [
+    "Vì sao \"I have finished my homework yesterday\" sai?",
+    "Vì có \"yesterday\", một thời điểm đã qua. Sửa: \"I finished my homework yesterday\" hoặc bỏ yesterday: \"I have finished my homework\"."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Khẳng định",
+     "s:I / You / We / They + v:have + v:V3"
+    ],
+    [
+     "Khẳng định",
+     "s:He / She / It + v:has + v:V3"
+    ],
+    [
+     "Phủ định",
+     "s:S + v:haven't / hasn't + v:V3"
+    ],
+    [
+     "Câu hỏi",
+     "v:Have / Has + s:S + v:V3 + x:?"
+    ]
+   ],
+   "cut": [
+    "*have / has + V3*. Dùng has với he, she, it và danh từ số ít. ",
+    "Phủ định: have not / has not + V3. Câu hỏi: Have / Has + chủ ngữ + V3?"
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Kéo dài đến nay",
+     "s:S + v:have / has V3 + b:for + o:3 years"
+    ],
+    [
+     "Từ mốc",
+     "s:S + v:have / has V3 + b:since + o:2020"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Kết quả còn",
+     "s:S + v:have / has + b:already / just / never + v:V3"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Có mốc đã qua",
+     "s:S + v:V2 + b:yesterday / in 2015 / … ago"
+    ],
+    [
+     "Sai",
+     "n:have V3 … yesterday"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Dạng",
+     "s:S + v:have / has + v:been + v:V-ing"
+    ]
+   ],
+   "cut": [
+    "Dạng: *have / has been + V-ing*. "
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "In recent years, online shopping ___ very popular.",
+   "opts": [
+    "becomes",
+    "has become",
+    "became"
+   ],
+   "a": 1,
+   "why": "In recent years → hiện tại hoàn thành."
+  },
+  {
+   "t": "choice",
+   "q": "I ___ to Singapore in 2022.",
+   "opts": [
+    "have been",
+    "went",
+    "have gone"
+   ],
+   "a": 1,
+   "why": "in 2022 → quá khứ đơn."
+  },
+  {
+   "t": "choice",
+   "q": "She has worked here ___ five years.",
+   "opts": [
+    "since",
+    "for"
+   ],
+   "a": 1,
+   "why": "Khoảng thời gian → for."
+  },
+  {
+   "t": "choice",
+   "q": "They have lived in Hue ___ 2018.",
+   "opts": [
+    "since",
+    "for",
+    "from"
+   ],
+   "a": 0,
+   "why": "Mốc → since."
+  },
+  {
+   "t": "fill",
+   "q": "The internet ___ (change, HTHT) the way we study.",
+   "a": [
+    "has changed"
+   ],
+   "why": "has + V3."
+  },
+  {
+   "t": "choice",
+   "q": "I'm tired because I ___ for hours.",
+   "opts": [
+    "have been studying",
+    "studied",
+    "study"
+   ],
+   "a": 0,
+   "why": "Nhấn mạnh quá trình kéo dài tới giờ."
+  },
+  {
+   "t": "choice",
+   "q": "Have you ___ finished your homework?",
+   "opts": [
+    "already",
+    "yet",
+    "since"
+   ],
+   "a": 0,
+   "why": "already trong câu hỏi = đã… rồi à. (yet đứng cuối câu.)"
+  },
+  {
+   "t": "fill",
+   "q": "Prices have ___ (rise) sharply since 2020.",
+   "a": [
+    "risen"
+   ],
+   "why": "rise – rose – risen."
+  }
+ ],
+ "write": "Viết 3 câu về làm việc tại nhà: một câu hiện tại hoàn thành với since hoặc for, một câu với in recent years, và một câu quá khứ đơn có mốc thời gian."
+}

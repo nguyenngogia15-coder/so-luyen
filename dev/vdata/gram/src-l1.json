@@ -1,0 +1,185 @@
+{
+ "id": "l1",
+ "title": "Chủ ngữ số liệu và động từ chia",
+ "use": "Câu mở đầu, câu tổng quan",
+ "focus": "chủ ngữ số liệu (the number of / the amount of / the percentage of) và chia động từ theo danh từ chính",
+ "theory_text": "Mỗi câu tiếng Anh cần một chủ ngữ và một động từ đã chia . Trong Task 1, chủ ngữ thường là một cụm danh từ dài nói về số liệu. Động từ chia theo danh từ chính của cụm, không theo danh từ đứng gần nó nhất. Cụm chủ ngữ Danh từ chính Động từ The number of tourists number (số ít) was / rose The amount of water amount (số ít) was / fell The percentage of students percentage (số ít) was Sales of cars sales (số nhiều) were / rose the number of + danh từ đếm được số nhiều (tourists, cars, students) the amount of + danh từ không đếm được (water, money, electricity) the percentage / proportion of + danh từ, khi số liệu là phần trăm Câu mở đầu là viết lại đề bằng từ của mình: shows → illustrates, compares, gives information about .",
+ "slow": {
+  "idea": "Trước khi viết bất cứ câu nào trong Task 1, bạn phải trả lời một câu hỏi: biểu đồ này nói về *thời gian nào*? Câu trả lời quyết định thì của gần như mọi động từ trong bài.\nCách làm: nhìn vào các mốc năm trên biểu đồ. Mốc đã qua thì dùng quá khứ. Không có năm thì dùng hiện tại. Mốc ở tương lai thì dùng cấu trúc dự đoán.\nChọn sai thì ngay từ đầu là lỗi lặp lại trong cả bài, nên đây là bước đáng dành ra 10 giây.",
+  "steps": [
+   {
+    "t": "Biểu đồ có năm trong quá khứ: dùng quá khứ đơn",
+    "say": "Đây là trường hợp phổ biến nhất. Mọi số liệu đã xảy ra và đã kết thúc, nên dùng quá khứ đơn cho tất cả các câu tả số liệu.",
+    "ex": [
+     [
+      "In 2010, the figure *stood* at 20%, and it *rose* to 35% in 2015.",
+      "Năm 2010 con số ở mức 20%, và nó tăng lên 35% vào năm 2015.",
+      "Cả 2010 và 2015 đều đã qua."
+     ]
+    ]
+   },
+   {
+    "t": "Biểu đồ không ghi năm: dùng hiện tại đơn",
+    "say": "Nếu biểu đồ không có mốc thời gian nào, hãy coi nó là thông tin đúng ở hiện tại. Quy trình và bản đồ một thời điểm cũng thuộc loại này.",
+    "ex": [
+     [
+      "Men *spend* more time on sport than women.",
+      "Nam giới dành nhiều thời gian cho thể thao hơn nữ giới.",
+      "Không có năm nào được ghi, nên dùng hiện tại đơn."
+     ]
+    ]
+   },
+   {
+    "t": "Biểu đồ có năm tương lai: dùng cấu trúc dự đoán",
+    "say": "Số liệu tương lai chỉ là dự báo, nên đừng viết chắc như đinh đóng cột. Dùng *is expected to / is predicted to / is projected to / is likely to + V*. Dùng will cũng được, nhưng các cấu trúc trên an toàn và học thuật hơn.",
+    "ex": [
+     [
+      "The population *is expected to reach* 9 billion by 2050.",
+      "Dân số được dự đoán sẽ đạt 9 tỉ vào năm 2050.",
+      "2050 chưa tới, nên dùng cấu trúc dự đoán."
+     ]
+    ]
+   },
+   {
+    "t": "Biểu đồ đi từ quá khứ qua tương lai: đổi thì ở đúng mốc",
+    "say": "Phần trước hiện tại dùng quá khứ đơn. Phần sau hiện tại dùng dự đoán. Bạn đổi thì ngay tại mốc chuyển.",
+    "ex": [
+     [
+      "Sales *rose* from 2000 to 2020 and *are projected to fall* by 2040.",
+      "Doanh số tăng từ 2000 đến 2020 và được dự báo sẽ giảm vào năm 2040.",
+      "Nửa đầu đã xảy ra, nửa sau là dự báo."
+     ]
+    ]
+   },
+   {
+    "t": "Câu mở bài và câu tổng quan dùng thì gì",
+    "say": "Câu mở bài nói về *bản thân biểu đồ* (biểu đồ thể hiện gì), và biểu đồ đang nằm trước mắt bạn, nên dùng hiện tại đơn: The chart *shows*… Phần sau \"shows\" thì theo thời gian của số liệu.\nCâu tổng quan (Overall) dùng cùng thì với số liệu.",
+    "ex": [
+     [
+      "The graph *shows* how many people *visited* the museum between 2000 and 2010.",
+      "Biểu đồ cho thấy có bao nhiêu người đã tới thăm bảo tàng từ 2000 đến 2010.",
+      "shows ở hiện tại vì nói về biểu đồ. visited ở quá khứ vì nói về số liệu."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "In 2005, the number *increases* to 50.",
+    "In 2005, the number *increased* to 50.",
+    "2005 đã qua, phải dùng quá khứ đơn."
+   ],
+   [
+    "By 2050, the figure *reached* 80%.",
+    "By 2050, the figure *is expected to reach* 80%.",
+    "2050 là tương lai, không thể dùng quá khứ."
+   ],
+   [
+    "The chart *showed* the sales in 2010.",
+    "The chart *shows* the sales in 2010.",
+    "Biểu đồ đang ở trước mắt, nên động từ nói về biểu đồ ở hiện tại."
+   ]
+  ],
+  "check": [
+   [
+    "Biểu đồ tròn về chi tiêu của một gia đình, không ghi năm. Bạn dùng thì gì?",
+    "Hiện tại đơn: The family spends 30% of its income on food."
+   ],
+   [
+    "Biểu đồ đường từ 1990 đến 2030 (đề ra năm nay). Bạn chia thì thế nào?",
+    "Từ 1990 đến hiện tại dùng quá khứ đơn. Từ hiện tại đến 2030 dùng is expected to / is predicted to."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Có năm đã qua",
+     "v:V2 (quá khứ đơn)"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Không có năm",
+     "v:V / V-s (hiện tại đơn)"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Năm tương lai",
+     "v:is + b:expected / predicted / projected + x:to V"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Mở bài",
+     "s:The chart + v:shows + o:how many… + b:V (thì theo số liệu)"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The number of tourists in City A ___ 2.1 million in 2000.",
+   "opts": [
+    "was",
+    "were"
+   ],
+   "a": 0,
+   "why": "Danh từ chính là number, số ít, nên dùng was."
+  },
+  {
+   "t": "choice",
+   "q": "The ___ of electricity used by households rose.",
+   "opts": [
+    "number",
+    "amount"
+   ],
+   "a": 1,
+   "why": "Electricity không đếm được nên dùng amount."
+  },
+  {
+   "t": "choice",
+   "q": "Sales of bicycles ___ higher in 2020 than in 2010.",
+   "opts": [
+    "was",
+    "were"
+   ],
+   "a": 1,
+   "why": "Sales là danh từ số nhiều nên dùng were."
+  },
+  {
+   "t": "choice",
+   "q": "The percentage of students who cycle to school ___ 45% in Northport.",
+   "opts": [
+    "was",
+    "were"
+   ],
+   "a": 0,
+   "why": "Danh từ chính là percentage, số ít."
+  },
+  {
+   "t": "fill",
+   "q": "The line graph ___ the number of tourists in three cities. (một động từ thay cho shows)",
+   "a": [
+    "illustrates",
+    "depicts",
+    "presents",
+    "compares",
+    "describes",
+    "gives information about",
+    "provides information about"
+   ],
+   "why": "Có thể dùng illustrates, compares, gives information about…"
+  }
+ ],
+ "write": "Viết câu mở đầu (viết lại đề) và một câu tổng quan (Overall, …) cho biểu đồ trên."
+}

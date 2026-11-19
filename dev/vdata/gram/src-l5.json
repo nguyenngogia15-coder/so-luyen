@@ -1,0 +1,173 @@
+{
+ "id": "l5",
+ "title": "So sánh hơn và so sánh nhất",
+ "use": "Biểu đồ cột, bảng",
+ "focus": "so sánh hơn, so sánh nhất, gấp mấy lần (twice as … as), more/less/fewer",
+ "theory_text": "Tính từ ngắn: high → higher → the highest ; tính từ dài: popular → more popular → the most popular . Bất quy tắc: good – better – best; bad – worse – worst; much/many – more – most; little – less – least . Mức chênh: slightly / much / significantly / far + so sánh hơn: much higher than . Gấp mấy lần: twice as many hours as; three times as much time as . Bằng nhau: the same as; as … as . Danh từ đếm được dùng more / fewer ; không đếm được dùng more / less : fewer hours, less time .",
+ "slow": {
+  "idea": "Hai đoạn đầu của bài Task 1 là mở bài và tổng quan. Chúng ngắn nhưng quyết định điểm.\n*Mở bài* là một câu viết lại đề bằng lời của bạn (paraphrase), cho biết biểu đồ thể hiện cái gì, ở đâu, khi nào.\n*Tổng quan* (Overall) là hai câu nêu những điểm nổi bật nhất mà nhìn lướt biểu đồ là thấy, *không kèm số liệu cụ thể*. Thiếu đoạn tổng quan thì tiêu chí Task Achievement khó vượt band 5.",
+  "steps": [
+   {
+    "t": "Công thức câu mở bài",
+    "say": "*The + loại biểu đồ + động từ + thứ được đo + nơi chốn + thời gian.*\nLoại biểu đồ: line graph, bar chart, pie chart, table, diagram, map.\nĐộng từ: *shows, illustrates, compares, gives information about*.",
+    "ex": [
+     [
+      "The line graph *illustrates* the number of tourists visiting three countries between 2000 and 2015.",
+      "Biểu đồ đường minh hoạ số du khách tới thăm ba quốc gia từ 2000 đến 2015.",
+      "Đủ bốn phần: loại biểu đồ, động từ, thứ được đo, thời gian."
+     ]
+    ]
+   },
+   {
+    "t": "Ba cách viết lại đề",
+    "say": "Đổi động từ: shows → illustrates / compares.\nĐổi cụm danh từ thành mệnh đề: \"the number of people who…\" → \"*how many* people…\"; \"the amount of…\" → \"*how much*…\".\nĐổi cách nói thời gian: \"from 2000 to 2010\" → \"between 2000 and 2010\" → \"over a ten-year period\".\nKhông chép nguyên văn đề. Cũng đừng cố thay mọi từ: từ chỉ chủ đề chính (ví dụ \"unemployment\") có thể giữ.",
+    "ex": [
+     [
+      "Đề: The chart shows the percentage of households with internet access. → The chart illustrates *what proportion of* households *had access to* the internet.",
+      "Biểu đồ minh hoạ tỉ lệ hộ gia đình có truy cập internet.",
+      "percentage đổi thành what proportion. Cụm \"with internet access\" đổi thành mệnh đề có động từ."
+     ]
+    ]
+   },
+   {
+    "t": "Câu tổng quan: mở bằng Overall",
+    "say": "Bắt đầu bằng *Overall,* rồi nêu hai điểm lớn. Với biểu đồ có thời gian: xu hướng chung (cái gì tăng, cái gì giảm) và thứ cao nhất hoặc thay đổi nhiều nhất. Với biểu đồ không có thời gian: thứ lớn nhất, nhỏ nhất, và điểm khác biệt lớn nhất.\nCác mẫu: *Overall, it is clear that…* · *Overall, … while …* · *It is also noticeable that…*",
+    "ex": [
+     [
+      "*Overall,* tourist numbers rose in all three countries, *while* France remained the most popular destination throughout the period.",
+      "Nhìn chung, lượng du khách tăng ở cả ba nước, trong khi Pháp vẫn là điểm đến phổ biến nhất suốt giai đoạn.",
+      "Hai ý: xu hướng chung và thứ đứng đầu. Không có con số nào."
+     ]
+    ]
+   },
+   {
+    "t": "Không đưa số liệu và không đưa ý kiến",
+    "say": "Tổng quan chỉ nêu hình dạng chung. Con số cụ thể để dành cho các đoạn thân bài.\nTask 1 chỉ mô tả, không giải thích nguyên nhân và không nêu ý kiến cá nhân.",
+    "ex": [
+     [
+      "✗ Overall, sales rose from 20 to 50 because people became richer. → ✓ Overall, sales rose considerably over the period.",
+      "Nhìn chung, doanh số tăng đáng kể trong giai đoạn này.",
+      "Bỏ con số và bỏ phần đoán nguyên nhân."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The graph *show* the number…",
+    "The graph *shows* the number…",
+    "the graph là số ít, động từ thêm -s."
+   ],
+   [
+    "The chart shows *about* the sales.",
+    "The chart shows the sales. / The chart *gives information about* the sales.",
+    "show đi thẳng với tân ngữ, không có about."
+   ],
+   [
+    "Viết \"In conclusion\" ở Task 1.",
+    "Dùng *Overall*.",
+    "Task 1 không có kết luận hay ý kiến, chỉ có tổng quan."
+   ]
+  ],
+  "check": [
+   [
+    "Viết lại: \"The table shows the amount of money spent on education.\"",
+    "Ví dụ: The table illustrates how much money was spent on education."
+   ],
+   [
+    "Câu này có nên nằm trong đoạn tổng quan không: \"The figure peaked at 78% in 2012\"?",
+    "Không. Câu này có số liệu chi tiết nên thuộc thân bài. Trong tổng quan chỉ nói: The figure rose over the period."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Mở bài",
+     "x:The + o:line graph / bar chart + v:shows / illustrates + b:thứ được đo + x:nơi chốn + x:thời gian"
+    ]
+   ],
+   "cut": [
+    "*The + loại biểu đồ + động từ + thứ được đo + nơi chốn + thời gian.*"
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Đổi",
+     "x:the number of people who… → b:how many people…"
+    ],
+    [
+     "Đổi",
+     "x:the amount of… → b:how much…"
+    ],
+    [
+     "Đổi",
+     "x:from 2000 to 2010 → b:over a ten-year period"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Tổng quan",
+     "b:Overall , s:S + v:V… , x:while + s:S + v:V…"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Social media was ___ activity among 16–24-year-olds.",
+   "opts": [
+    "the most popular",
+    "the popularest",
+    "more popular"
+   ],
+   "a": 0,
+   "why": "popular là tính từ dài: the most popular."
+  },
+  {
+   "t": "choice",
+   "q": "People aged 45+ spent ___ time on exercise than on reading.",
+   "opts": [
+    "less",
+    "fewer"
+   ],
+   "a": 0,
+   "why": "time không đếm được nên dùng less."
+  },
+  {
+   "t": "choice",
+   "q": "The 25–44 group spent ___ hours on social media than the 45+ group.",
+   "opts": [
+    "more",
+    "most"
+   ],
+   "a": 0,
+   "why": "Có than → so sánh hơn."
+  },
+  {
+   "t": "fill",
+   "q": "The 45+ group spent twice as many hours reading ___ the 25–44 group.",
+   "a": [
+    "as"
+   ],
+   "why": "twice as many … as."
+  },
+  {
+   "t": "choice",
+   "q": "Time spent on exercise was ___ for the two older groups (3 hours each).",
+   "opts": [
+    "the same",
+    "the most same",
+    "sameer"
+   ],
+   "a": 0,
+   "why": "Bằng nhau: the same."
+  }
+ ],
+ "write": "Viết 2–3 câu so sánh thời gian xem TV và dùng mạng xã hội giữa các nhóm tuổi."
+}

@@ -1,0 +1,15 @@
+const fs = require('fs'), src = fs.readFileSync('/home/claude/ielts/so-luyen-ielts.html', 'utf8');
+const js = src.slice(src.indexOf('const LESSONS = ['), src.indexOf('const GROUPS = ['));
+const helpers = src.slice(src.indexOf('/* ---------- grammar visual helpers'), src.indexOf('const G_A = ['));
+const slow = src.slice(src.indexOf('const SLOW = {};'), src.indexOf('const GLOSS = {'));
+const slow2 = [...src.matchAll(/^SLOW\.(\w+) = \{[\s\S]*?^\};/gm)].map(m => m[0]).join('\n');
+const slowf = src.slice(src.indexOf('const SLOWF = {'), src.indexOf('for (const id in SLOWF)'));
+const esc = s => s; const h = () => null;
+let out;
+eval('const T2_PROMPTS=[];' + js.replace(/^const LESSONS/m, 'var LESSONS') + '\nconst SLOW={};' + slow2 + '\n' + slowf + '\nout={LESSONS,SLOW,SLOWF};');
+const strip = s => String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const D = '/tmp/claude-0/-home-claude/79890b01-a234-56fc-972b-c62e336ee1c7/scratchpad/vocab/gram/';
+const list = out.LESSONS.map(l => ({ id: l.id, group: l.group, title: l.title, use: l.use, focus: l.focus }));
+fs.writeFileSync(D + 'list.json', JSON.stringify(list, null, 1));
+for (const l of out.LESSONS) fs.writeFileSync(D + 'src-' + l.id + '.json', JSON.stringify({ id: l.id, title: l.title, use: l.use, focus: l.focus, summary: l.summary, theory_text: strip(l.theory), slow: out.SLOW[l.id] || null, slow_formulas: out.SLOWF[l.id] || null, exercises: l.ex, write: l.write }, null, 1));
+console.log(list.length, list.map(l => l.id + ':' + l.title).join(' | '));

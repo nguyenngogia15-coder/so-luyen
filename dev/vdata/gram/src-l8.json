@@ -1,0 +1,213 @@
+{
+ "id": "l8",
+ "title": "Câu bị động cho quy trình",
+ "use": "Sơ đồ quy trình, bản đồ",
+ "focus": "câu bị động hiện tại đơn (is/are + V3) và từ nối thứ tự (First, Next, Once, Finally)",
+ "theory_text": "Bị động = be + V3 . Quy trình dùng hiện tại đơn bị động: Glass bottles are collected . Người làm thường không quan trọng nên bỏ by … . Từ nối thứ tự: First, / To begin with, · Next, / Then, / After that, · Once / After + mệnh đề · Finally, V3 hay dùng: collected, sorted, washed, crushed, melted, heated, cooled, moulded, packed, delivered, transported. Bản đồ thay đổi theo thời gian: was built, were demolished, has been converted into, was replaced by .",
+ "slow": {
+  "idea": "Một bài Task 1 chỉ toàn câu đơn (\"A rose. B fell. C stayed the same.\") sẽ bị giới hạn điểm ngữ pháp, vì tiêu chí Grammatical Range yêu cầu có câu phức.\nBài này dạy những cách ghép hai thông tin về số liệu vào một câu. Bạn không cần dùng hết. Chọn ba bốn cách bạn thấy chắc tay và dùng đúng.",
+  "steps": [
+   {
+    "t": "Ghép hai xu hướng trái ngược: while / whereas",
+    "say": "Đặt *while* hoặc *whereas* giữa hai mệnh đề, hoặc đặt While ở đầu câu.",
+    "ex": [
+     [
+      "*While* the figure for men rose, that for women fell slightly.",
+      "Trong khi số liệu của nam giới tăng, số liệu của nữ giới giảm nhẹ.",
+      "Hai chủ ngữ, hai động từ, một câu."
+     ]
+    ]
+   },
+   {
+    "t": "Ghép hai giai đoạn nối tiếp: before / after + V-ing",
+    "say": "Khi cùng một chủ ngữ làm hai việc liên tiếp, dùng *before + V-ing* hoặc *after + V-ing* cho việc thứ hai.",
+    "ex": [
+     [
+      "The figure rose to 50% *before falling* back to 30%.",
+      "Con số tăng lên 50% trước khi giảm trở lại 30%.",
+      "Chủ ngữ của falling vẫn là the figure."
+     ]
+    ]
+   },
+   {
+    "t": "Thêm kết quả bằng cụm V-ing cuối câu",
+    "say": "Sau dấu phẩy, dùng *reaching / peaking at / falling to / ending at* + số liệu để nêu điểm đến của xu hướng.",
+    "ex": [
+     [
+      "Sales grew steadily, *reaching* a peak of 5 million in 2018.",
+      "Doanh số tăng đều, đạt đỉnh 5 triệu vào năm 2018.",
+      "Cụm V-ing rút gọn từ \"and they reached\"."
+     ]
+    ]
+   },
+   {
+    "t": "Thêm thông tin bằng mệnh đề quan hệ",
+    "say": "Dùng *, which + động từ* để nói thêm về một danh từ hoặc về cả ý phía trước.",
+    "ex": [
+     [
+      "The highest figure was for the USA, *which* accounted for 40% of the total.",
+      "Con số cao nhất thuộc về Mỹ, nước chiếm 40% tổng số.",
+      "which thay cho the USA."
+     ]
+    ]
+   },
+   {
+    "t": "Đưa số liệu vào bằng with",
+    "say": "*, with + danh từ + V-ing* hoặc *, with + số liệu* là cách gọn để thêm con số minh hoạ cho một nhận định.",
+    "ex": [
+     [
+      "Japan was the largest exporter, *with* sales *reaching* $50 billion.",
+      "Nhật là nước xuất khẩu lớn nhất, với doanh số đạt 50 tỉ đô.",
+      "with + danh từ + V-ing."
+     ],
+     [
+      "Coffee was the most popular drink, *at* 45%.",
+      "Cà phê là đồ uống phổ biến nhất, ở mức 45%.",
+      "at + số liệu, cách ngắn nhất."
+     ]
+    ]
+   },
+   {
+    "t": "Dùng respectively cho hai số liệu song song",
+    "say": "Khi nêu hai thứ và hai con số tương ứng theo thứ tự, thêm *respectively* ở cuối câu.",
+    "ex": [
+     [
+      "The figures for France and Italy were 20% and 15% *respectively*.",
+      "Số liệu của Pháp và Ý lần lượt là 20% và 15%.",
+      "20% là của Pháp, 15% là của Ý, theo đúng thứ tự nhắc tên."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The figure rose to 50% before *fell* to 30%.",
+    "…before *falling* to 30%.",
+    "Sau before (không có chủ ngữ) là V-ing."
+   ],
+   [
+    "Sales grew, *reached* 5 million.",
+    "Sales grew, *reaching* 5 million.",
+    "Sau dấu phẩy không có từ nối thì không thể đặt thêm một động từ chia. Dùng V-ing."
+   ],
+   [
+    "While men rose, *but* women fell.",
+    "While men rose, women fell.",
+    "Đã có while thì không thêm but."
+   ]
+  ],
+  "check": [
+   [
+    "Ghép thành một câu bằng before: \"The price fell to $10. Then it recovered to $15.\"",
+    "The price fell to $10 before recovering to $15."
+   ],
+   [
+    "Ghép bằng respectively: \"Men: 30%. Women: 45%.\"",
+    "The figures for men and women were 30% and 45% respectively."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Trái ngược",
+     "b:While + s:A + v:rose , s:B + v:fell"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Nối tiếp",
+     "s:S + v:rose + o:to 50% + b:before + v:falling + o:to 30%"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Kết quả",
+     "s:S + v:grew , b:reaching + o:5 million"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Thêm ý",
+     "s:N , b:which + v:accounted for + o:40%"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "with",
+     "s:S + v:was… , b:with + s:N + v:V-ing + o:…"
+    ],
+    [
+     "at",
+     "s:… , b:at + o:45%"
+    ]
+   ]
+  },
+  "5": {
+   "f": [
+    [
+     "respectively",
+     "s:A and B + v:were + o:20% and 15% + b:respectively"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "fill",
+   "q": "Used bottles ___ (collect) from homes.",
+   "a": [
+    "are collected"
+   ],
+   "why": "Chủ ngữ số nhiều: are + collected."
+  },
+  {
+   "t": "fill",
+   "q": "The glass ___ (wash) and then crushed.",
+   "a": [
+    "is washed"
+   ],
+   "why": "glass không đếm được, số ít: is washed."
+  },
+  {
+   "t": "fill",
+   "q": "The crushed glass ___ (melt) at 1,500°C.",
+   "a": [
+    "is melted"
+   ],
+   "why": "is + melted."
+  },
+  {
+   "t": "choice",
+   "q": "___ the glass has melted, it is moulded into bottles.",
+   "opts": [
+    "Once",
+    "First",
+    "Finally"
+   ],
+   "a": 0,
+   "why": "Once + mệnh đề = ngay khi."
+  },
+  {
+   "t": "choice",
+   "q": "The old factory ___ into apartments in 2015. (bản đồ)",
+   "opts": [
+    "was converted",
+    "converted",
+    "is convert"
+   ],
+   "a": 0,
+   "why": "Bị động quá khứ: was + converted."
+  }
+ ],
+ "write": "Mô tả 3 bước cuối của quy trình bằng câu bị động và từ nối."
+}

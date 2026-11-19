@@ -1,0 +1,243 @@
+{
+ "id": "g25",
+ "title": "Rút gọn mệnh đề và cụm phân từ",
+ "use": "Câu gọn hơn với V-ing, V3, to V",
+ "focus": "rút gọn mệnh đề quan hệ bằng V-ing (chủ động), V3 (bị động), to V (sau the first / the only), cụm phân từ đầu câu cùng chủ ngữ, Having + V3, lỗi dangling (chủ ngữ không khớp)",
+ "summary": [
+  "Mệnh đề quan hệ chủ động → V-ing: people who live here → people living here.",
+  "Bị động → V3: products which are made in Vietnam → products made in Vietnam.",
+  "Cụm phân từ đầu câu phải có cùng chủ ngữ với mệnh đề chính.",
+  "Having + V3: việc xảy ra trước việc chính."
+ ],
+ "theory_text": "1. Rút gọn mệnh đề quan hệ Mệnh đề đầy đủ Rút gọn Khi nào Employees who work from home… Employees working from home… chủ động → V-ing Goods which are made in China… Goods made in China… bị động → V3 He was the first person who arrived . He was the first person to arrive . sau the first / last / only → to V The house which is on the hill… The house on the hill… which/who + be + cụm giới từ → bỏ 2. Cụm phân từ (thay mệnh đề trạng ngữ) Chủ động, cùng lúc V-ing … + , S + V Bị động V3 … + , S + V Xảy ra trước Having + V3 … + , S + V Working from home, employees save time. (= Because they work from home…) Built in 1900, the bridge needs repairs. (= Because it was built…) Having finished the report, she went home. (xong báo cáo rồi mới về) Cuối câu nêu kết quả: Prices rose sharply, reaching a peak in 2020. 3. Lỗi chủ ngữ không khớp (dangling) ✗ Working from home , productivity increases. ✓ Working from home , employees often become more productive. Người làm việc ở nhà là employees, không phải productivity. Mẹo Kiểm tra: hỏi “ai làm việc V-ing?”. Câu trả lời phải là chủ ngữ ngay sau dấu phẩy.",
+ "slow": {
+  "idea": "Khi hai phần của câu nói về *cùng một người hoặc vật*, tiếng Anh cho phép cắt bớt phần lặp lại để câu gọn hơn. Thay vì viết \"people who live in cities\", bạn viết \"people living in cities\".\nPhần còn lại sau khi cắt là một dạng của động từ: *V-ing* hoặc *V3*. Chọn dạng nào chỉ dựa vào một câu hỏi: danh từ đó *tự làm* việc này, hay *bị làm*? Tự làm thì dùng V-ing. Bị làm thì dùng V3.\nBạn nên học bài Mệnh đề quan hệ và bài Câu bị động trước khi học bài này.",
+  "steps": [
+   {
+    "t": "Rút gọn mệnh đề quan hệ: câu chủ động thành V-ing",
+    "say": "Nếu mệnh đề quan hệ có who, which, that làm chủ ngữ và động từ ở dạng chủ động, thì: bỏ who / which / that, bỏ luôn be nếu có, rồi đổi động từ thành V-ing.",
+    "ex": [
+     [
+      "People *who live* in cities… → People *living* in cities…",
+      "Những người sống ở thành phố…",
+      "Người ta tự sống, nên là chủ động. Bỏ who, đổi live thành living."
+     ],
+     [
+      "The man *who is standing* there… → The man *standing* there…",
+      "Người đàn ông đang đứng ở kia…",
+      "Bỏ who is, giữ standing."
+     ]
+    ]
+   },
+   {
+    "t": "Rút gọn mệnh đề quan hệ: câu bị động thành V3",
+    "say": "Nếu mệnh đề quan hệ ở dạng bị động (be + V3), thì bỏ who / which / that và bỏ be, chỉ giữ lại V3.",
+    "ex": [
+     [
+      "Goods *which are produced* in China… → Goods *produced* in China…",
+      "Hàng hoá được sản xuất ở Trung Quốc…",
+      "Hàng hoá không tự sản xuất, nó bị sản xuất, nên giữ V3."
+     ],
+     [
+      "The data *that was collected* in 2020… → The data *collected* in 2020…",
+      "Dữ liệu được thu thập năm 2020…",
+      "Bỏ that was, giữ collected."
+     ]
+    ]
+   },
+   {
+    "t": "Cụm V-ing ở đầu hoặc cuối câu",
+    "say": "Khi hai mệnh đề có *cùng chủ ngữ*, bạn có thể đổi một mệnh đề thành cụm V-ing, bỏ chủ ngữ và từ nối đi. Cụm này có thể mang nghĩa \"khi\", \"vì\", hoặc nêu kết quả.\nTrong Task 1, cụm V-ing ở cuối câu rất hay dùng để nêu kết quả hoặc điểm đến của con số.",
+    "ex": [
+     [
+      "*Because she felt* tired, she went to bed. → *Feeling* tired, she went to bed.",
+      "Cảm thấy mệt, cô ấy đi ngủ.",
+      "Cả hai vế đều là she, nên bỏ \"Because she\" và đổi felt thành Feeling."
+     ],
+     [
+      "The figure rose sharply, *reaching* 50% in 2020.",
+      "Con số tăng mạnh, đạt 50% vào năm 2020.",
+      "Chủ ngữ của \"reaching\" vẫn là \"the figure\". Cụm này nêu kết quả của việc tăng."
+     ]
+    ]
+   },
+   {
+    "t": "Having + V3: việc xảy ra trước",
+    "say": "Khi muốn nói rõ việc trong cụm rút gọn đã xong *trước* việc ở mệnh đề chính, dùng *Having + V3*.",
+    "ex": [
+     [
+      "*Having finished* her homework, she watched TV.",
+      "Làm xong bài tập, cô ấy xem TV.",
+      "Làm bài xong trước, rồi mới xem TV."
+     ]
+    ]
+   },
+   {
+    "t": "Điều kiện bắt buộc: phải cùng chủ ngữ",
+    "say": "Người đọc sẽ hiểu rằng chủ ngữ của cụm V-ing chính là chủ ngữ của mệnh đề chính. Nếu hai chủ ngữ khác nhau thì câu sẽ thành vô nghĩa hoặc buồn cười. Trước khi rút gọn, luôn kiểm tra: người làm việc trong cụm V-ing có đúng là chủ ngữ của mệnh đề chính không?",
+    "ex": [
+     [
+      "✗ *Walking* to school, *the rain* started. → ✓ *Walking* to school, *I* got wet. / While I was walking to school, the rain started.",
+      "Đang đi bộ tới trường thì tôi bị ướt.",
+      "Câu sai có nghĩa là \"cơn mưa đang đi bộ tới trường\". Người đi bộ là tôi, nên chủ ngữ của mệnh đề chính phải là I."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "The people *lived* in this area are poor.",
+    "The people *living* in this area are poor.",
+    "Câu chỉ được có một động từ chia (are). Phần \"sống ở vùng này\" là phần rút gọn, và người dân tự sống, nên dùng V-ing."
+   ],
+   [
+    "The problems *causing* by pollution…",
+    "The problems *caused* by pollution…",
+    "Vấn đề bị gây ra, nên dùng V3. Thấy \"by\" phía sau thì gần như chắc chắn là V3."
+   ],
+   [
+    "*Using* too much, people's eyes are damaged by phones.",
+    "*Using* phones too much, people damage their eyes.",
+    "Người dùng là \"people\", không phải \"people's eyes\". Chủ ngữ mệnh đề chính phải là người thực hiện việc trong cụm V-ing."
+   ]
+  ],
+  "check": [
+   [
+    "Rút gọn: \"Students who are taught online need more discipline.\"",
+    "Students taught online need more discipline. Sinh viên được dạy (bị động), nên bỏ who are và giữ V3 taught."
+   ],
+   [
+    "Vì sao \"Built in 1900, the bridge is still in use\" dùng Built chứ không phải Building?",
+    "Chủ ngữ là the bridge. Cây cầu được xây (bị động), nên dùng V3 built."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Đầy đủ",
+     "s:N + x:who / which + v:V"
+    ],
+    [
+     "Rút gọn",
+     "s:N + b:V-ing"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Đầy đủ",
+     "s:N + x:which / who + v:is / are V3"
+    ],
+    [
+     "Rút gọn",
+     "s:N + b:V3"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Đầu câu",
+     "b:V-ing… , s:S + v:V"
+    ],
+    [
+     "Cuối câu",
+     "s:S + v:V , b:V-ing + o:…"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Xong trước",
+     "b:Having + v:V3… , s:S + v:V"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Điều kiện",
+     "b:V-ing… , s:S (chính người làm) + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "People ___ in big cities often feel stressed.",
+   "opts": [
+    "living",
+    "lived",
+    "who living"
+   ],
+   "a": 0,
+   "why": "who live → living (chủ động)."
+  },
+  {
+   "t": "choice",
+   "q": "Most of the goods ___ in this factory are exported.",
+   "opts": [
+    "producing",
+    "produced"
+   ],
+   "a": 1,
+   "why": "Bị động → V3."
+  },
+  {
+   "t": "choice",
+   "q": "She was the only student ___ the exam.",
+   "opts": [
+    "passing",
+    "to pass",
+    "passed"
+   ],
+   "a": 1,
+   "why": "the only + to V."
+  },
+  {
+   "t": "choice",
+   "q": "___ the report, she went home.",
+   "opts": [
+    "Having finished",
+    "Finished",
+    "Having been finished"
+   ],
+   "a": 0,
+   "why": "Xong trước, chủ động → Having + V3."
+  },
+  {
+   "t": "choice",
+   "q": "Câu nào đúng?",
+   "opts": [
+    "Walking to school, the rain started.",
+    "Walking to school, I got caught in the rain."
+   ],
+   "a": 1,
+   "why": "Chủ ngữ phải là người đi bộ (I)."
+  },
+  {
+   "t": "fill",
+   "q": "Sales rose steadily, ___ (reach) a peak in 2020.",
+   "a": [
+    "reaching"
+   ],
+   "why": "Cụm V-ing nêu kết quả."
+  },
+  {
+   "t": "choice",
+   "q": "___ in 1990, the school has 2,000 students.",
+   "opts": [
+    "Founding",
+    "Founded"
+   ],
+   "a": 1,
+   "why": "Trường được thành lập → bị động V3."
+  }
+ ],
+ "write": "Viết 3 câu về làm việc tại nhà, mỗi câu dùng một kiểu rút gọn: V-ing sau danh từ, V3 sau danh từ, và một cụm phân từ đầu câu (V-ing hoặc Having + V3)."
+}

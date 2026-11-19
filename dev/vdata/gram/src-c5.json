@@ -1,0 +1,249 @@
+{
+ "id": "c5",
+ "title": "Mệnh đề trạng ngữ và từ nối",
+ "use": "Nguyên nhân, kết quả, đối lập, mục đích, ví dụ",
+ "focus": "từ nối theo chức năng và theo loại từ theo sau: + mệnh đề (because, although), + cụm danh từ (because of, despite), trạng từ nối đầu câu (However, Therefore); nguyên nhân, kết quả, đối lập, nhượng bộ, mục đích, bổ sung, ví dụ",
+ "summary": [
+  "Cùng một ý có 3 loại từ nối: + mệnh đề, + danh từ / V-ing, và trạng từ đầu câu + dấu phẩy.",
+  "because / although + S + V; because of / despite + danh từ hoặc V-ing.",
+  "However, Therefore, As a result, In addition đứng đầu câu mới, sau là dấu phẩy.",
+  "so that + mệnh đề (thường có can/could); to / in order to + V."
+ ],
+ "theory_text": "1. Bảng từ nối theo loại Ý + mệnh đề (S + V) + danh từ / V-ing Đầu câu mới, có phẩy Nguyên nhân because, since, as because of, due to, owing to — Kết quả , so …; so … that lead to, result in, cause (động từ) Therefore, As a result, Consequently, Đối lập while, whereas unlike However, In contrast, On the other hand, Nhượng bộ although, even though despite, in spite of Nevertheless, Even so, Mục đích so that, in order that to V, in order to V, so as to V — Bổ sung and, not only … but also as well as, in addition to In addition, Moreover, Furthermore, Ví dụ — such as, including For example, For instance, 2. Nguyên nhân và kết quả Many people leave the village because there are few jobs. Many people leave the village because of the lack of jobs. There are few jobs. As a result , many people leave. The lack of jobs leads to migration. (lead to + danh từ) ✗ Because of tourists come, prices rise. ✓ Because tourists come, prices rise. / Because of the number of tourists, prices rise. 3. Nhượng bộ: although và despite although Although + S + V + , S + V despite Despite + N / V-ing + , S + V despite the fact Despite the fact that + S + V + , S + V ✗ Despite it was expensive, they went. ✓ Although it was expensive, they went. / Despite the high cost, they went. 4. Mục đích Many students work part-time to pay their fees. The city built bike lanes so that people could cycle safely. 5. Ví dụ Some countries, such as Thailand, rely on tourism. (giữa câu, + danh từ) For example , Venice receives over 20 million visitors a year. (đầu câu mới) Mẹo Đừng mở mọi câu bằng từ nối. Một đoạn thân bài khoảng 2–4 từ nối là đủ; đa dạng loại (một because, một As a result, một For example).",
+ "slow": {
+  "idea": "Để nói nguyên nhân, kết quả, sự đối lập, bạn cần từ nối. Khó ở chỗ: các từ có *nghĩa giống nhau* lại đòi *ngữ pháp khác nhau* ở phía sau.\nVí dụ \"bởi vì\" có thể là because hoặc because of. \"Mặc dù\" có thể là although hoặc despite. \"Tuy nhiên\" là however. Chúng thuộc ba nhóm khác nhau.\nNhóm 1 theo sau là một *mệnh đề* (có chủ ngữ và động từ). Nhóm 2 theo sau là một *danh từ* hoặc V-ing. Nhóm 3 đứng *giữa hai câu riêng*. Biết từ thuộc nhóm nào là viết đúng.",
+  "steps": [
+   {
+    "t": "Nhóm 1: từ nối + mệnh đề",
+    "say": "*because, since, as* (vì) · *although, even though, though* (mặc dù) · *while, whereas* (trong khi) · *so that* (để mà) · *if, unless, when*.\nSau các từ này phải có đủ chủ ngữ và động từ.",
+    "ex": [
+     [
+      "*Because* the rent is high, many people share flats.",
+      "Vì tiền thuê cao, nhiều người ở chung căn hộ.",
+      "Sau because là \"the rent is high\": có chủ ngữ và động từ."
+     ],
+     [
+      "*Although* she was tired, she kept working.",
+      "Mặc dù mệt, cô ấy vẫn tiếp tục làm.",
+      "Sau although là một mệnh đề đầy đủ."
+     ]
+    ]
+   },
+   {
+    "t": "Nhóm 2: từ nối + danh từ hoặc V-ing",
+    "say": "*because of, due to, owing to* (vì) · *despite, in spite of* (mặc dù) · *thanks to* (nhờ) · *instead of* (thay vì).\nSau các từ này là một danh từ, cụm danh từ, hoặc V-ing. Không có động từ đã chia.",
+    "ex": [
+     [
+      "*Because of* the high rent, many people share flats.",
+      "Vì tiền thuê cao, nhiều người ở chung căn hộ.",
+      "Sau because of là cụm danh từ \"the high rent\", không có động từ."
+     ],
+     [
+      "*Despite* being tired, she kept working.",
+      "Mặc dù mệt, cô ấy vẫn tiếp tục làm.",
+      "Sau despite là V-ing. Không viết \"despite she was tired\"."
+     ]
+    ]
+   },
+   {
+    "t": "Cách đổi qua lại giữa nhóm 1 và nhóm 2",
+    "say": "Đây là kỹ năng hay được dùng để viết lại câu. Từ mệnh đề sang cụm danh từ: bỏ động từ be rồi đưa tính từ ra trước danh từ, hoặc đổi động từ thành V-ing.",
+    "ex": [
+     [
+      "although *the weather was bad* → despite *the bad weather*",
+      "mặc dù thời tiết xấu",
+      "Bỏ was, đưa bad ra trước weather."
+     ],
+     [
+      "because *he worked hard* → because of *his hard work*",
+      "vì anh ấy làm việc chăm chỉ",
+      "Đổi động từ worked thành danh từ work, và he thành his."
+     ]
+    ]
+   },
+   {
+    "t": "Nhóm 3: từ nối đứng giữa hai câu",
+    "say": "*however, nevertheless* (tuy nhiên) · *therefore, as a result, consequently* (do đó) · *moreover, in addition, furthermore* (hơn nữa) · *for example* (ví dụ).\nChúng không nối hai mệnh đề trong một câu. Chúng mở đầu câu thứ hai: trước chúng là dấu chấm (hoặc dấu chấm phẩy), sau chúng là dấu phẩy.",
+    "ex": [
+     [
+      "The rent is high. *Therefore,* many people share flats.",
+      "Tiền thuê cao. Do đó, nhiều người ở chung căn hộ.",
+      "Hai câu riêng. Therefore đứng đầu câu hai, có dấu phẩy theo sau."
+     ]
+    ]
+   },
+   {
+    "t": "Nói mục đích",
+    "say": "*to V / in order to V* (để làm gì): dùng khi hai vế cùng một người làm. *so that + chủ ngữ + can / could / will*: dùng khi cần nêu chủ ngữ riêng.",
+    "ex": [
+     [
+      "She studies hard *to pass* the exam.",
+      "Cô ấy học chăm để thi đỗ.",
+      "Cùng một người học và thi đỗ, nên dùng to V."
+     ],
+     [
+      "She speaks slowly *so that everyone can* understand.",
+      "Cô ấy nói chậm để mọi người hiểu được.",
+      "Người nói là cô ấy, người hiểu là mọi người, nên dùng so that + mệnh đề."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "*Because of* the weather was bad, we stayed home.",
+    "*Because* the weather was bad, … / *Because of* the bad weather, …",
+    "because of chỉ đi với danh từ. Có động từ was thì phải dùng because."
+   ],
+   [
+    "*Despite* it rained, they went out.",
+    "*Although* it rained, … / *Despite* the rain, …",
+    "despite chỉ đi với danh từ hoặc V-ing."
+   ],
+   [
+    "*Despite of* the cost, …",
+    "*Despite* the cost, … / *In spite of* the cost, …",
+    "despite không có of. in spite of thì có."
+   ]
+  ],
+  "check": [
+   [
+    "Điền because hay because of: \"The match was cancelled ___ heavy rain.\"",
+    "because of. \"heavy rain\" là cụm danh từ, không có động từ."
+   ],
+   [
+    "Viết lại bằng despite: \"Although the price is high, people still buy it.\"",
+    "Despite the high price, people still buy it. Bỏ is, đưa high ra trước price."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Nhóm 1",
+     "b:because / although / while + s:S + v:V"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Nhóm 2",
+     "b:because of / despite / due to + o:N / V-ing"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Đổi",
+     "x:because + s:the weather + v:was + o:bad → x:because of + o:the bad weather"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "Nhóm 3",
+     "s:S + v:V + x:. + b:However / Therefore , s:S + v:V"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "Cùng người",
+     "s:S + v:V + b:to / in order to + v:V"
+    ],
+    [
+     "Khác người",
+     "s:S + v:V + b:so that + s:S2 + v:can / will + v:V"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "Many people leave the city ___ high living costs.",
+   "opts": [
+    "because",
+    "because of"
+   ],
+   "a": 1,
+   "why": "Theo sau là cụm danh từ → because of."
+  },
+  {
+   "t": "choice",
+   "q": "Prices rose sharply. ___, many residents moved out.",
+   "opts": [
+    "As a result",
+    "For example",
+    "Although"
+   ],
+   "a": 0,
+   "why": "Kết quả, đầu câu mới."
+  },
+  {
+   "t": "choice",
+   "q": "Too many visitors can lead to ___.",
+   "opts": [
+    "damage the environment",
+    "environmental damage"
+   ],
+   "a": 1,
+   "why": "lead to + danh từ."
+  },
+  {
+   "t": "choice",
+   "q": "___ the rain, the festival went ahead.",
+   "opts": [
+    "Although",
+    "Despite"
+   ],
+   "a": 1,
+   "why": "Theo sau là danh từ → Despite."
+  },
+  {
+   "t": "choice",
+   "q": "___ it was raining, the festival went ahead.",
+   "opts": [
+    "Although",
+    "Despite"
+   ],
+   "a": 0,
+   "why": "Theo sau là mệnh đề → Although."
+  },
+  {
+   "t": "choice",
+   "q": "Some countries, ___ Thailand and Vietnam, rely on tourism.",
+   "opts": [
+    "such as",
+    "for example"
+   ],
+   "a": 0,
+   "why": "such as + danh từ giữa câu."
+  },
+  {
+   "t": "choice",
+   "q": "The city built bike lanes ___ people could cycle safely.",
+   "opts": [
+    "so that",
+    "in order to",
+    "because"
+   ],
+   "a": 0,
+   "why": "so that + mệnh đề chỉ mục đích."
+  },
+  {
+   "t": "fill",
+   "q": "Hotels were built along the beach, ___ resulted in the loss of forests.",
+   "a": [
+    "which"
+   ],
+   "why": ", which thay cho cả vế trước."
+  }
+ ],
+ "write": "Viết 3–4 câu cho thân bài: một tác hại của du lịch, nguyên nhân (because / due to), một ví dụ (For example / such as), và một câu nhượng bộ (although / despite)."
+}

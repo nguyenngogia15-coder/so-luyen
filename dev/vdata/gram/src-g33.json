@@ -1,0 +1,288 @@
+{
+ "id": "g33",
+ "title": "Danh từ hoá và chủ ngữ giả It / There",
+ "use": "Viết câu học thuật gọn, khách quan",
+ "focus": "danh từ hoá (động từ, tính từ → danh từ), increase in / of, động từ + danh từ cố định (have an impact on, make a decision), chủ ngữ giả It (It is + adj + to V / that), There is / There are, khi nào không nên danh từ hoá",
+ "summary": [
+  "Danh từ hoá: biến hành động hoặc tính chất thành danh từ để đặt vào ô chủ ngữ, tân ngữ: grow → growth, decide → decision, important → importance.",
+  "Khi danh từ hoá, trạng từ đổi thành tính từ, chủ ngữ cũ đi theo of hoặc 's: tourism grew rapidly → the rapid growth of tourism.",
+  "It is + adj + to V / that + mệnh đề: đưa chủ ngữ dài ra cuối câu.",
+  "There is / There are + N để nói “có”; động từ chia theo danh từ đứng sau.",
+  "Mỗi câu chỉ nên có 1–2 cụm danh từ hoá, nhiều hơn thì câu nặng và khó đọc."
+ ],
+ "theory_text": "1. Danh từ hoá là gì Câu dùng động từ Câu dùng danh từ Tourism grew rapidly, and this caused traffic problems. The rapid growth of tourism caused traffic problems. The government decided to raise taxes, which surprised many people. The government's decision to raise taxes surprised many people. Cities are expanding, so farmland is shrinking. The expansion of cities has led to a loss of farmland . Mẹo Cụm danh từ hoá là một cụm danh từ bình thường, nên áp dụng được mọi thứ ở bài Cụm danh từ: thêm tính từ ở trước, thêm of… ở sau. 2. Bảng chuyển thường dùng Động từ / tính từ Danh từ Ví dụ grow growth the growth of online learning increase / decrease an increase / a decrease an increase in prices develop development the development of technology decide decision the decision to build a new airport fail failure the failure of the project able ability the ability to work in a team important importance the importance of sleep aware awareness public awareness of climate change poor poverty poverty in rural areas Lỗi hay gặp an increase in + thứ tăng ( an increase in prices ); an increase of + con số ( an increase of 10% ). 3. Động từ đi với danh từ Cụm Nghĩa Ví dụ have an impact / effect on ảnh hưởng tới Social media has a strong impact on teenagers. make a decision đưa ra quyết định Students make decisions about their future. play a role in đóng vai trò trong Parents play a key role in education. pose a threat to đe doạ Plastic waste poses a threat to marine life. raise awareness of nâng cao nhận thức về Campaigns raise awareness of road safety. 4. Chủ ngữ giả It It + adj + to V It + is + adj + to V It + adj + that It + is + adj + that + clause It is difficult to find affordable housing in big cities. (thay cho: To find affordable housing in big cities is difficult.) It is clear that public transport needs more investment. It is widely believed that exercise improves memory. (bị động, giọng khách quan) ✗ Is important to protect forests. ✓ It is important to protect forests. Tiếng Việt nói “Quan trọng là…” không cần chủ ngữ; tiếng Anh thì luôn cần. 5. There is / There are There are many reasons for this trend. There is a growing need for skilled workers. There has been a sharp rise in house prices. ✗ In my city have many parks. ✓ In my city, there are many parks. Nói “có” theo nghĩa tồn tại thì dùng there is / there are, không dùng have. Lỗi hay gặp Động từ chia theo danh từ đứng sau: There is a lot of traffic. / There are a lot of cars. 6. Đừng danh từ hoá quá tay ✗ The reduction of the consumption of energy by households is a necessity. ✓ Households need to use less energy . Ba bốn cụm danh từ chồng lên nhau làm câu khó hiểu. Mỗi câu 1–2 cụm là vừa.",
+ "slow": {
+  "idea": "Bài này dạy hai cách viết làm cho câu nghe học thuật hơn.\nThứ nhất, *danh từ hoá*: biến một động từ hoặc tính từ thành danh từ. Thay vì nói \"Giá tăng nhanh, điều đó làm người dân lo lắng\", bạn nói \"Sự tăng giá nhanh làm người dân lo lắng\". Ý vẫn vậy nhưng câu gọn hơn, và bạn có thể tiếp tục nói về \"sự tăng giá\" như một sự vật.\nThứ hai, *chủ ngữ giả* It và There. Chỗ chủ ngữ trong câu tiếng Anh không được để trống. Khi không có ai làm chủ ngữ thật, ta đặt It hoặc There vào để giữ chỗ.",
+  "steps": [
+   {
+    "t": "Danh từ hoá là gì",
+    "say": "Bạn lấy hành động của một câu rồi viết nó thành một cụm danh từ. Khi đó ba thứ thay đổi cùng lúc:\nĐộng từ đổi thành danh từ (increase → an increase, develop → development).\nTrạng từ đổi thành tính từ (rapidly → rapid).\nChủ ngữ cũ đi sau *of* hoặc *in*.",
+    "ex": [
+     [
+      "Prices *rose rapidly*. → *the rapid rise in* prices",
+      "Giá tăng nhanh. → sự tăng giá nhanh",
+      "rose thành danh từ rise. rapidly thành tính từ rapid. prices đi sau in."
+     ],
+     [
+      "The city *developed*. → *the development of* the city",
+      "Thành phố phát triển. → sự phát triển của thành phố",
+      "developed thành development. the city đi sau of."
+     ]
+    ]
+   },
+   {
+    "t": "Dùng để gộp hai câu thành một",
+    "say": "Sau khi đã biến câu thứ nhất thành cụm danh từ, bạn dùng cụm đó làm chủ ngữ cho câu thứ hai.",
+    "ex": [
+     [
+      "Unemployment increased. This caused social problems. → *The increase in unemployment caused* social problems.",
+      "Sự gia tăng thất nghiệp đã gây ra các vấn đề xã hội.",
+      "Câu thứ nhất trở thành chủ ngữ của câu thứ hai."
+     ]
+    ]
+   },
+   {
+    "t": "Trong Task 1: hai cách tả cùng một xu hướng",
+    "say": "Cách 1, dùng động từ: chủ ngữ + động từ + trạng từ. Cách 2, dùng danh từ: *There was + a / an + tính từ + danh từ + in…* Biết cả hai giúp bạn không lặp cấu trúc.",
+    "ex": [
+     [
+      "Sales *fell sharply*. = *There was a sharp fall in* sales.",
+      "Doanh số giảm mạnh.",
+      "fell thành a fall. sharply thành sharp. sales đi sau in."
+     ]
+    ]
+   },
+   {
+    "t": "Chủ ngữ giả It",
+    "say": "Khi chủ ngữ thật là một cụm dài (to V hoặc mệnh đề that), tiếng Anh thường đẩy nó ra cuối câu và đặt *It* ở đầu để giữ chỗ. It ở đây không chỉ vật nào cả.",
+    "ex": [
+     [
+      "*It* is difficult *to find a job*.",
+      "Tìm việc thì khó.",
+      "Chủ ngữ thật là \"to find a job\". Nói \"To find a job is difficult\" cũng đúng nhưng nặng đầu câu."
+     ],
+     [
+      "*It* is clear *that prices are rising*.",
+      "Rõ ràng là giá đang tăng.",
+      "Chủ ngữ thật là mệnh đề sau that."
+     ]
+    ]
+   },
+   {
+    "t": "Chủ ngữ giả There",
+    "say": "Dùng *There is / are* để giới thiệu rằng một thứ gì đó tồn tại. Động từ chia theo danh từ đứng sau.",
+    "ex": [
+     [
+      "*There are* several reasons for this trend.",
+      "Có một số lý do cho xu hướng này.",
+      "reasons là số nhiều nên dùng are."
+     ],
+     [
+      "*There has been* a significant increase in tourism.",
+      "Đã có một sự gia tăng đáng kể về du lịch.",
+      "an increase là số ít nên dùng has."
+     ]
+    ]
+   },
+   {
+    "t": "Đừng danh từ hoá quá tay",
+    "say": "Một câu chứa ba bốn danh từ trừu tượng nối nhau bằng of sẽ rất khó đọc. Mỗi câu chỉ nên danh từ hoá một ý. Nếu câu trở nên rối, hãy quay lại dùng động từ.",
+    "ex": [
+     [
+      "✗ The implementation of the reduction of the use of cars is necessary. → ✓ Cities need to reduce car use.",
+      "Các thành phố cần giảm việc dùng ô tô.",
+      "Câu thứ hai ngắn và rõ hơn nhiều."
+     ]
+    ]
+   }
+  ],
+  "traps": [
+   [
+    "the *rapidly* increase in prices",
+    "the *rapid* increase in prices",
+    "increase ở đây là danh từ, nên từ tả nó phải là tính từ rapid."
+   ],
+   [
+    "There *was* many changes.",
+    "There *were* many changes.",
+    "Động từ sau There chia theo danh từ đứng sau: changes là số nhiều."
+   ],
+   [
+    "*Is* difficult to solve this problem.",
+    "*It is* difficult to solve this problem.",
+    "Câu tiếng Anh không được bỏ trống chủ ngữ. Phải có It."
+   ],
+   [
+    "an increase *of* the number of cars",
+    "an increase *in* the number of cars",
+    "increase in + thứ tăng. increase of + lượng tăng: an increase of 20%."
+   ]
+  ],
+  "check": [
+   [
+    "Danh từ hoá: \"The population grew steadily.\"",
+    "the steady growth of (in) the population. grew thành growth, steadily thành steady."
+   ],
+   [
+    "\"It has many benefits\" và \"There are many benefits\" khác nhau thế nào?",
+    "\"It has\" chỉ đúng khi It đang thay cho một vật đã nhắc trước (ví dụ: This plan… It has many benefits). \"There are\" dùng để nói chung rằng có tồn tại nhiều lợi ích."
+   ]
+  ]
+ },
+ "slow_formulas": {
+  "0": {
+   "f": [
+    [
+     "Câu",
+     "s:Prices + v:rose + a:rapidly"
+    ],
+    [
+     "Danh từ hoá",
+     "x:the + o:rapid + b:rise + x:in + s:prices"
+    ]
+   ]
+  },
+  "1": {
+   "f": [
+    [
+     "Gộp",
+     "b:The increase in unemployment + v:caused + o:…"
+    ]
+   ]
+  },
+  "2": {
+   "f": [
+    [
+     "Dùng động từ",
+     "s:N + v:V + a:trạng từ"
+    ],
+    [
+     "Dùng danh từ",
+     "x:There was + x:a / an + o:tính từ + b:danh từ + x:in + s:N"
+    ]
+   ]
+  },
+  "3": {
+   "f": [
+    [
+     "It",
+     "x:It + v:is + o:tính từ + b:to V / that…"
+    ]
+   ]
+  },
+  "4": {
+   "f": [
+    [
+     "There",
+     "x:There + v:is / are / has been + s:N"
+    ]
+   ]
+  }
+ },
+ "exercises": [
+  {
+   "t": "choice",
+   "q": "The rapid ___ of tourism has created many jobs.",
+   "opts": [
+    "grow",
+    "growth",
+    "grew"
+   ],
+   "a": 1,
+   "why": "Sau tính từ rapid và trước of cần danh từ."
+  },
+  {
+   "t": "choice",
+   "q": "There ___ a lot of traffic in the city centre.",
+   "opts": [
+    "is",
+    "are"
+   ],
+   "a": 0,
+   "why": "traffic không đếm được → is."
+  },
+  {
+   "t": "choice",
+   "q": "___ is essential that everyone reduce plastic waste.",
+   "opts": [
+    "It",
+    "This",
+    "There"
+   ],
+   "a": 0,
+   "why": "It giữ chỗ cho mệnh đề that phía sau."
+  },
+  {
+   "t": "choice",
+   "q": "Social media has a strong impact ___ young people.",
+   "opts": [
+    "on",
+    "to",
+    "for"
+   ],
+   "a": 0,
+   "why": "have an impact on."
+  },
+  {
+   "t": "choice",
+   "q": "There has been an increase ___ house prices.",
+   "opts": [
+    "in",
+    "of",
+    "on"
+   ],
+   "a": 0,
+   "why": "increase in + thứ tăng."
+  },
+  {
+   "t": "choice",
+   "q": "In my hometown, ___ many beautiful beaches.",
+   "opts": [
+    "has",
+    "there are",
+    "have"
+   ],
+   "a": 1,
+   "why": "Nói “có” (tồn tại) → there are."
+  },
+  {
+   "t": "choice",
+   "q": "Danh từ hoá câu “Air pollution increased sharply.”:",
+   "opts": [
+    "the sharp increase in air pollution",
+    "the sharply increase of air pollution",
+    "the sharp increase of air pollution"
+   ],
+   "a": 0,
+   "why": "sharply → sharp; increase in + thứ tăng."
+  },
+  {
+   "t": "choice",
+   "q": "The government made a ___ to ban plastic bags.",
+   "opts": [
+    "decide",
+    "decision",
+    "decisive"
+   ],
+   "a": 1,
+   "why": "make a decision."
+  },
+  {
+   "t": "fill",
+   "q": "Danh từ của aware: public ___ of climate change",
+   "a": [
+    "awareness"
+   ],
+   "why": "aware → awareness."
+  },
+  {
+   "t": "fill",
+   "q": "Danh từ của fail: the ___ of the project",
+   "a": [
+    "failure"
+   ],
+   "why": "fail → failure."
+  }
+ ],
+ "write": "Viết lại 3 câu sau cho học thuật hơn, giữ nguyên nghĩa: (1) Many people moved to cities, and this put pressure on housing. (2) To learn a language without practice is hard. (3) In Vietnam have many motorbikes."
+}
