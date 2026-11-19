@@ -11745,7 +11745,7 @@ async function spLib() {
   const T = await import(spBase() + "lib/transformers.min.js");
   T.env.allowRemoteModels = false; T.env.allowLocalModels = true; T.env.localModelPath = spBase() + "models/"; T.env.useBrowserCache = false; T.env.useCustomCache = true;
   T.env.customCache = { match: async key => { const k = String(key).split("/models/").pop(); const man = await spManifest(); if (!man[k]) return undefined; const u8 = await spAssemble(k, SP.curGroup || "asr"); return new Response(u8, { headers: { "content-length": String(u8.length) } }); }, put: async () => {} };
-  const w = T.env.backends.onnx.wasm; w.wasmPaths = spBase() + "lib/"; w.numThreads = 1; w.proxy = false;
+  const w = T.env.backends.onnx.wasm; w.wasmPaths = spBase() + "lib/"; w.numThreads = 1; w.proxy = true;
   w.wasmBinary = (await spAssemble("ort.wasm", "lib")).buffer;
   return SP.T = T;
 }
@@ -11848,20 +11848,23 @@ async function spExpected(text) {
 /* Mô hình → log xác suất [F × 40] (39 âm + khoảng trống), nhiệt độ 2 cho điểm mượt hơn; frames.t = thời điểm (giây) của từng khung */
 async function spLogp(a, onProg) {
   await spLoad("ph");
-  const T = SP.T, win = 16000 * 20, frames = [], times = [], nWin = Math.ceil(a.length / win);
-  for (let o = 0, wi = 0; o < a.length; o += win, wi++) {
+  /* Âm thanh dài: chạy từng khúc 6 giây (đệm 1 giây hai bên cho đủ ngữ cảnh), nghỉ giữa các khúc để trang không bị đơ */
+  const T = SP.T, SR = 16000, long = a.length > SR * 8, core = long ? SR * 6 : a.length, pad = long ? SR : 0, frames = [], times = [], nWin = Math.ceil(a.length / core);
+  for (let o = 0, wi = 0; o < a.length; o += core, wi++) {
     onProg?.(wi, nWin);
-    const seg = a.subarray(o, Math.min(a.length, o + win)); if (seg.length < 1600) break;
+    const s0 = Math.max(0, o - pad), s1 = Math.min(a.length, o + core + pad), seg = a.subarray(s0, s1); if (seg.length < 1600) break;
     let m = 0; for (const v of seg) m += v; m /= seg.length; let sd = 0; for (const v of seg) sd += (v - m) ** 2; sd = Math.sqrt(sd / seg.length) + 1e-7;
     const x = new Float32Array(seg.length); for (let i = 0; i < seg.length; i++) x[i] = (seg[i] - m) / sd;
     const { logits } = await SP.ph({ input_values: new T.Tensor("float32", x, [1, x.length]) });
-    const [, F, V] = logits.dims, d = logits.data, step = seg.length / 16000 / F;
+    const [, F, V] = logits.dims, d = logits.data, step = seg.length / SR / F, lo = o / SR, hi = Math.min(a.length, o + core) / SR;
     for (let f = 0; f < F; f++) {
+      const tt = s0 / SR + f * step; if (long && (tt < lo - 1e-6 || tt >= hi - 1e-6)) continue;
       const row = new Float32Array(NC); let mx = -Infinity; for (let v = 0; v < V; v++) mx = Math.max(mx, d[f * V + v] / 2);
       let z = 0; const e = new Float64Array(V); for (let v = 0; v < V; v++) { e[v] = Math.exp(d[f * V + v] / 2 - mx); z += e[v]; }
       let bl = 0; for (let v = 0; v < V; v++) { if (v < NPH) row[v] = Math.log(e[v] / z + 1e-10); else bl += e[v] / z; }
-      row[NPH] = Math.log(bl + 1e-10); frames.push(row); times.push(o / 16000 + f * step);
+      row[NPH] = Math.log(bl + 1e-10); frames.push(row); times.push(tt);
     }
+    if (long) await new Promise(r => setTimeout(r, 0));
   }
   onProg?.(nWin, nWin); frames.t = times; frames.step = times.length > 1 ? (times[times.length - 1] - times[0]) / (times.length - 1) : 0.02;
   return frames;
@@ -11875,6 +11878,29 @@ function spAlign(L, seq) {
   D[0] = L[0][S[0]]; if (n > 1) D[1] = L[0][S[1]];
   const skip = new Uint8Array(n); for (let s = 2; s < n; s++) skip[s] = S[s] !== NPH && S[s] !== S[s - 2] ? 1 : 0;
   for (let t = 1; t < F; t++) {
+    const row = L[t], base = t * W;
+    for (let s = 0; s < n; s++) {
+      let best = D[s], k = 0;
+      if (s >= 1 && D[s - 1] > best) { best = D[s - 1]; k = 1; }
+      if (skip[s] && D[s - 2] > best) { best = D[s - 2]; k = 2; }
+      N[s] = best + row[S[s]]; if (k) B[base + (s >> 2)] |= k << ((s & 3) << 1);
+    }
+    const tmp = D; D = N; N = tmp;
+  }
+  let s = n > 1 && D[n - 2] > D[n - 1] ? n - 2 : n - 1; const segs = seq.map(() => []);
+  for (let t = F - 1; t >= 0; t--) { if (s % 2 === 1) segs[(s - 1) / 2].unshift(t); s -= (B[t * W + (s >> 2)] >> ((s & 3) << 1)) & 3; }
+  return segs;
+}
+/* Bản chạy nền cho bài dài: nghỉ sau mỗi 150 khung để trang vẫn bấm được */
+async function spAlignAsync(L, seq) {
+  const F = L.length, S = [NPH]; for (const p of seq) S.push(p, NPH);
+  const n = S.length, NEG = -1e30; if (!F || F < seq.length) return seq.map(() => []);
+  const W = (n + 3) >> 2, B = new Uint8Array(F * W);
+  let D = new Float64Array(n).fill(NEG), N = new Float64Array(n);
+  D[0] = L[0][S[0]]; if (n > 1) D[1] = L[0][S[1]];
+  const skip = new Uint8Array(n); for (let s = 2; s < n; s++) skip[s] = S[s] !== NPH && S[s] !== S[s - 2] ? 1 : 0;
+  for (let t = 1; t < F; t++) {
+    if (t % 150 === 0) await new Promise(r => setTimeout(r, 0));
     const row = L[t], base = t * W;
     for (let s = 0; s < n; s++) {
       let best = D[s], k = 0;
@@ -14166,7 +14192,7 @@ async function alForced(a16, sents, onProg) {
   const L = await spLogp(a16, (i, n) => onProg?.(i, n)), t = L.t, step = L.step;
   const exps = await Promise.all(sents.map(s => spExpected(s.x))), seq = [], own = [];
   exps.forEach((ws, si) => ws.forEach((w, wi) => (w.ph || []).forEach(p => { seq.push(A2I[phBase(p)]); own.push([si, wi]); })));
-  const al = spAlign(L, seq), span = sents.map(() => [Infinity, -Infinity]), words = exps.map(ws => ws.map(w => ({ w: w.w, s: null, e: null })));
+  const al = await spAlignAsync(L, seq), span = sents.map(() => [Infinity, -Infinity]), words = exps.map(ws => ws.map(w => ({ w: w.w, s: null, e: null })));
   al.forEach((f, i) => { if (!f.length) return; const [si, wi] = own[i], a = t[f[0]], b = t[f[f.length - 1]] + step;
     span[si][0] = Math.min(span[si][0], a); span[si][1] = Math.max(span[si][1], b);
     const W = words[si][wi]; W.s = W.s == null ? a : Math.min(W.s, a); W.e = W.e == null ? b : Math.max(W.e, b); });
@@ -14221,7 +14247,6 @@ function lsSegs(s, src) {
   const rr = () => { if (document.querySelector("[data-lsseg]")) render(); };
   alGet(key, src.url, sents, { forced: false }).then(async r => {
     Object.assign(st, { state: "ok", segs: r.segs, how: r.how, words: r.words }); rr();
-    if (r.how !== "forced" && (spReady(["ph"]) || await spCached(["ph"]))) lsSegForce(s, src);
   }, e => { Object.assign(st, { state: "err", err: String(e?.message || e) }); rr(); });
   return st;
 }
