@@ -1,0 +1,42 @@
+/* Lộ trình từ vựng */
+.vr-modes{gap:6px}
+.vr-layout{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.vr-layout{grid-template-columns:1fr}.vr-parts{max-height:260px;overflow:auto}}
+.vr-parts{display:flex;flex-direction:column;gap:6px;position:sticky;top:calc(68px + env(safe-area-inset-top,0px));max-height:calc(100vh - 90px);overflow:auto}
+.vr-part{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;cursor:pointer;font:inherit;color:inherit}
+.vr-part.on{border-color:var(--accent);background:var(--accent-soft)}
+.vr-pn{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;min-width:1.8em}
+.vr-skip{flex-direction:row;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.vr-lesson.lock{opacity:.6}
+.vr-sc{color:var(--warn);font-variant-numeric:tabular-nums}
+.vr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px}
+@media (max-width:640px){.vr-body{grid-template-columns:1fr}}
+.vr-steps{display:flex;align-items:center;gap:12px}
+.vr-step{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;cursor:pointer;font:inherit;color:inherit;padding:0}
+.vr-step:disabled{cursor:not-allowed;opacity:.55}
+.vr-dot{position:relative;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;font-weight:800;background:var(--surface-2);border:2px solid var(--line);color:var(--muted)}
+.vr-step.done .vr-dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.vr-step:not(.lock):not(.done) .vr-dot{border-color:var(--accent);color:var(--accent)}
+.vr-st{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:.66rem;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:0 6px;color:var(--warn);white-space:nowrap}
+.vr-arrow{color:var(--muted);font-size:1.2rem}
+.vr-more{display:flex;flex-direction:column;gap:8px;background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.vr-opt{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 14px;font:inherit;color:inherit;cursor:pointer}
+.vr-opt:not(.lock):hover{border-color:var(--accent)}.vr-opt.lock{opacity:.55;cursor:not-allowed}
+.vr-stars i{font-style:normal;color:var(--line);margin-left:2px}.vr-stars i.on{color:var(--warn)}
+.vr-card{min-height:360px}
+.vr-def{font-size:.98rem;opacity:.9;max-width:60ch}
+.vr-exs{display:flex;flex-direction:column;gap:8px;width:100%;max-width:640px;text-align:left}
+.vr-ex{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px}
+.vr-ex summary{font-size:.8rem;opacity:.8}.vr-ex details>summary::before{background:transparent;border-color:rgba(255,255,255,.3)}
+.vr-mark{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vr-mark .fc-g:disabled{opacity:.45;cursor:not-allowed}
+.vr-q{align-items:center;text-align:center;gap:14px;padding:26px 18px}
+.vr-qw{font-size:2.2rem;font-weight:800;letter-spacing:-.03em}
+.vr-qs{font-family:var(--font-read);font-size:1.25rem;margin:0;max-width:60ch}
+.vr-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;max-width:720px}
+@media (max-width:560px){.vr-opts{grid-template-columns:1fr}}
+.vr-o{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;font:inherit;font-weight:600;color:inherit;cursor:pointer;min-width:0}
+.vr-o:hover:not(:disabled){border-color:var(--accent)}
+.vr-o.right{border-color:var(--good);background:var(--good-soft)}.vr-o.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.vr-k{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--surface-2);font-size:.75rem}
+.vr-big{font-size:3rem;color:var(--warn);line-height:1}
