@@ -11658,7 +11658,7 @@ window.__bootApp = boot;
 </style>
 <script>
 /* ===== Bộ nhận diện giọng nói chạy ngay trên máy (không gọi AI) =====
-   - Whisper base.en: chép lời khi luyện nói tự do
+   - Whisper small.en: chép lời khi luyện nói tự do
    - HuBERT âm vị (Peacockery/hubert-base-phoneme-en, Apache-2.0): chấm từng âm theo GOP
    - Từ điển CMU (giọng Mỹ) */
 const SP = { T: null, man: null, asr: null, ph: null, loading: {}, prog: {}, lex: null, stage: "" };
@@ -11669,6 +11669,12 @@ async function spIdb(op, key, val) {
   const db = await spDB(); if (!db) return null;
   return new Promise(res => { try { const tx = db.transaction("chunks", op === "get" ? "readonly" : "readwrite"); const st = tx.objectStore("chunks"); const r = op === "get" ? st.get(key) : st.put(val, key); r.onsuccess = () => res(op === "get" ? r.result || null : true); r.onerror = () => res(null); } catch { res(null); } });
 }
+async function spPrune() {
+  try { const man = await spManifest(), keep = new Set(Object.values(man).flatMap(v => v.parts)), db = await spDB(); if (!db) return;
+    const st = db.transaction("chunks", "readwrite").objectStore("chunks"), r = st.getAllKeys();
+    r.onsuccess = () => r.result.forEach(k => { if (!keep.has(k)) st.delete(k); }); } catch {}
+}
+setTimeout(spPrune, 4000);
 async function spFetchPart(path) {
   const hit = await spIdb("get", path); if (hit) return new Uint8Array(hit);
   const r = await fetch(spBase() + path); if (!r.ok) throw new Error("Tải " + path + " lỗi " + r.status);
@@ -11680,7 +11686,7 @@ async function spAssemble(key, group) {
   for (const p of m.parts) { const b = await spFetchPart(p); out.set(b, o); o += b.length; const g = SP.prog[group] ||= { got: 0 }; g.got += b.length; SP.onProg?.(); }
   return out;
 }
-const SP_KEYS = { asr: ["whisper-base.en/onnx/encoder_model_quantized.onnx", "whisper-base.en/onnx/decoder_model_merged_quantized.onnx"], ph: ["phoneme-hb/onnx/model.onnx"] };
+const SP_KEYS = { asr: ["whisper-small.en/onnx/encoder_model_quantized.onnx", "whisper-small.en/onnx/decoder_model_merged_quantized.onnx"], ph: ["phoneme-hb/onnx/model.onnx"] };
 async function spTotal(keys) { const m = await spManifest(); return keys.reduce((a, k) => a + (m[k]?.size || 0), 0); }
 async function spLib() {
   if (SP.T) return SP.T;
@@ -11699,7 +11705,7 @@ function spLoad(which) {
     SP.stage = SP.T ? "" : "Đang tải thư viện chạy mô hình"; const T = await spLib(); SP.curGroup = which;
     SP.stage = which === "asr" ? "Đang khởi động bộ chép lời" : "Đang khởi động bộ chấm phát âm";
     const timeout = (p, ms, msg) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms))]);
-    if (which === "asr") SP.asr = await timeout(T.pipeline("automatic-speech-recognition", "whisper-base.en", { dtype: { encoder_model: "q8", decoder_model_merged: "q8" }, device: "wasm" }), 300000, "Khởi động bộ chép lời quá 5 phút (máy có thể thiếu bộ nhớ)");
+    if (which === "asr") SP.asr = await timeout(T.pipeline("automatic-speech-recognition", "whisper-small.en", { dtype: { encoder_model: "q8", decoder_model_merged: "q8" }, device: "wasm" }), 300000, "Khởi động bộ chép lời quá 5 phút (máy có thể thiếu bộ nhớ)");
     else SP.ph = await timeout(T.AutoModelForCTC.from_pretrained("phoneme-hb", { dtype: "fp32", device: "wasm" }), 300000, "Khởi động bộ chấm phát âm quá 5 phút");
     SP.stage = ""; return true;
   })().catch(e => { delete SP.loading[which]; SP.stage = ""; throw e; });
@@ -12351,7 +12357,7 @@ function recBox(onBlob, opts = {}) {
 /* ----- Thẻ tải bộ nhận diện ----- */
 function spModelCard(need) {
   if (spReady(need)) return null;
-  const mb = need.includes("asr") ? (need.includes("ph") ? 220 : 100) : 140;
+  const mb = need.includes("asr") ? (need.includes("ph") ? 390 : 270) : 145;
   const bar = h("div", { class: "meter" }, h("i", { style: "width:0%" })), txt = h("span", { class: "small" }), t0 = Date.now();
   const upd = () => { let g = 0, t = 0; for (const k of ["lib", ...need]) { const p = SP.prog[k]; if (p) { g += p.got; t += p.total || 0; } } bar.firstChild.style.width = (t ? Math.min(100, g / t * 100) : 0) + "%";
     const sec = Math.round((Date.now() - t0) / 1000); txt.textContent = t && g >= t ? `${SP.stage || "Đang khởi động"}… (${sec} giây, lần đầu có thể mất 1 phút)` : t ? `Đang tải ${Math.round(g / 1048576)}/${Math.round(t / 1048576)} MB…` : "Đang chuẩn bị…"; };

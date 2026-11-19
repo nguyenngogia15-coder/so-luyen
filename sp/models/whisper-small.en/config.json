@@ -1,32 +1,29 @@
 {
-  "alignment_heads": [
-    [
-      3,
-      3
-    ],
-    [
-      4,
-      7
-    ],
-    [
-      5,
-      1
-    ],
-    [
-      5,
-      5
-    ],
-    [
-      5,
-      7
-    ]
+  "_name_or_path": "openai/whisper-small.en",
+  "activation_dropout": 0.0,
+  "activation_function": "gelu",
+  "apply_spec_augment": false,
+  "architectures": [
+    "WhisperForConditionalGeneration"
   ],
+  "attention_dropout": 0.0,
   "begin_suppress_tokens": [
     220,
     50256
   ],
   "bos_token_id": 50257,
+  "classifier_proj_size": 256,
+  "d_model": 768,
+  "decoder_attention_heads": 12,
+  "decoder_ffn_dim": 3072,
+  "decoder_layerdrop": 0.0,
+  "decoder_layers": 12,
   "decoder_start_token_id": 50257,
+  "dropout": 0.0,
+  "encoder_attention_heads": 12,
+  "encoder_ffn_dim": 3072,
+  "encoder_layerdrop": 0.0,
+  "encoder_layers": 12,
   "eos_token_id": 50256,
   "forced_decoder_ids": [
     [
@@ -34,13 +31,23 @@
       50362
     ]
   ],
-  "is_multilingual": false,
-  "max_initial_timestamp_index": 50,
+  "init_std": 0.02,
+  "is_encoder_decoder": true,
+  "mask_feature_length": 10,
+  "mask_feature_min_masks": 0,
+  "mask_feature_prob": 0.0,
+  "mask_time_length": 10,
+  "mask_time_min_masks": 2,
+  "mask_time_prob": 0.05,
   "max_length": 448,
-  "no_timestamps_token_id": 50362,
+  "max_source_positions": 1500,
+  "max_target_positions": 448,
+  "median_filter_width": 7,
+  "model_type": "whisper",
+  "num_hidden_layers": 12,
+  "num_mel_bins": 80,
   "pad_token_id": 50256,
-  "prev_sot_token_id": 50360,
-  "return_timestamps": false,
+  "scale_embedding": false,
   "suppress_tokens": [
     1,
     2,
@@ -134,5 +141,7 @@
     50361
   ],
   "transformers_version": "4.38.2",
-  "trust_remote_code": false
+  "use_cache": true,
+  "use_weighted_layer_sum": false,
+  "vocab_size": 51864
 }

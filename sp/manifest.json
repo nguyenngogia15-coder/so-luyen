@@ -1,39 +1,51 @@
 {
-"ort.wasm": {
-"parts": [
-"m/ort-0.wasm",
-"m/ort-1.wasm"
-],
-"size": 21596019
-},
-"whisper-base.en/onnx/encoder_model_quantized.onnx": {
-"parts": [
-"m/we-0.wasm",
-"m/we-1.wasm"
-],
-"size": 23159173
-},
-"whisper-base.en/onnx/decoder_model_merged_quantized.onnx": {
-"parts": [
-"m/wd-0.wasm",
-"m/wd-1.wasm",
-"m/wd-2.wasm",
-"m/wd-3.wasm"
-],
-"size": 53712196
-},
-"phoneme-hb/onnx/model.onnx": {
-"parts": [
-"m/hb-0.bin",
-"m/hb-1.bin",
-"m/hb-2.bin",
-"m/hb-3.bin",
-"m/hb-4.bin",
-"m/hb-5.bin",
-"m/hb-6.bin",
-"m/hb-7.bin",
-"m/hb-8.bin"
-],
-"size": 121921957
-}
+ "ort.wasm": {
+  "parts": [
+   "m/ort-0.wasm",
+   "m/ort-1.wasm"
+  ],
+  "size": 21596019
+ },
+ "phoneme-hb/onnx/model.onnx": {
+  "parts": [
+   "m/hb-0.bin",
+   "m/hb-1.bin",
+   "m/hb-2.bin",
+   "m/hb-3.bin",
+   "m/hb-4.bin",
+   "m/hb-5.bin",
+   "m/hb-6.bin",
+   "m/hb-7.bin",
+   "m/hb-8.bin"
+  ],
+  "size": 121921957
+ },
+ "whisper-small.en/onnx/encoder_model_quantized.onnx": {
+  "parts": [
+   "m/ws-0.wasm",
+   "m/ws-1.wasm",
+   "m/ws-2.wasm",
+   "m/ws-3.wasm",
+   "m/ws-4.wasm",
+   "m/ws-5.wasm",
+   "m/ws-6.wasm"
+  ],
+  "size": 92240508
+ },
+ "whisper-small.en/onnx/decoder_model_merged_quantized.onnx": {
+  "parts": [
+   "m/wsd-0.wasm",
+   "m/wsd-1.wasm",
+   "m/wsd-2.wasm",
+   "m/wsd-3.wasm",
+   "m/wsd-4.wasm",
+   "m/wsd-5.wasm",
+   "m/wsd-6.wasm",
+   "m/wsd-7.wasm",
+   "m/wsd-8.wasm",
+   "m/wsd-9.wasm",
+   "m/wsd-10.wasm"
+  ],
+  "size": 156794981
+ }
 }
