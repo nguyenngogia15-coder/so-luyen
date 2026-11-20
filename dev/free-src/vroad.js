@@ -156,7 +156,7 @@ function vrPron(part, items, v, head, back) {
     s.s = Math.max(s.s || 0, got); saveProfile();
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Phát âm · " + (got ? "★".repeat(got) : "chưa có sao"), `Điểm trung bình ${avg}/100. Cần từ 65 để có 1 sao, 75 có 2 sao, 85 có 3 sao.`, [h("button", { class: "btn", type: "button", onclick: () => { v.p = null; render(); } }, "Làm lại"), h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình")]));
   }
-  const judge = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, it.w, say); R.sc[it.w] = Math.max(R.sc[it.w] ?? 0, r.score ?? 0); R.res = r; render(); };
+  const judge = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, it.w, say, "ph"); R.sc[it.w] = Math.max(R.sc[it.w] ?? 0, r.score ?? 0); R.res = r; render(); };
   return h("div", { class: "stack", style: "gap:14px" }, head, h("div", { class: "meter" }, h("i", { style: `width:${R.i / items.length * 100}%` })),
     h("section", { class: "card vr-q" }, h("span", { class: "small muted" }, `Từ ${R.i + 1}/${items.length}`), h("span", { class: "vr-qw" }, it.w), it.ipa ? h("span", { class: "muted" }, it.ipa) : null,
       h("div", { class: "row", style: "justify-content:center" }, h("button", { class: "btn", type: "button", onclick: () => vrSay(it.w) }, "🔊 Nghe mẫu")),

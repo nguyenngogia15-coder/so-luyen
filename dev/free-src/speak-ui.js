@@ -44,15 +44,15 @@ function recBox(onBlob, opts = {}) {
 /* ----- Thẻ tải bộ nhận diện ----- */
 function spModelCard(need) {
   if (spReady(need)) return null;
-  const mb = need.includes("asr") ? (need.includes("ph") ? 390 : 270) : 145;
+  const mb = need.map(spK).reduce((s, k) => s + ({ asr: 250, ph: 120, phx: 320 }[k] || 0), 0) + (SP.T ? 0 : 20);
   const bar = h("div", { class: "meter" }, h("i", { style: "width:0%" })), txt = h("span", { class: "small" }), t0 = Date.now();
-  const upd = () => { let g = 0, t = 0; for (const k of ["lib", ...need]) { const p = SP.prog[k]; if (p) { g += p.got; t += p.total || 0; } } bar.firstChild.style.width = (t ? Math.min(100, g / t * 100) : 0) + "%";
+  const upd = () => { let g = 0, t = 0; for (const k of ["lib", ...need.map(spK)]) { const p = SP.prog[k]; if (p) { g += p.got; t += p.total || 0; } } bar.firstChild.style.width = (t ? Math.min(100, g / t * 100) : 0) + "%";
     const sec = Math.round((Date.now() - t0) / 1000); txt.textContent = t && g >= t ? `${SP.stage || "Đang khởi động"}… (${sec} giây, lần đầu có thể mất 1 phút)` : t ? `Đang tải ${Math.round(g / 1048576)}/${Math.round(t / 1048576)} MB…` : "Đang chuẩn bị…"; };
   const wrap = h("div", { class: "note warn stack", style: "gap:6px" });
   const btn = h("button", { class: "btn btn-primary", type: "button", onclick: async () => { btn.disabled = true; SP.onProg = upd; upd(); const iv = setInterval(upd, 800);
     try { for (const k of need) await spLoad(k); clearInterval(iv); render(); } catch (e) { clearInterval(iv); console.warn(e); txt.textContent = "Lỗi: " + (e?.message || e) + ". Tải lại trang rồi thử lại."; btn.disabled = false; } } }, `Bật bộ chấm (tải ${mb} MB lần đầu)`);
   wrap.append(h("span", { class: "small" }, h("b", null, "Bộ chấm phát âm chạy ngay trên máy bạn, "), "không gửi giọng nói đi đâu và không tốn lượt AI. Lần đầu cần tải mô hình (nên dùng Wi-Fi), sau đó máy nhớ để dùng tiếp."), h("div", { class: "row" }, btn, txt), bar);
-  if (need.some(k => SP.loading[k])) { btn.disabled = true; SP.onProg = upd; const iv = setInterval(() => { upd(); if (!document.body.contains(wrap)) clearInterval(iv); }, 800); Promise.all(need.map(k => SP.loading[k] || spLoad(k))).then(() => document.body.contains(wrap) && render(), () => {}); }
+  if (need.some(k => SP.loading[spK(k)])) { btn.disabled = true; SP.onProg = upd; const iv = setInterval(() => { upd(); if (!document.body.contains(wrap)) clearInterval(iv); }, 800); Promise.all(need.map(k => SP.loading[spK(k)] || spLoad(k))).then(() => document.body.contains(wrap) && render(), () => {}); }
   else spCached(need).then(ok => { if (ok && document.body.contains(btn) && !btn.disabled) { txt.textContent = "Đã có sẵn trên máy, đang bật…"; btn.click(); } });
   return wrap;
 }
@@ -133,7 +133,7 @@ function pagePrLesson(l) {
   }
   /* 3. Đọc từ */
   const wp = prWordPass(l, st), cur = W.word;
-  const judgeW = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, cur, say);
+  const judgeW = async (blob, say) => { await spLoad("phx"); const r = await spCheckText(blob, cur, say);
     if (l.phr) { if (r.score == null) throw { vn: "Máy chưa nghe rõ cụm này." }; st.w[cur] = Math.max(st.w[cur] ?? 0, r.score); pronStat(r.words); W.res = { word: cur, r, tOk: true, sc: r.score, phrase: true }; award("speaking", 2); prCheckDone(l); render(); return; }
     const w = r.words[0]; if (!w || w.score == null) throw { vn: "Máy chưa nghe rõ từ này." };
     const tgt = w.phones.filter(x => l.ph.includes(phBase(x.p))), tOk = tgt.every(x => x.s >= PR_PASS.target), sc = tOk ? w.score : Math.min(w.score, PR_PASS.word - 1);
@@ -142,17 +142,17 @@ function pagePrLesson(l) {
     h("div", { class: "sp-wgrid" }, l.words.map(w => { const b = st.w[w]; return h("button", { type: "button", class: "sp-wbtn" + (w === cur ? " on" : ""), onclick: () => { W.word = w; W.res = null; render(); } }, h("b", null, w), h("span", { class: "small muted" }, ipaOf(w)), b != null ? scoreChip(b) : h("span", { class: "chip" }, "chưa đọc")); })),
     h("div", { class: "task-box stack", style: "gap:8px" },
       h("div", { class: "row", style: "gap:12px;align-items:center" }, h("span", { class: "sp-big" }, cur), h("span", { class: "sp-ipa-big" }, ipaOf(cur)), sayBtn(cur, "🔊 Nghe mẫu", "btn"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => spSay(cur, 0.7) }, "🐢 Chậm")),
-      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeW, { max: l.phr ? 8 : 5, hint: l.phr ? "Đọc cả cụm liền một hơi rồi bấm Dừng." : "Đọc to, rõ một lần rồi bấm Dừng." }) : null,
+      spModelCard(["phx"]), spReady(["phx"]) ? recBox(judgeW, { max: l.phr ? 8 : 5, hint: l.phr ? "Đọc cả cụm liền một hơi rồi bấm Dừng." : "Đọc to, rõ một lần rồi bấm Dừng." }) : null,
       W.res && W.res.word === cur ? h("div", { class: "stack", style: "gap:6px" }, W.res.phrase ? resultView(W.res.r, { label: "Cả cụm" }) : wordDetail(W.res.r.words[0]), !W.res.tOk && l.ph.length ? h("p", { class: "note warn small", style: "margin:0" }, `Âm trọng tâm của bài chưa đạt (dưới ${PR_PASS.target}), nên lần này tính tối đa ${PR_PASS.word - 1} điểm.`) : null,
         h("div", { class: "row" }, (() => { const k = l.words.indexOf(cur), n = l.words.find((w, j) => j > k && st.w[w] == null) || l.words[(k + 1) % l.words.length]; return h("button", { class: "btn", type: "button", onclick: () => { W.word = n; W.res = null; render(); } }, "Từ tiếp ›"); })())) : null));
   /* 4. Đọc câu */
   const sp2 = prSentPass(l, st), si = W.sent, sent = l.sents[si];
-  const judgeS = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, sent, say); st.s[si] = Math.max(st.s[si] ?? 0, r.score ?? 0); pronStat(r.words); W.sres = { i: si, r }; award("speaking", 4); prCheckDone(l); render(); };
+  const judgeS = async (blob, say) => { await spLoad("phx"); const r = await spCheckText(blob, sent, say); st.s[si] = Math.max(st.s[si] ?? 0, r.score ?? 0); pronStat(r.words); W.sres = { i: si, r }; award("speaking", 4); prCheckDone(l); render(); };
   const s4 = h("section", { class: "card stack", style: "gap:10px" }, secH(l.pairs.length ? 4 : 3, "Đọc cả câu", sp2.avg != null ? `Trung bình ${sp2.avg}/100 · cần ${PR_PASS.sent}` : `Đã đọc ${sp2.n}/${l.sents.length} câu · cần trung bình ${PR_PASS.sent}`),
     h("div", { class: "row", style: "gap:6px" }, l.sents.map((s, k) => h("button", { type: "button", class: "opt", "aria-pressed": String(k === si), onclick: () => { W.sent = k; W.sres = null; render(); } }, `Câu ${k + 1}`, st.s[k] != null ? " · " + st.s[k] : ""))),
     h("div", { class: "task-box stack", style: "gap:8px" }, h("p", { class: "prompt", style: "font-size:1.2rem;margin:0" }, sent),
       h("div", { class: "row" }, sayBtn(sent, "🔊 Nghe mẫu", "btn"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => spSay(sent, 0.75) }, "🐢 Chậm")),
-      spModelCard(["ph"]), spReady(["ph"]) ? recBox(judgeS, { max: 15, hint: "Đọc cả câu một hơi tự nhiên rồi bấm Dừng." }) : null,
+      spModelCard(["phx"]), spReady(["phx"]) ? recBox(judgeS, { max: 15, hint: "Đọc cả câu một hơi tự nhiên rồi bấm Dừng." }) : null,
       W.sres && W.sres.i === si ? resultView(W.sres.r, { label: "Cả câu" }) : null));
   return h("div", { class: "stack sp-lesson", style: "gap:16px" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình"), h("span", { class: "small muted" }, `Bài ${i + 1}/${PR_LESSONS.length}`)),
@@ -172,13 +172,13 @@ function fluencyOf(tr, pz) {
   return { words: n, dur: +pz.total.toFixed(1), span: +span.toFixed(1), wpm: Math.round(n / span * 60), pauses: gaps.length, long: gaps.filter(g => g.len >= 1).length, longest: gaps.reduce((a, g) => Math.max(a, g.len), 0), fillers: fill, reps: rep, run: runs.length ? +(n / runs.length).toFixed(1) : 0, gaps };
 }
 async function spAnalyze(blob, say) {
-  say?.("Đang chuẩn bị bộ chấm…"); await spLoad("asr"); await spLoad("ph");
+  say?.("Đang chuẩn bị bộ chấm…"); await spLoad("asr"); await spLoad("phx");
   const a = await spDecode(blob), pz = spPauses(a); if (pz.speech < 1) throw { vn: "Câu trả lời quá ngắn hoặc không có tiếng." };
   say?.("Đang chép lời… câu dài có thể mất 1 phút");
   const tr = await spTranscribe(a); if (!tr.text || !/[A-Za-z]/.test(tr.text)) throw { vn: "Không nghe ra lời nói. Thử nói to, gần micro hơn." };
   const fl = fluencyOf(tr, pz);
   say?.("Đang chấm phát âm từng âm…");
-  const r = spGOP(await spLogp(a), await spExpected(tr.text));
+  const r = spGOP(await spLogp(a, null, "phx"), await spExpected(tr.text));
   const bad = r.words.filter(w => w.score != null && w.score < 60).sort((x, y) => x.score - y.score).slice(0, 8).map(w => ({ w: w.w, ipa: w.ipa, score: w.score, tips: [...new Set(w.phones.filter(x => x.s < 50).map(phTip))].slice(0, 2) }));
   const by = {}; for (const w of r.words) for (const x of w.phones) if (x.s < 50) { const k = x.miss && x.last ? `thiếu âm cuối /${x.ipa}/` : x.heard ? `/${x.ipa}/ → /${phIpa(x.heard)}/` : `/${x.ipa}/ yếu`; by[k] = (by[k] || 0) + 1; }
   pronStat(r.words);
@@ -223,8 +223,8 @@ function pageSpLesson(l) {
   const prep = p.prep ? (() => { const t = h("span", { class: "timer" }, mmss(p.prep)); let iv = null; return h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { if (iv) return; let left = p.prep; iv = setInterval(() => { if (!document.body.contains(t)) return clearInterval(iv); left--; t.textContent = mmss(Math.max(0, left)); if (left <= 0) { clearInterval(iv); toast("Hết thời gian chuẩn bị. Bắt đầu nói!"); } }, 1000); } }, `Bắt đầu ${p.prep / 60} phút chuẩn bị`), t, h("span", { class: "small muted" }, "Ghi 4–6 từ khóa ra giấy, rồi bấm Ghi âm.")); })() : null;
   let practice;
   if (p.read) {
-    const judge = async (blob, say) => { await spLoad("ph"); const r = await spCheckText(blob, l.model.a, say); S.rd = r; pronStat(r.words); if ((r.score ?? 0) >= PR_PASS.sent && !st.done) { st.done = today(); award("speaking", 30); addAct("speaking", 5); toast("Đạt bài này!"); } saveProfile(); render(); };
-    practice = h("div", { class: "task-box stack", style: "gap:8px" }, h("p", { class: "prompt", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe mẫu", "btn")), spModelCard(["ph"]), spReady(["ph"]) ? recBox(judge, { max: 40 }) : null, S.rd ? resultView(S.rd, { label: `Cần ${PR_PASS.sent} điểm` }) : null);
+    const judge = async (blob, say) => { await spLoad("phx"); const r = await spCheckText(blob, l.model.a, say); S.rd = r; pronStat(r.words); if ((r.score ?? 0) >= PR_PASS.sent && !st.done) { st.done = today(); award("speaking", 30); addAct("speaking", 5); toast("Đạt bài này!"); } saveProfile(); render(); };
+    practice = h("div", { class: "task-box stack", style: "gap:8px" }, h("p", { class: "prompt", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe mẫu", "btn")), spModelCard(["phx"]), spReady(["phx"]) ? recBox(judge, { max: 40 }) : null, S.rd ? resultView(S.rd, { label: `Cần ${PR_PASS.sent} điểm` }) : null);
   } else {
     const q = p.qs[S.q];
     const judge = async (blob, say) => { const an = await spAnalyze(blob, say); const ch = spChecks(l, an); S.an = { q: S.q, an, ch }; if (ch.every(x => x[0]) && !st.done) { st.done = today(); award("speaking", 30); addAct("speaking", 5); toast("Đạt bài này!"); } st.last = { q, text: an.text, wpm: an.fl.wpm, pron: an.pron.score }; saveProfile(); render(); };
@@ -233,7 +233,7 @@ function pageSpLesson(l) {
       h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, q), h("div", { class: "row" }, sayBtn(q, "🔊 Nghe câu hỏi", "btn")),
       p.tip ? h("p", { class: "small muted", style: "margin:0" }, p.tip) : null,
       h("p", { class: "small", style: "margin:0" }, h("b", null, "Để đạt: "), spChecks(l, { fl: { span: 0, words: 0, wpm: 0, long: 0, run: 0, fillers: 0 }, text: "" }).map(x => x[1].replace(/\s*\(bạn[^)]*\)/, "")).join(" · ")),
-      prep, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(judge, { max: (p.min || 30) * 2 + 30, hint: "Nói xong bấm Dừng." }) : null,
+      prep, spModelCard(["asr", "phx"]), spReady(["asr", "phx"]) ? recBox(judge, { max: (p.min || 30) * 2 + 30, hint: "Nói xong bấm Dừng." }) : null,
       S.an && S.an.q === S.q ? metricsView(S.an.an, S.an.ch) : null);
   }
   return h("div", { class: "stack", style: "gap:16px" },
@@ -274,7 +274,7 @@ function spBankTab() {
 }
 function bankRec(q, max) {
   const B = UI.bk;
-  return h("div", { class: "stack", style: "gap:6px" }, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(async (blob, say) => { const an = await spAnalyze(blob, say); B.an = { q, an }; award("speaking", 5); addAct("speaking", 2); render(); }, { max, label: "● Ghi âm trả lời" }) : null);
+  return h("div", { class: "stack", style: "gap:6px" }, spModelCard(["asr", "phx"]), spReady(["asr", "phx"]) ? recBox(async (blob, say) => { const an = await spAnalyze(blob, say); B.an = { q, an }; award("speaking", 5); addAct("speaking", 2); render(); }, { max, label: "● Ghi âm trả lời" }) : null);
 }
 /* ----- Thi thử: 1 lượt AI chấm cả bài ----- */
 function spNewSession(kind) {
@@ -292,7 +292,7 @@ function spTestTab() {
     h("div", { class: "note stack", style: "gap:6px" }, h("b", null, "Phòng thi giống thật"), h("span", { class: "small" }, "Giám khảo đọc câu hỏi, chữ được ẩn, tự ghi âm khi tới lượt, Part 2 có 1 phút chuẩn bị và tự dừng ở 2 phút."), h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { roomNew(); render(); } }, "Vào phòng thi (khoảng 13 phút)"))),
     h("span", { class: "small muted" }, "Hoặc tự luyện từng câu (thấy chữ câu hỏi, tự bấm ghi âm):"),
     h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { spNewSession("full"); render(); } }, "Đề đầy đủ (Part 1 → 3)"), ...["p1", "p2", "p3"].map(k => h("button", { class: "btn", type: "button", onclick: () => { spNewSession(k); render(); } }, "Part " + k[1]))),
-    spModelCard(["asr", "ph"]));
+    spModelCard(["asr", "phx"]));
   const it = S.items[S.i], an = S.ans[S.i];
   const prep = it.prep ? (() => { const t = h("span", { class: "timer" }, "1:00"); let iv = null; return h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => { if (iv) return; let left = it.prep; iv = setInterval(() => { if (!document.body.contains(t)) return clearInterval(iv); left--; t.textContent = mmss(Math.max(0, left)); if (left <= 0) { clearInterval(iv); toast("Hết 1 phút chuẩn bị. Bắt đầu nói!"); } }, 1000); } }, "Bắt đầu 1 phút chuẩn bị"), t); })() : null;
   const allDone = S.items.every((_, k) => S.ans[k]);
@@ -302,7 +302,7 @@ function spTestTab() {
     h("section", { class: "card stack", style: "gap:10px" }, h("span", { class: "eyebrow" }, `Part ${it.part}` + (it.topic ? " · " + it.topic : "")),
       h("p", { class: "prompt", style: "font-size:1.15rem;margin:0" }, it.q), it.points ? h("div", null, h("span", { class: "small muted" }, "You should say:"), h("ul", { class: "gex" }, it.points.map(p => h("li", null, p)))) : null,
       h("div", { class: "row" }, sayBtn(it.q + (it.points ? ". You should say: " + it.points.join(", ") : ""), "🔊 Nghe câu hỏi", "btn btn-quiet"), h("span", { class: "small muted" }, it.part === 1 ? "Trả lời 2–4 câu (20–30 giây)." : it.part === 2 ? "Nói 1–2 phút." : "Trả lời 30–60 giây, có lý do và ví dụ.")),
-      prep, spModelCard(["asr", "ph"]), spReady(["asr", "ph"]) ? recBox(async (blob, say) => { S.ans[S.i] = await spAnalyze(blob, say); render(); }, { max: it.max }) : null,
+      prep, spModelCard(["asr", "phx"]), spReady(["asr", "phx"]) ? recBox(async (blob, say) => { S.ans[S.i] = await spAnalyze(blob, say); render(); }, { max: it.max }) : null,
       an ? metricsView(an, null) : null,
       h("div", { class: "row" }, S.i > 0 ? h("button", { class: "btn", type: "button", onclick: () => { S.i--; render(); } }, "‹ Câu trước") : null, S.i < S.items.length - 1 ? h("button", { class: "btn" + (an ? " btn-primary" : ""), type: "button", onclick: () => { S.i++; render(); window.scrollTo(0, 0); } }, an ? "Câu tiếp ›" : "Bỏ qua ›") : null)),
     Object.keys(S.ans).length ? spGradeCard(S, allDone) : null);

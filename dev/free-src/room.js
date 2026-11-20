@@ -65,8 +65,8 @@ function roomView() {
   const R = UI.room, it = R.items[R.i];
   if (R.phase === "intro") return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Phòng thi giống thật"),
     h("ul", { class: "gex" }, h("li", null, "Giám khảo đọc câu hỏi, chữ câu hỏi được ẩn như thi thật (bấm hiện được nếu nghe không ra)."), h("li", null, "Sau tiếng bíp là tới lượt bạn: máy tự ghi âm và tự dừng khi bạn ngừng nói khoảng 2,5 giây (Part 1, 3)."), h("li", null, "Part 2: đọc thẻ đề, 1 phút chuẩn bị (ghi chú được), rồi nói; tới 2 phút giám khảo tự dừng bạn."), h("li", null, `Gồm ${R.items.filter(x => x.part === 1).length} câu Part 1, 1 thẻ Part 2, ${R.items.filter(x => x.part === 3).length} câu Part 3, khoảng 12–14 phút. Xong mới chấm 1 lượt AI.`), h("li", null, "Nên đeo tai nghe có micro và ngồi chỗ yên tĩnh.")),
-    spModelCard(["asr", "ph"]),
-    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: !spReady(["asr", "ph"]) || null, onclick: () => roomRun() }, "Bắt đầu thi"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { UI.room = null; render(); } }, "Thoát")));
+    spModelCard(["asr", "phx"]),
+    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: !spReady(["asr", "phx"]) || null, onclick: () => roomRun() }, "Bắt đầu thi"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { UI.room = null; render(); } }, "Thoát")));
   if (R.phase === "done") {
     const S = { kind: "room", items: R.items, ans: Object.fromEntries(Object.entries(R.ans).filter(([, v]) => v)) };
     return h("div", { class: "stack", style: "gap:14px" }, h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Hết giờ thi"),

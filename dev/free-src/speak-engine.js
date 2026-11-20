@@ -1,6 +1,8 @@
 /* ===== Bộ nhận diện giọng nói chạy ngay trên máy (không gọi AI) =====
    - Whisper small.en: chép lời khi luyện nói tự do
-   - HuBERT âm vị (Peacockery/hubert-base-phoneme-en, Apache-2.0): chấm từng âm theo GOP
+   - HuBERT âm vị (Peacockery/hubert-base-phoneme-en, Apache-2.0): chấm nhanh từng âm theo GOP (shadowing, căn câu bài nghe)
+   - XLSR-53 espeak (facebook/wav2vec2-xlsr-53-espeak-cv-ft, Apache-2.0, nén int8): chấm kỹ cho bài phát âm và phòng thi Speaking.
+     Đo trên speechocean762: bắt âm đọc sai tốt hơn HuBERT khoảng 14%; máy yếu hoặc tải lỗi thì tự quay về HuBERT
    - Từ điển CMU (giọng Mỹ) */
 const SP = { T: null, man: null, asr: null, ph: null, loading: {}, prog: {}, lex: null, stage: "" };
 const spBase = () => new URL("sp/", location.href).href;
@@ -27,7 +29,23 @@ async function spAssemble(key, group) {
   for (const p of m.parts) { const b = await spFetchPart(p); out.set(b, o); o += b.length; const g = SP.prog[group] ||= { got: 0 }; g.got += b.length; SP.onProg?.(); }
   return out;
 }
-const SP_KEYS = { asr: ["whisper-small.en/onnx/encoder_model_quantized.onnx", "whisper-small.en/onnx/decoder_model_merged_quantized.onnx"], ph: ["phoneme-hb/onnx/model.onnx"] };
+const SP_KEYS = { asr: ["whisper-small.en/onnx/encoder_model_quantized.onnx", "whisper-small.en/onnx/decoder_model_merged_quantized.onnx"], ph: ["phoneme-hb/onnx/model.onnx"], phx: ["phoneme-xl/onnx/model.onnx"] };
+/* "phx" = bộ chấm kỹ XLSR; máy ít RAM (dưới 4 GB) hoặc tải lỗi thì dùng HuBERT ("ph") */
+const spK = k => k === "phx" && (SP.noX || (navigator.deviceMemory && navigator.deviceMemory < 4)) ? "ph" : k;
+/* Ký hiệu IPA của XLSR → 39 âm Anh (giống bảng ARPAbet của HuBERT); ký hiệu khác (âm ngoài tiếng Anh) gộp vào lớp trống */
+const XL_IPA = { AA: ["ɑː", "ɑ"], AE: ["æ"], AH: ["ʌ", "ə"], AO: ["ɔː", "ɔ"], AW: ["aʊ"], AY: ["aɪ"], B: ["b"], CH: ["tʃ"], D: ["d"], DH: ["ð"], EH: ["ɛ"], ER: ["ɚ", "ɜː", "ɜ"], EY: ["eɪ"], F: ["f"], G: ["ɡ"], HH: ["h"], IH: ["ɪ", "ᵻ"], IY: ["iː", "i"], JH: ["dʒ"], K: ["k"], L: ["l", "ɫ"], M: ["m"], N: ["n"], NG: ["ŋ"], OW: ["oʊ"], OY: ["ɔɪ"], P: ["p"], R: ["ɹ", "r"], S: ["s"], SH: ["ʃ"], T: ["t"], TH: ["θ"], UH: ["ʊ"], UW: ["uː", "u"], V: ["v"], W: ["w"], Y: ["j"], Z: ["z"], ZH: ["ʒ"] };
+async function spXmap() {
+  const voc = await (await fetch(spBase() + "models/phoneme-xl/vocab.json")).json(), V = Math.max(...Object.values(voc)) + 1, m = new Int16Array(V).fill(-1);
+  for (const [a, ts] of Object.entries(XL_IPA)) for (const t of ts) if (voc[t] != null) m[voc[t]] = A2I[a];
+  return m;
+}
+/* Đưa điểm GOP của XLSR về cùng thang với HuBERT (khớp phân vị trên speechocean762) để ngưỡng và điểm 0–100 giữ nguyên ý nghĩa */
+const XL_CAL = [[-3.949,-4.476],[-3.674,-4.103],[-3.465,-3.775],[-3.119,-3.351],[-2.842,-2.897],[-2.541,-2.483],[-2.313,-2.114],[-2.057,-1.798],[-1.777,-1.462],[-1.524,-1.154],[-1.326,-0.934],[-1.163,-0.765],[-1.019,-0.629],[-0.895,-0.533],[-0.789,-0.452],[-0.696,-0.392],[-0.624,-0.341],[-0.570,-0.300],[-0.525,-0.263],[-0.483,-0.231],[-0.439,-0.201],[-0.389,-0.171],[-0.332,-0.142],[-0.289,-0.116],[-0.257,-0.093]];
+function spXcal(g) {
+  const C = XL_CAL, n = C.length; if (g <= C[0][0]) return g - C[0][0] + C[0][1]; if (g >= C[n - 1][0]) return Math.min(0, g - C[n - 1][0] + C[n - 1][1]);
+  for (let i = 1; i < n; i++) if (g <= C[i][0]) { const [x0, y0] = C[i - 1], [x1, y1] = C[i]; return y0 + (g - x0) / (x1 - x0) * (y1 - y0); }
+  return g;
+}
 async function spTotal(keys) { const m = await spManifest(); return keys.reduce((a, k) => a + (m[k]?.size || 0), 0); }
 async function spLib() {
   if (SP.T) return SP.T;
@@ -40,23 +58,25 @@ async function spLib() {
 }
 /* which: "asr" (Whisper) hoặc "ph" (âm vị) */
 function spLoad(which) {
+  which = spK(which);
   return SP.loading[which] ||= (async () => {
     SP.prog[which] = { got: 0, total: await spTotal(SP_KEYS[which]) };
     if (!SP.T) SP.prog.lib = { got: 0, total: await spTotal(["ort.wasm"]) };
     SP.stage = SP.T ? "" : "Đang tải thư viện chạy mô hình"; const T = await spLib(); SP.curGroup = which;
-    SP.stage = which === "asr" ? "Đang khởi động bộ chép lời" : "Đang khởi động bộ chấm phát âm";
+    SP.stage = which === "asr" ? "Đang khởi động bộ chép lời" : which === "phx" ? "Đang khởi động bộ chấm phát âm kỹ" : "Đang khởi động bộ chấm phát âm";
     const timeout = (p, ms, msg) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms))]);
     if (which === "asr") SP.asr = await timeout(T.pipeline("automatic-speech-recognition", "whisper-small.en", { dtype: { encoder_model: "q8", decoder_model_merged: "q8" }, device: "wasm" }), 300000, "Khởi động bộ chép lời quá 5 phút (máy có thể thiếu bộ nhớ)");
+    else if (which === "phx") { const xm = await spXmap(); SP.phx = await timeout(T.AutoModelForCTC.from_pretrained("phoneme-xl", { dtype: "fp32", device: "wasm" }), 600000, "Khởi động bộ chấm phát âm kỹ quá 10 phút"); SP.xmap = xm; }
     else SP.ph = await timeout(T.AutoModelForCTC.from_pretrained("phoneme-hb", { dtype: "fp32", device: "wasm" }), 300000, "Khởi động bộ chấm phát âm quá 5 phút");
     SP.stage = ""; return true;
-  })().catch(e => { delete SP.loading[which]; SP.stage = ""; throw e; });
+  })().catch(e => { delete SP.loading[which]; SP.stage = ""; if (which === "phx") { console.warn("Bộ chấm kỹ không chạy được trên máy này, dùng bộ thường", e); SP.noX = true; return spLoad("ph"); } throw e; });
 }
-const spReady = need => need.every(k => k === "asr" ? !!SP.asr : !!SP.ph);
+const spReady = need => need.map(spK).every(k => k === "asr" ? !!SP.asr : k === "phx" ? !!SP.phx : !!SP.ph);
 async function spCached(need) {
   try {
     const man = await spManifest(), db = await spDB(); if (!db) return false;
     const keys = await new Promise(res => { try { const r = db.transaction("chunks").objectStore("chunks").getAllKeys(); r.onsuccess = () => res(new Set(r.result)); r.onerror = () => res(new Set()); } catch { res(new Set()); } });
-    return ["ort.wasm", ...need.flatMap(k => SP_KEYS[k])].every(k => man[k]?.parts.every(p => keys.has(p)));
+    return ["ort.wasm", ...need.flatMap(k => SP_KEYS[spK(k)])].every(k => man[k]?.parts.every(p => keys.has(p)));
   } catch { return false; }
 }
 /* Âm thanh: blob → Float32Array 16 kHz mono */
@@ -135,8 +155,8 @@ async function spExpected(text) {
   return words.map(w => ({ w, ph: spWordPh(lex, w) }));
 }
 /* Mô hình → log xác suất [F × 40] (39 âm + khoảng trống), nhiệt độ 2 cho điểm mượt hơn; frames.t = thời điểm (giây) của từng khung */
-async function spLogp(a, onProg) {
-  await spLoad("ph");
+async function spLogp(a, onProg, which = "ph") {
+  which = spK(which); await spLoad(which); const MOD = which === "phx" ? SP.phx : SP.ph, xm = which === "phx" ? SP.xmap : null;
   /* Âm thanh dài: chạy từng khúc 6 giây (đệm 1 giây hai bên cho đủ ngữ cảnh), nghỉ giữa các khúc để trang không bị đơ */
   const T = SP.T, SR = 16000, long = a.length > SR * 8, core = long ? SR * 6 : a.length, pad = long ? SR : 0, frames = [], times = [], nWin = Math.ceil(a.length / core);
   for (let o = 0, wi = 0; o < a.length; o += core, wi++) {
@@ -144,18 +164,20 @@ async function spLogp(a, onProg) {
     const s0 = Math.max(0, o - pad), s1 = Math.min(a.length, o + core + pad), seg = a.subarray(s0, s1); if (seg.length < 1600) break;
     let m = 0; for (const v of seg) m += v; m /= seg.length; let sd = 0; for (const v of seg) sd += (v - m) ** 2; sd = Math.sqrt(sd / seg.length) + 1e-7;
     const x = new Float32Array(seg.length); for (let i = 0; i < seg.length; i++) x[i] = (seg[i] - m) / sd;
-    const { logits } = await SP.ph({ input_values: new T.Tensor("float32", x, [1, x.length]) });
+    const { logits } = await MOD({ input_values: new T.Tensor("float32", x, [1, x.length]) });
     const [, F, V] = logits.dims, d = logits.data, step = seg.length / SR / F, lo = o / SR, hi = Math.min(a.length, o + core) / SR;
     for (let f = 0; f < F; f++) {
       const tt = s0 / SR + f * step; if (long && (tt < lo - 1e-6 || tt >= hi - 1e-6)) continue;
       const row = new Float32Array(NC); let mx = -Infinity; for (let v = 0; v < V; v++) mx = Math.max(mx, d[f * V + v] / 2);
       let z = 0; const e = new Float64Array(V); for (let v = 0; v < V; v++) { e[v] = Math.exp(d[f * V + v] / 2 - mx); z += e[v]; }
-      let bl = 0; for (let v = 0; v < V; v++) { if (v < NPH) row[v] = Math.log(e[v] / z + 1e-10); else bl += e[v] / z; }
+      let bl = 0;
+      if (xm) { const acc = new Float64Array(NPH); for (let v = 0; v < V; v++) { const k = xm[v], p = e[v] / z; if (k >= 0) acc[k] += p; else bl += p; } for (let v = 0; v < NPH; v++) row[v] = Math.log(acc[v] + 1e-10); }
+      else for (let v = 0; v < V; v++) { if (v < NPH) row[v] = Math.log(e[v] / z + 1e-10); else bl += e[v] / z; }
       row[NPH] = Math.log(bl + 1e-10); frames.push(row); times.push(tt);
     }
     if (long) await new Promise(r => setTimeout(r, 0));
   }
-  onProg?.(nWin, nWin); frames.t = times; frames.step = times.length > 1 ? (times[times.length - 1] - times[0]) / (times.length - 1) : 0.02;
+  onProg?.(nWin, nWin); frames.m = which; frames.t = times; frames.step = times.length > 1 ? (times[times.length - 1] - times[0]) / (times.length - 1) : 0.02;
   return frames;
 }
 /* Căn chỉnh CTC cưỡng bức: mỗi âm mong đợi → dãy khung. Con trỏ lùi gói 2 bit/ô để căn được cả bài nghe dài vài phút */
@@ -251,6 +273,7 @@ function spGOP(L, exp) {
       g = sum / fr.length; for (const q of alts) g = Math.max(g, acc[q] / fr.length);
       let bi = -1, bv = -Infinity; const okSet = new Set([p, ...alts]); for (let v = 0; v < NPH; v++) if (!okSet.has(v) && acc[v] > bv) { bv = acc[v]; bi = v; }
       if (bv / fr.length > g + 0.3) alt = ARPA[bi];
+      if (L.m === "phx") g = spXcal(g);
     }
     const el = ctx[k][j].elide && g < -1.2; if (el) { g = -1.2; alt = null; }
     words[k].phones.push({ p: ex, ipa: phIpa(ex), show: words[k].arr[j], g: +g.toFixed(2), s: phScore(g), heard: alt, miss: !el && (!fr.length || (g < -6 && !alt)), last: j === exp[k].ph.length - 1, elided: el || undefined, fr: fr.length ? [fr[0], fr[fr.length - 1]] : null });
@@ -260,14 +283,14 @@ function spGOP(L, exp) {
   return { words, score: sc.length ? Math.round(sc.reduce((a, w) => a + w.score * w.phones.length, 0) / sc.reduce((a, w) => a + w.phones.length, 0)) : null };
 }
 /* Chấm một câu/từ đọc theo mẫu */
-async function spCheckText(blob, text, say) {
+async function spCheckText(blob, text, say, which = "phx") {
   say?.("Đang nghe…");
   const raw = await spDecode(blob), z = spPauses(raw);
   if (!z.speech || z.speech < 0.15) throw { vn: "Không nghe thấy tiếng nói. Nói to, rõ và gần micro hơn nhé." };
   const a = spTrim(raw), exp = await spExpected(text);
   if (!exp.some(x => x.ph)) throw { vn: "Chưa có phiên âm cho câu này." };
   say?.("Đang chấm từng âm…");
-  const r = spGOP(await spLogp(a), exp); r.dur = +(a.length / 16000).toFixed(1); r.level = z.level; return r;
+  await spLoad(which); const r = spGOP(await spLogp(a, null, which), exp); r.dur = +(a.length / 16000).toFixed(1); r.level = z.level; return r;
 }
 /* Lời khuyên tiếng Việt cho một âm sai */
 const PH_TIP = {
