@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Sửa danh sách email dưới đây: thêm hoặc bớt người được vào học (viết thường, đúng như email Google)
+    function invited() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [
+          "email-cua-ban@gmail.com",
+          "ban-1@gmail.com",
+          "ban-2@gmail.com"
+        ];
+    }
+    // Mỗi người chỉ đọc và ghi được sổ của chính mình
+    match /data/users/{uid}/{rest=**} {
+      allow read, write: if invited() && request.auth.uid == uid;
+    }
+    // Nhóm học: ai trong nhóm cũng xem được bản tóm tắt của nhau, mỗi người chỉ sửa bản của mình
+    match /group/{uid} {
+      allow read: if invited();
+      allow write: if invited() && request.auth.uid == uid;
+      // Chọc bạn: ai cũng gửi được lời chọc (ghi đúng tên mình), chỉ người nhận đọc và xóa
+      match /pokes/{pid} {
+        allow create: if invited() && request.resource.data.from == request.auth.uid;
+        allow read, delete: if invited() && request.auth.uid == uid;
+      }
+    }
+  }
+}

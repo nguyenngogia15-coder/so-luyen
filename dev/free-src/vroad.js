@@ -21,6 +21,8 @@ const VR_POS = { noun: "danh từ", verb: "động từ", adjective: "tính từ
 const vrPos = p => VR_POS[p] || p;
 function vrSay(w) { try { speakWord(w); } catch { try { speak(w); } catch {} } }
 function vrSayText(t) { try { stopTTS(); const u = new SpeechSynthesisUtterance(t); u.lang = "en-GB"; u.rate = 0.95; speechSynthesis.speak(u); } catch {} }
+/* Đánh dấu hôm nay đã học Lộ trình từ vựng (cho nhiệm vụ hằng ngày; ôn lại bài cũ cũng tính) */
+function vrMarkDay() { const lg = P.log[today()] ||= { min: 0, acts: [] }; if (!lg.vr) { lg.vr = 1; saveProfile(); } }
 /* Bài i của phần: các mục từ */
 function vrLesson(part, data, i) { let a = 0; for (let k = 0; k < i; k++) a += part.sizes[k]; return data.slice(a, a + part.sizes[i]); }
 
@@ -114,7 +116,7 @@ function vrQuiz(part, data, items, v, head, back) {
   const q = Q.list[Q.i];
   if (!q) {
     const s = vrL(part.id, v.i), got = Q.round === 1 ? 3 : Q.round === 2 ? 2 : 1, first = !s.x; s.x = Math.max(s.x || 0, got);
-    if (first) { award("vocab", 15); addAct("vocab", Math.max(3, Math.round(items.length / 3))); } saveProfile();
+    if (first) { award("vocab", 15); addAct("vocab", Math.max(3, Math.round(items.length / 3))); } saveProfile(); vrMarkDay();
     const nx = v.i + 1 < part.lessons ? v.i + 1 : null;
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Qua bài · " + "★".repeat(got), `Bạn trả lời đúng hết ${items.length} câu` + (Q.round > 1 ? ` sau ${Q.round} lượt.` : " ngay lượt đầu."), [nx != null ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.vr.view = { k: "cards", i: nx }; render(); } }, "Học bài tiếp →") : null, h("button", { class: "btn", type: "button", onclick: () => { UI.vr.view = { k: "dict", i: v.i }; render(); } }, "Luyện nghe viết"), h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "Về lộ trình")]));
   }
@@ -134,7 +136,7 @@ function vrDict(part, items, v, head, back) {
   const D = v.d ||= { i: 0, list: vrShuf(items), err: 0, typed: "", res: null };
   const it = D.list[D.i];
   if (!it) {
-    const got = D.err === 0 ? 3 : D.err <= 2 ? 2 : 1, s = vrL(part.id, v.i); s.d = Math.max(s.d || 0, got); award("vocab", 5); addAct("vocab", 3); saveProfile();
+    const got = D.err === 0 ? 3 : D.err <= 2 ? 2 : 1, s = vrL(part.id, v.i); s.d = Math.max(s.d || 0, got); award("vocab", 5); addAct("vocab", 3); saveProfile(); vrMarkDay();
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Nghe viết · " + "★".repeat(got), `Sai ${D.err} lần trên ${items.length} từ.`, [h("button", { class: "btn", type: "button", onclick: () => { v.d = null; render(); } }, "Làm lại"), h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình")]));
   }
   if (!D.played) { D.played = true; setTimeout(() => vrSay(it.w), 150); }
@@ -166,7 +168,7 @@ function vrPron(part, items, v, head, back) {
 function vrExam(part, data, head, back) {
   const V = UI.vr, E = V.view.e ||= (() => { const pick = vrShuf(data).slice(0, 30); return { i: 0, ok: 0, list: pick.map((it, k) => k < 25 ? vrQ(it, data) : { kind: "dict", it }), picked: null, typed: "" }; })();
   const q = E.list[E.i], top = head(`Câu ${Math.min(E.i + 1, 30)}/30`, "Thi vượt cấp");
-  if (!q) { const pass = E.ok >= 25; if (pass) { vrSt(part.id).open = true; award("vocab", 30); saveProfile(); }
+  if (!q) { const pass = E.ok >= 25; if (pass) { vrSt(part.id).open = true; award("vocab", 30); saveProfile(); vrMarkDay(); }
     return h("div", { class: "stack", style: "gap:14px" }, top, vrDone(pass ? "Vượt cấp thành công" : "Chưa đủ điểm", `Đúng ${E.ok}/30 câu.` + (pass ? " Mọi bài của phần này đã mở." : " Cần đúng từ 25 câu."), [h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình"), pass ? null : h("button", { class: "btn", type: "button", onclick: () => { V.view.e = null; render(); } }, "Thi lại")])); }
   const next = () => { E.i++; E.picked = null; E.typed = ""; render(); };
   if (q.kind === "dict") {
