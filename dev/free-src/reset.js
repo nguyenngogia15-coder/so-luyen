@@ -3,7 +3,7 @@
    kết quả làm thử (band Writing/Reading/Listening/Speaking, bài viết đã chấm, đề thi thử, bài nói đã chấm, thống kê âm hay sai, shadowing).
    Giữ: bài đã học (ngữ pháp, khóa Đọc/Viết, Lộ trình từ vựng, lộ trình nghe/nói), từ vựng đã thêm, bài đọc (chỉ xóa lần làm), tên và ảnh. ===== */
 const RS = { at: 0, busy: false, sure: 0 };
-const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen", "pron", "shStat", "lsTests", "ls", "placement", "wscores", "ndStat", "ndSeen", "errAdvice"];
+const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen", "pron", "shStat", "lsTests", "ls", "placement", "wscores", "ndStat", "ndSeen", "errAdvice", "lsQt", "placePend"];
 function rsApply(at) {
   for (const k of RS_KEYS) delete P[k];
   Object.assign(P, { xp: 0, xpDay: {}, wk: {}, badges: {}, rbadge: {}, log: {} });
