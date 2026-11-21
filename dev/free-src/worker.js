@@ -314,7 +314,7 @@ Return ONLY JSON: {"title":"...","ctx":"one Vietnamese sentence describing the s
 }
 export async function nightly(env, fetchFn = fetch, opts = {}) {
   if (!env.AUDIO) return { note: "chưa gắn KV AUDIO" };
-  const log = []; let budget = opts.budget ?? 8;
+  const log = []; let budget = opts.budget ?? +(env.TTS_PER_RUN || 10);
   const site = String(env.SITE_URL || (String(env.ALLOWED_ORIGIN || "").split(",")[0].trim().replace(/\/$/, "") + "/so-luyen/"));
   /* 1. Kho bài thu sẵn: làm giọng Gemini cho bài chưa có */
   let bank = []; try { bank = await (await fetchFn(site + "ls-bank.json")).json(); } catch (e) { log.push("không tải được ls-bank.json"); }
@@ -334,6 +334,19 @@ export async function nightly(env, fetchFn = fetch, opts = {}) {
     const r = await ttsRender(env, null, null, fetchFn, null, { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: env.EXAMINER_VOICE || "Charon" } } } } });
     if (r.limited) { log.push("hết lượt TTS"); return { log }; }
     if (r.b64) { await env.AUDIO.put(key, r.b64, { metadata: { mime: r.mime } }); log.push("giám khảo " + g.id); budget--; await sleep(opts.gap ?? 21000); }
+  }
+  /* 1c. Chuyển dần mọi giọng máy còn lại sang Gemini: câu mẫu phát âm và shadowing, số và đánh vần, bản tin và câu thần chú trong game.
+     voice/gem.json chia sẵn thành từng mẻ (mỗi mẻ một lần gọi, các câu cách nhau khoảng lặng 2 giây, trình duyệt tự cắt) */
+  let gem = []; try { gem = await (await fetchFn(site + "voice/gem.json")).json(); } catch (e) { log.push("không tải được voice/gem.json"); }
+  for (const b of gem) {
+    if (budget <= 0) break;
+    const key = kvAudioKey("vb-" + b.k); if (await env.AUDIO.get(key, "stream").then(x => { x?.cancel?.(); return !!x; })) continue;
+    const acc = b.acc === "gb" ? "British" : "American";
+    const text = b.news ? `Read this short local news bulletin aloud like a friendly radio presenter, in a clear ${acc} English accent at a natural pace. Letters separated by commas are spelled out one letter at a time.\n\n${b.lines[0]}`
+      : `Read each of the following lines aloud, one by one, in a clear, natural ${acc} English accent at a natural pace. After each line, stay completely silent for two full seconds before the next line. Read only the words in the lines, nothing else. Letters separated by commas are spelled out one letter at a time.\n\n` + b.lines.join("\n");
+    const r = await ttsRender(env, null, null, fetchFn, null, { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: b.v || "Kore" } } } } });
+    if (r.limited) { log.push("hết lượt TTS"); return { log }; }
+    if (r.b64) { await env.AUDIO.put(key, r.b64, { metadata: { mime: r.mime } }); log.push("mẻ giọng " + b.k); budget--; await sleep(opts.gap ?? 21000); }
   }
   /* 2. Kho đã đủ: soạn thêm bài mới, mỗi đêm tối đa NEW_PER_NIGHT bài (mặc định 4, xoay vòng Section 1–4) */
   const want = +(env.NEW_PER_NIGHT || 4), have = (await env.AUDIO.list({ prefix: "lsnew:" })).keys.length;

@@ -15,6 +15,11 @@ service cloud.firestore {
     match /data/users/{uid}/{rest=**} {
       allow read, write: if invited() && request.auth.uid == uid;
     }
+    // Lệnh đặt lại tiến độ cả nhóm: ai cũng đọc, chỉ chủ trang ghi
+    match /cfg/{d} {
+      allow read: if invited();
+      allow write: if invited() && request.auth.token.email.lower() == "nguyenngogia15@gmail.com";
+    }
     // Nhóm học: ai trong nhóm cũng xem được bản tóm tắt của nhau, mỗi người chỉ sửa bản của mình
     match /group/{uid} {
       allow read: if invited();

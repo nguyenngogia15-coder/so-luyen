@@ -1407,7 +1407,9 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
       watch: (cb, err) => onSnapshot(collection(fs, "group"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), e => err?.(e)),
       poke: (to, name) => setDoc(doc(fs, "group/" + to + "/pokes/" + user.uid + "_" + Date.now()), { from: user.uid, name, at: Date.now() }),
       pokes: cb => onSnapshot(collection(fs, "group/" + user.uid + "/pokes"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), () => {}),
-      clear: id => deleteDoc(doc(fs, "group/" + user.uid + "/pokes/" + id))
+      clear: id => deleteDoc(doc(fs, "group/" + user.uid + "/pokes/" + id)),
+      getCfg: () => getDoc(doc(fs, "cfg/reset")).then(s => s.exists() ? s.data() : null),
+      setCfg: d => setDoc(doc(fs, "cfg/reset"), d)
     };
     window.claude = { use: async n => n === "db" ? { doc: mkDoc } : n === "user" ? { id: async () => user.uid, isOwner: () => true, canEdit: () => true } : n === "sample" ? sample : null };
     gate.hidden = true;
@@ -16327,7 +16329,7 @@ function gmTone() {
     const keys = Object.keys(ix).filter(k => { const n = k.split(" ").length; return n >= 5 && n <= 13; });
     if (!N.key) N.key = keys[Math.floor(Math.random() * keys.length)];
     const text = N.key.charAt(0).toUpperCase() + N.key.slice(1);
-    const model = async () => { const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
+    const model = async () => { const gc = typeof gemClip === "function" ? await gemClip("sp", N.key).catch(() => null) : null; if (gc) return spTrim(await spDecode(gc)); const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
     const judge = async (blob, say) => { say?.("Đang so giọng…"); const m = gmPitch(await model()), u = gmPitch(spTrim(await spDecode(blob))); if (u.filter(x => x.st != null).length < 5) throw { vn: "Chưa nghe rõ giọng bạn. Nói to và gần micro hơn." }; const r = gmCompare(m, u); N.res = { ...r, m, u }; if (r.score > (st.best || 0)) st.best = r.score; gmXp(Math.round(r.score / 10), "speaking", 1); render(); };
     box.replaceChildren(gmHead("Nhại ngữ điệu", "Nghe câu mẫu rồi nói lại y hệt cách lên xuống giọng và chỗ nhấn. Máy vẽ đường giọng của bạn (cam) lên giọng mẫu (xanh) và chấm như karaoke.", st.best),
       h("section", { class: "card stack", style: "gap:12px;align-items:center;text-align:center" }, h("p", { class: "gm-incant" }, text),
@@ -16353,6 +16355,103 @@ document.head.append(h("style", null, `.gm-hearts{font-size:1.1rem;letter-spacin
 .gm-incant{font-size:1.35rem;font-weight:700;margin:0;max-width:30ch}.gm-win{background:color-mix(in srgb,#ffd43b 22%,var(--surface))}.gm-live{color:#e03131;animation:gmGlow 1s infinite}
 .gm-tone{width:100%;color:var(--ink)}.gm-tone-svg{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 @keyframes gmGlow{50%{opacity:.45}}`));
+
+/* ===== Giọng Gemini cho mọi câu mẫu: Worker thu dần mỗi đêm theo từng mẻ (voice/gem.json). Mẻ nào đã có thì web dùng giọng Gemini,
+   cắt mẻ thành từng câu theo khoảng lặng; chưa có thì vẫn dùng giọng máy thu sẵn như cũ. Mẻ đã tải được nhớ trong trình duyệt. ===== */
+const GEMV = { plan: null, map: {}, batches: {}, miss: {} };
+function gemPlan() {
+  return GEMV.plan ||= fetch("voice/gem.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(B => { for (const b of B) b.ids.forEach((id, i) => { GEMV.map[b.p + ":" + id] = [b, i]; }); return B; }).catch(() => { GEMV.plan = null; return []; });
+}
+function gemWav(f) {
+  const n = f.length, buf = new ArrayBuffer(44 + n * 2), d = new DataView(buf), w = (o, s) => { for (let i = 0; i < s.length; i++) d.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, "RIFF"); d.setUint32(4, 36 + n * 2, true); w(8, "WAVE"); w(12, "fmt "); d.setUint32(16, 16, true); d.setUint16(20, 1, true); d.setUint16(22, 1, true); d.setUint32(24, 16000, true); d.setUint32(28, 32000, true); d.setUint16(32, 2, true); d.setUint16(34, 16, true); w(36, "data"); d.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) d.setInt16(44 + i * 2, Math.max(-1, Math.min(1, f[i])) * 32767, true);
+  return new Blob([buf], { type: "audio/wav" });
+}
+/* Cắt mẻ thành n câu: lấy n-1 khoảng lặng dài nhất nằm giữa các đoạn có tiếng */
+function gemSplit(a, n) {
+  const hop = 160, fr = []; for (let i = 0; i + hop <= a.length; i += hop) { let s = 0; for (let j = i; j < i + hop; j++) s += a[j] * a[j]; fr.push(Math.sqrt(s / hop)); }
+  const so = fr.slice().sort((x, y) => x - y), noise = so[Math.floor(so.length * 0.1)] || 0, peak = so[Math.floor(so.length * 0.95)] || 0, thr = Math.max(noise * 3, peak * 0.04, 0.003);
+  const v = fr.map(x => x > thr), first = v.indexOf(true), last = v.lastIndexOf(true); if (first < 0) return null;
+  const runs = []; let st = -1;
+  for (let i = first; i <= last; i++) { if (!v[i]) { if (st < 0) st = i; } else if (st >= 0) { if (i - st >= 45) runs.push([st, i]); st = -1; } }
+  if (runs.length < n - 1) return null;
+  const cut = runs.sort((x, y) => (y[1] - y[0]) - (x[1] - x[0])).slice(0, n - 1).sort((x, y) => x[0] - y[0]);
+  const segs = []; let s = first;
+  for (const [a0, b0] of cut) { segs.push([s, a0]); s = b0; } segs.push([s, last + 1]);
+  return segs.map(([x, y]) => [Math.max(0, (x - 12) * hop), Math.min(a.length, (y + 15) * hop)]);
+}
+function gemBatch(b) {
+  if (GEMV.miss[b.k] && Date.now() - GEMV.miss[b.k] < 1800e3) return Promise.resolve(null);
+  return GEMV.batches[b.k] ||= (async () => {
+    const url = new URL("__gem/" + b.k, location.href).href; let blob = null;
+    try { const hit = await (await caches.open("gem-v1")).match(url); if (hit) blob = await hit.blob(); } catch {}
+    if (!blob) {
+      if (!window.__tts) throw 0;
+      blob = await window.__tts({ key: "vb-" + b.k, cacheOnly: true });
+      try { await (await caches.open("gem-v1")).put(url, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {}
+    }
+    const a = await spDecode(blob), segs = b.ids.length === 1 ? [[0, a.length]] : gemSplit(a, b.ids.length);
+    if (!segs) throw 0;
+    return segs.map(([s, e]) => gemWav(spTrim(a.subarray(s, e))));
+  })().catch(() => { GEMV.miss[b.k] = Date.now(); delete GEMV.batches[b.k]; return null; });
+}
+async function gemClip(pack, id) {
+  await gemPlan(); const m = GEMV.map[pack + ":" + id]; if (!m) return null;
+  const clips = await gemBatch(m[0]); return clips?.[m[1]] || null;
+}
+function gemPlayBlob(blob, rate = 1) {
+  alStop(); try { SPV.audio?.pause(); speechSynthesis.cancel(); } catch {}
+  const url = URL.createObjectURL(blob), a = new Audio(url); a.playbackRate = rate; try { a.preservesPitch = true; } catch {}
+  AL_PLAY.a = a; AL_PLAY.url = url; return a.play().then(() => a);
+}
+(function () {
+  const _say = spSay;
+  spSay = async function (text, rate) { const g = await gemClip("sp", spvKey(text)).catch(() => null); if (g) { const a = await gemPlayBlob(g, rate || 1).catch(() => null); if (a) return new Promise(r => { a.onended = () => r(); }); } return _say(text, rate); };
+  const _nd = ndPlay;
+  ndPlay = async function (it, rate = 1) { const g = await gemClip("nd", it.id).catch(() => null); if (g) { const a = await gemPlayBlob(g, rate).catch(() => null); if (a) return a; } return _nd(it, rate); };
+  const _gm = gmAudio;
+  gmAudio = async function (key, rate = 1) { const g = await gemClip("gm", key).catch(() => null); if (g) { const a = await gemPlayBlob(g, rate).catch(() => null); if (a) return new Promise(r => { a.onended = () => r(); }); } return _gm(key, rate); };
+})();
+
+/* ===== Đặt lại thành tựu và tiến độ cả nhóm (chỉ tài khoản chủ trang bấm được).
+   Xóa: XP, level, chuỗi ngày, nhiệm vụ đã tick, vé, rương, game pass, thành tựu, huy hiệu, kỷ lục game, lịch sử học, sổ lỗi nghe/nói.
+   Giữ: bài đã học (ngữ pháp, khóa Đọc/Viết, Lộ trình từ vựng, bài nghe/nói), từ vựng đã thêm, bài viết, bài đọc, tên và ảnh đại diện. ===== */
+const RS = { at: 0, busy: false, sure: 0 };
+const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen"];
+function rsApply(at) {
+  for (const k of RS_KEYS) delete P[k];
+  Object.assign(P, { xp: 0, xpDay: {}, wk: {}, badges: {}, rbadge: {}, log: {} });
+  P.resetAt = at; saveProfile();
+  try { G.last = ""; G.pokes.forEach(p => window.__grp.clear(p.id).catch(() => {})); } catch {}
+  setTimeout(() => { try { dqTick(); dqPublish(true); } catch {} render(); }, 300);
+}
+async function rsCheck() {
+  if (!window.__grp?.getCfg || !P) return;
+  try { const c = await window.__grp.getCfg(); RS.at = +c?.at || 0; if (RS.at && (P.resetAt || 0) < RS.at) { rsApply(RS.at); toast("Chủ nhóm đã đặt lại tiến độ cả nhóm. Bắt đầu lại từ đầu nhé!"); } } catch {}
+}
+setTimeout(function w() { if (P && window.__grp) rsCheck(); else setTimeout(w, 1500); }, 2000);
+async function rsAll() {
+  if (RS.busy) return; RS.busy = true; render();
+  try { const at = Date.now(); await window.__grp.setCfg({ at }); RS.at = at; rsApply(at); toast("Đã đặt lại. Các bạn khác sẽ được đặt lại khi mở web."); }
+  catch (e) { toast("Chưa đặt lại được: " + (e?.code || e?.message || "lỗi") + ". Kiểm tra quy tắc Firestore mục cfg."); }
+  RS.busy = false; RS.sure = 0; render();
+}
+function rsCard() {
+  if (!window.__isOwner) return null;
+  return h("section", { class: "card stack rs-card", style: "gap:8px" }, h("h2", { style: "margin:0" }, "🛠 Quản lý nhóm (chỉ bạn thấy)"),
+    h("p", { class: "small muted", style: "margin:0" }, "Đặt lại thành tựu và tiến độ của tất cả thành viên, cả bạn: XP, level, chuỗi ngày, nhiệm vụ, rương, game pass, thành tựu, boss, thần thú, kỷ lục game, lịch sử học. Giữ nguyên bài đã học, từ vựng đã thêm, bài viết, bài đọc, tên và ảnh."),
+    h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" },
+      h("button", { class: "btn" + (RS.sure ? " btn-primary" : ""), type: "button", disabled: RS.busy || null, onclick: () => { if (!RS.sure) { RS.sure = 1; render(); return; } rsAll(); } }, RS.busy ? "Đang đặt lại…" : RS.sure ? "Bấm lần nữa để xác nhận đặt lại cả nhóm" : "Đặt lại tiến độ cả nhóm"),
+      RS.sure ? h("button", { class: "btn btn-quiet", type: "button", onclick: () => { RS.sure = 0; render(); } }, "Hủy") : null),
+    RS.at ? h("span", { class: "small muted" }, "Lần đặt lại gần nhất: " + new Date(RS.at).toLocaleString("vi-VN")) : null);
+}
+(function () {
+  /* Bạn nào chưa mở web sau khi đặt lại thì bảng nhóm tạm coi như mới bắt đầu */
+  const _gm = grpMine;
+  grpMine = function () { const l = _gm(), me = window.__grp?.uid; return RS.at ? l.map(m => m.id !== me && (m.at || 0) < RS.at ? { id: m.id, name: m.name, ava: m.ava, color: m.color, frame: m.frame, lv: 1, xp: 0, streak: 0, days: {}, skd: {}, td: {}, wx: {}, tier: 0, badges: [], ach: [], gc: 0, mm: {}, joined: today(), at: m.at } : m) : l; };
+  const _pg = pageGroup; pageGroup = function () { const n = _pg(), c = rsCard(); if (c) n.append(c); return n; };
+})();
 
 </script>
 

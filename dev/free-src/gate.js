@@ -146,7 +146,9 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
       watch: (cb, err) => onSnapshot(collection(fs, "group"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), e => err?.(e)),
       poke: (to, name) => setDoc(doc(fs, "group/" + to + "/pokes/" + user.uid + "_" + Date.now()), { from: user.uid, name, at: Date.now() }),
       pokes: cb => onSnapshot(collection(fs, "group/" + user.uid + "/pokes"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), () => {}),
-      clear: id => deleteDoc(doc(fs, "group/" + user.uid + "/pokes/" + id))
+      clear: id => deleteDoc(doc(fs, "group/" + user.uid + "/pokes/" + id)),
+      getCfg: () => getDoc(doc(fs, "cfg/reset")).then(s => s.exists() ? s.data() : null),
+      setCfg: d => setDoc(doc(fs, "cfg/reset"), d)
     };
     window.claude = { use: async n => n === "db" ? { doc: mkDoc } : n === "user" ? { id: async () => user.uid, isOwner: () => true, canEdit: () => true } : n === "sample" ? sample : null };
     gate.hidden = true;

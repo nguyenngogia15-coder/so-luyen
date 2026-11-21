@@ -199,7 +199,7 @@ function gmTone() {
     const keys = Object.keys(ix).filter(k => { const n = k.split(" ").length; return n >= 5 && n <= 13; });
     if (!N.key) N.key = keys[Math.floor(Math.random() * keys.length)];
     const text = N.key.charAt(0).toUpperCase() + N.key.slice(1);
-    const model = async () => { const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
+    const model = async () => { const gc = typeof gemClip === "function" ? await gemClip("sp", N.key).catch(() => null) : null; if (gc) return spTrim(await spDecode(gc)); const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
     const judge = async (blob, say) => { say?.("Đang so giọng…"); const m = gmPitch(await model()), u = gmPitch(spTrim(await spDecode(blob))); if (u.filter(x => x.st != null).length < 5) throw { vn: "Chưa nghe rõ giọng bạn. Nói to và gần micro hơn." }; const r = gmCompare(m, u); N.res = { ...r, m, u }; if (r.score > (st.best || 0)) st.best = r.score; gmXp(Math.round(r.score / 10), "speaking", 1); render(); };
     box.replaceChildren(gmHead("Nhại ngữ điệu", "Nghe câu mẫu rồi nói lại y hệt cách lên xuống giọng và chỗ nhấn. Máy vẽ đường giọng của bạn (cam) lên giọng mẫu (xanh) và chấm như karaoke.", st.best),
       h("section", { class: "card stack", style: "gap:12px;align-items:center;text-align:center" }, h("p", { class: "gm-incant" }, text),
