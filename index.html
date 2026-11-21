@@ -3424,7 +3424,7 @@ function addAct(type, min) {
   /* Phút theo kỹ năng, mỗi web ghi vào ngăn riêng (r: web riêng, f: web ngoài) để đồng bộ thì cộng lại được */
   const sk = { listening: "L", speaking: "S", reading: "R", rcourse: "R", writing: "W", wcourse: "W" }[type];
   if (sk) { const by = lg.by ||= {}, src = window.FREE_CONFIG ? "f" : "r"; if (src === "f" && !by.f && lg.sk) by.f = { ...lg.sk }; const b = by[src] ||= {}; b[sk] = Math.round(((b[sk] || 0) + min) * 10) / 10; }
-  lg.min = Math.round((lg.min + min) * 10) / 10;
+  lg.min = Math.round((lg.min + min) * 10) / 10; if (!window.FREE_CONFIG) P.actAt = Date.now();
   if (!lg.acts.includes(type)) lg.acts.push(type);
   const keys = Object.keys(P.log).sort(); if (keys.length > 120) for (const k of keys.slice(0, keys.length - 120)) delete P.log[k];
   saveProfile();
@@ -3462,10 +3462,10 @@ async function switchToDb(s) {
   store = s; await loadAll(); render();
 }
 
-/* ---------- Claude ---------- */
+/* ---------- AI ---------- */
 function aiMsg(e) {
-  const m = { not_granted: "Bạn chưa cho phép trang này dùng Claude. Tải lại trang và chọn Cho phép khi được hỏi.", sampling_disabled: "Tài khoản này chưa dùng được Claude trong trang.", rate_limited: "Bạn đang hỏi quá nhanh hoặc đã chạm giới hạn lượt dùng. Đợi một lúc rồi thử lại.", session_expired: "Phiên đăng nhập Claude đã hết hạn. Đăng nhập lại rồi thử lại.", invalid_json: "Claude trả lời sai định dạng. Bấm thử lại.", refused: "Claude từ chối yêu cầu này. Thử nội dung khác.", unavailable: "Phần AI chỉ chạy khi mở trang này trên Claude.", prompt_too_large: "Nội dung quá dài, hãy rút ngắn.", empty_completion: "Claude không trả lời. Thử lại với nội dung ngắn hơn.", capability_disabled: "Phần AI chưa dùng được ở đây.", not_declared: "Phần AI chưa dùng được ở đây." };
-  return m[e?.code] || `Có lỗi khi gọi Claude (${e?.code || e?.message || "không rõ"}). Thử lại sau.`;
+  const m = { not_granted: "Bạn chưa cho phép trang này dùng AI. Tải lại trang và chọn Cho phép khi được hỏi.", sampling_disabled: "Tài khoản này chưa dùng được AI trong trang.", rate_limited: "Bạn đang hỏi quá nhanh hoặc đã chạm giới hạn lượt dùng. Đợi một lúc rồi thử lại.", session_expired: "Phiên đăng nhập AI đã hết hạn. Đăng nhập lại rồi thử lại.", invalid_json: "AI trả lời sai định dạng. Bấm thử lại.", refused: "AI từ chối yêu cầu này. Thử nội dung khác.", unavailable: "Phần AI chỉ chạy khi mở trang này trên AI.", prompt_too_large: "Nội dung quá dài, hãy rút ngắn.", empty_completion: "AI không trả lời. Thử lại với nội dung ngắn hơn.", capability_disabled: "Phần AI chưa dùng được ở đây.", not_declared: "Phần AI chưa dùng được ở đây." };
+  return m[e?.code] || `Có lỗi khi gọi AI (${e?.code || e?.message || "không rõ"}). Thử lại sau.`;
 }
 async function ai(prompt, { json = false, tier = "default", onText, signal, cache = false, images } = {}) {
   if (!sample) throw { code: "unavailable" };
@@ -3477,13 +3477,13 @@ async function ai(prompt, { json = false, tier = "default", onText, signal, cach
 }
 function aiNote() {
   if (sample) return null;
-  if (!sampleChecked) return h("p", { class: "note small" }, "Đang kết nối Claude…");
+  if (!sampleChecked) return h("p", { class: "note small" }, "Đang kết nối AI…");
   if (UI.aiWhy === "not_claude") return h("p", { class: "note small" }, "Phần AI (chấm bài, tạo bài đọc, tra từ) chỉ chạy khi mở trang này trên claude.ai.");
   return h("div", { class: "note small stack", style: "gap:6px" },
-    h("span", null, "Trang chưa được dùng Claude trên tài khoản này (" + (UI.aiWhy === "not_granted" ? "chưa cho phép" : UI.aiWhy || "không rõ") + "), nên các nút AI đang tắt và dữ liệu không lưu vào tài khoản."),
-    h("span", null, "Nếu bạn mở trang này qua link người khác chia sẻ: link chia sẻ chỉ cho xem, Claude không cho người xem dùng AI hay lưu dữ liệu trên trang của người khác. Hãy tạo bản của riêng bạn: mở một cuộc trò chuyện mới trên claude.ai, đính kèm file so-luyen-ielts-claude.html (xin người chia sẻ) và nhắn \"Đăng file này thành artifact, bật quyền db, sample và user\"."),
+    h("span", null, "Trang chưa được dùng AI trên tài khoản này (" + (UI.aiWhy === "not_granted" ? "chưa cho phép" : UI.aiWhy || "không rõ") + "), nên các nút AI đang tắt và dữ liệu không lưu vào tài khoản."),
+    h("span", null, "Nếu bạn mở trang này qua link người khác chia sẻ: link chia sẻ chỉ cho xem, AI không cho người xem dùng AI hay lưu dữ liệu trên trang của người khác. Hãy tạo bản của riêng bạn: mở một cuộc trò chuyện mới trên claude.ai, đính kèm file so-luyen-ielts-claude.html (xin người chia sẻ) và nhắn \"Đăng file này thành artifact, bật quyền db, sample và user\"."),
     h("span", null, "Nếu đây là trang của chính bạn: đăng nhập đúng tài khoản, bật Settings → Capabilities → Artifacts, rồi bấm nút dưới đây."),
-    h("button", { class: "btn btn-primary small", type: "button", style: "align-self:flex-start", onclick: async ev => { ev.currentTarget.disabled = true; ev.currentTarget.textContent = "Đang kết nối…"; await connectClaude(); if (!sample) toast("Vẫn chưa kết nối được Claude. Thử tải lại trang sau khi bật cài đặt."); } }, "Kết nối lại Claude"));
+    h("button", { class: "btn btn-primary small", type: "button", style: "align-self:flex-start", onclick: async ev => { ev.currentTarget.disabled = true; ev.currentTarget.textContent = "Đang kết nối…"; await connectClaude(); if (!sample) toast("Vẫn chưa kết nối được AI. Thử tải lại trang sau khi bật cài đặt."); } }, "Kết nối lại AI"));
 }
 const lessonListText = () => LESSONS.map(l => `${l.id}: ${l.title}`).join("\n");
 function dataText(d) { const { id, prompt, svg, ...rest } = d; return JSON.stringify(rest); }
@@ -3556,18 +3556,18 @@ function chartNode(d) {
   else if (d.type === "pie") { const names = [...new Set(d.charts.flatMap(c => c.parts.map(p => p.name)))]; box.append(h("div", { html: pieSVG(d, names) }), legend(names)); }
   else if (d.type === "table") {
     box.append(h("div", { class: "tbl" }, h("table", null, h("tr", null, d.columns.map((c, i) => h("th", { class: i ? "n" : null }, c))), d.rows.map(r => h("tr", null, r.map((c, i) => h("td", { class: i ? "n" : null }, typeof c === "number" ? fmtN(c) : c)))))));
-  } else if (d.type === "map" && svgSafe(d.svg)) { box.append(h("div", { class: d.id === "d7" ? null : "mapsvg", html: svgSafe(d.svg) }), h("details", null, h("summary", { class: "small muted" }, "Mô tả bằng chữ (Claude đọc từ sách)"), h("p", { class: "small", style: "white-space:pre-wrap" }, d.description || "")));
+  } else if (d.type === "map" && svgSafe(d.svg)) { box.append(h("div", { class: d.id === "d7" ? null : "mapsvg", html: svgSafe(d.svg) }), h("details", null, h("summary", { class: "small muted" }, "Mô tả bằng chữ (AI đọc từ sách)"), h("p", { class: "small", style: "white-space:pre-wrap" }, d.description || "")));
   } else if (d.type === "map") {
     const out = h("div");
     const btn = sample ? h("button", { class: "btn btn-primary small", type: "button", onclick: async () => {
-      btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang vẽ lại…"));
+      btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang vẽ lại…"));
       try { const s = svgSafe(await ai(`Vẽ lại hình của một đề IELTS Writing Task 1 dạng bản đồ / sơ đồ dưới dạng SVG đơn giản, dựa trên mô tả sau. Các bản đồ đặt cạnh nhau, mỗi bản đồ có tiêu đề (năm / phương án); khu vực là hình chữ nhật hoặc đa giác có nhãn chữ tiếng Anh; đường là đường kẻ xám; sông, hồ, biển màu xanh nhạt; cây / rừng màu xanh lá nhạt; có mũi tên chỉ hướng Bắc. Chỉ dùng rect, circle, ellipse, line, polyline, polygon, path, text, g; viewBox="0 0 640 320"; không ảnh, không script, không link. Giữ đúng vị trí tương đối (bắc / nam / đông / tây) như mô tả.\nTIÊU ĐỀ: ${d.title}\nĐỀ: ${d.prompt}\nMÔ TẢ: ${d.description}\nChỉ trả lời đúng mã SVG, bắt đầu bằng <svg.`, { tier: "default" }).then(t => (t.match(/<svg[\s\S]*<\/svg>/) || [""])[0]));
         if (!s) throw { code: "invalid_json" };
         d.svg = s; const t = TASKS.find(x => x.data?.id === d.id || x.id === d.id); if (t) { t.data.svg = s; const { id, ...doc } = t; putDoc("tasks", t.id, doc).catch(() => {}); }
         render();
       } catch (e) { btn.disabled = false; out.replaceChildren(h("p", { class: "small", style: "color:var(--bad)" }, aiMsg(e))); }
-    } }, "Claude vẽ lại bản đồ") : null;
-    box.append(h("div", { class: "note" }, h("b", null, "Đề bản đồ" + (d.page ? ` (trang ${d.page} trong sách)` : "") + ". "), "Phần mô tả dưới đây do Claude đọc từ hình, dùng để chấm bài. Bấm nút để Claude vẽ lại hình từ mô tả."), h("p", { class: "small", style: "white-space:pre-wrap" }, d.description || ""), btn, out);
+    } }, "AI vẽ lại bản đồ") : null;
+    box.append(h("div", { class: "note" }, h("b", null, "Đề bản đồ" + (d.page ? ` (trang ${d.page} trong sách)` : "") + ". "), "Phần mô tả dưới đây do AI đọc từ hình, dùng để chấm bài. Bấm nút để AI vẽ lại hình từ mô tả."), h("p", { class: "small", style: "white-space:pre-wrap" }, d.description || ""), btn, out);
   } else if (d.type === "process") {
     const f = h("div", { class: "flow" }); d.steps.forEach((st, i) => { if (i) f.append(h("span", { class: "arr", "aria-hidden": "true" }, "→")); f.append(h("div", { class: "stepbox" }, h("b", null, "STAGE " + (i + 1)), st)); }); box.append(f);
   }
@@ -3604,7 +3604,7 @@ function fixesNode(fixes) {
 }
 function stopBtn(key) { return h("button", { class: "btn", type: "button", onclick: () => UI.busy[key]?.abort() }, "Dừng"); }
 
-/* Giữ lại nhận xét của Claude sau khi chấm (lưu vào tài khoản, mở lại vẫn thấy) */
+/* Giữ lại nhận xét của AI sau khi chấm (lưu vào tài khoản, mở lại vẫn thấy) */
 function fbNode(r, okTxt, noTxt, okKey) {
   return [h("div", { class: "row" }, h("span", { class: "chip " + (r[okKey] ? "good" : "warn") }, r[okKey] ? okTxt : noTxt), h("span", { class: "chip acc" }, `${Number(r.score) || 0}/10`), r.at ? h("span", { class: "small muted" }, "Chấm lúc " + new Date(r.at).toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" })) : null),
     h("p", null, r.feedback || ""), fixesNode(r.fixes),
@@ -3639,7 +3639,7 @@ function workMode() {
 }
 function render() {
   if (!P) return;
-  try { renderInner(); renderPen(); workMode(); attachWC(); } catch (e) { console.error(e); $("#main").replaceChildren(h("div", { class: "note bad" }, "Lỗi hiển thị trang: " + (e?.message || e) + ". Hãy chụp màn hình này gửi Claude.")); }
+  try { renderInner(); renderPen(); workMode(); attachWC(); } catch (e) { console.error(e); $("#main").replaceChildren(h("div", { class: "note bad" }, "Lỗi hiển thị trang: " + (e?.message || e) + ". Hãy chụp màn hình này gửi AI.")); }
 }
 function renderInner() {
   renderNav(); UI.keyH = null;
@@ -3677,11 +3677,11 @@ function todayItems(t, lg) {
   const nx = (list, pre, id) => { const n = list.find(l => !P.lessons[l.id]?.done); return "#" + pre + (n ? n.id : id); };
   items.push({ tag: "Từ vựng", title: due ? `Ôn ${due} thẻ đến hạn` : VOCAB.length ? "Không có thẻ đến hạn · thêm vài từ mới" : "Thêm từ đầu tiên vào sổ", sub: due ? `Lật thẻ, tự chấm 1–4 rồi gõ lại từ · khoảng ${Math.min(15, Math.max(3, Math.round(due * 0.25)))} phút` : "Lưu từ gặp trong bài đọc bằng bút tra từ", min: due ? Math.min(15, Math.max(3, Math.round(due * 0.25))) : 3, href: "#vocab", ok: due ? lg.acts.includes("vocab") && !VOCAB.some(v => v.due <= t) : lg.acts.includes("vocab") || VOCAB.some(v => v.created && new Date(v.created).toLocaleDateString("en-CA") === t) });
   const gl = D.g && lessonById(D.g);
-  if (gl) items.push({ tag: "Ngữ pháp", title: `Bài ${LESSONS.indexOf(gl) + 1}/${LESSONS.length}: ${gl.title}`, sub: "Đọc giảng kỹ → luyện tập → tự viết để Claude sửa · khoảng 15 phút", min: 15, href: doneT(gl.id) ? nx(LESSONS, "lesson-", gl.id) : "#lesson-" + gl.id, ok: doneT(gl.id), doneSub: after(LESSONS, gl.id) });
+  if (gl) items.push({ tag: "Ngữ pháp", title: `Bài ${LESSONS.indexOf(gl) + 1}/${LESSONS.length}: ${gl.title}`, sub: "Đọc giảng kỹ → luyện tập → tự viết để AI sửa · khoảng 15 phút", min: 15, href: doneT(gl.id) ? nx(LESSONS, "lesson-", gl.id) : "#lesson-" + gl.id, ok: doneT(gl.id), doneSub: after(LESSONS, gl.id) });
   const odd = new Date(t + "T00:00:00").getDate() % 2 === 1;
   const rl = D.r && rlById(D.r), wl = D.w && wlById(D.w);
   if (rl && (!P.dayLight || odd || !wl)) items.push({ tag: "Đọc", title: `Bài ${RL.indexOf(rl) + 1}/${RL.length}: ${rl.title}`, sub: "Học cách làm dạng bài rồi luyện ngay trong bài · khoảng 20 phút", min: 20, href: doneT(rl.id) ? nx(RL, "rl-", rl.id) : "#rl-" + rl.id, ok: doneT(rl.id), doneSub: after(RL, rl.id) });
-  if (wl && (!P.dayLight || !odd || !rl)) items.push({ tag: "Viết", title: `Bài ${WL.indexOf(wl) + 1}/${WL.length}: ${wl.title}`, sub: "Học một kỹ năng viết rồi viết thử để Claude chấm · khoảng 20 phút", min: 20, href: doneT(wl.id) ? nx(WL, "wl-", wl.id) : "#wl-" + wl.id, ok: doneT(wl.id) || (P.lessons[wl.id]?.wrote && P.lessons[wl.id]?.date === t), doneSub: after(WL, wl.id) });
+  if (wl && (!P.dayLight || !odd || !rl)) items.push({ tag: "Viết", title: `Bài ${WL.indexOf(wl) + 1}/${WL.length}: ${wl.title}`, sub: "Học một kỹ năng viết rồi viết thử để AI chấm · khoảng 20 phút", min: 20, href: doneT(wl.id) ? nx(WL, "wl-", wl.id) : "#wl-" + wl.id, ok: doneT(wl.id) || (P.lessons[wl.id]?.wrote && P.lessons[wl.id]?.date === t), doneSub: after(WL, wl.id) });
   if (mdue) items.push({ tag: "Sổ lỗi", title: `Ôn ${mdue} câu Reading làm sai`, sub: "Ôn bằng thẻ, tự chấm 1–4 · khoảng 5 phút", min: 5, href: "#errors", ok: lg.acts.includes("errors") && !MIST.some(m => !isGramErr(m) && m.due <= t) });
   return items;
 }
@@ -3695,7 +3695,7 @@ function pageToday() {
   return h("div", { class: "stack", style: "gap:20px" },
     h("div", { class: "today-head page-banner" },
       h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, d.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" })), h("h1", null, doneN === items.length ? "Xong việc hôm nay" : `Khoảng ${mins} phút hôm nay`)),
-      h("span", { class: "chip " + (store.kind === "db" ? "acc" : "warn") }, store.kind === "db" ? "Đang lưu vào tài khoản Claude của bạn" : "Đang lưu trên trình duyệt này")),
+      h("span", { class: "chip " + (store.kind === "db" ? "acc" : "warn") }, store.kind === "db" ? "Đang lưu vào tài khoản AI của bạn" : "Đang lưu trên trình duyệt này")),
     h("section", { class: "card" },
       h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Việc cần làm"), h("span", { class: "small muted" }, `${doneN}/${items.length} xong`)),
       h("div", { class: "meter" }, h("i", { style: `width:${doneN / Math.max(1, items.length) * 100}%` })),
@@ -3716,7 +3716,7 @@ function pageToday() {
         planCard(),
         progressCard(),
         h("div", { class: "grid2" }, writeTrendCard(bands), mistakeCard()))),
-    h("p", { class: "small muted", style: "text-align:center" }, `Phiên bản ${APP_VER} · ${store.kind === "db" ? "lưu vào tài khoản Claude" : "lưu trên trình duyệt này"}`));
+    h("p", { class: "small muted", style: "text-align:center" }, `Phiên bản ${APP_VER} · ${store.kind === "db" ? "lưu vào tài khoản AI" : "lưu trên trình duyệt này"}`));
 }
 /* Hai thẻ cuối trang Hôm nay: điểm bài viết theo thời gian và lỗi hay gặp (gom từ Sổ lỗi) */
 function scoreSpark(vals, max) {
@@ -3735,9 +3735,9 @@ function writeTrendCard(bands) {
       h("div", { class: "spark", html: scoreSpark(ws.map(w => w.s), 10) }));
   }
   if (bands.length) parts.push(h("span", { class: "small muted" }, `Bài Writing hoàn chỉnh · band gần nhất ${bands[bands.length - 1].result.overall.toFixed(1)} (mục tiêu ${P.target})`), h("div", { class: "spark", html: bandSpark(bands) }));
-  if (!parts.length) parts.push(h("div", { class: "empty stack", style: "gap:10px;align-items:center" }, h("span", null, "Chưa có bài nào được chấm. Mỗi lần Claude chấm phần Tự viết trong bài ngữ pháp hoặc bài Viết, điểm sẽ hiện thành đường ở đây."),
+  if (!parts.length) parts.push(h("div", { class: "empty stack", style: "gap:10px;align-items:center" }, h("span", null, "Chưa có bài nào được chấm. Mỗi lần AI chấm phần Tự viết trong bài ngữ pháp hoặc bài Viết, điểm sẽ hiện thành đường ở đây."),
     h("div", { class: "row", style: "justify-content:center" }, nextW ? h("a", { class: "btn btn-primary", href: "#wl-" + nextW.id }, "Học bài Viết tiếp ›") : null, nextG ? h("a", { class: "btn", href: "#lesson-" + nextG.id }, "Bài ngữ pháp tiếp ›") : null)));
-  else parts.push(h("p", { class: "small muted", style: "margin:0" }, "Điểm do Claude ước tính, không phải điểm thi chính thức."));
+  else parts.push(h("p", { class: "small muted", style: "margin:0" }, "Điểm do AI ước tính, không phải điểm thi chính thức."));
   return h("section", { class: "card" }, h("h2", null, "Điểm bài viết theo thời gian"), parts);
 }
 function mistakeCard() {
@@ -3749,7 +3749,7 @@ function mistakeCard() {
         return h("div", { class: "errbar" }, h("div", { class: "row", style: "justify-content:space-between;gap:8px;flex-wrap:nowrap" }, h("span", { class: "small", style: "font-weight:600" }, lessonById(id).title), h("span", { class: "row", style: "gap:8px;flex-wrap:nowrap" }, h("span", { class: "small muted" }, list.length + " lỗi"), h("a", { class: "small", href: "#lesson-" + id }, "Học bài ›"))),
           h("div", { class: "meter" }, h("i", { style: `width:${list.length / max * 100}%` })), pats.length ? h("span", { class: "small muted" }, pats.join(" · ")) : null); })),
       h("a", { class: "btn btn-primary", href: "#lesson-" + top[0][0], style: "align-self:flex-start" }, "Học trước: " + lessonById(top[0][0]).title + " ›")]
-      : h("p", { class: "empty" }, un ? `Có ${un} lỗi chưa được xếp bài. Mở Sổ lỗi để Claude phân tích.` : "Chưa có lỗi nào. Khi Claude chấm phần tự viết, lỗi sẽ được xếp vào đúng bài ngữ pháp cần học lại ở đây."));
+      : h("p", { class: "empty" }, un ? `Có ${un} lỗi chưa được xếp bài. Mở Sổ lỗi để AI phân tích.` : "Chưa có lỗi nào. Khi AI chấm phần tự viết, lỗi sẽ được xếp vào đúng bài ngữ pháp cần học lại ở đây."));
 }
 function bandSpark(list) {
   const W = 480, H = 150, m = { l: 26, r: 10, t: 10, b: 20 }, n = list.length;
@@ -3770,7 +3770,7 @@ function pageGrammar() {
   const done = LESSONS.filter(l => P.lessons[l.id]?.done).length;
   return h("div", { class: "stack", style: "gap:18px" },
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngữ pháp"), h("h1", null, "Ngữ pháp tiếng Anh đầy đủ"),
-      h("p", { class: "muted", style: "max-width:64ch" }, `${LESSONS.filter(l => l.group !== "l").length} bài ngữ pháp từ nền tảng tới nâng cao, cộng ${LESSONS.filter(l => l.group === "l").length} bài áp dụng cho Task 1.` + " Mỗi bài có tóm tắt nhanh, lý thuyết kèm công thức, sơ đồ và cặp câu Sai / Đúng, ví dụ áp dụng vào Writing để tham khảo, bài luyện tự chấm và một đoạn bạn tự viết để Claude sửa."),
+      h("p", { class: "muted", style: "max-width:64ch" }, `${LESSONS.filter(l => l.group !== "l").length} bài ngữ pháp từ nền tảng tới nâng cao, cộng ${LESSONS.filter(l => l.group === "l").length} bài áp dụng cho Task 1.` + " Mỗi bài có tóm tắt nhanh, lý thuyết kèm công thức, sơ đồ và cặp câu Sai / Đúng, ví dụ áp dụng vào Writing để tham khảo, bài luyện tự chấm và một đoạn bạn tự viết để AI sửa."),
       h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${done / LESSONS.length * 100}%` })), h("span", { class: "small muted" }, `${done}/${LESSONS.length} bài`))),
     h("div", { class: "row", role: "group", "aria-label": "Cách xem", style: "gap:6px" }, [["list", "Danh sách bài"], ["map", "Bản đồ ngữ pháp"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String((UI.gView || "list") === k), onclick: () => { UI.gView = k; render(); } }, t))),
     UI.gView === "map" ? grammarMap() : GROUPS.map(([g, name, desc]) => { const ls = LESSONS.filter(l => l.group === g), dn = ls.filter(l => P.lessons[l.id]?.done).length;
@@ -5582,7 +5582,7 @@ function pageLesson(l) {
     P.lessons[l.id] = { done: prev.done || score >= pass, score: Math.max(prev.score || 0, score), date: today() };
     if (score >= pass && !(P.log[today()]?.acts || []).includes("lesson")) addAct("lesson", 10); else saveProfile();
     if (score >= pass) award("lesson", 30);
-    drawEx(); resMsg.replaceChildren(h("p", { class: "note " + (score >= pass ? "" : "warn") }, score >= pass ? `Đúng ${score}/${n}. Bài đã được đánh dấu là đã học. Muốn dùng thử, viết một đoạn ở phần cuối để Claude sửa.` : `Đúng ${score}/${n} (cần ${pass} câu để qua bài). Xem lại phần giải thích màu đỏ và phần lý thuyết, rồi bấm Làm lại.`));
+    drawEx(); resMsg.replaceChildren(h("p", { class: "note " + (score >= pass ? "" : "warn") }, score >= pass ? `Đúng ${score}/${n}. Bài đã được đánh dấu là đã học. Muốn dùng thử, viết một đoạn ở phần cuối để AI sửa.` : `Đúng ${score}/${n} (cần ${pass} câu để qua bài). Xem lại phần giải thích màu đỏ và phần lý thuyết, rồi bấm Làm lại.`));
   } }, "Kiểm tra");
   const resMsg = h("div");
   const key = "lw-" + l.id;
@@ -5592,7 +5592,7 @@ function pageLesson(l) {
   const ask = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
     const text = ta.value.trim(); if (wc(text) < 8) { out.replaceChildren(h("p", { class: "note warn" }, "Hãy viết ít nhất một hai câu (khoảng 8 từ trở lên).")); return; }
     const ctl = new AbortController(); UI.busy[key] = ctl; ask.disabled = true; btnRow.append(stopBtn(key));
-    out.replaceChildren(h("p", { class: "muted" }, "Claude đang đọc bài…"));
+    out.replaceChildren(h("p", { class: "muted" }, "AI đang đọc bài…"));
     const prompt = `Bạn là giáo viên tiếng Anh, sửa bài cho một sinh viên Việt Nam khoảng band 3.0–4.5.
 Học sinh vừa học bài ngữ pháp "${l.title}" (trọng tâm: ${l.focus}) và viết ${ds ? "một đoạn ngắn mô tả biểu đồ IELTS Task 1" : "một đoạn ngắn (có thể theo đề IELTS Task 2 dưới đây hoặc câu tự do)"} để luyện điểm ngữ pháp này. Ưu tiên nhận xét cách dùng điểm ngữ pháp của bài.
 Yêu cầu của bài: ${l.write}
@@ -5603,12 +5603,12 @@ Nhận xét bằng tiếng Việt, ngắn và cụ thể.${ds ? " Kiểm tra c�
 Chỉ trả lời một đối tượng JSON: {"used_focus":true,"score":7,"feedback":"2-3 câu nhận xét","fixes":[{"original":"cụm sai trích nguyên văn","corrected":"bản sửa","why":"giải thích tiếng Việt"}],"better":"đoạn viết lại tốt hơn bằng tiếng Anh, giữ ý của học sinh"}
 score là số nguyên từ 0 đến 10.`;
     try {
-      const r = await ai(prompt, { json: true, signal: ctl.signal, onText: ({ text: t }) => { out.firstChild && (out.firstChild.textContent = `Claude đang viết nhận xét… (${t.length} ký tự)`); } });
+      const r = await ai(prompt, { json: true, signal: ctl.signal, onText: ({ text: t }) => { out.firstChild && (out.firstChild.textContent = `AI đang viết nhận xét… (${t.length} ký tự)`); } });
       addErrors((Array.isArray(r.fixes) ? r.fixes : []).map(f => ({ src: "lesson", front: String(f.original || ""), back: String(f.corrected || ""), why: String(f.why || ""), category: l.title, lesson: l.id })));
       out.replaceChildren(...fbNode(fbKeep(key, r, text), "Đã dùng đúng điểm ngữ pháp", "Chưa dùng rõ điểm ngữ pháp", "used_focus"));
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { ask.disabled = false; btnRow.lastChild?.remove(); delete UI.busy[key]; }
-  } }, "Nhờ Claude sửa");
+  } }, "Nhờ AI sửa");
   btnRow.append(ask);
   const tab = (UI.lTab ||= {})[l.id] || "theory", d = SLOW[l.id], grp = GROUPS.find(g => g[0] === l.group) || [];
   const words = [d?.idea || "", ...(d?.steps || []).map(s => s.say + " " + (s.ex || []).flat().join(" "))].join(" ").split(/\s+/).length + String(l.theory || "").replace(/<[^>]+>/g, " ").split(/\s+/).length * 0.3;
@@ -5617,7 +5617,7 @@ score là số nguyên từ 0 đến 10.`;
   const go = id => { const el = document.getElementById(id); if (!el) return; if (el.tagName === "DETAILS") el.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); };
   const setTab = t => { UI.lTab[l.id] = t; render(); window.scrollTo({ top: 0 }); };
   const theoryToc = [...(d?.steps || []).map((s, i) => ["ls-st-" + i, s.t]), d?.traps?.length ? ["ls-trap", "Chỗ người Việt hay nhầm"] : null, d?.apply?.length ? ["ls-use", "Câu mẫu dùng ngay"] : null, d?.check?.length ? ["ls-chk", "Tự kiểm tra"] : null, ["ls-ref", "Bảng tra và đọc thêm"], ["ls-apply", ds ? "Áp dụng vào Writing Task 1" : "Áp dụng vào Writing Task 2"]].filter(Boolean);
-  const pracToc = [["ls-practice", `Luyện tập (${l.ex.length} câu)`], ["ls-gex", "Bài tập thêm do Claude soạn"], ["ls-write", "Tự viết để Claude sửa"]];
+  const pracToc = [["ls-practice", `Luyện tập (${l.ex.length} câu)`], ["ls-gex", "Bài tập thêm do AI soạn"], ["ls-write", "Tự viết để AI sửa"]];
   const toc = tab === "theory" ? theoryToc : pracToc;
   const chips = tab === "theory" ? [l.summary ? ["ls-sum", "Tóm tắt"] : null, ["ls-slow", d?.img ? "Hiểu nhanh" : "Giảng kỹ"], d?.traps?.length ? ["ls-trap", "Bẫy lỗi"] : null, ["ls-ref", "Bảng tra"], ["ls-apply", "Áp dụng Writing"]].filter(Boolean) : [["ls-practice", "Luyện tập"], ["ls-gex", "Bài tập thêm"], ["ls-write", "Tự viết"]];
   const aside = h("aside", { class: "lside" }, h("div", { class: "lside-in" }, h("span", { class: "lside-h" }, tab === "theory" ? "Trong bài này" : "Phần bài tập"),
@@ -5627,7 +5627,7 @@ score là số nguyên từ 0 đến 10.`;
   const ICO_E = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H5a1 1 0 00-1 1v14a1 1 0 001 1h14a1 1 0 001-1v-4M14 5l5 5-7 7H7v-5z"/></svg>';
   const tabs = h("div", { class: "ltabs", role: "tablist", "aria-label": "Phần của bài" }, [["theory", "Lý thuyết", theoryToc.length, ICO_B], ["practice", "Bài tập", l.ex.length, ICO_E]].map(([k, t, n, ic]) => h("button", { type: "button", role: "tab", "aria-selected": String(tab === k), onclick: () => setTab(k) }, h("span", { class: "ltab-ic", html: ic }), h("span", null, t), h("span", { class: "ltab-n" }, n))));
   const ov = d ? h("div", { class: "lov" }, [["ls-slow", "Trường hợp dùng", (d.img ? `${d.steps.length} tình huống dùng` : `${d.steps.length} bước giảng kỹ`), ""], [fIdx >= 0 ? "ls-st-" + fIdx : "ls-ref", "Công thức", nForm ? `${nForm} công thức màu` : "Bảng quy tắc", ""], [(d.traps || []).length ? "ls-trap" : "ls-chk", "Bẫy lỗi", `${(d.traps || []).length} lỗi hay gặp`, "pink"]].map(([id, k, v, c]) => h("button", { type: "button", class: "lov-c " + c, onclick: () => go(id) }, h("span", { class: "lov-k" }, k), h("span", { class: "lov-v" }, v)))) : null;
-  const gx = tab === "practice" ? gexCard(l) : null; const gh = gx?.querySelector("h2"); if (gh) gh.replaceWith(secH(2, "Bài tập thêm do Claude soạn"));
+  const gx = tab === "practice" ? gexCard(l) : null; const gh = gx?.querySelector("h2"); if (gh) gh.replaceWith(secH(2, "Bài tập thêm do AI soạn"));
   const pass = P.lessons[l.id];
   const main = h("div", { class: "lmain stack", style: "gap:22px" },
     h("a", { href: "#grammar", class: "back-link" }, "← Tất cả bài ngữ pháp"),
@@ -5649,7 +5649,7 @@ score là số nguyên từ 0 đến 10.`;
     h("button", { type: "button", class: "btn btn-primary", style: "align-self:flex-start", onclick: () => setTab("practice") }, `Làm ${l.ex.length} câu bài tập →`)]
     : [h("section", { class: "card", id: "ls-practice" }, secH(1, `Luyện tập (${l.ex.length} câu)`), exList, h("div", { class: "row" }, checkBtn, h("button", { class: "btn", type: "button", onclick: () => { UI.ex[l.id] = { ans: {}, checked: false }; render(); } }, "Làm lại")), resMsg),
     gx,
-    h("section", { class: "card", id: "ls-write" }, secH(3, "Tự viết để Claude sửa"),
+    h("section", { class: "card", id: "ls-write" }, secH(3, "Tự viết để AI sửa"),
       h("div", { class: "wsplit lw-split" }, h("div", { class: "task-box" }, h("span", { class: "eyebrow" }, "Yêu cầu"), h("p", null, l.write), h("p", { class: "prompt" }, ds ? ds.prompt : t2.text), ds ? chartNode(ds) : null, ds ? null : h("p", { class: "small muted", style: "margin:0" }, "Có thể bám theo đề này, hoặc viết câu tự do miễn là dùng điểm ngữ pháp của bài.")),
         h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "Bài của bạn"), ta, aiNote(), btnRow, out)), wvTable(l.id, ta)),
     nextL ? h("a", { class: "btn", href: "#lesson-" + nextL.id, style: "align-self:flex-start" }, "Bài tiếp: " + nextL.title + " ›") : null]));
@@ -5676,7 +5676,7 @@ function exNode(l, e, i, st) {
 /* Writing */
 function allT1() { return [...DATASETS.map(d => ({ id: d.id, data: d, custom: false })), ...TASKS.filter(t => t.kind === "t1" && t.data).map(t => ({ id: t.id, data: t.data, custom: true, source: t.source }))]; }
 function allT2() { return [...T2_PROMPTS.map(p => ({ id: p.id, text: p.text, custom: false })), ...TASKS.filter(t => t.kind === "t2" && t.text).map(t => ({ id: t.id, text: t.text, custom: true, source: t.source }))]; }
-const srcTag = x => !x.custom ? "" : x.source === "book" ? "[Sách] " : x.source === "mine" ? "[Tự nhập] " : "[Claude] ";
+const srcTag = x => !x.custom ? "" : x.source === "book" ? "[Sách] " : x.source === "mine" ? "[Tự nhập] " : "[AI] ";
 /* Lưới ô công cụ: bấm một ô thì công cụ mở ra bên dưới (thay cho dấu + thu gọn) */
 function toolGrid(key, tools, def) {
   const cur = tools.some(t => t.id === UI[key]) ? UI[key] : (UI[key] === "" ? null : def ?? null);
@@ -5690,7 +5690,7 @@ function pageHead(eyebrow, title, sub, right) { return h("div", { class: "page-h
 /* Một nút ở đầu trang, bấm vào mới hiện các mục (thay cho thanh tab) */
 const SUB_DESC = { "vTab:road": "25 chủ đề IELTS và A1→B2 theo CEFR, qua màn như game", "rTab:full": "3 passage · 40 câu · 60 phút, thi thử hoặc luyện tập", "wTab:full": "Task 1 + Task 2 trong 60 phút", "wTab:course": "Học từng kỹ năng, từng dạng đề", "rTab:course": "Học từng dạng câu hỏi", "wTab:write": "Chọn đề, bấm giờ, viết và nộp chấm", "wTab:drill": "Game viết câu, Paraphrase 60 giây, Nâng câu", "wTab:hist": "Bài đã chấm và phân tích tiến bộ",
   "rTab:list": "Bài đọc của bạn và tạo bài mới", "rTab:drill": "Game Đọc và đọc lướt chọn heading", "rTab:profile": "Bạn hay sai dạng nào, vì sao",
-  "vTab:all": "Danh sách từ, tìm, lọc và gộp chủ đề", "vTab:add": "Thêm một từ, gói theo chủ đề, dán ghi chép", "vTab:read": "Đọc bài văn và điền từ đã học", "vTab:sent": "Dịch 3 câu, bắt buộc dùng từ trong sổ, Claude chấm", "vTab:game": "Ghép từ với nghĩa, bấm giờ, không tốn lượt Claude", "vTab:g3d": "Bắn thiên thạch, câu cá, thám tử suy luận" };
+  "vTab:all": "Danh sách từ, tìm, lọc và gộp chủ đề", "vTab:add": "Thêm một từ, gói theo chủ đề, dán ghi chép", "vTab:read": "Đọc bài văn và điền từ đã học", "vTab:sent": "Dịch 3 câu, bắt buộc dùng từ trong sổ, AI chấm", "vTab:game": "Ghép từ với nghĩa, bấm giờ, không tốn lượt AI", "vTab:g3d": "Bắn thiên thạch, câu cá, thám tử suy luận" };
 function subMenu(key, items) {
   const cur = items.some(i => i[0] === UI[key]) ? UI[key] : items[0][0], it = items.find(i => i[0] === cur);
   const menu = h("details", { class: "tabmenu" }, h("summary", null, h("span", { class: "small muted" }, "Đang xem"), h("b", null, it[1]), h("span", { class: "tabmenu-car", "aria-hidden": "true" }, "▾")),
@@ -5706,7 +5706,7 @@ document.addEventListener("click", e => { document.querySelectorAll("details.tab
 const T1_TYPE = { line: ["Đường", "📈"], bar: ["Cột", "📊"], pie: ["Tròn", "🥧"], table: ["Bảng", "▦"], process: ["Quy trình", "🔁"], map: ["Bản đồ", "🗺"] };
 const T2_KIND = [["opinion", "Đồng ý / phản đối", /to what extent|agree or disagree|do you agree/i], ["discuss", "Hai quan điểm", /discuss both/i], ["advdis", "Lợi – hại", /advantages?/i], ["problem", "Vấn đề – giải pháp", /problems?|causes?|solutions?|measures?|solve/i], ["two", "Hai câu hỏi", /[\s\S]/]];
 const t2Kind = t => T2_KIND.find(k => k[2].test(t || ""))[0];
-const SRC_NAME = x => !x.custom ? "Có sẵn" : x.source === "book" ? "Sách" : x.source === "mine" ? "Tự nhập" : "Claude";
+const SRC_NAME = x => !x.custom ? "Có sẵn" : x.source === "book" ? "Sách" : x.source === "mine" ? "Tự nhập" : "AI";
 const RQ_SHORT = { tfng: "T/F/NG", ynng: "Y/N/NG", mc: "Trắc nghiệm", pick: "Chọn nhiều", gap: "Điền từ", sent: "Điền từ", summ: "Điền từ", note: "Điền từ", diag: "Sơ đồ", mhead: "Heading", minfo: "Nối thông tin", mfeat: "Nối", mend: "Nối", short: "Trả lời ngắn" };
 const LV_NAME = { easy: "Dễ", mid: "Vừa", hard: "Khó" };
 function chipFilter(state, field, label, opts, redraw) {
@@ -5723,7 +5723,7 @@ function wInfo(n, x) {
 function writingBank(n) {
   const F = (UI.wf ||= {})[n] ||= {}, list = n === 1 ? allT1() : allT2(), info = new Map(list.map(x => [x.id, wInfo(n, x)]));
   const kinds = n === 1 ? Object.entries(T1_TYPE).map(([k, [l]]) => [k, l, list.filter(x => info.get(x.id).kind === k).length]) : T2_KIND.map(([k, l]) => [k, l, list.filter(x => info.get(x.id).kind === k).length]);
-  const srcs = ["Có sẵn", "Claude", "Sách", "Tự nhập"].map(s => [s, s, list.filter(x => info.get(x.id).src === s).length]);
+  const srcs = ["Có sẵn", "AI", "Sách", "Tự nhập"].map(s => [s, s, list.filter(x => info.get(x.id).src === s).length]);
   const sts = [["todo", "Chưa viết", list.filter(x => !info.get(x.id).done).length], ["done", "Đã viết", list.filter(x => info.get(x.id).done).length]];
   const grid = h("div", { class: "bank-grid" }), count = h("span", { class: "small muted" });
   const shown = () => { const q = norm(F.q || ""); return list.filter(x => { const i = info.get(x.id); return (!F.kind || i.kind === F.kind) && (!F.src || i.src === F.src) && (!F.st || (F.st === "done") === i.done) && (!q || norm(i.title).includes(q)); }); };
@@ -5764,7 +5764,7 @@ function askReadMode(r) {
     h("span", { class: "mopt-h" }, h("span", { class: "mbox", "aria-hidden": "true" }), t), h("span", { class: "mopt-s" }, sub)));
   const dlg = h("dialog", { class: "mdlg", "aria-label": "Chọn cách làm bài " + r.title },
     h("button", { type: "button", class: "mdlg-x", "aria-label": "Đóng", onclick: () => dlg.close() }, "✕"),
-    h("span", { class: "kicker" }, "Reading · " + (r.source === "book" ? "Bài từ sách" : r.source === "ai" ? "Bài Claude viết" : "Bài mẫu")),
+    h("span", { class: "kicker" }, "Reading · " + (r.source === "book" ? "Bài từ sách" : r.source === "ai" ? "Bài AI viết" : "Bài mẫu")),
     h("h2", { class: "mdlg-t" }, r.title), h("p", { class: "muted" }, `${(r.paragraphs || []).length || "?"} đoạn · ${n} câu`),
     h("span", { class: "mdlg-q" }, "Làm theo cách nào?"), h("div", { class: "mopts" }, opts),
     h("p", { class: "small muted" }, "Đáp án và phần chữa câu sai hiện sau khi nộp bài."),
@@ -5774,7 +5774,7 @@ function askReadMode(r) {
   document.body.append(dlg); dlg.showModal();
 }
 function readingBank(genCard) {
-  const F = UI.rf ||= {}, info = new Map(READS.map(r => { const last = r.attempts?.[r.attempts.length - 1]; return [r.id, { src: r.source === "book" ? "Sách" : r.source === "ai" ? "Claude" : "Mẫu", lv: r.level || "", done: !!last, last, kinds: [...new Set((r.questions || []).map(q => RQ_SHORT[q.type] || q.type))] }]; }));
+  const F = UI.rf ||= {}, info = new Map(READS.map(r => { const last = r.attempts?.[r.attempts.length - 1]; return [r.id, { src: r.source === "book" ? "Sách" : r.source === "ai" ? "AI" : "Mẫu", lv: r.level || "", done: !!last, last, kinds: [...new Set((r.questions || []).map(q => RQ_SHORT[q.type] || q.type))] }]; }));
   const cnt = f => READS.filter(r => f(info.get(r.id))).length;
   const grid = h("div", { class: "bank-grid" }), count = h("span", { class: "small muted" });
   const shown = () => { const q = norm(F.q || ""); return READS.filter(r => { const i = info.get(r.id); return (!F.src || i.src === F.src) && (!F.lv || i.lv === F.lv) && (!F.st || (F.st === "done") === i.done) && (!F.qt || i.kinds.includes(F.qt)) && (!q || norm(r.title).includes(q) || norm((r.paragraphs || []).join(" ")).includes(q)); }); };
@@ -5782,7 +5782,7 @@ function readingBank(genCard) {
   const redraw = () => { const s = shown(); count.textContent = `${s.length}/${READS.length} bài`;
     grid.replaceChildren(...(s.length ? s.map(r => { const i = info.get(r.id);
       return h("button", { type: "button", class: "bank-t", onclick: () => askReadMode(r) },
-        h("div", { class: "bank-top" }, h("span", { class: "chip " + (i.src === "Sách" ? "warn" : i.src === "Claude" ? "acc" : "") }, i.src), i.lv ? h("span", { class: "chip" }, LV_NAME[i.lv] || i.lv) : null,
+        h("div", { class: "bank-top" }, h("span", { class: "chip " + (i.src === "Sách" ? "warn" : i.src === "AI" ? "acc" : "") }, i.src), i.lv ? h("span", { class: "chip" }, LV_NAME[i.lv] || i.lv) : null,
           h("span", { class: "bank-st" + (i.done ? " done" : "") }, i.done ? `${i.last.score}/${i.last.total}` : "Chưa làm")),
         h("span", { class: "bank-title" }, r.title),
         h("span", { class: "small muted" }, `${rTotal(r)} câu · ${i.kinds.join(", ")}`),
@@ -5791,7 +5791,7 @@ function readingBank(genCard) {
   return [genCard, h("section", { class: "card stack", style: "gap:12px" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kho bài đọc"), count),
     h("div", { class: "fb" }, searchBox(F, "rq", "Tìm theo tên bài hoặc nội dung…", redraw),
-      chipFilter(F, "src", "Nguồn", ["Mẫu", "Claude", "Sách"].map(s => [s, s, cnt(i => i.src === s)]), redraw),
+      chipFilter(F, "src", "Nguồn", ["Mẫu", "AI", "Sách"].map(s => [s, s, cnt(i => i.src === s)]), redraw),
       chipFilter(F, "lv", "Độ khó", Object.entries(LV_NAME).map(([k, l]) => [k, l, cnt(i => i.lv === k)]), redraw),
       chipFilter(F, "qt", "Dạng câu", allKinds.map(k => [k, k, cnt(i => i.kinds.includes(k))]), redraw),
       chipFilter(F, "st", "Trạng thái", [["todo", "Chưa làm", cnt(i => !i.done)], ["done", "Đã làm", cnt(i => i.done)]], redraw)),
@@ -5817,7 +5817,7 @@ function pageWriting() {
       ["drill", "Luyện câu", "mới", () => toolGrid("wTool", [
         { id: "game", icon: "🎮", title: "Game viết câu", desc: "Nhìn biểu đồ hoặc ý tiếng Việt, viết câu tiếng Anh. Có màn và sao.", make: gameCard },
         { id: "para", icon: "⏱", title: "Paraphrase 60 giây", desc: "Viết lại câu đề bằng cách khác, giữ nguyên nghĩa.", make: paraphraseCard },
-        { id: "up", icon: "↗", title: "Nâng câu", desc: "Dán một câu, Claude viết lại ở 3 mức band 5 → 7.", make: upgradeCard }], "game")],
+        { id: "up", icon: "↗", title: "Nâng câu", desc: "Dán một câu, AI viết lại ở 3 mức band 5 → 7.", make: upgradeCard }], "game")],
       ["hist", "Bài đã nộp", WRIT.length || null, () => [tabs,
     h("section", { class: "card" }, h("h2", null, `Bài Task ${n} đã nộp`),
       hist.length ? h("div", { class: "hist" }, hist.map(w => h("button", { type: "button", onclick: () => { UI.wView = w.id; render(); window.scrollTo(0, 0); } },
@@ -5833,7 +5833,7 @@ function genTaskControls(n) {
   const key = "gen-t" + n, out = h("div");
   const typeSel = n === 1 ? h("select", { id: "gentype", "aria-label": "Loại biểu đồ", style: "max-width:180px" }, [["line", "Biểu đồ đường"], ["bar", "Biểu đồ cột"], ["pie", "Biểu đồ tròn"], ["table", "Bảng"]].map(([v, l]) => h("option", { value: v }, l))) : null;
   const btn = h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: async () => {
-    btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang soạn đề…"));
+    btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang soạn đề…"));
     try {
       if (n === 1) {
         const ty = typeSel.value;
@@ -5855,7 +5855,7 @@ Chỉ trả lời JSON đúng dạng: ${shape}`, { json: true, signal: undefined
         await putDoc("tasks", id, doc); TASKS.unshift({ ...doc, id }); UI.wSel = id; render();
       }
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); btn.disabled = false; }
-  } }, "Claude ra đề mới");
+  } }, "AI ra đề mới");
   return h("div", { class: "stack" }, h("div", { class: "row" }, typeSel, btn, h("span", { class: "small muted" }, "Đề và số liệu đều là bản luyện tập, không phải đề thi thật.")), styleToggle(n === 1 ? "t1" : "t2"), out);
 }
 function writingEditor(n, sel) {
@@ -5878,7 +5878,7 @@ function writingEditor(n, sel) {
     const essay = ta.value.trim(), words = wc(essay);
     if (words < 40) { out.replaceChildren(h("p", { class: "note warn" }, "Bài quá ngắn để chấm. Hãy viết ít nhất 40 từ.")); return; }
     const gk = "grade"; const ctl = new AbortController(); UI.busy[gk] = ctl; gbtn.disabled = true; btnRow.append(stopBtn(gk));
-    const status = h("p", { class: "muted" }, "Claude đang chấm. Thường mất 30–90 giây…"); out.replaceChildren(status);
+    const status = h("p", { class: "muted" }, "AI đang chấm. Thường mất 30–90 giây…"); out.replaceChildren(status);
     try {
       const id = await submitGrade({ n, promptId: sel.id, title: n === 1 ? sel.data.title : null, promptText, data: n === 1 ? sel.data : null, essay, words, signal: ctl.signal, status });
       draftSet(key, "");
@@ -5886,7 +5886,7 @@ function writingEditor(n, sel) {
       UI.wView = id; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { gbtn.disabled = false; btnRow.lastChild !== gbtn && btnRow.lastChild?.remove(); delete UI.busy[gk]; }
-  } }, "Nộp cho Claude chấm");
+  } }, "Nộp cho AI chấm");
   btnRow.append(gbtn);
   return h("section", { class: "card wide" }, h("div", { class: "wsplit" },
     h("div", { class: "task-box" }, h("span", { class: "eyebrow" }, `Writing Task ${n} · khoảng ${mins} phút`),
@@ -5959,7 +5959,7 @@ function resultNode(res, w) {
     h("div", { class: "gr-bars" }, res.criteria.map((c, i) => { const [nm, col] = CRIT_C[keys[i]];
       return h("div", { class: "gr-bar" }, h("span", { class: "gr-bn" }, h("i", { style: `background:${col}` }), nm),
         h("span", { class: "gr-seg", style: `--c:${col}`, "aria-label": `${nm}: band ${c.band}` }, Array.from({ length: 9 }, (_, k) => h("i", { class: k < c.band ? "on" : null }))), h("b", null, c.band.toFixed(1))); }),
-      h("p", { class: "small muted", style: "margin:4px 0 0" }, `Mục tiêu band ${P.target}. Điểm do Claude ước tính, chỉ để tham khảo.`)));
+      h("p", { class: "small muted", style: "margin:4px 0 0" }, `Mục tiêu band ${P.target}. Điểm do AI ước tính, chỉ để tham khảo.`)));
   const nav = h("nav", { class: "gr-nav", "aria-label": "Các phần kết quả" }, secs.map(([id, t], i) => h("button", { type: "button", onclick: () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }) }, h("span", null, i + 1), t)));
   const num = id => secs.findIndex(s => s[0] === id) + 1;
   // 1. Sửa trước
@@ -6010,20 +6010,20 @@ function pageReading() {
   const level = h("select", { id: "rlevel" }, [["easy", "Dễ (band 4–5)"], ["mid", "Vừa (band 5.5–6.5)"], ["hard", "Khó (band 7+)"]].map(([v, l]) => h("option", { value: v }, l)));
   const gbtn = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
     gbtn.disabled = true; const ctl = new AbortController(); UI.busy.rgen = ctl;
-    const status = h("p", { class: "muted" }, "Claude đang viết bài đọc. Thường mất khoảng 1 phút…"); out.replaceChildren(status, stopBtn("rgen"));
+    const status = h("p", { class: "muted" }, "AI đang viết bài đọc. Thường mất khoảng 1 phút…"); out.replaceChildren(status, stopBtn("rgen"));
     const lv = level.value, len = { easy: "350–450", mid: "550–650", hard: "750–850" }[lv], desc = { easy: "band 4–5: câu ngắn, từ vựng phổ thông", mid: "band 5.5–6.5: học thuật vừa phải", hard: "band 7+: học thuật, câu phức, từ vựng khó" }[lv];
     try {
-      const r = await ai(readPrompt(topic, desc, len), { json: true, signal: ctl.signal, onText: ({ text }) => status.textContent = `Claude đang viết bài đọc… (${text.length} ký tự)` });
+      const r = await ai(readPrompt(topic, desc, len), { json: true, signal: ctl.signal, onText: ({ text }) => status.textContent = `AI đang viết bài đọc… (${text.length} ký tự)` });
       const rd = validReading(r); if (!rd) throw { code: "invalid_json" };
       const id = newId(); const doc = { ...rd, level: lv, source: "ai", created: Date.now(), attempts: [] };
       await putDoc("readings", id, doc); READS.unshift({ ...doc, id }); UI.rSel = id; UI.rState[id] = { ans: {}, checked: false }; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { gbtn.disabled = false; delete UI.busy.rgen; }
-  } }, "Claude tạo bài mới");
+  } }, "AI tạo bài mới");
   const T = subMenu("rTab", [
       ["course", "Lộ trình", RL.length + " bài", () => [courseCard("r")]],
       ["list", "Bài đọc", READS.length || null, () => readingBank(
-    h("section", { class: "card stack bank-gen", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "Tạo bài đọc mới bằng Claude"), h("span", { class: "small muted" }, "Bài mới mở thẳng vào phòng thi")), aiNote(),
+    h("section", { class: "card stack bank-gen", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "Tạo bài đọc mới bằng AI"), h("span", { class: "small muted" }, "Bài mới mở thẳng vào phòng thi")), aiNote(),
       h("div", { class: "row bank-genrow" }, h("label", { class: "field", for: "rtopic", style: "flex:2;min-width:200px" }, "Chủ đề (không bắt buộc)", topic), h("label", { class: "field", for: "rlevel", style: "flex:1;min-width:160px" }, "Độ khó", level), gbtn),
       styleToggle("reading"), out))],
       ["full", "Đề đầy đủ", fullTests("R").length || "mới", () => fullCard("R")],
@@ -6198,7 +6198,7 @@ function pageImgsNode(ids) {
     (PIMG[id] ||= store.get ? store.get("pimgs", id).then(async d => { if (!d?.data) return ""; let s = d.data; for (let k = 1; k < (d.parts || 1); k++) { const x = await store.get("pimgs", `${id}~${k}`); s += x?.data || ""; } return s; }).catch(() => "") : Promise.resolve("")).then(u => { if (u) img.src = u; else img.replaceWith(h("p", { class: "note warn small" }, "Không tải được ảnh trang.")); }); });
   return box;
 }
-/* ---------- Reading: chữa câu sai (gắn nguyên nhân, Claude tìm căn cứ và cặp paraphrase) ---------- */
+/* ---------- Reading: chữa câu sai (gắn nguyên nhân, AI tìm căn cứ và cặp paraphrase) ---------- */
 const RTAGS = [["loc", "Không tìm ra vị trí", "r03"], ["same", "Bẫy trùng từ", "r02"], ["logic", "Sai logic: phạm vi, mức độ, thời gian…", "r18"], ["outside", "Suy luận ngoài bài", "r04"], ["main", "Chọn chi tiết thay ý chính", "r25"], ["vocab", "Không hiểu từ / câu", "r27"], ["form", "Quá số từ, sai dạng từ", "r12"], ["time", "Hết giờ, phải đoán", "r17"]];
 function rTagSet(key, tag) { const m = P.rtag ||= {}; if (m[key] === tag) delete m[key]; else m[key] = tag; const ks = Object.keys(m); if (ks.length > 400) ks.slice(0, ks.length - 400).forEach(k => delete m[k]); saveProfile(); }
 function rTagCounts() { const c = {}; Object.values(P.rtag || {}).forEach(t => c[t] = (c[t] || 0) + 1); return c; }
@@ -6211,7 +6211,7 @@ function reviewCard(r, st) {
   const label = (q, i) => (q.no || i + 1) + ". " + String(q.q).slice(0, 140);
   const ansOf = (q, a) => a == null || a === "" ? "(bỏ trống)" : Array.isArray(a) ? a.join(", ") : String(a);
   const go = h("button", { class: "btn " + (d ? "" : "btn-primary"), type: "button", disabled: !sample || r.pageImgs?.length || null, onclick: async () => {
-    const ctl = new AbortController(); UI.busy[key] = ctl; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "Claude đang tìm căn cứ trong bài…"), stopBtn(key));
+    const ctl = new AbortController(); UI.busy[key] = ctl; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "AI đang tìm căn cứ trong bài…"), stopBtn(key));
     try {
       const text = r.paragraphs.map((p, i) => (r.lettered === false ? i + 1 : LET[i]) + ". " + p).join("\n\n");
       const res = await ai(`Bạn là giáo viên IELTS Reading chữa bài cho học sinh Việt Nam band 5–6. Với MỖI câu học sinh làm sai, chỉ ra căn cứ trong bài và vì sao sai.
@@ -6228,7 +6228,7 @@ Chỉ trả lời JSON: {"items":[{"i":0,"para":"B","evidence":"trích NGUYÊN V
       const doc = { items, lesson: String(res.lesson || ""), n: (r.attempts || []).length, at: Date.now() }; RV[key] = doc; putDoc("feedbacks", key, doc).catch(() => {}); render();
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { go.disabled = false; delete UI.busy[key]; }
-  } }, d ? "Claude chữa lại" : "Claude chữa câu sai");
+  } }, d ? "AI chữa lại" : "AI chữa câu sai");
   return h("section", { class: "card", id: "rreview" },
     h("div", { class: "stack", style: "gap:2px" }, h("h2", null, `Chữa câu sai (${wrong.length})`), h("span", { class: "small muted" }, "Xem đáp án đúng chưa đủ. Với mỗi câu sai, ghi lại vì sao sai: trang dùng các ghi chú này để cập nhật Hồ sơ người đọc và gợi ý bài cần học.")),
     aiNote(), h("div", { class: "row" }, go), out,
@@ -6278,11 +6278,11 @@ function readingPractice(r) {
         exam ? h("button", { class: "btn", type: "button", onclick: () => { ex.on = false; render(); } }, "Thoát chế độ thi") : null);
   return h("div", { class: "stack", style: "gap:16px" },
     exam ? null : h("button", { class: "btn btn-quiet", type: "button", style: "align-self:flex-start", onclick: () => { UI.rSel = null; UI.rSlice = null; $("#lookup").hidden = true; render(); } }, r.parent ? "‹ Về bài học" : "‹ Tất cả bài đọc"),
-    h("div", { class: "stack page-banner", style: "gap:4px" }, h("span", { class: "eyebrow" }, exam ? "Chế độ thi · 20 phút" : r.source === "book" ? "Bài từ sách của bạn" + (r.book ? " · " + r.book : "") : r.source === "ai" ? "Bài do Claude viết" : "Bài mẫu"),
+    h("div", { class: "stack page-banner", style: "gap:4px" }, h("span", { class: "eyebrow" }, exam ? "Chế độ thi · 20 phút" : r.source === "book" ? "Bài từ sách của bạn" + (r.book ? " · " + r.book : "") : r.source === "ai" ? "Bài do AI viết" : "Bài mẫu"),
       h("h1", { style: "font-family:var(--font-read);font-weight:600" }, r.title),
       h("p", { class: "small muted" }, exam ? "Không tra từ khi đang thi. Bôi đen chữ để tô sáng, chạm vào chỗ đã tô để bỏ. Hết giờ bài tự nộp." : "Bôi đen chữ trong bài để tô sáng hoặc tra nghĩa. Chạm vào chỗ đã tô để bỏ."),
       r.source === "book" && passageIssue(r) ? h("p", { class: "note bad small" }, `Bài này bị lỗi khi tách (${passageIssue(r)}). Vào Thư viện, bấm “Tách lại các bài này” rồi chọn lại file sách.`) : null,
-      r.answer_by === "claude" ? h("p", { class: "note warn small" }, "Đáp án bài này do Claude tự giải vì phần trang bạn chọn không có đáp án. Có thể có câu sai.") : null),
+      r.answer_by === "claude" ? h("p", { class: "note warn small" }, "Đáp án bài này do AI tự giải vì phần trang bạn chọn không có đáp án. Có thể có câu sai.") : null),
     !exam && !st.checked ? h("section", { class: "card", style: "flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between" },
       h("div", { class: "stack", style: "gap:2px" }, h("h3", null, "Chế độ thi"), h("span", { class: "small muted" }, "20 phút, không tra từ, hết giờ tự nộp. Đáp án chỉ hiện sau khi nộp.")),
       h("button", { class: "btn btn-primary", type: "button", onclick: startExam }, "Bắt đầu 20 phút")) : null,
@@ -6341,14 +6341,14 @@ function rqNode(r, q, i, st) {
     const why = h("div", { class: "why " + (ok ? "good" : "bad") }, (ok ? "Đúng. " : q.type === "pick" && pts ? `Đúng ${pts}/${rMax(q)}. Đáp án: ${ansTxt}. ` : `Đáp án: ${ansTxt}. `) + (q.explain || ""));
     body.push(why);
     if (!ok && sample) { const b = h("button", { class: "btn btn-quiet small", type: "button", style: "margin-left:26px;align-self:flex-start", onclick: async () => {
-      b.disabled = true; b.textContent = "Claude đang giải thích…";
+      b.disabled = true; b.textContent = "AI đang giải thích…";
       const mine = Array.isArray(st.ans[i]) ? st.ans[i].join(", ") : st.ans[i];
       try { const t = await ai(`Học sinh làm sai một câu IELTS Reading dạng ${RK[qKind(q)]}. Giải thích ngắn bằng tiếng Việt (3–4 câu) vì sao đáp án đúng là "${ansTxt}" và vì sao "${mine || "(bỏ trống)"}" chưa đúng, trích câu căn cứ trong bài và chỉ ra cụm nào được paraphrase.
 BÀI ĐỌC:
 """${r.paragraphs.map((p, k) => (LET[k] || k + 1) + ". " + p).join("\n").slice(0, 14000)}"""
 ${q.box ? "HƯỚNG DẪN NHÓM CÂU: " + q.box.slice(0, 1500) + "\n" : ""}CÂU HỎI: ${q.q}${q.options ? "\nLỰA CHỌN:\n" + qOptLines(q) : ""}`, { tier: "quick", cache: true });
         b.replaceWith(h("p", { class: "why" }, t)); }
-      catch (e) { b.disabled = false; b.textContent = "Hỏi Claude vì sao"; why.append(" " + aiMsg(e)); } } }, "Hỏi Claude vì sao"); body.push(b); }
+      catch (e) { b.disabled = false; b.textContent = "Hỏi AI vì sao"; why.append(" " + aiMsg(e)); } } }, "Hỏi AI vì sao"); body.push(b); }
   }
   return h("div", { class: "ex" }, body);
 }
@@ -6357,7 +6357,7 @@ function showLookup(word, sentence, auto) {
   const res = h("div", { class: "stack", style: "gap:4px" });
   const close = h("button", { class: "btn btn-quiet", type: "button", onclick: () => box.hidden = true }, "Đóng");
   const go = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-    go.disabled = true; res.replaceChildren(h("span", { class: "muted small" }, "Claude đang tra…"));
+    go.disabled = true; res.replaceChildren(h("span", { class: "muted small" }, "AI đang tra…"));
     try {
       const d = await ai(`Tra nghĩa từ/cụm tiếng Anh "${word}" trong câu: "${sentence}". Dành cho người Việt học IELTS. Chỉ trả lời JSON: {"word":"dạng gốc của từ","pos":"n/v/adj/adv/phr","ipa":"/.../ (giọng Anh)","stress":"tách âm tiết bằng · và bọc âm tiết nhấn trong *, ví dụ lu·*xu*·ri·ous; để trống nếu là cụm","meaning":"nghĩa tiếng Việt theo đúng ngữ cảnh câu này","def":"English-English definition in simple English, learner's dictionary style, max 20 words","example":"một câu ví dụ đơn giản khác"}`, { json: true, tier: "quick", cache: true });
       const v = { word: String(d.word || word), pos: String(d.pos || ""), ipa: String(d.ipa || ""), stress: String(d.stress || ""), meaning: String(d.meaning || ""), def: String(d.def || ""), example: String(d.example || ""), topic: "Từ bài đọc" };
@@ -6366,7 +6366,7 @@ function showLookup(word, sentence, auto) {
       res.replaceChildren(h("div", { class: "row" }, h("b", null, stressNode(v.stress, v.word)), h("span", { class: "muted small" }, [v.pos, v.ipa].filter(Boolean).join(" · ")), sayNode(v.word, false)), h("span", null, v.meaning), v.example ? h("span", { class: "small muted", style: "font-style:italic" }, v.example) : null, h("div", { class: "row" }, add, close));
     } catch (e) { res.replaceChildren(h("span", { class: "small", style: "color:var(--bad)" }, aiMsg(e))); go.disabled = false; }
   } }, "Tra nghĩa");
-  box.replaceChildren(h("div", { class: "row", style: "justify-content:space-between" }, h("span", null, "Tra: ", h("b", null, word)), h("div", { class: "row" }, go, close)), res, sample ? null : h("span", { class: "small muted" }, "Tra nghĩa bằng Claude chỉ chạy khi mở trang trên Claude."));
+  box.replaceChildren(h("div", { class: "row", style: "justify-content:space-between" }, h("span", null, "Tra: ", h("b", null, word)), h("div", { class: "row" }, go, close)), res, sample ? null : h("span", { class: "small muted" }, "Tra nghĩa bằng AI chỉ chạy khi mở trang trên AI."));
   box.hidden = false;
   if (auto && sample) go.click();
 }
@@ -6484,7 +6484,7 @@ function pageVocab() {
   const T = subMenu("vTab", [["road", "Lộ trình", null, () => [vrPage()]], ["all", "Tất cả từ", VOCAB.length, () => [vocabBrowse(topics, search, listBox, shown)]],
       ["add", "Thêm từ", null, () => [addForm(), toolGrid("vTool", [
         { id: "pack", icon: "📦", title: "Gói từ vựng theo chủ đề Task 2", desc: "Mỗi gói 12 từ, kèm collocation và câu ví dụ.", make: topicPackCard },
-        { id: "bulk", icon: "📋", title: "Dán ghi chép cũ", desc: "Dán ghi chép lộn xộn, Claude tách thành thẻ.", make: bulkForm }])]],
+        { id: "bulk", icon: "📋", title: "Dán ghi chép cũ", desc: "Dán ghi chép lộn xộn, AI tách thành thẻ.", make: bulkForm }])]],
       ["sent", "Viết câu với từ mới", "mới", () => [vocabSentCard()]],
       ["read", "Bài văn điền từ", null, () => [vocabReadCard()]],
       ["game", "Game ghép từ", null, () => [vocabGameCard()]],
@@ -6576,11 +6576,11 @@ const VFILL = { run: false, stop: false };
 function vFillBtn(out) {
   const list = () => VOCAB.filter(v => vNeed(v).length);
   const n0 = list().length;
-  const b = h("button", { class: "btn" + (n0 ? " btn-primary" : ""), type: "button", disabled: !VOCAB.length || VFILL.run || null, title: "Claude điền phần còn thiếu: Anh–Anh, phiên âm, trọng âm, loại từ, nghĩa, cách dùng, câu ví dụ. Phần bạn đã ghi được giữ nguyên." }, VFILL.run ? "Đang bổ sung…" : n0 ? `Bổ sung đủ (${n0} từ)` : "Bổ sung đủ");
+  const b = h("button", { class: "btn" + (n0 ? " btn-primary" : ""), type: "button", disabled: !VOCAB.length || VFILL.run || null, title: "AI điền phần còn thiếu: Anh–Anh, phiên âm, trọng âm, loại từ, nghĩa, cách dùng, câu ví dụ. Phần bạn đã ghi được giữ nguyên." }, VFILL.run ? "Đang bổ sung…" : n0 ? `Bổ sung đủ (${n0} từ)` : "Bổ sung đủ");
   b.addEventListener("click", async () => {
     const todo = list();
     if (!todo.length) { out.replaceChildren(h("p", { class: "note small" }, "Tất cả từ trong sổ đã đủ thành phần.")); return; }
-    if (!sample) { out.replaceChildren(h("p", { class: "note bad small" }, "Cần mở trong claude.ai để Claude bổ sung.")); return; }
+    if (!sample) { out.replaceChildren(h("p", { class: "note bad small" }, "Cần mở trong claude.ai để AI bổ sung.")); return; }
     VFILL.run = true; VFILL.stop = false; b.disabled = true; b.textContent = "Đang bổ sung…";
     const msg = h("span", { class: "small" }), bar = h("i", { style: "width:0%" });
     const stopB = h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { VFILL.stop = true; stopB.disabled = true; stopB.textContent = "Sẽ dừng sau nhóm này"; } }, "Dừng");
@@ -6589,7 +6589,7 @@ function vFillBtn(out) {
     const B = 10;
     for (let i = 0; i < todo.length && !VFILL.stop; i += B) {
       const grp = todo.slice(i, i + B);
-      msg.textContent = `Claude đang bổ sung ${Math.min(i + B, todo.length)}/${todo.length} từ…`;
+      msg.textContent = `AI đang bổ sung ${Math.min(i + B, todo.length)}/${todo.length} từ…`;
       const req = grp.map(v => { const have = {}; for (const k of ["pos", "ipa", "stress", "meaning", "def", "usage"]) if ((v[k] || "").trim()) have[k] = v[k]; if (vEx(v)) have.example = vEx(v); return { id: v.id, word: v.word, have, need: vNeed(v) }; });
       try {
         const r = await ai(`You complete entries in a Vietnamese IELTS learner's vocabulary notebook. For each entry, fill ONLY the fields listed in "need". Keep the learner's existing fields; when a Vietnamese meaning is given in "have", explain that exact sense.
@@ -6623,7 +6623,7 @@ Reply JSON only: {"items":[{"id":"...", ...the needed fields}]}`, { json: true }
   return b;
 }
 function vtMergeBtn(out) {
-  const b = h("button", { class: "btn", type: "button", disabled: !VOCAB.length || null, title: "Claude gộp các chủ đề trùng hoặc quá nhỏ. Chủ đề đã gộp lần trước không gửi lại." }, "Gộp chủ đề");
+  const b = h("button", { class: "btn", type: "button", disabled: !VOCAB.length || null, title: "AI gộp các chủ đề trùng hoặc quá nhỏ. Chủ đề đã gộp lần trước không gửi lại." }, "Gộp chủ đề");
   b.addEventListener("click", async () => {
     const done = (P.vtopicsDone ||= []), doneK = new Set(done.map(vtKey));
     // 1) gộp trùng chữ hoa/thường ngay tại máy, không tốn token
@@ -6636,8 +6636,8 @@ function vtMergeBtn(out) {
       if (local.length) { await vtApply(local, [], out); } else { out.replaceChildren(h("p", { class: "note small" }, `Chủ đề đã gọn (${done.length} chủ đề), không có gì mới cần xếp.`)); }
       return;
     }
-    if (!sample) { out.replaceChildren(h("p", { class: "note bad small" }, "Cần mở trong claude.ai để Claude gộp chủ đề.")); return; }
-    b.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, `Claude đang xếp ${fresh.length} chủ đề mới${loose.length ? ` và ${loose.length} từ chưa có chủ đề rõ` : ""}…`));
+    if (!sample) { out.replaceChildren(h("p", { class: "note bad small" }, "Cần mở trong claude.ai để AI gộp chủ đề.")); return; }
+    b.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, `AI đang xếp ${fresh.length} chủ đề mới${loose.length ? ` và ${loose.length} từ chưa có chủ đề rõ` : ""}…`));
     try {
       const prompt = `Sổ từ vựng IELTS của một sinh viên Việt Nam có quá nhiều chủ đề nhỏ, trùng nhau. Hãy gộp cho gọn.
 CHỦ ĐỀ ĐÃ CHỐT (giữ nguyên tên, không đổi, không gộp lại): ${done.length ? done.join(" / ") : "(chưa có)"}
@@ -6687,11 +6687,11 @@ function addForm() {
   const f = {}; const fld = (k, label, ph) => { const i = h("input", { type: "text", id: `va-${k}`, placeholder: ph || "" }); f[k] = i; return h("label", { class: "field", for: `va-${k}` }, label, i); };
   const out = h("div");
   const fill = h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: async () => {
-    const w = f.word.value.trim(); if (!w) { f.word.focus(); return; } fill.disabled = true; out.replaceChildren(h("span", { class: "small muted" }, "Claude đang điền…"));
+    const w = f.word.value.trim(); if (!w) { f.word.focus(); return; } fill.disabled = true; out.replaceChildren(h("span", { class: "small muted" }, "AI đang điền…"));
     try { const d = await ai(`Từ/cụm tiếng Anh: "${w}". Dành cho người Việt học IELTS. Chỉ trả lời JSON: {"pos":"n/v/adj/adv/phr","ipa":"/.../ (giọng Anh)","stress":"tách âm tiết bằng · và bọc âm tiết nhấn trong *, ví dụ lu·*xu*·ri·ous; để trống nếu là cụm","meaning":"nghĩa tiếng Việt phổ biến nhất","def":"English-English definition in simple English, learner's dictionary style, max 20 words","example":"một câu ví dụ đơn giản","topic":"${vtHint()}"}`, { json: true, tier: "quick", cache: true });
       for (const k of ["pos", "ipa", "stress", "meaning", "def", "example", "topic"]) if (!f[k].value && d?.[k]) f[k].value = String(d[k]); out.replaceChildren(); }
     catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); } finally { fill.disabled = false; }
-  } }, "Claude điền giúp");
+  } }, "AI điền giúp");
   const add = async () => { const v = {}; for (const k in f) v[k] = f[k].value.trim(); if (!v.word) { f.word.focus(); return; } try { await addVocab(v); } catch { return; }
     UI.vAddMsg = v.word; render(); requestAnimationFrame(() => document.getElementById("va-word")?.focus()); };
   const main = h("div", { class: "grid2" }, fld("word", "Từ hoặc cụm từ", "luxurious"), fld("meaning", "Nghĩa tiếng Việt", "sang trọng"));
@@ -6699,7 +6699,7 @@ function addForm() {
   Object.values(f).forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); add(); } }));
   f.word.classList.add("va-big"); f.meaning.classList.add("va-big");
   const msg = UI.vAddMsg ? h("p", { class: "va-ok" }, "✓ Đã thêm “", h("b", null, UI.vAddMsg), "” vào sổ. Nhập tiếp từ khác ngay ở đây.") : null; UI.vAddMsg = null;
-  return h("section", { class: "card va" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", null, "Thêm từ mới"), h("span", { class: "small muted" }, "Chỉ cần từ và nghĩa; phần còn lại bấm Claude điền giúp. Nhấn Enter để thêm.")), msg,
+  return h("section", { class: "card va" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", null, "Thêm từ mới"), h("span", { class: "small muted" }, "Chỉ cần từ và nghĩa; phần còn lại bấm AI điền giúp. Nhấn Enter để thêm.")), msg,
     main, more,
     h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: add }, "Thêm vào sổ"), fill), out);
 }
@@ -6707,7 +6707,7 @@ function bulkForm() {
   const ta = h("textarea", { id: "bulk", rows: "7", placeholder: "Dán nguyên ghi chép của bạn, ví dụ:\nfurniture: đồ nội thất\nluxurious(adj): sang trọng. Ex: They stayed in a luxurious hotel\nThere's no room for (cụm từ): k còn chỗ chứa" });
   const out = h("div", { class: "stack" });
   const go = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-    const txt = ta.value.trim(); if (txt.length < 5) return; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "Claude đang sắp xếp ghi chép…"));
+    const txt = ta.value.trim(); if (txt.length < 5) return; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "AI đang sắp xếp ghi chép…"));
     try {
       const arr = await ai(`Đây là ghi chép từ vựng tiếng Anh lộn xộn của một sinh viên Việt Nam. Tách thành danh sách từ. Giữ nghĩa tiếng Việt sinh viên đã ghi (sửa lỗi chính tả rõ ràng), bổ sung phần còn thiếu, sửa câu ví dụ nếu sai ngữ pháp. Bỏ qua các dòng không phải từ vựng (ghi chú ngữ pháp, nhắc việc).
 GHI CHÉP:
@@ -6717,13 +6717,13 @@ Chỉ trả lời JSON array, mỗi phần tử: {"word":"...","pos":"n/v/adj/ad
       const items = arr.filter(x => x && typeof x.word === "string" && x.word.trim()).map(x => ({ word: x.word.trim(), pos: String(x.pos || ""), ipa: String(x.ipa || ""), stress: String(x.stress || ""), meaning: String(x.meaning || ""), def: String(x.def || ""), example: String(x.example || ""), topic: String(x.topic || "Chung") }));
       const fresh = items.filter(x => !VOCAB.some(v => norm(v.word) === norm(x.word)));
       const pick = fresh.map(() => true);
-      out.replaceChildren(h("p", { class: "small muted" }, `Claude tìm thấy ${items.length} từ, ${fresh.length} từ chưa có trong sổ. Bỏ chọn những từ bạn không muốn thêm.`),
+      out.replaceChildren(h("p", { class: "small muted" }, `AI tìm thấy ${items.length} từ, ${fresh.length} từ chưa có trong sổ. Bỏ chọn những từ bạn không muốn thêm.`),
         h("div", { class: "stack", style: "gap:0" }, fresh.map((x, i) => h("label", { class: "vrow", style: "cursor:pointer" }, h("span", { class: "row", style: "gap:8px;flex-wrap:nowrap;min-width:0" }, h("input", { type: "checkbox", checked: true, onchange: e => pick[i] = e.target.checked }), h("span", { class: "vw" }, stressNode(x.stress, x.word))), h("span", { class: "vm small" }, x.meaning), h("span", { class: "chip" }, x.topic)))),
         fresh.length ? h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: async ev => { ev.currentTarget.disabled = true; let n = 0; for (let i = 0; i < fresh.length; i++) if (pick[i]) { try { await addVocab(fresh[i]); n++; } catch { break; } } ta.value = ""; toast(`Đã thêm ${n} từ`); render(); } }, "Thêm các từ đã chọn") : null);
     } catch (e) { out.replaceChildren(h("p", { class: "note bad" }, aiMsg(e))); }
     finally { go.disabled = false; }
-  } }, "Claude sắp xếp thành thẻ");
-  return h("details", { class: "card" }, h("summary", null, "Dán ghi chép cũ, Claude tự tách thành thẻ"), aiNote(), ta, h("div", { class: "row" }, go), out);
+  } }, "AI sắp xếp thành thẻ");
+  return h("details", { class: "card" }, h("summary", null, "Dán ghi chép cũ, AI tự tách thành thẻ"), aiNote(), ta, h("div", { class: "row" }, go), out);
 }
 /* Ôn thẻ kiểu ForumFlash: mặt Anh (thẻ tối) / mặt Việt (gõ lại), lật ra nghĩa · cách dùng · 2 câu ví dụ */
 const VENR = { busy: new Set(), tried: new Set() };
@@ -6840,7 +6840,7 @@ function reviewNode() {
     const blk = (k, lab, body) => h("div", { class: "fc-step fc-s" + k }, h("span", { class: "fc-badge" }, lab), body);
     card = h("section", { class: "fc" + (R.step < 3 ? " fc-tap" : ""), onclick: R.step < 3 ? flipNow : null },
       h("div", { class: "fc-ans" }, h("b", null, v.word), v.ipa ? h("span", { class: "muted" }, v.ipa) : null, posLabel ? h("span", { class: "fc-pos light" }, posLabel) : null),
-      R.step >= 1 && steps.includes(1) ? blk(1, "Anh–Anh", v.def ? h("p", { class: "fc-def" }, v.def) : h("p", { class: "small muted", style: "margin:0" }, "Claude đang soạn định nghĩa…")) : null,
+      R.step >= 1 && steps.includes(1) ? blk(1, "Anh–Anh", v.def ? h("p", { class: "fc-def" }, v.def) : h("p", { class: "small muted", style: "margin:0" }, "AI đang soạn định nghĩa…")) : null,
       R.step >= 2 && ex1 ? blk(2, "Ví dụ", h("p", { class: "fc-en" }, ex1)) : null,
       R.step >= 3 ? blk(3, "Nghĩa", h("div", { class: "stack", style: "gap:4px" }, h("div", { class: "fc-mean" }, v.meaning || "—"), v.usage ? h("span", { class: "small muted" }, v.usage) : null)) : null,
       R.step >= 3 ? ladderNode(v, { compact: true }) : null,
@@ -6908,7 +6908,7 @@ const RUBRIC_SRC = "https://ielts.org/cdn/ielts-downloadable-assets/ielts-guidan
 function rubricNode(n) {
   const rows = RUBRIC_ROWS.filter(([name]) => n === 1 ? !name.includes("Task 2") : !name.includes("Task 1"));
   return h("details", { class: "card" }, h("summary", null, `Giám khảo chấm Task ${n} như thế nào`),
-    h("p", { class: "small muted" }, "Tóm tắt bằng tiếng Việt từ band descriptors công khai của IELTS (bản cập nhật 2023). Claude chấm bài của bạn theo đúng các mô tả này. ", h("a", { href: RUBRIC_SRC, target: "_blank", rel: "noopener" }, "Xem bản gốc trên ielts.org")),
+    h("p", { class: "small muted" }, "Tóm tắt bằng tiếng Việt từ band descriptors công khai của IELTS (bản cập nhật 2023). AI chấm bài của bạn theo đúng các mô tả này. ", h("a", { href: RUBRIC_SRC, target: "_blank", rel: "noopener" }, "Xem bản gốc trên ielts.org")),
     rows.map(([name, rs]) => h("div", { class: "stack", style: "gap:4px" }, h("h3", null, name), h("div", { class: "tbl" }, h("table", null, rs.map(([b, t]) => h("tr", null, h("td", { class: "n", style: "width:3em;font-weight:700" }, b), h("td", null, t))))))),
     h("div", { class: "stack", style: "gap:4px" }, h("h3", null, "Quy tắc chung"), h("ul", { style: "margin:0;padding-left:20px" }, RUBRIC_RULES.map(r => h("li", { class: "small" }, r)))));
 }
@@ -6990,7 +6990,7 @@ function addErrors(list) {
     MIST.push({ ...doc, id }); putDoc("mistakes", id, doc).catch(() => {});
   }
 }
-/* Sổ lỗi: lỗi viết được Claude phân tích và dẫn tới đúng bài ngữ pháp cần học; câu Reading sai vẫn ôn bằng thẻ */
+/* Sổ lỗi: lỗi viết được AI phân tích và dẫn tới đúng bài ngữ pháp cần học; câu Reading sai vẫn ôn bằng thẻ */
 const isGramErr = m => m.src !== "reading" && m.src !== "dict";
 const mGL = m => m.gl || (m.lesson && lessonById(m.lesson) ? m.lesson : null);
 async function analyzeErrors(list) {
@@ -7030,16 +7030,16 @@ function pageMistakes() {
   return h("div", { class: "stack", style: "gap:18px" },
     h("a", { href: "#vocab", class: "small" }, "‹ Sổ từ vựng"),
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Sổ lỗi"), h("h1", null, "Lỗi của bạn dẫn tới bài cần học"),
-      h("p", { class: "muted", style: "max-width:66ch" }, "Câu sai trong phần Tự viết, khoá Viết và bài Writing hoàn chỉnh được Claude xếp vào đúng bài ngữ pháp gây ra lỗi. Bạn không cần làm bài tập ở đây: đọc lại câu của mình, rồi mở bài đó học lại phần Hiểu bản chất.")),
+      h("p", { class: "muted", style: "max-width:66ch" }, "Câu sai trong phần Tự viết, khoá Viết và bài Writing hoàn chỉnh được AI xếp vào đúng bài ngữ pháp gây ra lỗi. Bạn không cần làm bài tập ở đây: đọc lại câu của mình, rồi mở bài đó học lại phần Hiểu bản chất.")),
     h("div", { class: "stats" },
       h("div", { class: "stat" }, h("b", null, gram.length), h("span", null, "lỗi viết chưa xử lý")),
       h("div", { class: "stat" }, h("b", null, order.length), h("span", null, "bài ngữ pháp cần xem lại")),
       h("div", { class: "stat" }, h("b", null, done.length), h("span", null, "lỗi đã xử lý")),
       h("div", { class: "stat" }, h("b", null, read.length), h("span", null, "câu Reading làm sai"))),
     gram.length ? h("section", { class: "card errsum" },
-      h("div", { class: "row", style: "justify-content:space-between;align-items:center" }, h("h2", null, "Claude phân tích"),
-        UI.anBusy ? h("span", { class: "small muted" }, "Claude đang phân tích lỗi…") : h("button", { class: "btn btn-quiet small", type: "button", disabled: !sample || null, onclick: () => { gram.filter(m => !(m.lesson && lessonById(m.lesson))).forEach(m => { delete m.gl; }); analyzeErrors(gram.filter(m => !mGL(m))); } }, "Phân tích lại")),
-      P.errAdvice?.text ? h("p", { style: "margin:0" }, P.errAdvice.text) : h("p", { class: "small muted", style: "margin:0" }, sample ? "Claude sẽ đọc các lỗi và nói chúng có điểm chung gì." : "Phần phân tích chỉ chạy khi mở trang trên Claude."),
+      h("div", { class: "row", style: "justify-content:space-between;align-items:center" }, h("h2", null, "AI phân tích"),
+        UI.anBusy ? h("span", { class: "small muted" }, "AI đang phân tích lỗi…") : h("button", { class: "btn btn-quiet small", type: "button", disabled: !sample || null, onclick: () => { gram.filter(m => !(m.lesson && lessonById(m.lesson))).forEach(m => { delete m.gl; }); analyzeErrors(gram.filter(m => !mGL(m))); } }, "Phân tích lại")),
+      P.errAdvice?.text ? h("p", { style: "margin:0" }, P.errAdvice.text) : h("p", { class: "small muted", style: "margin:0" }, sample ? "AI sẽ đọc các lỗi và nói chúng có điểm chung gì." : "Phần phân tích chỉ chạy khi mở trang trên AI."),
       order.length ? h("a", { class: "btn btn-primary", style: "align-self:flex-start", href: "#lesson-" + order[0][0] }, "Học trước: " + lessonById(order[0][0]).title + " ›") : null,
       todo.length && !UI.anBusy ? h("p", { class: "small muted", style: "margin:0" }, `${todo.length} lỗi chưa được xếp bài.`) : null) : null,
     order.map(([id, list]) => { const l = lessonById(id), st = P.lessons[id], pats = [...new Set(list.map(m => m.pat).filter(Boolean))].slice(0, 4);
@@ -7104,7 +7104,7 @@ function mistakeReview() {
 /* ---------- Writing: grade, rewrite, compare ---------- */
 async function submitGrade(o) {
   const task = { n: o.n, promptText: o.promptText, data: o.data };
-  const r = await ai(gradePrompt(task, o.essay, o.words), { json: true, tier: "default", signal: o.signal, onText: ({ text }) => o.status.textContent = `Claude đang viết nhận xét… (${text.length} ký tự)` });
+  const r = await ai(gradePrompt(task, o.essay, o.words), { json: true, tier: "default", signal: o.signal, onText: ({ text }) => o.status.textContent = `AI đang viết nhận xét… (${text.length} ký tự)` });
   const res = normalizeResult(r, o.n);
   const id = newId();
   const doc = { task: o.n, promptId: o.promptId, title: o.title || null, promptText: o.promptText, data: o.data || null, essay: o.essay, words: o.words, result: res, created: Date.now(), parent: o.parent || null, version: o.version || 1 };
@@ -7134,7 +7134,7 @@ function writingView(w) {
     if (norm(essay) === norm(w.essay)) { out.replaceChildren(h("p", { class: "note warn" }, "Bạn chưa sửa gì so với bản trước.")); return; }
     if (words < 40) { out.replaceChildren(h("p", { class: "note warn" }, "Bài quá ngắn để chấm.")); return; }
     const ctl = new AbortController(); UI.busy.regrade = ctl; btn.disabled = true; row.append(stopBtn("regrade"));
-    const status = h("p", { class: "muted" }, "Claude đang chấm bản sửa…"); out.replaceChildren(status);
+    const status = h("p", { class: "muted" }, "AI đang chấm bản sửa…"); out.replaceChildren(status);
     try { const id = await submitGrade({ n: w.task, promptId: w.promptId, title: w.title, promptText: w.promptText, data: w.data, essay, words, signal: ctl.signal, status, parent: w.id, version: (w.version || 1) + 1 }); draftSet(rk, ""); UI.wView = id; render(); window.scrollTo(0, 0); }
     catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { btn.disabled = false; if (row.lastChild !== btn) row.lastChild?.remove(); delete UI.busy.regrade; }
@@ -7176,15 +7176,15 @@ Thứ tự: (1) dạng đề và những phần đề bắt buộc phải trả 
 Mỗi lượt chỉ hỏi MỘT câu ngắn bằng tiếng Việt. Nếu câu trả lời trước chưa bám đề, nhắc ngắn gọn rồi hỏi lại. Tối đa 6 câu hỏi.
 Khi đủ ý, trả lời bắt đầu bằng đúng chữ "DÀN Ý:" rồi viết dàn ý bằng tiếng Anh dạng gạch ý ngắn: Introduction (paraphrase + position) / Body 1 / Body 2 / Conclusion, dùng đúng ý của học sinh.`;
   const draw = () => {
-    const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, "Lập dàn ý với Claude · khoảng 5 phút"), O.start && !O.done ? h("span", { class: "small muted" }, "Đã " + mmss(Math.floor((Date.now() - O.start) / 1000))) : null)];
+    const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, "Lập dàn ý với AI · khoảng 5 phút"), O.start && !O.done ? h("span", { class: "small muted" }, "Đã " + mmss(Math.floor((Date.now() - O.start) / 1000))) : null)];
     if (O.done && O.text) {
       kids.push(h("p", { style: "white-space:pre-wrap;font-size:.95rem" }, O.text), h("div", { class: "row" }, h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { UI.outline[key] = { turns: [], start: null, done: false, text: "" }; draftSet("outline-" + key, ""); render(); } }, "Lập lại dàn ý")));
     } else if (!O.turns.length) {
-      kids.push(h("p", { class: "small muted" }, "Claude hỏi từng câu (quan điểm, lý do, ví dụ…) để bạn tự có dàn ý, rồi mới bắt tay viết. Cách này giúp đúng tiêu chí Task Response."),
+      kids.push(h("p", { class: "small muted" }, "AI hỏi từng câu (quan điểm, lý do, ví dụ…) để bạn tự có dàn ý, rồi mới bắt tay viết. Cách này giúp đúng tiêu chí Task Response."),
         h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: () => { O.start = Date.now(); O.turns = [{ role: "user", content: RULES + "\n\nHãy hỏi câu đầu tiên." }]; ask(); } }, "Bắt đầu lập dàn ý"));
     } else {
       O.turns.slice(1).forEach(t => kids.push(h("div", { class: t.role === "assistant" ? "bub-a" : "bub-u" }, t.content)));
-      if (O.busy) kids.push(h("p", { class: "small muted" }, "Claude đang nghĩ…"));
+      if (O.busy) kids.push(h("p", { class: "small muted" }, "AI đang nghĩ…"));
       else { const inp = h("textarea", { id: "outl-" + key, rows: "2", placeholder: "Trả lời bằng tiếng Việt hoặc tiếng Anh…", style: "min-height:56px" });
         const send = () => { const v = inp.value.trim(); if (!v) return; O.turns.push({ role: "user", content: v }); ask(); };
         inp.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
@@ -7337,7 +7337,7 @@ function gameCard() {
   const lvRow = G.ch ? h("div", { class: "stack" },
     h("p", { class: "note small" }, "Mẹo chương này: " + GM_TIP[G.ch]),
     h("div", { class: "gm-lvs" }, all.filter(l => l.ch === G.ch).map((l, i) => h("button", { type: "button", class: "gm-lv", onclick: () => { G.play = l.id; G.ans = {}; G.res = null; render(); window.scrollTo(0, 0); } },
-      h("b", null, "Màn " + (i + 1)), h("span", { class: "gm-st" }, starStr(gmStars(l.id))), l.ai ? h("span", { class: "chip acc" }, l.src === "book" ? "Sách" : "Claude") : null))),
+      h("b", null, "Màn " + (i + 1)), h("span", { class: "gm-st" }, starStr(gmStars(l.id))), l.ai ? h("span", { class: "chip acc" }, l.src === "book" ? "Sách" : "AI") : null))),
     gmGenControls(G.n, G.ch)) : h("p", { class: "small muted" }, "Chọn một chương để xem các màn.");
   return h("section", { class: "card" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", null, "Game viết câu"),
@@ -7348,14 +7348,14 @@ function gameCard() {
 function gmGenControls(n, ch) {
   const out = h("div"), books = n === 1 ? TASKS.filter(t => t.kind === "t1" && t.source === "book" && t.data && t.data.type === ch) : TASKS.filter(t => t.kind === "t2" && t.source === "book" && t.text);
   const diff = h("select", { "aria-label": "Độ khó", style: "width:auto" }, [["easy", "Dễ: câu số liệu đơn"], ["mid", "Vừa: câu so sánh"], ["hard", "Khó: câu có mệnh đề phụ"]].map(([v, l]) => h("option", { value: v }, n === 2 ? l.split(":")[0] : l)));
-  const src = books.length ? h("select", { "aria-label": "Nguồn", style: "width:auto" }, h("option", { value: "ai" }, n === 1 ? "Claude tự tạo số liệu" : "Claude tự ra đề"), h("option", { value: "book" }, `Từ sách của bạn (${books.length})`)) : null;
+  const src = books.length ? h("select", { "aria-label": "Nguồn", style: "width:auto" }, h("option", { value: "ai" }, n === 1 ? "AI tự tạo số liệu" : "AI tự ra đề"), h("option", { value: "book" }, `Từ sách của bạn (${books.length})`)) : null;
   const canGen = !(n === 1 && ch === "map" && !books.length);
-  const btn = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || !canGen || null, onclick: () => gmGen(n, ch, diff.value, src ? src.value : "ai", books, out, btn) }, "Claude ra màn mới");
+  const btn = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || !canGen || null, onclick: () => gmGen(n, ch, diff.value, src ? src.value : "ai", books, out, btn) }, "AI ra màn mới");
   return h("div", { class: "stack", style: "gap:6px;border-top:1px dashed var(--line);padding-top:10px" }, h("div", { class: "row" }, diff, src, btn),
     !canGen ? h("span", { class: "small muted" }, "Màn bản đồ mới cần biểu đồ trong sách của bạn (Thư viện).") : null, out);
 }
 async function gmGen(n, ch, diff, src, books, out, btn) {
-  btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang soạn màn mới…"));
+  btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang soạn màn mới…"));
   const lvTxt = { easy: "Dễ: câu đơn, một số liệu hoặc một ý", mid: "Vừa: câu so sánh hai đối tượng hoặc có hai vế", hard: "Khó: câu phức có mệnh đề phụ (while, whereas, which, although…)" }[diff];
   const chName = (GM_CH[n].find(c => c[0] === ch) || [])[1];
   try {
@@ -7402,7 +7402,7 @@ function gmPlay(lv) {
     if (ans.every(a => !a)) { warn.replaceChildren(h("p", { class: "note warn small" }, "Hãy viết ít nhất một câu.")); return; }
     if (lv.n === 1 && !force) { const miss = lv.items.map((it, i) => ans[i] ? gmMissing(ans[i], it.nums) : []).map((m, i) => m.length ? `Câu ${i + 1} thiếu số liệu: ${m.join(", ")}` : null).filter(Boolean);
       if (miss.length) { force = true; warn.replaceChildren(h("div", { class: "note warn small" }, miss.join(" · ") + ". Sửa lại rồi bấm Chấm, hoặc bấm Chấm lần nữa để vẫn gửi.")); return; } }
-    warn.replaceChildren(); go.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang chấm…"));
+    warn.replaceChildren(); go.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang chấm…"));
     try {
       const ctx = lv.n === 1 ? "Số liệu biểu đồ: " + dataText(ds) : "";
       const r = await ai(`Bạn chấm game luyện viết câu IELTS Writing Task ${lv.n} cho sinh viên Việt Nam khoảng band 5, mục tiêu band ${P.target}.
@@ -7462,7 +7462,7 @@ function paraphraseCard() {
     const out = h("div", { class: "stack" });
     const submit = async () => {
       if (S.res || S.busy) return; S.typed = ta.value; if (wc(S.typed) < 4) { out.replaceChildren(h("p", { class: "note warn small" }, "Viết cả câu nhé.")); return; }
-      S.busy = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang chấm…"));
+      S.busy = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang chấm…"));
       try { const r = await ai(`Câu gốc (đề IELTS): "${S.src}"\nCâu học sinh viết lại (paraphrase): "${S.typed}"\nĐánh giá cho người Việt khoảng band 4–5. Chỉ trả lời JSON: {"score":0-10,"same_meaning":true,"changed_enough":true,"feedback":"1-2 câu tiếng Việt, nêu lỗi ngữ pháp nếu có","better":["2 cách viết lại tốt hơn bằng tiếng Anh"]}`, { json: true, tier: "quick" });
         S.res = { score: Number(r.score) || 0, same: !!r.same_meaning, changed: !!r.changed_enough, feedback: String(r.feedback || ""), better: (Array.isArray(r.better) ? r.better : []).map(String).slice(0, 3) }; award("para", Math.round(S.res.score)); }
       catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
@@ -7624,9 +7624,9 @@ function rgDraw(host) {
   const g = RG_GAMES.find(x => x.id === R.g), ls = rgLevels(g.id), out = h("div");
   const nodes = ls.map((l, i) => { const rec = rgRec(l.id), locked = !l.ai && i > 0 && !rgRec(ls[i - 1].id).st;
     return h("button", { type: "button", class: "rg-node" + (l.boss ? " boss" : "") + (locked ? " locked" : "") + (rec.st ? " done" : ""), disabled: locked || null, onclick: () => rgStart(l) },
-      h("span", { class: "rg-nic" }, locked ? "🔒" : l.boss ? "👑" : l.ai ? "✨" : i + 1), h("b", null, l.boss ? "Trùm" : l.ai ? "Màn Claude" : "Màn " + (i + 1)),
+      h("span", { class: "rg-nic" }, locked ? "🔒" : l.boss ? "👑" : l.ai ? "✨" : i + 1), h("b", null, l.boss ? "Trùm" : l.ai ? "Màn AI" : "Màn " + (i + 1)),
       h("span", { class: "gm-st" }, starStr(rec.st)), rec.best ? h("span", { class: "small muted" }, `Kỷ lục ${rec.best}`) : null); });
-  const gen = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: () => rgGen(g, gen, out) }, "Claude ra màn mới");
+  const gen = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: () => rgGen(g, gen, out) }, "AI ra màn mới");
   host.replaceChildren(h("section", { class: "card" },
     h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { R.g = null; rgDraw(); } }, "‹ Các trò"), h("span", { class: "chip acc" }, g.skill)),
     h("div", { class: "row", style: "gap:12px;flex-wrap:nowrap;align-items:flex-start" }, h("span", { class: "rg-gic big" }, g.ic), h("div", { class: "stack", style: "gap:2px" }, h("h2", null, g.name), h("span", { class: "small muted" }, g.desc))),
@@ -7679,7 +7679,7 @@ function rgPlay() {
     h("span", { class: "rg-cat", "aria-hidden": "true" }, S.mood));
   const head = h("div", { class: "row", style: "justify-content:space-between" },
     h("button", { class: "btn btn-quiet", type: "button", onclick: () => { rgStop(); RGS = null; rgDraw(); } }, "‹ Thoát"),
-    h("span", { class: "small muted" }, `${g.ic} ${g.name} · ${lv.boss ? "Trùm" : lv.ai ? "Màn Claude" : "Màn " + (rgLevels(g.id).findIndex(l => l.id === lv.id) + 1)}`));
+    h("span", { class: "small muted" }, `${g.ic} ${g.name} · ${lv.boss ? "Trùm" : lv.ai ? "Màn AI" : "Màn " + (rgLevels(g.id).findIndex(l => l.id === lv.id) + 1)}`));
   if (S.phase === "end") {
     return h("section", { class: "card rg-play" }, head, hud,
       h("div", { class: "rg-end " + (S.win ? "win" : "lose") }, h("span", { class: "rg-endcat" }, S.win ? (S.newBest ? "😸👑" : "😺") : "😿"),
@@ -7736,7 +7736,7 @@ function rgPlay() {
   return card;
 }
 async function rgGen(g, btn, out) {
-  btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang soạn màn mới…"));
+  btn.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang soạn màn mới…"));
   const spec = {
     imp: `"text": đoạn văn học thuật 80–110 từ, "items": 4 câu, mỗi câu {"q":"câu hỏi tiếng Anh có MỘT cụm đặt trong ngoặc vuông [ ] là cách nói khác của một cụm trong bài","ans":"cụm tương ứng trích NGUYÊN VĂN trong text, 1–5 từ","why":"1 câu tiếng Việt giải thích vì sao hai cụm cùng nghĩa"}. Cụm trong ngoặc phải là paraphrase thật, không lặp lại từ trong bài.`,
     court: `"text": đoạn văn học thuật 80–110 từ, "items": 4 câu, mỗi câu {"q":"một nhận định tiếng Anh","v":"T" hoặc "F" hoặc "NG","ev":"cụm bằng chứng trích NGUYÊN VĂN trong text (bỏ trống nếu NG)","why":"1 câu tiếng Việt giải thích phán quyết"}. Có ít nhất 1 câu mỗi loại; câu FALSE dựa vào từ giới hạn (all, only, never…) hoặc ý ngược; câu NG là thông tin hợp lý nhưng bài không nhắc.`,
@@ -7765,7 +7765,7 @@ function skimCard() {
   if (!S) {
     const out = h("div");
     const go = h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", disabled: !sample || null, onclick: async () => {
-      go.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "Claude đang soạn 5 đoạn văn…"));
+      go.disabled = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang soạn 5 đoạn văn…"));
       try {
         const r = await ai(`Soạn 5 bài luyện kỹ năng đọc lướt (skimming) dạng IELTS matching headings, nội dung GỐC, chủ đề học thuật phổ thông khác nhau. Mỗi bài: một đoạn văn 110–160 từ (band 5–6) và 4 tiêu đề (heading); chỉ 1 tiêu đề nói đúng Ý CHÍNH của cả đoạn, 3 tiêu đề còn lại là bẫy: chỉ đúng một chi tiết nhỏ, quá rộng, hoặc nói điều đoạn không nói. Kèm "explain" tiếng Việt 1–2 câu vì sao đáp án đúng.
 Chỉ trả lời JSON: {"items":[{"paragraph":"...","headings":["...","...","...","..."],"answer":0,"explain":"..."}]}`, { json: true, cache: false });
@@ -7799,7 +7799,7 @@ function topicPackCard() {
   const sel = h("select", { id: "tpk", style: "max-width:240px" }, T2_TOPICS.map(t => h("option", { value: t }, t)));
   const out = h("div", { class: "stack" });
   const go = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-    go.disabled = true; out.replaceChildren(h("p", { class: "muted small" }, "Claude đang chọn từ…"));
+    go.disabled = true; out.replaceChildren(h("p", { class: "muted small" }, "AI đang chọn từ…"));
     try {
       const have = VOCAB.map(v => v.word).slice(0, 300).join(", ");
       const arr = await ai(`Chọn 12 từ hoặc cụm từ học thuật hữu ích để viết IELTS Writing Task 2 về chủ đề "${sel.value}", cho người học band 4–6 muốn lên 6.5–7. Ưu tiên collocation dùng được ngay trong bài viết. Tránh các từ học sinh đã có: ${have || "(chưa có)"}.
@@ -7875,7 +7875,7 @@ function goalCard() {
       h("a", { class: "btn btn-primary", href: "#mock" }, "Thi thử")),
     h("div", { class: "row" }, skills.map(([k, l]) => h("span", { class: "chip " + (sb[k] == null ? "" : sb[k] >= (P.skillTarget?.[k] ?? P.target) ? "good" : "warn") }, `${l} ${sb[k] == null ? "chưa có" : sb[k].toFixed(1)} / ${(P.skillTarget?.[k] ?? P.target).toFixed(1)}`))),
     focus ? h("p", { class: "note small" }, missing.length ? `Tuần này nên tập trung: ${focus[1]}. Chưa có điểm ${focus[1]} để ước tính, làm 1–2 bài để web biết bạn đang ở đâu. ` : `Tuần này nên tập trung: ${focus[1]} (thấp nhất, ước tính ${sb[focus[0]].toFixed(1)}). `, h("a", { href: focus[2] }, "Đi tới " + focus[1])) : null,
-    h("p", { class: "small muted" }, "Band Reading ước tính từ 5 bài gần nhất theo bảng quy đổi điểm thô tham khảo; Writing do Claude chấm."),
+    h("p", { class: "small muted" }, "Band Reading ước tính từ 5 bài gần nhất theo bảng quy đổi điểm thô tham khảo; Writing do AI chấm."),
     h("details", { open: UI.goalOpen || null, ontoggle: e => UI.goalOpen = e.currentTarget.open }, h("summary", { class: "small" }, "Sửa ngày thi, band mục tiêu, thời gian học"),
       goalEditor()),
     h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: async () => { const txt = weekReport(); try { await navigator.clipboard.writeText(txt); toast("Đã sao chép báo cáo tuần"); } catch { const ta = h("textarea", { rows: "9", readonly: true }); ta.value = txt; rep.replaceChildren(h("p", { class: "small muted" }, "Không sao chép tự động được, hãy chọn và sao chép đoạn dưới:"), ta); ta.select(); } } }, "Sao chép báo cáo tuần")), rep);
@@ -7937,7 +7937,7 @@ function pagePlan() {
   const prog = [h("section", { class: "card" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Band qua từng lần làm bài"), h("div", { class: "row pl-leg" }, h("span", null, h("i", { style: "background:var(--s3)" }), "Reading"), h("span", null, h("i", { style: "background:var(--s2)" }), "Writing"), h("span", null, h("i", { class: "dash" }), "Mục tiêu"))),
       chart || h("div", { class: "empty stack", style: "gap:10px;align-items:center" }, h("span", null, "Cần ít nhất 2 bài Reading hoặc Writing đã chấm để vẽ đường tiến bộ."), h("div", { class: "row", style: "justify-content:center" }, h("a", { class: "btn btn-primary", href: "#reading" }, "Làm bài đọc"), h("a", { class: "btn", href: "#writing" }, "Viết một bài"))),
       h("div", { class: "pl-trs" }, trendLine("R", "Reading"), trendLine("W", "Writing")),
-      h("p", { class: "small muted", style: "margin:0" }, "Mỗi điểm là một lần làm bài. Reading quy đổi từ số câu đúng theo bảng điểm thô tham khảo; Writing do Claude chấm. Di chuột vào điểm để xem tên bài."))];
+      h("p", { class: "small muted", style: "margin:0" }, "Mỗi điểm là một lần làm bài. Reading quy đổi từ số câu đúng theo bảng điểm thô tham khảo; Writing do AI chấm. Di chuột vào điểm để xem tên bài."))];
   const filt = UI.planF || "all", rows = hist.slice().reverse().filter(x => filt === "all" || x.k === filt);
   const KN = { R: "Reading", W: "Writing", M: "Thi thử" };
   const histNode = h("section", { class: "card" },
@@ -7948,7 +7948,7 @@ function pagePlan() {
       h("span", { class: "ph-k " + x.k }, x.badge || KN[x.k]),
       h("span", { class: "ph-m" }, h("b", null, x.title || "(không tên)"), h("span", { class: "small muted" }, x.sub)),
       h("span", { class: "ph-b" }, x.band != null ? x.band.toFixed(1) : "–", h("small", null, x.act + " ›")))))
-      : h("p", { class: "empty" }, hist.length ? "Không có bài nào ở mục này." : "Chưa có bài nào. Mỗi lần bạn nộp bài Reading hoặc được Claude chấm bài Writing, bài sẽ hiện ở đây."));
+      : h("p", { class: "empty" }, hist.length ? "Không có bài nào ở mục này." : "Chưa có bài nào. Mỗi lần bạn nộp bài Reading hoặc được AI chấm bài Writing, bài sẽ hiện ở đây."));
   return h("div", { class: "stack", style: "gap:22px" },
     h("header", { class: "lhead" }, h("span", { class: "kicker" }, "Kế hoạch IELTS"), h("h1", null, `Đến band ${(+P.target).toFixed(1)}`),
       h("div", { class: "lmeta" }, h("span", { class: "ltime", html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>' + (P.examDate ? "Thi ngày " + new Date(P.examDate + "T00:00:00").toLocaleDateString("vi-VN") : "Chưa có lịch thi") }),
@@ -8012,7 +8012,7 @@ function askFullMode(m, k = "R") {
     def: (isR ? P.rMode : P.wMode) === "practice" ? "practice" : "exam",
     opts: [["exam", "Thi thử", isR ? "Tính giờ 60 phút cho cả 3 bài như thi thật. Hết giờ bài tự nộp." : "Tính giờ 60 phút cho cả 2 task như thi thật. Hết giờ bài tự nộp để chấm."],
       ["practice", "Luyện tập", isR ? "Không tính giờ. Làm từng bài, nộp khi xong." : "Không tính giờ. Viết thong thả, nộp khi xong."]],
-    note: isR ? "Đáp án và giải thích hiện ở trang kết quả sau khi nộp bài." : "Claude chấm từng task theo 4 tiêu chí, Task 2 tính gấp đôi.",
+    note: isR ? "Đáp án và giải thích hiện ở trang kết quả sau khi nộp bài." : "AI chấm từng task theo 4 tiêu chí, Task 2 tính gấp đôi.",
     sum: sel => `${name} · ${sel === "exam" ? "Thi thử" : "Luyện tập"} · ${isR ? n + " câu" : "2 task"}` + (sel === "exam" ? " · 60 phút" : ""), btn: () => "Bắt đầu →",
     onGo: async sel => { if (isR) P.rMode = sel; else P.wMode = sel; saveProfile(); await restartFull(m, k, sel); openMock(m, k); } });
 }
@@ -8034,20 +8034,20 @@ function fullCard(k) {
   let gen;
   if (k === "R") {
     const go = h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", disabled: !sample || null, onclick: async () => {
-      go.disabled = true; const ctl = new AbortController(); UI.busy.fullR = ctl; const st = h("p", { class: "muted" }, "Claude đang soạn 3 bài đọc (0/3 xong)…"); out.replaceChildren(st, stopBtn("fullR"));
+      go.disabled = true; const ctl = new AbortController(); UI.busy.fullR = ctl; const st = h("p", { class: "muted" }, "AI đang soạn 3 bài đọc (0/3 xong)…"); out.replaceChildren(st, stopBtn("fullR"));
       const levels = ["easy", "mid", "hard"], nq = [13, 13, 14]; let done = 0;
       try {
-        const fields = pickFields(3), ids = await Promise.all(levels.map((l, i) => genReadingDoc(l, ctl.signal, nq[i], { field: fields[i], plan: R_PLANS[i] }).then(id => { st.textContent = `Claude đang soạn 3 bài đọc (${++done}/3 xong)…`; return id; })));
+        const fields = pickFields(3), ids = await Promise.all(levels.map((l, i) => genReadingDoc(l, ctl.signal, nq[i], { field: fields[i], plan: R_PLANS[i] }).then(id => { st.textContent = `AI đang soạn 3 bài đọc (${++done}/3 xong)…`; return id; })));
         const m = await newMockDoc({ only: "R", created: Date.now(), read: { ids, start: null, done: false } }); out.replaceChildren(); render(); askFullMode(m, "R");
       } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
       finally { delete UI.busy.fullR; go.disabled = false; }
     } }, "Tạo đề mới");
     gen = h("section", { class: "card stack bank-gen", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "Tạo đề Reading đầy đủ"), h("span", { class: "small muted" }, "3 passage · 40 câu · 60 phút")),
-      h("p", { class: "small muted", style: "margin:0" }, "Claude soạn 3 bài đọc mới, khó dần như đề thật: Passage 1 dễ, Passage 2 vừa, Passage 3 khó (13 + 13 + 14 câu, đủ các dạng câu hỏi). Mất khoảng 1–2 phút."), aiNote(),
+      h("p", { class: "small muted", style: "margin:0" }, "AI soạn 3 bài đọc mới, khó dần như đề thật: Passage 1 dễ, Passage 2 vừa, Passage 3 khó (13 + 13 + 14 câu, đủ các dạng câu hỏi). Mất khoảng 1–2 phút."), aiNote(),
       go, out);
   } else {
     gen = h("section", { class: "card stack bank-gen", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h3", null, "Tạo đề Writing đầy đủ"), h("span", { class: "small muted" }, "Task 1 + Task 2 · 60 phút")),
-      h("p", { class: "small muted", style: "margin:0" }, "Lấy 1 đề Task 1 và 1 đề Task 2 bạn chưa làm trong kho đề. Viết cả hai trong 60 phút, Claude chấm từng task, Task 2 tính gấp đôi."),
+      h("p", { class: "small muted", style: "margin:0" }, "Lấy 1 đề Task 1 và 1 đề Task 2 bạn chưa làm trong kho đề. Viết cả hai trong 60 phút, AI chấm từng task, Task 2 tính gấp đôi."),
       h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: async () => {
         const used = new Set(WRIT.map(w => w.promptId)), inUse = new Set(MOCKS.flatMap(x => [x.write?.t1?.id, x.write?.t2?.id]));
         const fresh = arr => arr.filter(x => !used.has(x.id) && !inUse.has(x.id)), a1 = allT1(), a2 = allT2();
@@ -8064,7 +8064,7 @@ function fullCard(k) {
       h("span", { class: "ft-top" }, h("span", { class: "pl-ic " + (k === "R" ? "R" : "W"), html: k === "R" ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 5h7a3 3 0 013 3v12a2 2 0 00-2-2H3zM21 5h-7a3 3 0 00-3 3v12a2 2 0 012-2h8z"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>' }), h("span", { class: "ft-kick" }, k === "R" ? "Passage 1–3" : "Task 1 + Task 2")),
       h("b", { class: "ft-t" }, mockLabel(m)), h("span", { class: "ft-sub" }, sub), h("span", { class: "ft-meta" }, meta),
       h("span", { class: "ft-foot" }, h("span", { class: "chip " + (done ? "good" : started ? "warn" : "") }, done ? (band != null ? `Band ${band.toFixed(1)}` : "Đã nộp") : started ? "Đang làm" : "Chưa làm"), h("span", { class: "ft-go" }, (done ? "Xem hoặc làm lại" : started ? "Làm tiếp / làm lại" : "Làm bài") + " →")));
-  })) : h("p", { class: "empty" }, k === "R" ? "Chưa có đề nào. Bấm Tạo đề mới để Claude soạn đề đầu tiên." : "Chưa có đề nào. Bấm Tạo đề mới để lấy đề từ kho.");
+  })) : h("p", { class: "empty" }, k === "R" ? "Chưa có đề nào. Bấm Tạo đề mới để AI soạn đề đầu tiên." : "Chưa có đề nào. Bấm Tạo đề mới để lấy đề từ kho.");
   return [gen, h("section", { class: "card" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Đề đầy đủ"), h("span", { class: "small muted" }, list.length + " đề")), cards)];
 }
 function placeCard() {
@@ -8078,7 +8078,7 @@ function placeCard() {
     }
     let rid = null;
     if (sample) {
-      btn.disabled = true; const ctl = new AbortController(); UI.busy.place = ctl; out.replaceChildren(h("p", { class: "muted" }, "Claude đang soạn bài đọc đầu vào (khoảng 30 giây)…"), stopBtn("place"));
+      btn.disabled = true; const ctl = new AbortController(); UI.busy.place = ctl; out.replaceChildren(h("p", { class: "muted" }, "AI đang soạn bài đọc đầu vào (khoảng 30 giây)…"), stopBtn("place"));
       try { rid = await genReadingDoc("mid", ctl.signal, 13, { field: pickFields(1)[0], plan: R_PLANS[0] }); out.replaceChildren(); }
       catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); btn.disabled = false; return; }
       finally { delete UI.busy.place; }
@@ -8094,7 +8094,7 @@ function placeCard() {
   const nDone = ["R", "W"].filter(k => pl[k]).length;
   return h("section", { class: "card", id: "placement" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kiểm tra đầu vào"), h("span", { class: "small muted", style: "font-family:var(--font-mono)" }, `${nDone}/2 kỹ năng`)),
     h("p", { class: "small muted", style: "margin:0" }, "Mỗi kỹ năng một bài ngắn, làm như thi thật, để biết band hiện tại. Điểm được tính vào band ước tính ở trên. Làm lúc nào cũng được, làm lại khi muốn đo lại."),
-    row("R", "Reading", "1 bài đọc · 13 câu · 20 phút"), row("W", "Writing", "1 đề Task 2 · 40 phút · Claude chấm"), out);
+    row("R", "Reading", "1 bài đọc · 13 câu · 20 phút"), row("W", "Writing", "1 đề Task 2 · 40 phút · AI chấm"), out);
 }
 
 /* ---------- Mock test ---------- */
@@ -8140,7 +8140,7 @@ function pageMock() {
   return h("div", { class: "stack", style: "gap:16px" },
     h("button", { class: "btn btn-quiet", type: "button", style: "align-self:flex-start", onclick: () => leaveMock(m) }, m.only ? "‹ Quay lại" : "‹ Các lần thi thử"),
     h("div", { class: "stack page-banner", style: "gap:4px" }, h("span", { class: "eyebrow" }, m.only ? `${mockLabel(m)} · ${fmtDate(m.created)}` : m.cam ? `${m.cam} · ${fmtDate(m.created)}` : `Thi thử · ${fmtDate(m.created)}`), h("h1", null, ov != null ? `Band ước tính ${ov.toFixed(1)}` : "Bài thi thử")),
-    ov != null ? h("section", { class: "card" }, ruler(ov, P.target), h("p", { class: "small muted" }, m.only === "R" ? "Quy đổi từ số câu đúng theo bảng điểm thô tham khảo." : m.only === "W" ? "Do Claude chấm theo 4 tiêu chí" + (m.place ? "." : ", Task 2 tính gấp đôi.") : "Trung bình Reading và Writing. Reading quy đổi theo bảng điểm thô tham khảo; Writing do Claude chấm, Task 2 tính gấp đôi.")) : null,
+    ov != null ? h("section", { class: "card" }, ruler(ov, P.target), h("p", { class: "small muted" }, m.only === "R" ? "Quy đổi từ số câu đúng theo bảng điểm thô tham khảo." : m.only === "W" ? "Do AI chấm theo 4 tiêu chí" + (m.place ? "." : ", Task 2 tính gấp đôi.") : "Trung bình Reading và Writing. Reading quy đổi theo bảng điểm thô tham khảo; Writing do AI chấm, Task 2 tính gấp đôi.")) : null,
     m.only === "W" ? null : sec("R", "Reading", m.place ? "1 bài · 13 câu · 20 phút" : "3 bài · khoảng 40 câu · 60 phút", m.read),
     m.only === "R" ? null : sec("W", "Writing", m.place ? "Task 2 · 40 phút" : "Task 1 + Task 2 · 60 phút", m.write),
     m.read?.done || m.write?.done ? h("div", { class: "row" }, m.read?.done ? h("button", { class: "btn", type: "button", onclick: () => { UI.mockSec = "R"; render(); window.scrollTo(0, 0); } }, "Xem lại bài đọc và đáp án") : null,
@@ -8156,14 +8156,14 @@ function mockReading(m) {
     const go = h("button", { class: "btn btn-primary", type: "button", disabled: !sample && READS.length < 3 || null, onclick: async () => {
       const ids = [...pickIds].slice(0, 3); go.disabled = true; const ctl = new AbortController(); UI.busy.mockR = ctl;
       const st = h("p", { class: "muted" }); out.replaceChildren(st, stopBtn("mockR"));
-      try { while (ids.length < 3) { st.textContent = `Claude đang soạn bài đọc ${ids.length + 1}/3…`; const k = ids.length; m.fields ||= pickFields(3); ids.push(await genReadingDoc(k === 0 ? "easy" : k === 1 ? m.level : m.level === "easy" ? "mid" : "hard", ctl.signal, [13, 13, 14][k], { field: m.fields[k], plan: R_PLANS[k] })); }
+      try { while (ids.length < 3) { st.textContent = `AI đang soạn bài đọc ${ids.length + 1}/3…`; const k = ids.length; m.fields ||= pickFields(3); ids.push(await genReadingDoc(k === 0 ? "easy" : k === 1 ? m.level : m.level === "easy" ? "mid" : "hard", ctl.signal, [13, 13, 14][k], { field: m.fields[k], plan: R_PLANS[k] })); }
         m.read = { ids, start: Date.now(), done: false }; await saveMock(m); render(); window.scrollTo(0, 0); }
       catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); go.disabled = false; }
       finally { delete UI.busy.mockR; }
     } }, "Bắt đầu 60 phút");
     return h("div", { class: "stack", style: "gap:16px" }, mockBack(m), h("h1", null, "Reading"),
-      h("section", { class: "card" }, h("p", null, "Chọn tối đa 3 bài có sẵn. Thiếu bao nhiêu, Claude soạn thêm bấy nhiêu, khó dần như đề thật. Đồng hồ 60 phút chạy ngay khi đủ 3 bài."),
-        READS.length ? h("div", { class: "stack", style: "gap:4px" }, READS.slice(0, 40).map(r => h("label", { class: "row", style: "gap:8px;cursor:pointer" }, h("input", { type: "checkbox", onchange: e => { if (e.target.checked) { if (pickIds.size >= 3) { e.target.checked = false; toast("Chỉ chọn tối đa 3 bài"); return; } pickIds.add(r.id); } else pickIds.delete(r.id); } }), h("span", { class: "chip " + (r.source === "book" ? "warn" : r.source === "ai" ? "acc" : "") }, r.source === "book" ? "Sách" : r.source === "ai" ? "Claude" : "Mẫu"), h("span", { class: "small" }, r.title)))) : null,
+      h("section", { class: "card" }, h("p", null, "Chọn tối đa 3 bài có sẵn. Thiếu bao nhiêu, AI soạn thêm bấy nhiêu, khó dần như đề thật. Đồng hồ 60 phút chạy ngay khi đủ 3 bài."),
+        READS.length ? h("div", { class: "stack", style: "gap:4px" }, READS.slice(0, 40).map(r => h("label", { class: "row", style: "gap:8px;cursor:pointer" }, h("input", { type: "checkbox", onchange: e => { if (e.target.checked) { if (pickIds.size >= 3) { e.target.checked = false; toast("Chỉ chọn tối đa 3 bài"); return; } pickIds.add(r.id); } else pickIds.delete(r.id); } }), h("span", { class: "chip " + (r.source === "book" ? "warn" : r.source === "ai" ? "acc" : "") }, r.source === "book" ? "Sách" : r.source === "ai" ? "AI" : "Mẫu"), h("span", { class: "small" }, r.title)))) : null,
         aiNote(), go, out));
   }
   const rs = m.read.ids.map(id => READS.find(r => r.id === id)).filter(Boolean);
@@ -8195,7 +8195,7 @@ function mockWriting(m) {
   }
   const W = m.write, A = UI.mockW[m.id] ||= { tab: m.place ? 2 : 1 }, dur = m.place ? 2400 : 3600, tasks = m.place ? [2] : [1, 2];
   if (!W.start) return h("div", { class: "stack", style: "gap:16px" }, mockBack(m), m.only ? h("span", { class: "kicker" }, m.place ? "Kiểm tra đầu vào" : "Đề đầy đủ") : null, h("h1", null, m.only ? mockLabel(m) : "Writing"),
-    h("section", { class: "card" }, h("p", null, m.place ? "Một đề Task 2 trong 40 phút, viết khoảng 250 từ như thi thật. Claude chấm theo 4 tiêu chí, kết quả cho biết band Writing hiện tại của bạn." : "Hai task trong 60 phút: nên dành khoảng 20 phút cho Task 1 (ít nhất 150 từ) và 40 phút cho Task 2 (ít nhất 250 từ). Task 2 tính gấp đôi."), aiNote(),
+    h("section", { class: "card" }, h("p", null, m.place ? "Một đề Task 2 trong 40 phút, viết khoảng 250 từ như thi thật. AI chấm theo 4 tiêu chí, kết quả cho biết band Writing hiện tại của bạn." : "Hai task trong 60 phút: nên dành khoảng 20 phút cho Task 1 (ít nhất 150 từ) và 40 phút cho Task 2 (ít nhất 250 từ). Task 2 tính gấp đôi."), aiNote(),
       h("button", { class: "btn btn-primary btn-big", type: "button", style: "align-self:flex-start", disabled: !sample || null, onclick: async () => { W.start = Date.now(); await saveMock(m); render(); } }, `Bắt đầu ${dur / 60} phút →`)));
   const k1 = `mock-${m.id}-t1`, k2 = `mock-${m.id}-t2`;
   const out = h("div", { class: "stack" });
@@ -8207,8 +8207,8 @@ function mockWriting(m) {
     const ctl = new AbortController(); UI.busy.mockW = ctl; const status = h("p", { class: "muted" }); out.replaceChildren(status, stopBtn("mockW"));
     try {
       let b1 = 0, b2 = 0, id1 = null, id2 = null;
-      if (wc(e1) >= 20) { status.textContent = "Claude đang chấm Task 1…"; id1 = await submitGrade({ n: 1, promptId: W.t1.id, title: W.t1.data.title, promptText: W.t1.data.prompt, data: W.t1.data, essay: e1, words: wc(e1), signal: ctl.signal, status }); b1 = WRIT.find(x => x.id === id1).result.overall; }
-      if (wc(e2) >= 20) { status.textContent = "Claude đang chấm Task 2…"; id2 = await submitGrade({ n: 2, promptId: W.t2.id, title: null, promptText: W.t2.text, data: null, essay: e2, words: wc(e2), signal: ctl.signal, status }); b2 = WRIT.find(x => x.id === id2).result.overall; }
+      if (wc(e1) >= 20) { status.textContent = "AI đang chấm Task 1…"; id1 = await submitGrade({ n: 1, promptId: W.t1.id, title: W.t1.data.title, promptText: W.t1.data.prompt, data: W.t1.data, essay: e1, words: wc(e1), signal: ctl.signal, status }); b1 = WRIT.find(x => x.id === id1).result.overall; }
+      if (wc(e2) >= 20) { status.textContent = "AI đang chấm Task 2…"; id2 = await submitGrade({ n: 2, promptId: W.t2.id, title: null, promptText: W.t2.text, data: null, essay: e2, words: wc(e2), signal: ctl.signal, status }); b2 = WRIT.find(x => x.id === id2).result.overall; }
       m.write = { ...W, done: true, ids: [id1, id2], b1, b2, band: m.place ? b2 : roundBand((b1 + 2 * b2) / 3) }; await saveMock(m);
       if (m.place) { (P.placement ||= {}).W = { band: m.write.band, date: today(), id: m.id }; saveProfile(); } award("mock", 100); draftSet(k1, ""); draftSet(k2, ""); UI.mockSec = null; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
@@ -8239,7 +8239,7 @@ function analysisCard() {
   const ws = WRIT.filter(w => w.result).slice(-8);
   const btn = aiBtn(last ? "Phân tích lại" : "Phân tích tiến bộ", async () => {
     if (ws.length < 2) { out.replaceChildren(h("p", { class: "note warn small" }, "Cần ít nhất 2 bài đã chấm để so sánh.")); return; }
-    out.replaceChildren(h("p", { class: "small muted" }, "Claude đang đọc các bài gần đây…"));
+    out.replaceChildren(h("p", { class: "small muted" }, "AI đang đọc các bài gần đây…"));
     try {
       const text = await ai(`Bạn là giáo viên IELTS Writing. Dưới đây là ${ws.length} bài gần nhất của một học sinh Việt Nam (cũ đến mới), mục tiêu band ${P.target}.
 ${ws.map((w, i) => `### Bài ${i + 1} · Task ${w.task} · ${new Date(w.created).toLocaleDateString("vi-VN")}${(w.version || 1) > 1 ? " · bản viết lại" : ""}
@@ -8256,7 +8256,7 @@ Không dùng markdown đậm/nghiêng; dùng số mục và gạch đầu dòng 
       P.analysis = { date: today(), text: text.slice(0, 6000) }; saveProfile(); award("analysis", 10); render();
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
   });
-  return h("section", { class: "card" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Phân tích tiến bộ"), btn), h("p", { class: "small muted" }, "Claude đọc tối đa 8 bài gần nhất và chỉ ra xu hướng: lỗi nào đã hết, lỗi nào còn, tiêu chí nào đang kéo band xuống."), aiNote(), out);
+  return h("section", { class: "card" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Phân tích tiến bộ"), btn), h("p", { class: "small muted" }, "AI đọc tối đa 8 bài gần nhất và chỉ ra xu hướng: lỗi nào đã hết, lỗi nào còn, tiêu chí nào đang kéo band xuống."), aiNote(), out);
 }
 
 /* 3. Weekly plan */
@@ -8264,8 +8264,8 @@ const PLAN_LINKS = ["today", "grammar", "writing", "reading", "ipa", "vocab", "e
 function planCard() {
   const PL = P.plan, t = today();
   const out = h("div", { class: "stack" });
-  const btn = aiBtn(PL ? "Lập lại kế hoạch" : "Claude lập kế hoạch 7 ngày", async () => {
-    out.replaceChildren(h("p", { class: "small muted" }, "Claude đang xếp lịch…"));
+  const btn = aiBtn(PL ? "Lập lại kế hoạch" : "AI lập kế hoạch 7 ngày", async () => {
+    out.replaceChildren(h("p", { class: "small muted" }, "AI đang xếp lịch…"));
     const sb = skillBands(), next = LESSONS.filter(l => !P.lessons[l.id]?.done).slice(0, 6).map(l => `lesson-${l.id}: ${l.title}`);
     try {
       const r = await ai(`Lập kế hoạch học IELTS (Reading, Writing, phát âm IPA; không có Listening và Speaking) cho 7 ngày bắt đầu từ ${t} cho một sinh viên Việt Nam. Mỗi ngày khoảng ${P.minutesPerDay || 20} phút.
@@ -8279,7 +8279,7 @@ Chỉ trả lời JSON: {"focus":"1 câu tiếng Việt: trọng tâm tuần","d
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
   }, PL ? "btn" : "btn btn-primary");
   const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kế hoạch 7 ngày"), btn)];
-  if (!PL) kids.push(h("p", { class: "small muted" }, `Claude xếp lịch theo ngày thi, kỹ năng yếu nhất, sổ lỗi và ${P.minutesPerDay || 20} phút mỗi ngày của bạn (đổi số phút ở phần Mục tiêu).`), aiNote());
+  if (!PL) kids.push(h("p", { class: "small muted" }, `AI xếp lịch theo ngày thi, kỹ năng yếu nhất, sổ lỗi và ${P.minutesPerDay || 20} phút mỗi ngày của bạn (đổi số phút ở phần Mục tiêu).`), aiNote());
   else {
     if (PL.focus) kids.push(h("p", { class: "note small" }, PL.focus));
     const dayNode = (d, di) => h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, new Date(d.date + "T00:00:00").toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" }) + (d.date === t ? " · hôm nay" : "")),
@@ -8295,17 +8295,17 @@ Chỉ trả lời JSON: {"focus":"1 câu tiếng Việt: trọng tâm tuần","d
 
 /* 4. Handwritten essay photo */
 function handPhoto(ta, onSet) {
-  const info = h("span", { class: "small muted" }, "Viết tay trên giấy? Chụp ảnh bài, Claude chép lại thành chữ để chấm.");
+  const info = h("span", { class: "small muted" }, "Viết tay trên giấy? Chụp ảnh bài, AI chép lại thành chữ để chấm.");
   const fileIn = h("input", { type: "file", accept: "image/*", multiple: true, id: "handph-" + Math.random().toString(36).slice(2, 7), style: "max-width:260px" });
   fileIn.addEventListener("change", async () => {
     const files = [...fileIn.files]; if (!files.length || !sample) return;
-    info.textContent = "Claude đang đọc chữ viết tay…";
+    info.textContent = "AI đang đọc chữ viết tay…";
     try {
       const lim = await sample.limits().catch(() => null); if (!lim?.images) throw { code: "images_unavailable" };
       const parts = [];
       for (let i = 0; i < files.length; i += lim.images.maxCount || 1) parts.push(await ai("Đây là ảnh bài viết tay IELTS Writing của học sinh. Chép lại CHÍNH XÁC từng chữ học sinh viết, giữ nguyên lỗi chính tả, ngữ pháp và cách chia đoạn (một dòng trống giữa các đoạn). Chữ không đọc được ghi [?]. Chỉ trả về nội dung bài, không thêm gì.", { images: files.slice(i, i + (lim.images.maxCount || 1)), cache: false }));
-      ta.value = parts.join("\n\n").trim(); onSet(); info.textContent = "Đã chép xong. Đọc lại và sửa những chỗ Claude đọc nhầm chữ (không sửa lỗi của bạn), rồi bấm nộp.";
-    } catch (e) { info.textContent = e?.code === "images_unavailable" ? "Trang chưa được phép gửi ảnh cho Claude. Tải lại trang và chọn Cho phép." : aiMsg(e); }
+      ta.value = parts.join("\n\n").trim(); onSet(); info.textContent = "Đã chép xong. Đọc lại và sửa những chỗ AI đọc nhầm chữ (không sửa lỗi của bạn), rồi bấm nộp.";
+    } catch (e) { info.textContent = e?.code === "images_unavailable" ? "Trang chưa được phép gửi ảnh cho AI. Tải lại trang và chọn Cho phép." : aiMsg(e); }
     fileIn.value = "";
   });
   return sample ? h("div", { class: "row" }, h("label", { class: "btn", for: fileIn.id, style: "cursor:pointer" }, "Chụp bài viết tay", fileIn), info) : null;
@@ -8452,7 +8452,7 @@ function pageIPA() {
     panel);
 }
 
-/* 6. Ask Claude anywhere */
+/* 6. Ask AI anywhere */
 function pageContext() {
   const r = UI.route; let c = "Trang đang mở: " + r + ".";
   if (r.startsWith("lesson-")) { const l = lessonById(r.slice(7)); if (l) c += ` Bài ngữ pháp "${l.title}". Trọng tâm: ${l.focus}. Lý thuyết: ${l.theory.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 1500)}`; }
@@ -8473,14 +8473,14 @@ function renderAsk() {
   const host = $("#ask"); if (!host) return;
   if (!sample || askBlocked()) { host.replaceChildren(); return; }
   const C = UI.chat ||= { open: false, turns: [], busy: false };
-  if (!C.open) { host.replaceChildren(h("button", { class: "askfab", type: "button", title: "Hỏi Claude", "aria-label": "Hỏi Claude", onclick: () => { C.open = true; renderAsk(); setTimeout(() => $("#askin")?.focus(), 0); }, html: BUDDY_SVG + '<span class="askfab-tip">Hỏi Claude</span>' })); return; }
-  const log = h("div", { class: "asklog" }, C.turns.length ? C.turns.map(t => h("div", { class: t.role === "assistant" ? "bub-a" : "bub-u" }, t.content)) : h("p", { class: "small muted" }, "Hỏi bất cứ điều gì về bài đang làm: ngữ pháp, nghĩa của từ, vì sao sai, dịch một câu… Claude biết bạn đang ở trang nào. Bôi đen chữ trước khi hỏi để Claude biết bạn hỏi chỗ nào."));
+  if (!C.open) { host.replaceChildren(h("button", { class: "askfab", type: "button", title: "Hỏi AI", "aria-label": "Hỏi AI", onclick: () => { C.open = true; renderAsk(); setTimeout(() => $("#askin")?.focus(), 0); }, html: BUDDY_SVG + '<span class="askfab-tip">Hỏi AI</span>' })); return; }
+  const log = h("div", { class: "asklog" }, C.turns.length ? C.turns.map(t => h("div", { class: t.role === "assistant" ? "bub-a" : "bub-u" }, t.content)) : h("p", { class: "small muted" }, "Hỏi bất cứ điều gì về bài đang làm: ngữ pháp, nghĩa của từ, vì sao sai, dịch một câu… AI biết bạn đang ở trang nào. Bôi đen chữ trước khi hỏi để AI biết bạn hỏi chỗ nào."));
   const inp = h("textarea", { id: "askin", rows: "2", placeholder: "Nhập câu hỏi…", style: "min-height:52px" });
   const send = async () => {
     const q = inp.value.trim(); if (!q || C.busy) return;
     const ctx = pageContext();
     C.turns.push({ role: "user", content: q }); C.busy = true;
-    const ans = { role: "assistant", content: "Claude đang trả lời…" }; C.turns.push(ans); renderAsk();
+    const ans = { role: "assistant", content: "AI đang trả lời…" }; C.turns.push(ans); renderAsk();
     const RULES = "Bạn là gia sư IELTS (Reading, Writing, phát âm) cho một sinh viên Việt Nam khoảng band 3.0–4.5. Trả lời bằng tiếng Việt, ngắn gọn, rõ ràng, có ví dụ tiếng Anh khi cần. Không dùng markdown đậm hay tiêu đề. Nếu học sinh đang làm bài chưa nộp, không nói đáp án mà chỉ gợi ý cách làm. Không viết bài hộ; có thể sửa câu học sinh đưa.";
     const hist = C.turns.slice(0, -2).slice(-8);
     const msgs = [{ role: "user", content: RULES }, ...(hist.length ? [{ role: "assistant", content: "Mình sẵn sàng." }, ...hist] : []), { role: "user", content: "Ngữ cảnh: " + ctx + "\n\nCâu hỏi: " + q }];
@@ -8490,8 +8490,8 @@ function renderAsk() {
     C.busy = false; renderAsk(); setTimeout(() => $("#askin")?.focus(), 0);
   };
   inp.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
-  host.replaceChildren(h("div", { class: "askpanel", role: "dialog", "aria-label": "Hỏi Claude" },
-    h("div", { class: "row", style: "justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)" }, h("b", null, "Hỏi Claude"), h("div", { class: "row", style: "gap:4px" }, h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { C.turns = []; renderAsk(); } }, "Xóa"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { C.open = false; renderAsk(); } }, "Đóng"))),
+  host.replaceChildren(h("div", { class: "askpanel", role: "dialog", "aria-label": "Hỏi AI" },
+    h("div", { class: "row", style: "justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line)" }, h("b", null, "Hỏi AI"), h("div", { class: "row", style: "gap:4px" }, h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { C.turns = []; renderAsk(); } }, "Xóa"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { C.open = false; renderAsk(); } }, "Đóng"))),
     log, h("div", { class: "stack", style: "gap:6px;padding:10px 12px;border-top:1px solid var(--line)" }, inp, h("button", { class: "btn btn-primary", type: "button", disabled: C.busy || null, onclick: send }, C.busy ? "Đang trả lời…" : "Gửi"))));
   log.scrollTop = log.scrollHeight;
 }
@@ -8502,7 +8502,7 @@ function upgradeCard() {
   const out = h("div", { class: "stack" });
   const btn = aiBtn("Nâng câu", async () => {
     const s = ta.value.trim(); if (wc(s) < 4) return;
-    out.replaceChildren(h("p", { class: "small muted" }, "Claude đang viết lại…"));
+    out.replaceChildren(h("p", { class: "small muted" }, "AI đang viết lại…"));
     try {
       const r = await ai(`Câu tiếng Anh của học sinh (IELTS Writing): "${s}"
 Viết lại thành 3 mức: band 5.5 (sửa lỗi, giữ đơn giản), band 6.5, band 7.5. Giữ nguyên ý. Với mỗi mức, liệt kê ngắn bằng tiếng Việt những thay đổi giúp lên band (ngữ pháp, từ vựng, cấu trúc).
@@ -8513,7 +8513,7 @@ Chỉ trả lời JSON: {"errors":"lỗi trong câu gốc, tiếng Việt, hoặ
       award("upgrade", 5);
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
   });
-  return h("details", { class: "card" }, h("summary", null, "Nâng câu: từ band 5 lên band 7"), h("p", { class: "small muted" }, "Dán một câu của bạn, Claude viết lại ở 3 mức và chỉ ra từng thay đổi giúp lên band."), aiNote(), ta, h("div", { class: "row" }, btn), out);
+  return h("details", { class: "card" }, h("summary", null, "Nâng câu: từ band 5 lên band 7"), h("p", { class: "small muted" }, "Dán một câu của bạn, AI viết lại ở 3 mức và chỉ ra từng thay đổi giúp lên band."), aiNote(), ta, h("div", { class: "row" }, btn), out);
 }
 
 /* 8. Long sentence analysis */
@@ -8521,7 +8521,7 @@ async function analyseSentence(raw, r) {
   const box = $("#lookup");
   const para = r.paragraphs.find(p => p.includes(raw.slice(0, 40))) || "";
   const sent = (para.match(/[^.!?]+[.!?]+["')\]]*/g) || []).find(s => s.includes(raw.slice(0, 40)))?.trim() || raw;
-  const res = h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small muted" }, "Claude đang phân tích câu…"));
+  const res = h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small muted" }, "AI đang phân tích câu…"));
   box.replaceChildren(h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, "Phân tích câu"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => box.hidden = true }, "Đóng")), h("p", { class: "small", style: "font-family:var(--font-read)" }, sent), res);
   box.hidden = false;
   try {
@@ -8535,8 +8535,8 @@ Chỉ trả lời JSON: {"translation":"dịch tự nhiên sang tiếng Việt",
 }
 
 /* 9. Context passage for due words */
-/* Bài văn điền từ: Claude chọn ngẫu nhiên từ trong sổ, viết đoạn văn gốc rồi đục lỗ đúng các từ đó để bạn điền lại */
-/* Game ghép từ: ghép từ tiếng Anh với nghĩa, dùng chính sổ từ, không gọi Claude */
+/* Bài văn điền từ: AI chọn ngẫu nhiên từ trong sổ, viết đoạn văn gốc rồi đục lỗ đúng các từ đó để bạn điền lại */
+/* Game ghép từ: ghép từ tiếng Anh với nghĩa, dùng chính sổ từ, không gọi AI */
 function vgShuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function vgPick(n) {
   const t = today(), seen = new Set(), out = [];
@@ -8744,7 +8744,7 @@ function g3Fishing(T, pool, back) {
   return S.wrap;
 }
 
-/* ----- 6. Detective: màn chơi suy luận, toàn bộ bằng tiếng Anh; Claude tạo vụ án mới, level càng cao suy luận càng khó ----- */
+/* ----- 6. Detective: màn chơi suy luận, toàn bộ bằng tiếng Anh; AI tạo vụ án mới, level càng cao suy luận càng khó ----- */
 const DET_SPOTS = ["desk", "safe", "chest", "painting", "bookshelf", "lamp", "door"];
 const DET_NAME = { desk: "Desk", safe: "Safe", chest: "Chest", painting: "Painting", bookshelf: "Bookshelf", lamp: "Lamp", door: "Door" };
 const DET_BUILTIN = { id: "det-builtin-1", level: 1, title: "The Vanished Violin", setting: "A music school, Friday evening",
@@ -8814,11 +8814,11 @@ function g3Detective(T, pool, back) {
   const picker = () => {
     const D = P.g3 ||= {}, st = D.det ||= { lv: 1 }, cases = detCases(), out = h("p", { class: "small muted", role: "status" });
     const gen = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-      gen.disabled = true; out.textContent = `Claude is writing a level ${st.lv} case… this can take up to a minute.`;
+      gen.disabled = true; out.textContent = `AI is writing a level ${st.lv} case… this can take up to a minute.`;
       try { const c = await detGenerate(st.lv, pool); play(c); } catch (e) { out.textContent = aiMsg(e); gen.disabled = false; }
-    } }, `Ask Claude for a new case · Level ${st.lv}`);
+    } }, `Ask AI for a new case · Level ${st.lv}`);
     root.replaceChildren(h("div", { class: "note stack", style: "gap:8px" }, h("b", null, "Detective"), h("p", { class: "small" }, "Search the room for clues, read each suspect's statement, then accuse the person who did it. Solve a case to unlock a harder level: more suspects, red herrings and longer chains of reasoning."),
-      h("div", { class: "row" }, gen, h("span", { class: "chip" }, `Next level: ${st.lv}/10`)), sample ? null : h("p", { class: "small muted" }, "Claude is not connected here, so only saved cases can be played."), out),
+      h("div", { class: "row" }, gen, h("span", { class: "chip" }, `Next level: ${st.lv}/10`)), sample ? null : h("p", { class: "small muted" }, "AI is not connected here, so only saved cases can be played."), out),
       h("div", { class: "g3-cases" }, cases.map(c => h("button", { type: "button", class: "g3-case", onclick: () => play(c) }, h("span", { class: "g3-lv" }, "Lv " + c.level), h("span", { class: "stack", style: "gap:0;min-width:0" }, h("b", null, c.title), h("span", { class: "small muted" }, `${c.suspects.length} suspects · ${c.clues.length} clues` + (c.ai ? "" : " · sample case"))), h("span", { class: "g3-stars" }, (c.id === DET_BUILTIN.id ? st.s0 : c.stars) ? starStr(c.id === DET_BUILTIN.id ? st.s0 : c.stars) : "new")))));
   };
   const play = C => { root.replaceChildren(h("div", { class: "row", style: "justify-content:space-between" }, h("b", null, `Level ${C.level} · ${C.title}`), h("button", { class: "btn btn-quiet", type: "button", onclick: picker }, "‹ All cases")), detStage(T, C, picker)); };
@@ -8897,7 +8897,7 @@ function detStage(T, C, toPicker) {
 const G3_LIST = [
   ["ast", "Bắn thiên thạch", "Thiên thạch mang từ lao tới. Bắn đúng viên khớp với nghĩa hoặc định nghĩa, càng về sau càng nhanh.", "12 từ · 3 mạng", g3Asteroids, b => b + " điểm"],
   ["fish", "Câu cá", "Đọc định nghĩa Anh–Anh rồi thả câu đúng con cá mang từ đó. Cá to là từ khó, nhiều điểm hơn.", "10 từ · 4 mồi", g3Fishing, b => b + " điểm"],
-  ["det", "Detective", "Lục soát căn phòng, đọc lời khai, suy luận ra thủ phạm. Toàn bộ bằng tiếng Anh; Claude viết vụ án mới, level càng cao càng khó.", "10 level · Claude tạo màn", g3Detective, b => b]
+  ["det", "Detective", "Lục soát căn phòng, đọc lời khai, suy luận ra thủ phạm. Toàn bộ bằng tiếng Anh; AI viết vụ án mới, level càng cao càng khó.", "10 level · AI tạo màn", g3Detective, b => b]
 ];
 function vocabGame3D() {
   const box = h("div", { class: "stack", style: "gap:12px" });
@@ -8916,10 +8916,10 @@ function vocabGame3D() {
       } }, h("b", null, name), h("span", { class: "small" }, desc), h("span", { class: "g3-meta" }, meta + (id === "det" ? " · đang ở level " + (P.g3?.det?.lv || 1) : P.g3?.[id]?.best ? " · kỷ lục " + fmt(P.g3[id].best) : ""))))), msg);
   };
   menu();
-  return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Game 3D"), h("p", { class: "small muted" }, "Ba game dùng chính từ trong sổ của bạn, ưu tiên từ đến hạn ôn. Chỉ game Detective gọi Claude khi bạn bấm tạo vụ án mới. Game không đổi lịch ôn thẻ."), box);
+  return h("section", { class: "card stack", style: "gap:10px" }, h("h2", null, "Game 3D"), h("p", { class: "small muted" }, "Ba game dùng chính từ trong sổ của bạn, ưu tiên từ đến hạn ôn. Chỉ game Detective gọi AI khi bạn bấm tạo vụ án mới. Game không đổi lịch ôn thẻ."), box);
 }
 
-/* ===== Bản 78: ôn chiều ngược, thang từ theo band, viết câu bằng từ mới, bài tập ngữ pháp do Claude tạo, bản đồ ngữ pháp, viết theo giờ thi ===== */
+/* ===== Bản 78: ôn chiều ngược, thang từ theo band, viết câu bằng từ mới, bài tập ngữ pháp do AI tạo, bản đồ ngữ pháp, viết theo giờ thi ===== */
 
 /* ----- Thẻ ôn chiều ngược: nhìn nghĩa / Anh–Anh → gõ ra từ ----- */
 const REV_DIRS = [["en", "Anh → Việt"], ["rev", "Việt → Anh"], ["mix", "Trộn"]];
@@ -8990,7 +8990,7 @@ function ladderNode(v, opts = {}) {
     if (opts.compact && !sample) { box.replaceChildren(); return; }
     const msg = h("span", { class: "small muted", role: "status" });
     const b = h("button", { class: "btn" + (opts.compact ? " btn-quiet small" : ""), type: "button", disabled: !sample || null, onclick: async e => {
-      e.stopPropagation(); b.disabled = true; msg.textContent = "Claude đang dựng thang từ…";
+      e.stopPropagation(); b.disabled = true; msg.textContent = "AI đang dựng thang từ…";
       try {
         const r = await ai(`Bạn giúp một sinh viên Việt Nam (mục tiêu IELTS band ${P.target}) nâng cấp từ vựng cho Writing và Speaking.
 Từ trong sổ: "${v.word}"${v.meaning ? ` (nghĩa: ${v.meaning})` : ""}${v.pos ? `, loại từ ${v.pos}` : ""}.
@@ -9018,7 +9018,7 @@ function vocabSentCard() {
   const S = P.vsent && P.vsent.items?.length ? P.vsent : null, box = h("div", { class: "stack", style: "gap:12px" }), msg = h("p", { class: "small muted", role: "status" });
   const make = async btn => {
     const ws = vsPick(3); if (ws.length < 3) { msg.textContent = "Cần ít nhất 3 từ có nghĩa trong sổ."; return; }
-    btn.disabled = true; msg.textContent = "Claude đang ra 3 câu…";
+    btn.disabled = true; msg.textContent = "AI đang ra 3 câu…";
     try {
       const r = await ai(`Bạn ra bài luyện cho sinh viên Việt Nam (mục tiêu IELTS band ${P.target}): dịch câu tiếng Việt sang tiếng Anh, và bản dịch tự nhiên nhất BẮT BUỘC phải dùng từ cho trước.
 ${ws.map((v, i) => `${i + 1}. id "${v.id}": ${v.word} (${v.meaning})`).join("\n")}
@@ -9030,7 +9030,7 @@ Chỉ trả lời JSON: {"items":[{"id":"...","vi":"..."}]}`, { json: true, tier
     } catch (e) { msg.textContent = aiMsg(e); btn.disabled = false; }
   };
   const newBtn = (label, cls = "btn btn-primary") => { const b = h("button", { class: cls, type: "button", disabled: !sample || null, onclick: () => make(b) }, label); return b; };
-  if (!S) box.append(h("p", { class: "muted" }, "Claude chọn 3 từ đến hạn ôn hoặc mới thêm, ra 3 câu tiếng Việt. Bạn dịch sang tiếng Anh, bắt buộc dùng đúng từ đó; Claude chấm cách dùng từ, ngữ pháp và độ tự nhiên."), h("div", { class: "row" }, newBtn("Ra 3 câu cho tôi")), msg);
+  if (!S) box.append(h("p", { class: "muted" }, "AI chọn 3 từ đến hạn ôn hoặc mới thêm, ra 3 câu tiếng Việt. Bạn dịch sang tiếng Anh, bắt buộc dùng đúng từ đó; AI chấm cách dùng từ, ngữ pháp và độ tự nhiên."), h("div", { class: "row" }, newBtn("Ra 3 câu cho tôi")), msg);
   else {
     const res = S.res, inputs = [];
     S.items.forEach((it, i) => {
@@ -9048,7 +9048,7 @@ Chỉ trả lời JSON: {"items":[{"id":"...","vi":"..."}]}`, { json: true, tier
     if (!res) {
       const go = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
         if (S.ans.some(a => !String(a || "").trim())) { msg.textContent = "Viết đủ cả 3 câu rồi hãy nộp."; return; }
-        go.disabled = true; msg.textContent = "Claude đang chấm…";
+        go.disabled = true; msg.textContent = "AI đang chấm…";
         try {
           const r = await ai(`Bạn là giáo viên tiếng Anh, chấm bài dịch câu của một sinh viên Việt Nam (mục tiêu IELTS band ${P.target}). Mỗi câu bắt buộc dùng từ cho trước, đúng nét nghĩa.
 ${S.items.map((it, i) => `${i + 1}. Từ bắt buộc: "${it.word}" (${it.meaning})\n   Câu tiếng Việt: ${it.vi}\n   Học sinh viết: "${S.ans[i]}"`).join("\n")}
@@ -9060,7 +9060,7 @@ Chỉ trả lời JSON: {"items":[{"used":true,"score":7,"comment":"...","fixes"
           addErrors(out.flatMap((x, i) => x.fixes.map(f => ({ src: "vsent", front: f.original, back: f.corrected, why: f.why, category: "Dùng từ: " + S.items[i].word }))));
           addAct("vocab", 5); saveProfile(); render();
         } catch (e) { msg.textContent = aiMsg(e); go.disabled = false; }
-      } }, "Nộp cho Claude chấm");
+      } }, "Nộp cho AI chấm");
       box.append(h("div", { class: "row" }, go, newBtn("Đổi bộ câu khác", "btn")), msg);
     } else {
       const avg = res.reduce((a, x) => a + x.score, 0) / res.length;
@@ -9070,7 +9070,7 @@ Chỉ trả lời JSON: {"items":[{"used":true,"score":7,"comment":"...","fixes"
   return h("section", { class: "card stack", style: "gap:12px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Viết câu bằng từ mới học"), S ? h("span", { class: "small muted" }, S.res ? "Đã chấm" : "Đang làm") : null), aiNote(), box);
 }
 
-/* ----- Bài tập ngữ pháp do Claude tạo, theo từng bài ----- */
+/* ----- Bài tập ngữ pháp do AI tạo, theo từng bài ----- */
 const stripTags = s => String(s || "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
 function gexSets(lid) { return TASKS.filter(t => t.kind === "gex" && t.lesson === lid && Array.isArray(t.items)).sort((a, b) => (a.created || 0) - (b.created || 0)); }
 function gexValid(e) {
@@ -9109,14 +9109,14 @@ function gexCard(l) {
   const out = h("div"), btnRow = h("div", { class: "row" });
   const gen = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
     const key = "gex-" + l.id, ctl = new AbortController(); UI.busy[key] = ctl; gen.disabled = true; btnRow.append(stopBtn(key));
-    out.replaceChildren(h("p", { class: "muted", role: "status" }, "Claude đang soạn 8 câu mới…"));
+    out.replaceChildren(h("p", { class: "muted", role: "status" }, "AI đang soạn 8 câu mới…"));
     try { const id = await gexGenerate(l, ctl.signal); (UI.gexSel ||= {})[l.id] = id; UI.ex[l.id + "~" + id] = { ans: {}, checked: false }; render(); setTimeout(() => document.getElementById("ls-gex")?.scrollIntoView({ block: "start" }), 50); }
     catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); gen.disabled = false; }
     finally { btnRow.lastChild !== gen && btnRow.lastChild?.remove(); delete UI.busy[key]; }
-  } }, sets.length ? "Tạo thêm bộ bài tập mới" : "Claude tạo bài tập mới");
+  } }, sets.length ? "Tạo thêm bộ bài tập mới" : "AI tạo bài tập mới");
   btnRow.append(gen);
   const g = P.gex?.[l.id];
-  const head = h("div", { class: "stack", style: "gap:6px" }, h("p", { class: "small muted", style: "margin:0" }, "Mỗi lần bấm, Claude soạn 8 câu mới cho đúng bài này, có cả kiểu lỗi bạn từng mắc. Làm tốt (từ 80%) thì bộ sau khó hơn."),
+  const head = h("div", { class: "stack", style: "gap:6px" }, h("p", { class: "small muted", style: "margin:0" }, "Mỗi lần bấm, AI soạn 8 câu mới cho đúng bài này, có cả kiểu lỗi bạn từng mắc. Làm tốt (từ 80%) thì bộ sau khó hơn."),
     g ? h("span", { class: "small" }, `Đã làm ${g.n} bộ · tốt nhất ${Math.round(g.best * 100)}%`) : null, btnRow, aiNote(), out);
   let body = null;
   if (sets.length) {
@@ -9137,7 +9137,7 @@ function gexCard(l) {
       body.push(list, h("div", { class: "row" }, check, h("button", { class: "btn", type: "button", onclick: () => { UI.ex[key] = { ans: {}, checked: false }; render(); } }, "Làm lại")), res);
     }
   }
-  return h("section", { class: "card", id: "ls-gex" }, h("h2", null, "Bài tập thêm do Claude soạn"), head, body);
+  return h("section", { class: "card", id: "ls-gex" }, h("h2", null, "Bài tập thêm do AI soạn"), head, body);
 }
 
 /* ----- Bản đồ ngữ pháp ----- */
@@ -9245,7 +9245,7 @@ function vocabReadCard() {
   const make = aiBtn(V ? "Tạo bài khác" : "Tạo bài điền từ", async () => {
     const words = pickWords(); if (words.length < 4) { out.replaceChildren(h("p", { class: "note warn small" }, "Cần ít nhất 4 từ trong sổ (hoặc trong chủ đề đang lọc).")); return; }
     const len = { short: "120–170", mid: "220–300", long: "380–480" }[opt.len];
-    out.replaceChildren(h("p", { class: "small muted" }, `Claude đang viết bài với ${words.length} từ…`));
+    out.replaceChildren(h("p", { class: "small muted" }, `AI đang viết bài với ${words.length} từ…`));
     try {
       const r = await ai(`Write an ORIGINAL English passage of ${len} words for a Vietnamese IELTS learner (band 5–6), with a short title, on one coherent everyday or academic topic that fits the words. It must use EVERY one of these vocabulary items exactly once (inflect if the sentence needs it): ${words.map(w => `"${w.word.replace(/\s*\(.*?\)/g, "")}" (${w.meaning})`).join(", ")}.
 Replace each of those items with a numbered blank in order of appearance: (1) ____, (2) ____ … Make the context around each blank clear enough to guess the word.
@@ -9261,7 +9261,7 @@ Reply JSON only: {"title":"...","text":"passage with blanks, paragraphs separate
     seg("Số từ:", "n", [[8, "8"], [12, "12"], [20, "20"], [30, "30"]]),
     seg("Độ dài:", "len", [["short", "Ngắn"], ["mid", "Vừa"], ["long", "Dài"]]),
     seg("Lấy từ:", "src", [["all", "Ngẫu nhiên cả sổ"], ["due", "Ưu tiên từ đến hạn"], ["topic", UI.vtopic ? "Chủ đề: " + UI.vtopic : "Theo chủ đề đang lọc"]]));
-  if (!V) { card.append(h("p", { class: "small muted" }, "Claude chọn ngẫu nhiên các từ trong sổ của bạn, viết một bài văn dùng hết những từ đó rồi xoá chúng đi để bạn điền lại. Từ điền sai sẽ được đưa về ôn lại ngay hôm nay."), aiNote(), opts, h("div", { class: "row" }, make), out); return card; }
+  if (!V) { card.append(h("p", { class: "small muted" }, "AI chọn ngẫu nhiên các từ trong sổ của bạn, viết một bài văn dùng hết những từ đó rồi xoá chúng đi để bạn điền lại. Từ điền sai sẽ được đưa về ôn lại ngay hôm nay."), aiNote(), opts, h("div", { class: "row" }, make), out); return card; }
   const okAt = k => { const a = norm(V.ans[k] || ""); return !!a && (a === norm(V.answers[k]) || (V.base[k] && a === norm(V.base[k]))); };
   const bank = [...new Set(V.base.length ? V.base : V.answers)].sort((a, b) => a.localeCompare(b));
   const used = new Set(Object.values(V.ans).map(x => norm(x || "")));
@@ -10125,11 +10125,11 @@ function readerProfileCard() {
       h("div", { class: "row", style: "flex-wrap:wrap;gap:6px" }, prof[4].map(id => { const l = RL.find(x => x.id === id); return l ? h("a", { class: "btn btn-quiet small", href: "#rl-" + id }, (P.lessons[id]?.done ? "✓ " : "") + l.title) : null; }))) : null);
 }
 
-/* Luyện thêm với Claude cho các bài Logic ngôn ngữ */
+/* Luyện thêm với AI cho các bài Logic ngôn ngữ */
 function logicDrill(l) {
   const st = UI.lgd?.[l.id], key = "lgd-" + l.id, out = h("div", { class: "stack" });
   const make = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-    const ctl = new AbortController(); UI.busy[key] = ctl; make.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "Claude đang viết đoạn văn…"), stopBtn(key));
+    const ctl = new AbortController(); UI.busy[key] = ctl; make.disabled = true; out.replaceChildren(h("p", { class: "muted" }, "AI đang viết đoạn văn…"), stopBtn(key));
     try {
       const r = await ai(`Bạn soạn bài luyện IELTS Reading cho sinh viên Việt Nam band 5–6.5.
 Kỹ năng cần luyện: ${l.focus}.
@@ -10157,7 +10157,7 @@ Chỉ trả lời JSON: {"title":"…","passage":"…","qs":[{"s":"câu nhận �
           render();
         } }, "Kiểm tra")));
   }
-  return h("section", { class: "card" }, h("h2", null, "Luyện thêm với Claude"), h("p", { class: "small muted" }, "Claude viết một đoạn văn mới và 5 câu True/False/Not Given cài đúng bẫy của bài này."), aiNote(), h("div", { class: "row" }, make), out, body);
+  return h("section", { class: "card" }, h("h2", null, "Luyện thêm với AI"), h("p", { class: "small muted" }, "AI viết một đoạn văn mới và 5 câu True/False/Not Given cài đúng bẫy của bài này."), aiNote(), h("div", { class: "row" }, make), out, body);
 }
 
 /* ---------- Lộ trình Writing: dữ liệu thêm cho bài học ---------- */
@@ -10709,7 +10709,7 @@ function courseCard(kind) {
   return h("section", { class: "card" },
     h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" },
       h("div", { class: "stack", style: "gap:2px" }, h("h2", null, kind === "r" ? "Lộ trình Reading: từng dạng câu hỏi" : "Lộ trình Writing: từng kỹ năng, từng dạng đề"),
-        h("span", { class: "small muted" }, kind === "r" ? "Học lần lượt: lý thuyết, làm mẫu, luyện nhận diện bẫy, rồi luyện đúng dạng đó bằng câu hỏi trong sách Cambridge của bạn." : "Học lần lượt: yêu cầu đề, bố cục, ngôn ngữ cho từng dạng biểu đồ và từng dạng đề Task 2, có bài mẫu, bài tự chấm và đoạn viết để Claude sửa."))),
+        h("span", { class: "small muted" }, kind === "r" ? "Học lần lượt: lý thuyết, làm mẫu, luyện nhận diện bẫy, rồi luyện đúng dạng đó bằng câu hỏi trong sách Cambridge của bạn." : "Học lần lượt: yêu cầu đề, bố cục, ngôn ngữ cho từng dạng biểu đồ và từng dạng đề Task 2, có bài mẫu, bài tự chấm và đoạn viết để AI sửa."))),
     h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${done / list.length * 100}%` })), h("span", { class: "small muted" }, `${done}/${list.length} bài`)),
     next ? h("a", { class: "btn btn-primary", href: "#" + pre + next.id, style: "align-self:flex-start" }, (done ? "Học tiếp: " : "Bắt đầu: ") + next.title + " ›") : h("p", { class: "note small" }, kind === "r" ? "Bạn đã học hết các dạng. Vào Thư viện làm cả đề Reading 60 phút để kiểm tra." : "Bạn đã học hết lộ trình. Vào Thư viện làm cả đề Writing 60 phút."),
     open ? groups.map(([g, name, desc]) => { const ls = list.filter(l => l.g === g);
@@ -10771,7 +10771,7 @@ function rcBookGroups(kinds) {
 }
 function rcGroupLabel(r, g) {
   const qs = r.questions.slice(g.from, g.to + 1), a = qNum(qs[0], g.from), b = qNum(qs[qs.length - 1], g.to);
-  return (r.drill ? "Claude soạn · " : r.vol ? `Cam ${r.vol} · Test ${r.test} · Passage ${r.passage} · ` : (r.book ? r.book + " · " : "")) + (a === b ? `Câu ${a}` : `Câu ${a}–${b}`);
+  return (r.drill ? "AI soạn · " : r.vol ? `Cam ${r.vol} · Test ${r.test} · Passage ${r.passage} · ` : (r.book ? r.book + " · " : "")) + (a === b ? `Câu ${a}` : `Câu ${a}–${b}`);
 }
 function rcOpenSlice(r, g) { const s = rSlice(r, g); UI.rSlice = s; UI.rState[s.id] = { ans: {}, checked: false }; render(); window.scrollTo(0, 0); }
 function rcBookCard(l) {
@@ -10781,23 +10781,23 @@ function rcBookCard(l) {
   const out = h("div");
   const gen = h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: async () => {
     const k = l.kinds[0]; gen.disabled = true; const ctl = new AbortController(); UI.busy.rcgen = ctl;
-    const status = h("p", { class: "muted" }, "Claude đang soạn bài luyện… (khoảng 1 phút)"); out.replaceChildren(status, stopBtn("rcgen"));
+    const status = h("p", { class: "muted" }, "AI đang soạn bài luyện… (khoảng 1 phút)"); out.replaceChildren(status, stopBtn("rcgen"));
     try {
       const st = useStyle() ? bookStyle("reading") : "";
       const r = await ai(`Viết một bài đọc IELTS Academic GỐC (tự nghĩ, không chép sách hay đề thật) dài khoảng 450–600 từ, 5–7 đoạn, chủ đề học thuật phổ thông (khoa học, lịch sử, xã hội, môi trường, công nghệ), độ khó band 6–7, để học sinh luyện RIÊNG dạng câu hỏi: ${RK[k]}.
 Soạn 7–8 câu hỏi, TẤT CẢ đều thuộc dạng ${RK[k]} (k = "${k}"), giống cách ra đề thật: câu hướng dẫn nhóm đặt vào "box" của câu đầu; có bẫy paraphrase hợp lý${k === "tfng" || k === "ynng" ? ", có đủ cả ba đáp án" : ""}${k === "mhead" ? ", danh sách heading nhiều hơn số đoạn 2–3 cái" : ""}.
 ${RQ_JSON}
-${st ? "\n" + st + "\n(Chỉ áp dụng phần văn phong và độ khó; dạng câu hỏi vẫn chỉ là " + RK[k] + ".)\n" : ""}Chỉ trả lời JSON: {"title":"...","lettered":true,"paragraphs":["..."],"questions":[...]}`, { json: true, signal: ctl.signal, onText: ({ text }) => status.textContent = `Claude đang soạn bài luyện… (${text.length} ký tự)` });
+${st ? "\n" + st + "\n(Chỉ áp dụng phần văn phong và độ khó; dạng câu hỏi vẫn chỉ là " + RK[k] + ".)\n" : ""}Chỉ trả lời JSON: {"title":"...","lettered":true,"paragraphs":["..."],"questions":[...]}`, { json: true, signal: ctl.signal, onText: ({ text }) => status.textContent = `AI đang soạn bài luyện… (${text.length} ký tự)` });
       const rd = validReading(r); if (!rd) throw { code: "invalid_json" };
       const id = newId(); const doc = { ...rd, level: "mid", source: "ai", drill: k, created: Date.now(), attempts: [] };
       await putDoc("readings", id, doc); READS.unshift({ ...doc, id });
       rcOpenSlice({ ...doc, id }, { k, from: 0, to: rd.questions.length - 1, box: rd.questions[0].box || "" });
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { gen.disabled = false; delete UI.busy.rcgen; }
-  } }, "Claude soạn thêm bài luyện dạng này");
+  } }, "AI soạn thêm bài luyện dạng này");
   return h("section", { class: "card", id: "ls-book" }, h("h2", null, "Luyện dạng này bằng sách của bạn"),
     all.length ? h("p", { class: "small muted" }, `Có ${all.length} nhóm câu ${l.kinds.map(k => RK[k]).join(" / ")} trong các bài bạn đã tách${doneN ? `, đã làm ${doneN}` : ""}. Mỗi nhóm mở cùng bài đọc gốc, chỉ hiện các câu của dạng này. Nên làm theo thứ tự từ trên xuống.`)
-      : h("p", { class: "small muted" }, "Chưa có câu dạng này trong sách. Khi sách được thêm vào Thư viện, trang sẽ tự gom các câu cùng dạng về đây. Trong lúc chờ, bạn có thể nhờ Claude soạn bài luyện."),
+      : h("p", { class: "small muted" }, "Chưa có câu dạng này trong sách. Khi sách được thêm vào Thư viện, trang sẽ tự gom các câu cùng dạng về đây. Trong lúc chờ, bạn có thể nhờ AI soạn bài luyện."),
     all.length ? h("div", { class: "hist" }, all.slice(0, lim).map(({ r, g }) => { const x = res(r.id + "~" + g.from);
       return h("button", { type: "button", onclick: () => rcOpenSlice(r, g) }, h("span", { class: "chip " + (x ? (x.score / x.total >= 0.6 ? "good" : "warn") : "") }, x ? `${x.score}/${x.total}` : `${g.to - g.from + 1} câu`),
         h("span", { class: "stack", style: "gap:0;min-width:0" }, h("span", { style: "font-weight:600" }, rcGroupLabel(r, g)), h("span", { class: "small muted", style: "overflow:hidden;text-overflow:ellipsis;white-space:nowrap" }, r.title)), h("span", { class: "small muted" }, "›")); })) : null,
@@ -10843,7 +10843,7 @@ function taskAnalysisCard(n, sel) {
   if (store1[key] === undefined && store.get) { store1[key] = null; store.get("feedbacks", key).then(d => { if (d && d.kind === n) { store1[key] = d; render(); } }).catch(() => {}); }
   const d = store1[key], out = h("div", { class: "stack" });
   const go = h("button", { class: d ? "btn" : "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
-    const ctl = new AbortController(); UI.busy[key] = ctl; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, n === 1 ? "Claude đang xem số liệu…" : "Claude đang phân tích đề…"), stopBtn(key));
+    const ctl = new AbortController(); UI.busy[key] = ctl; go.disabled = true; out.replaceChildren(h("p", { class: "muted" }, n === 1 ? "AI đang xem số liệu…" : "AI đang phân tích đề…"), stopBtn(key));
     try {
       let r;
       if (n === 1) {
@@ -10864,7 +10864,7 @@ phrases đúng 4 mục.`, { json: true, signal: ctl.signal });
       const doc = { ...r, kind: n, at: Date.now() }; store1[key] = doc; putDoc("feedbacks", key, doc).catch(() => {}); render();
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { go.disabled = false; delete UI.busy[key]; }
-  } }, d ? "Phân tích lại" : n === 1 ? "Claude gợi ý cách chọn ý" : "Phân tích đề");
+  } }, d ? "Phân tích lại" : n === 1 ? "AI gợi ý cách chọn ý" : "Phân tích đề");
   const li = a => h("ul", { class: "gsum" }, (Array.isArray(a) ? a : []).map(x => h("li", null, String(x))));
   let body = null;
   if (d && n === 1) body = h("div", { class: "stack", style: "gap:10px" },
@@ -10885,10 +10885,10 @@ phrases đúng 4 mục.`, { json: true, signal: ctl.signal });
           return h("tr", null, h("td", null, h("b", null, String(p.en || ""))), h("td", null, String(p.vi || ""), p.use ? h("div", { class: "small muted" }, String(p.use)) : null), h("td", { class: "small" }, String(p.ex || "")), h("td", null, b)); }))) : null,
       d.grammar ? h("div", { class: "note" }, h("b", null, "Cấu trúc nên dùng: " + String(d.grammar.name || "")), h("div", { class: "small" }, String(d.grammar.note || "")), d.grammar.ex ? h("div", { class: "small", style: "font-style:italic" }, String(d.grammar.ex)) : null) : null,
       d.argue ? h("p", { class: "note warn small" }, "Lưu ý lập luận: " + d.argue) : null,
-      d.model ? h("details", null, h("summary", null, "Bài mẫu tham khảo (Claude tự viết)"), h("p", { class: "model-text", style: "margin-top:10px;white-space:pre-wrap" }, String(d.model))) : null);
+      d.model ? h("details", null, h("summary", null, "Bài mẫu tham khảo (AI tự viết)"), h("p", { class: "model-text", style: "margin-top:10px;white-space:pre-wrap" }, String(d.model))) : null);
   }
   return h("section", { class: "card" }, h("h2", null, n === 1 ? "Chọn ý trước khi viết" : "Phân tích đề trước khi viết"),
-    h("p", { class: "small muted" }, n === 1 ? "Claude chỉ ra nên đưa gì vào overview, nhóm số liệu cho từng đoạn thân bài, bỏ gì, và chỗ dễ viết sai với chính biểu đồ này." : "Claude chỉ ra đề có mấy vấn đề, nên chọn lập trường nào, dàn ý thân bài, 4 cụm từ đắt giá (lưu được vào Sổ từ), một cấu trúc ngữ pháp và bài mẫu tham khảo."),
+    h("p", { class: "small muted" }, n === 1 ? "AI chỉ ra nên đưa gì vào overview, nhóm số liệu cho từng đoạn thân bài, bỏ gì, và chỗ dễ viết sai với chính biểu đồ này." : "AI chỉ ra đề có mấy vấn đề, nên chọn lập trường nào, dàn ý thân bài, 4 cụm từ đắt giá (lưu được vào Sổ từ), một cấu trúc ngữ pháp và bài mẫu tham khảo."),
     aiNote(), h("div", { class: "row" }, go), out, body);
 }
 
@@ -11046,7 +11046,7 @@ function wlWrite(l) {
   const ask = h("button", { class: "btn btn-primary", type: "button", disabled: !sample || null, onclick: async () => {
     const text = ta.value.trim(); if (wc(text) < 15) { out.replaceChildren(h("p", { class: "note warn" }, "Hãy viết ít nhất 15 từ.")); return; }
     const ctl = new AbortController(); UI.busy[key] = ctl; ask.disabled = true; btnRow.append(stopBtn(key));
-    out.replaceChildren(h("p", { class: "muted" }, "Claude đang đọc bài…"));
+    out.replaceChildren(h("p", { class: "muted" }, "AI đang đọc bài…"));
     const data = pr.ds ? "\nSố liệu: " + dataText(pr.ds) + (pr.ds2 ? "\nBiểu đồ 2: " + dataText(pr.ds2) : "") : "";
     try {
       const r = await ai(`Bạn là giáo viên IELTS Writing, sửa bài cho một sinh viên Việt Nam khoảng band 4.5–5.5, mục tiêu band ${P.target}.
@@ -11057,22 +11057,22 @@ Bài làm:
 """${text}"""
 Đánh giá theo đúng trọng tâm bài học (không chấm như cả bài thi). Nhận xét bằng tiếng Việt, cụ thể, dẫn chứng từ bài.${pr.ds ? " Kiểm tra số liệu có khớp đề không.\n" + T1_CHECKS : ""} Chọn tối đa 3 lỗi quan trọng nhất.
 Chỉ trả lời JSON: {"met":true,"score":7,"feedback":"2–4 câu: đã làm được gì, còn thiếu gì so với trọng tâm","fixes":[{"original":"trích nguyên văn","corrected":"bản sửa","why":"tiếng Việt"}],"better":"bản viết lại tốt hơn bằng tiếng Anh, giữ ý của học sinh, khoảng band 7"}
-score là số nguyên 0–10.`, { json: true, signal: ctl.signal, onText: ({ text: t }) => out.firstChild && (out.firstChild.textContent = `Claude đang viết nhận xét… (${t.length} ký tự)`) });
+score là số nguyên 0–10.`, { json: true, signal: ctl.signal, onText: ({ text: t }) => out.firstChild && (out.firstChild.textContent = `AI đang viết nhận xét… (${t.length} ký tự)`) });
       addErrors((Array.isArray(r.fixes) ? r.fixes : []).map(f => ({ src: "lesson", front: String(f.original || ""), back: String(f.corrected || ""), why: String(f.why || ""), category: "Writing · " + l.title, lesson: l.id })));
       const prev = P.lessons[l.id] || {}; P.lessons[l.id] = { ...prev, wrote: Math.max(prev.wrote || 0, Number(r.score) || 0), date: today() }; saveProfile();
       out.replaceChildren(...fbNode(fbKeep(key, r, text), "Đã đạt trọng tâm bài", "Chưa đạt trọng tâm bài", "met"));
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); }
     finally { ask.disabled = false; btnRow.lastChild !== ask && btnRow.lastChild?.remove(); delete UI.busy[key]; }
-  } }, "Nhờ Claude sửa");
+  } }, "Nhờ AI sửa");
   btnRow.append(ask);
-  return h("section", { class: "card wide", id: "ls-write" }, h("h2", null, "Tự viết để Claude sửa"),
+  return h("section", { class: "card wide", id: "ls-write" }, h("h2", null, "Tự viết để AI sửa"),
     h("div", { class: "wsplit" },
       h("div", { class: "task-box" }, h("span", { class: "eyebrow" }, "Yêu cầu"), h("p", null, l.write), pr.text ? h("p", { class: "prompt" }, pr.text) : null, pr.ds ? chartNode(pr.ds) : null, pr.ds2 ? chartNode(pr.ds2) : null),
       h("div", { class: "stack" }, ta, aiNote(), btnRow, out)));
 }
 async function wlGenPrompt(l, out, btn) {
   const ctl = new AbortController(); UI.busy.wlgen = ctl; btn.disabled = true;
-  out.replaceChildren(h("p", { class: "small muted" }, "Claude đang soạn đề…"));
+  out.replaceChildren(h("p", { class: "small muted" }, "AI đang soạn đề…"));
   try {
     if (l.task === 2) {
       const st = useStyle() ? bookStyle("t2") : "";
@@ -11099,11 +11099,11 @@ function wlPracticeCard(l) {
   const builtin = l.task === 1 ? DATASETS.filter(d => l.t1?.includes(d.type)).map(d => ({ id: d.id, kind: "t1", data: d, builtin: true })) : [T2_PROMPTS.find(p => p.id === T2_DEFAULT[l.t2type])].filter(Boolean).map(p => ({ id: p.id, kind: "t2", text: p.text, builtin: true }));
   const items = [...ts, ...builtin];
   const canGen = l.task === 2 || (l.t1 && ["line", "bar", "pie", "table", "process"].includes(l.t1[0]));
-  const gbtn = canGen ? h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: () => wlGenPrompt(l, out, gbtn) }, "Claude ra đề mới đúng dạng này") : null;
+  const gbtn = canGen ? h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: () => wlGenPrompt(l, out, gbtn) }, "AI ra đề mới đúng dạng này") : null;
   return h("section", { class: "card", id: "ls-book" }, h("h2", null, "Viết cả bài đúng dạng này"),
-    h("p", { class: "small muted" }, ts.filter(t => t.source === "book").length ? "Đề lấy từ sách của bạn (xếp trước), sau đó là đề có sẵn trong trang. Bấm để mở trình viết bài có bấm giờ và chấm 4 tiêu chí." : "Chưa có đề dạng này từ sách của bạn (tải sách ở Thư viện). Dùng tạm đề có sẵn hoặc nhờ Claude ra đề mới."),
+    h("p", { class: "small muted" }, ts.filter(t => t.source === "book").length ? "Đề lấy từ sách của bạn (xếp trước), sau đó là đề có sẵn trong trang. Bấm để mở trình viết bài có bấm giờ và chấm 4 tiêu chí." : "Chưa có đề dạng này từ sách của bạn (tải sách ở Thư viện). Dùng tạm đề có sẵn hoặc nhờ AI ra đề mới."),
     h("div", { class: "hist" }, items.slice(0, 14).map(t => { const w = written(t.id);
-      return h("button", { type: "button", onclick: () => openWriting(t) }, h("span", { class: "chip " + (t.source === "book" ? "warn" : t.source === "ai" ? "acc" : "") }, t.source === "book" ? (t.vol ? `Cam ${t.vol} T${t.test}` : "Sách") : t.source === "ai" ? "Claude" : "Mẫu"),
+      return h("button", { type: "button", onclick: () => openWriting(t) }, h("span", { class: "chip " + (t.source === "book" ? "warn" : t.source === "ai" ? "acc" : "") }, t.source === "book" ? (t.vol ? `Cam ${t.vol} T${t.test}` : "Sách") : t.source === "ai" ? "AI" : "Mẫu"),
         h("span", { class: "small", style: "overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0" }, t.kind === "t1" ? (t.data.title || t.data.prompt) : t.text),
         h("span", { class: "small " + (w ? "" : "muted") }, w?.result?.overall != null ? "Band " + w.result.overall.toFixed(1) : "›")); })),
     h("div", { class: "row" }, gbtn, h("a", { class: "btn btn-quiet", href: "#books" }, "Mở Thư viện")), out);
@@ -11238,7 +11238,7 @@ function wordTipShow(hit) {
         v = { word: String(d.word || hit.w), pos: String(d.pos || ""), ipa: String(d.ipa || ""), stress: String(d.stress || ""), meaning: String(d.meaning || ""), def: String(d.def || ""), example: String(d.example || hit.sentence), topic: "Từ bài đọc" }; } catch {} }
       if (VOCAB.some(x => norm(x.word) === norm(v.word))) { save.textContent = "Đã có trong sổ"; return; }
       await addVocab(v); save.textContent = "✓ Đã lưu";
-      msg.textContent = inExam() ? "Nghĩa xem sau trong mục Từ vựng." : v.meaning ? v.meaning : "Đã lưu, chưa có nghĩa (mở trang trên Claude để tự tra).";
+      msg.textContent = inExam() ? "Nghĩa xem sau trong mục Từ vựng." : v.meaning ? v.meaning : "Đã lưu, chưa có nghĩa (mở trang trên AI để tự tra).";
     } catch (e) { save.disabled = false; save.textContent = "Lưu vào sổ từ vựng"; msg.textContent = aiMsg(e); }
   } }, exists ? "Đã có trong sổ" : "Lưu vào sổ từ vựng");
   const look = !inExam() ? h("button", { class: "btn small", type: "button", onclick: () => { wordTipHide(); showLookup(hit.w, hit.sentence, true); } }, "Tra nghĩa") : null;
@@ -11279,7 +11279,7 @@ function vrCanon(s) {
 const vrSame = (a, b) => vrCanon(a) === vrCanon(b);
 document.addEventListener("keydown", e => { if (typeof UI.keyH === "function" && !e.altKey && !e.ctrlKey && !e.metaKey) UI.keyH(e); });
 
-/* ---------- Bảng từ vựng gợi ý cho phần "Tự viết để Claude sửa" của các bài ngữ pháp ---------- */
+/* ---------- Bảng từ vựng gợi ý cho phần "Tự viết để AI sửa" của các bài ngữ pháp ---------- */
 /* mỗi dòng: từ / cụm | nghĩa | gợi ý dùng */
 const WV = {
   b1: `pollute (v) → pollution (n) → polluted (adj)|gây ô nhiễm → sự ô nhiễm → bị ô nhiễm|Cars pollute the air. Air pollution is serious.
@@ -11918,6 +11918,32 @@ async function syncApply(inc, mode) {
   } catch (e) { console.warn(e); SYNC.msg = "Chưa lưu được: " + (e?.message || e?.code || "lỗi"); }
   SYNC.busy = false; render();
 }
+/* Đồng bộ một chạm: web riêng chép mã ngay vào bộ nhớ tạm; web ngoài đọc bộ nhớ tạm và gộp luôn */
+async function syncQuickCopy(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = "Đang tạo mã…"; }
+  try {
+    const code = await syncEncode(await syncSnapshot()); SYNC.code = code;
+    let ok = false; try { await navigator.clipboard.writeText(code); ok = true; } catch {}
+    P.syncOutAt = Date.now(); saveProfile();
+    toast(ok ? "Đã chép mã. Sang web ngoài, bấm “Dán mã từ web riêng” ở trang Hôm nay." : "Chưa tự chép được, mã đang hiện ở mục Đồng bộ cuối trang, bấm vào ô để chép.");
+    if (!ok) { SYNC.msg = ""; render(); }
+  } catch (e) { toast("Chưa tạo được mã: " + (e?.message || "lỗi")); }
+  if (btn) { btn.disabled = false; btn.textContent = "⇄ Chép mã sang web ngoài"; }
+}
+async function syncQuickPaste() {
+  let txt = ""; try { txt = await navigator.clipboard.readText(); } catch {}
+  if (!/SLSYNC1:/.test(txt)) { SYNC.msg = "Không đọc được mã trong bộ nhớ tạm. Dán mã vào ô ở mục Đồng bộ cuối trang nhé."; render(); document.querySelector(".sync-card")?.setAttribute("open", ""); document.querySelector(".sync-card")?.scrollIntoView({ behavior: "smooth" }); return; }
+  try { const s = await syncDecode(txt); await syncApply(s, "merge"); toast("Đã gộp dữ liệu từ " + s.from); } catch (e) { toast("Mã không đọc được: " + (e?.message || "lỗi")); }
+}
+function syncQuickBar() {
+  if (!syncAllowed()) return null;
+  if (!syncIsFree()) {
+    if (!(P.actAt > (P.syncOutAt || 0))) return null;
+    const b = h("button", { class: "btn btn-primary", type: "button", onclick: () => syncQuickCopy(b) }, "⇄ Chép mã sang web ngoài");
+    return h("div", { class: "note row sync-quick", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" }, h("span", { class: "small" }, "Bạn vừa học ở web riêng. Chép mã sang web ngoài để nhiệm vụ ngày và bảng nhóm được tính (làm trong hôm nay hoặc sáng mai)."), b);
+  }
+  return h("div", { class: "row sync-quick", style: "justify-content:flex-end" }, h("button", { class: "btn btn-quiet", type: "button", onclick: syncQuickPaste }, "📋 Dán mã từ web riêng"));
+}
 async function syncUndo() {
   const u = SYNC.undo; if (!u) return; SYNC.undo = null; await syncApply(u, "replace"); SYNC.undo = null; SYNC.msg = "Đã hoàn tác, dữ liệu trở lại như trước khi đồng bộ."; render();
 }
@@ -11955,7 +11981,7 @@ function syncCard() {
 }
 (function () {
   const _pt = pageToday;
-  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); return n; };
+  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); const qb = syncQuickBar(); if (qb) { const hd = n.firstElementChild; hd ? hd.after(qb) : n.prepend(qb); } return n; };
 })();
 
 async function boot() {
@@ -11965,7 +11991,7 @@ async function boot() {
   onRoute();
   await connectClaude();
 }
-/* Kết nối Claude (AI + lưu theo tài khoản). Gọi lại được từ nút "Kết nối lại" nếu lần đầu bị từ chối hoặc lỗi. */
+/* Kết nối AI (AI + lưu theo tài khoản). Gọi lại được từ nút "Kết nối lại" nếu lần đầu bị từ chối hoặc lỗi. */
 async function connectClaude() {
   if (!window.claude?.use) { sampleChecked = true; UI.aiWhy = "not_claude"; render(); return; }
   const tryUse = async n => { try { return await claude.use(n); } catch (e) { console.warn(n, e); UI.aiWhy = e?.code || e?.message || "error"; return null; } };
@@ -15150,8 +15176,8 @@ function goalEditor() {
 function planCard() {
   const PL = P.plan, t = today();
   const out = h("div", { class: "stack" });
-  const btn = aiBtn(PL ? "Lập lại kế hoạch" : "Claude lập kế hoạch 7 ngày", async () => {
-    out.replaceChildren(h("p", { class: "small muted" }, "Claude đang xếp lịch…"));
+  const btn = aiBtn(PL ? "Lập lại kế hoạch" : "AI lập kế hoạch 7 ngày", async () => {
+    out.replaceChildren(h("p", { class: "small muted" }, "AI đang xếp lịch…"));
     const sb = skillBands(), next = LESSONS.filter(l => !P.lessons[l.id]?.done).slice(0, 6).map(l => `lesson-${l.id}: ${l.title}`);
     try {
       const r = await ai(`Lập kế hoạch học IELTS đủ 4 kỹ năng (Listening, Reading, Writing, Speaking, kèm phát âm IPA) cho 7 ngày bắt đầu từ ${t} cho một sinh viên Việt Nam. Mỗi ngày khoảng ${P.minutesPerDay || 20} phút.
@@ -15165,7 +15191,7 @@ Chỉ trả lời JSON: {"focus":"1 câu tiếng Việt: trọng tâm tuần","d
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
   }, PL ? "btn" : "btn btn-primary");
   const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kế hoạch 7 ngày"), btn)];
-  if (!PL) kids.push(h("p", { class: "small muted" }, `Claude xếp lịch theo ngày thi, kỹ năng yếu nhất, sổ lỗi và ${P.minutesPerDay || 20} phút mỗi ngày của bạn (đổi số phút ở phần Mục tiêu).`), aiNote());
+  if (!PL) kids.push(h("p", { class: "small muted" }, `AI xếp lịch theo ngày thi, kỹ năng yếu nhất, sổ lỗi và ${P.minutesPerDay || 20} phút mỗi ngày của bạn (đổi số phút ở phần Mục tiêu).`), aiNote());
   else {
     if (PL.focus) kids.push(h("p", { class: "note small" }, PL.focus));
     const dayNode = (d, di) => h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, new Date(d.date + "T00:00:00").toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" }) + (d.date === t ? " · hôm nay" : "")),
@@ -15913,7 +15939,7 @@ function heatCard(list) {
   const _pt = pageToday;
   pageToday = function () {
     const n = _pt(), st = dqToday(today()), left = DQ_T.length - st.met.length;
-    for (const el of n.querySelectorAll(".today-head .chip, :scope > p.small")) el.textContent = el.textContent.replace(/tài khoản Claude của bạn|tài khoản Claude/g, "tài khoản Google của bạn");
+    for (const el of n.querySelectorAll(".today-head .chip, :scope > p.small")) el.textContent = el.textContent.replace(/tài khoản AI của bạn|tài khoản AI/g, "tài khoản Google của bạn");
     const h1 = n.querySelector(".today-head h1"); if (h1) h1.textContent = left ? `Còn ${left} nhiệm vụ bắt buộc hôm nay` : "Xong nhiệm vụ hôm nay 🎉";
     const old = [...n.querySelectorAll(":scope > section.card")].find(s => s.querySelector("h2")?.textContent === "Việc cần làm");
     if (old) {
@@ -15935,7 +15961,7 @@ Object.assign(SUB_DESC, {
   aiMsg = function (e) {
     if (e?.code === "geo_blocked") return "Gemini từ chối vì máy chủ trung gian đang chạy ở vùng Google chưa hỗ trợ. Chi tiết: " + String(e.message || "").slice(0, 220);
     if (e?.code === "rate_limited" && e.message) return "Gemini báo hết lượt hoặc gọi quá nhanh. Chi tiết: " + String(e.message).slice(0, 260);
-    if (!e?.code || /^(not_granted|sampling_disabled|rate_limited|cancelled)$/.test(e.code)) return _m(e).replace(/Claude/g, "Gemini");
+    if (!e?.code || /^(not_granted|sampling_disabled|rate_limited|cancelled)$/.test(e.code)) return _m(e).replace(/AI/g, "Gemini");
     const why = String(e.message || "").replace(/^[\w.-]+:\s*/, "").slice(0, 160);
     return `Gemini đang lỗi (${e.code})${why ? ": " + why : ""}. Thử lại sau ít phút.`;
   };
@@ -15970,7 +15996,7 @@ async function puDisable() {
 /* Báo cho Worker biết hôm nay còn mấy nhiệm vụ, để 20h nhắc đúng người và kể tên bạn đã xong */
 let puLast = "";
 function puStatus(force) {
-  if (!window.__push || !P) return; const st = dqToday(today()), b = { d: today(), left: DQ_T.length - st.met.length, name: puName() }, k = JSON.stringify(b);
+  if (!window.__push || !P) return; const st = dqToday(today()), b = { d: today(), left: DQ_T.length - st.met.length, name: puName(), streak: dqStreak(dqS().days), miss: DQ_T.filter(x => !st.met.includes(x.k)).map(x => x.unit ? `${x.name} ${Math.max(0, Math.round((x.need - (st[x.k] || 0)) * 10) / 10)} phút` : x.name) }, k = JSON.stringify(b);
   if (!force && k === puLast) return; puLast = k; window.__push.status(b).catch(() => { puLast = ""; });
 }
 function pushCard(compact) {
@@ -16679,6 +16705,162 @@ function pl4Start(k) {
     return n;
   };
   const _ls = lsBandEst; lsBandEst = function () { const b = _ls(); return b != null ? b : P.placement?.L?.band ?? null; };
+})();
+
+/* ===== Nâng cấp đợt 5: nhiệm vụ ngày rõ hơn, bảng AI cho chủ nhóm, điền từ không cần AI, tổng kết tháng, tải trang nhanh ===== */
+
+/* ----- 1. Nhiệm vụ ngày: ghi rõ cách tính, bấm vào là tới bài ngắn nhất ----- */
+(function () {
+  const nextOf = L => (L || []).find(l => !P.lessons?.[l.id]?.done);
+  const FAST = {
+    V: { how: "Qua 1 bài trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Từ tự thêm vào sổ không tính.", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
+    L: { how: "Mỗi câu nghe chép tính 1 phút, mỗi lượt Số và đánh vần 4 phút, mỗi phần Section 8 phút. Không cần làm cả đề.", fast: () => ["Nghe chép 5 câu · khoảng 5 phút", "#listen", () => { UI.lsTab = "dict"; }] },
+    S: { how: "Mỗi câu shadowing tính 1 phút, 1 bài phát âm 5 phút là đủ luôn.", fast: () => ["1 bài Phát âm · khoảng 5 phút", "#speak", () => { UI.spTab = "pron"; }] },
+    R: { how: "1 bài trong khóa Đọc (tính 15 phút) hoặc 1 bài đọc bất kỳ (tính 20 phút) là đủ. Không cần làm cả đề.", fast: () => { const n = nextOf(typeof RL !== "undefined" ? RL : []); return n ? ["Bài tiếp theo khóa Đọc: " + n.title, "#rl-" + n.id, null] : ["1 bài đọc ngắn", "#reading", null]; } },
+    W: { how: "1 bài trong khóa Viết (tính 15 phút) là đủ. Không cần viết cả Task 1 hay Task 2.", fast: () => { const n = nextOf(typeof WL !== "undefined" ? WL : []); return n ? ["Bài tiếp theo khóa Viết: " + n.title, "#wl-" + n.id, null] : ["1 bài trong khóa Viết", "#writing", null]; } }
+  };
+  for (const x of DQ_T) if (FAST[x.k]) x.how = FAST[x.k].how;
+  const _row = dqRow;
+  dqRow = function (x, st) {
+    const n = _row(x, st), f = FAST[x.k]; if (!f || (st[x.k] || 0) >= x.need) return n;
+    const [label, href, go] = f.fast();
+    n.setAttribute("href", href); n.onclick = () => go?.();
+    n.querySelector(".stack")?.append(h("span", { class: "dq-fast small" }, "⚡ Nhanh nhất: " + label + " →"));
+    return n;
+  };
+  document.head.append(h("style", null, ".dq-fast{color:#0b6b52;font-weight:600}"));
+})();
+
+/* ----- 2. Bảng AI: ai dùng bao nhiêu, lỗi gần đây; chip không còn hiện "≥0" khó hiểu ----- */
+(function () {
+  const recentErr = d => (d?.errs || []).find(e => Date.now() - e.t < 15 * 60e3 && e.s !== 429);
+  quotaChip = function () {
+    const d = QT.d; if (!d) { quotaLoad(); return null; }
+    const s = quotaSum(d.tiers.mid), err = recentErr(d);
+    const txt = s.allOut ? "Hết lượt AI" : err ? "AI đang lỗi" : s.known ? s.left + " lượt AI" : "AI sẵn sàng";
+    return h("a", { class: "chip " + (s.allOut || err ? "bad" : s.known && s.left < 20 ? "warn" : "good"), href: "#quota", title: "Lượt AI hôm nay. Bấm để xem chi tiết" }, "⚡ " + txt);
+  };
+  const _pq = pageQuota;
+  pageQuota = function () {
+    const n = _pq(), d = QT.d; if (!d) return n;
+    const when = t => new Date(t).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+    const why = e => /location is not supported/i.test(e.msg) ? "Google chặn theo vùng máy chủ" : /api key/i.test(e.msg) ? "Khóa Gemini hỏng hoặc hết hạn" : e.s === 429 ? "Hết lượt hoặc gọi quá nhanh" : e.s === 503 ? "Google đang quá tải" : e.msg || "Lỗi " + e.s;
+    const users = h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Ai dùng AI hôm nay"),
+      d.users?.length ? h("div", { class: "qt-wrap" }, h("table", { class: "qt-tbl" }, h("thead", null, h("tr", null, h("th", null, "Thành viên"), h("th", null, "Số lượt"))),
+        h("tbody", null, d.users.map(u => h("tr", null, h("td", null, u.name + (u.me ? " (bạn)" : "")), h("td", null, String(u.n))))))) : h("p", { class: "small muted", style: "margin:0" }, "Hôm nay chưa ai dùng AI."));
+    const errs = h("section", { class: "card stack", style: "gap:8px" }, h("h2", null, "Lỗi AI gần đây"),
+      h("p", { class: "small muted", style: "margin:0" }, "Mỗi khi Google từ chối một model, Worker ghi lại ở đây. Nếu cả loạt đều cùng một lý do, đó là chỗ cần sửa."),
+      d.errs?.length ? h("div", { class: "qt-wrap" }, h("table", { class: "qt-tbl" }, h("thead", null, h("tr", null, h("th", null, "Lúc"), h("th", null, "Model"), h("th", null, "Lý do"), h("th", null, "Ai gặp"))),
+        h("tbody", null, d.errs.map(e => h("tr", null, h("td", null, when(e.t)), h("td", null, h("code", null, e.m)), h("td", null, h("b", null, why(e)), e.msg && why(e) !== e.msg ? h("div", { class: "small muted" }, e.msg) : null), h("td", null, e.who || "–")))))) :
+        d.errs ? h("p", { class: "small muted", style: "margin:0" }, "Hôm nay chưa có lỗi nào.") : h("p", { class: "note warn small", style: "margin:0" }, "Worker chưa ghi lỗi. Cần dán bản Worker mới."));
+    const box = n.querySelector(".card"); box ? box.after(users, errs) : n.append(users, errs);
+    return n;
+  };
+})();
+
+/* ----- 3. Điền từ mới bằng từ điển có sẵn (4500 từ CEFR và 25 chủ đề IELTS), không tốn lượt AI ----- */
+const DICT = {};
+const DICT_TOPIC = { cities: "Thành phố", crime: "Tội phạm", culture: "Văn hóa", economy: "Kinh tế", education: "Giáo dục", energy: "Năng lượng", environment: "Môi trường", equality: "Bình đẳng", family: "Gia đình", finance: "Tài chính", food: "Ẩm thực", globalisation: "Toàn cầu hóa", government: "Chính phủ", health: "Sức khỏe", housing: "Nhà ở", language: "Ngôn ngữ", media: "Truyền thông", oceans: "Biển và nước", population: "Dân số", science: "Khoa học", sport: "Thể thao", technology: "Công nghệ", tourism: "Du lịch", transport: "Giao thông", work: "Công việc" };
+async function dictLook(w) {
+  const k = w.trim().toLowerCase(), c = /^[a-z]/.test(k) ? k[0] : "_";
+  const shard = await (DICT[c] ||= fetch("vr/dict/" + c + ".json").then(r => r.ok ? r.json() : {}).catch(() => { delete DICT[c]; return {}; }));
+  return shard[k] || null;
+}
+(function () {
+  const POS = { noun: "n", verb: "v", adjective: "adj", adverb: "adv", phrase: "phr", "phrasal verb": "phr", idiom: "phr", preposition: "prep", conjunction: "conj" };
+  const _af = addForm;
+  addForm = function () {
+    const n = _af(), old = [...n.querySelectorAll("button")].find(b => /điền giúp/.test(b.textContent)); if (!old) return n;
+    const val = id => n.querySelector("#va-" + id);
+    const out = h("p", { class: "small muted", style: "margin:0" });
+    const btn = h("button", { class: "btn", type: "button", onclick: async () => {
+      const w = val("word")?.value.trim(); if (!w) { val("word")?.focus(); return; }
+      btn.disabled = true; out.textContent = "Đang tra từ điển…";
+      const e = await dictLook(w).catch(() => null);
+      if (e) {
+        const set = (id, v) => { const i = val(id); if (i && !i.value && v) i.value = v; };
+        set("pos", POS[e[0]] || e[0]); set("ipa", e[1]); set("meaning", e[2]); set("example", e[3]); set("topic", e[4] ? DICT_TOPIC[e[4]] || "" : "");
+        out.textContent = "Đã điền từ từ điển có sẵn (không tốn lượt AI).";
+      }
+      const empty = ["pos", "ipa", "stress", "meaning", "def", "example"].some(id => val(id) && !val(id).value);
+      if (empty && !old.disabled) {
+        out.textContent = (e ? "Đã điền từ từ điển. " : "") + "AI đang điền nốt phần còn trống…";
+        old.click();
+        const watch = new MutationObserver(() => { const bad = n.querySelector(".note.bad"); if (bad && e) { bad.textContent = "AI đang bận nên phần trọng âm và định nghĩa chưa có, các phần khác đã điền từ từ điển. Bạn có thể thêm từ luôn."; bad.classList.replace("bad", "warn"); } });
+        watch.observe(n, { subtree: true, childList: true }); setTimeout(() => watch.disconnect(), 60e3);
+        setTimeout(() => { if (/AI đang điền/.test(out.textContent)) out.textContent = ""; }, 4000);
+      } else if (!e) out.textContent = "Từ này không có trong từ điển sẵn và AI chưa dùng được. Bạn tự điền nghĩa nhé.";
+      btn.disabled = false;
+    } }, "Điền giúp");
+    old.hidden = true; old.after(btn); btn.parentElement.after(out);
+    return n;
+  };
+})();
+
+/* ----- 4. Tổng kết tháng: số ngày đủ nhiệm vụ, phút học, XP, chuỗi, thành tựu, band thi thử; tải thành ảnh để khoe ----- */
+function msOf(m) {
+  const q = fq(), days = Object.keys(q.days).filter(d => d.startsWith(m)), full = days.filter(d => q.days[d] === 1).length;
+  let min = 0, xp = 0; const sk = { L: 0, S: 0, R: 0, W: 0 };
+  for (const [d, lg] of Object.entries(P.log || {})) if (d.startsWith(m)) { min += lg.min || 0; const s = dqSkOf(lg); for (const k in sk) sk[k] += s[k] || 0; }
+  for (const [d, o] of Object.entries(P.xpDay || {})) if (d.startsWith(m)) xp += Object.values(o).reduce((a, b) => a + b, 0);
+  let best = 0, run = 0; const [y, mo] = m.split("-").map(Number), nd = new Date(y, mo, 0).getDate();
+  for (let i = 1; i <= nd; i++) { const d = m + "-" + String(i).padStart(2, "0"); if (q.days[d]) { run++; best = Math.max(best, run); } else run = 0; }
+  const ach = Object.entries(q.ach).filter(([, d]) => String(d).startsWith(m)).map(([id]) => ACH.find(a => a[0] === id)).filter(Boolean);
+  const words = (typeof VOCAB !== "undefined" ? VOCAB : []).filter(v => v.created && new Date(v.created).toLocaleDateString("en-CA").startsWith(m)).length;
+  const mm = P.mm?.[m];
+  return { m, full, nd, min: Math.round(min), xp, best, sk, ach, words, band: mm?.ov ?? null, mmN: mm?.n || 0, lv: levelOf(P.xp || 0).L };
+}
+function msDraw(s) {
+  const W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const g = c.getContext("2d"), font = getComputedStyle(document.body).fontFamily || "sans-serif";
+  const F = (w, px) => `${w} ${px}px ${font}`;
+  g.fillStyle = "#f4f1ea"; g.fillRect(0, 0, W, H);
+  g.fillStyle = "#111"; g.fillRect(0, 0, W, 300);
+  g.fillStyle = "#ffd43b"; g.font = F(700, 34); g.fillText("SỔ LUYỆN IELTS · TỔNG KẾT", 70, 100);
+  g.fillStyle = "#fff"; g.font = F(800, 92); g.fillText("Tháng " + +s.m.slice(5) + "/" + s.m.slice(0, 4), 70, 210);
+  g.font = F(500, 34); g.fillStyle = "#cfcfcf"; g.fillText((P.me?.name || window.__grp?.dname || "Bạn học") + " · Level " + s.lv, 70, 265);
+  const box = (x, y, w, h0, big, label, col) => { g.fillStyle = "#fff"; g.fillRect(x, y, w, h0); g.strokeStyle = "#111"; g.lineWidth = 5; g.strokeRect(x, y, w, h0);
+    g.fillStyle = col || "#111"; g.font = F(800, 76); g.fillText(big, x + 34, y + 110); g.fillStyle = "#555"; g.font = F(500, 30); g.fillText(label, x + 34, y + 160); };
+  const bw = (W - 70 * 2 - 30) / 2;
+  box(70, 350, bw, 200, s.full + "/" + s.nd, "ngày làm đủ nhiệm vụ", "#0e8a6a");
+  box(70 + bw + 30, 350, bw, 200, String(s.best), "chuỗi dài nhất (ngày)", "#e8590c");
+  box(70, 580, bw, 200, (s.min >= 60 ? Math.floor(s.min / 60) + "h" + String(s.min % 60).padStart(2, "0") : s.min + "'"), "tổng thời gian học");
+  box(70 + bw + 30, 580, bw, 200, "+" + s.xp, "XP kiếm được", "#6b4fd8");
+  g.fillStyle = "#111"; g.font = F(700, 36); g.fillText("Phút theo kỹ năng", 70, 860);
+  const names = { L: "Nghe", S: "Nói", R: "Đọc", W: "Viết" }, maxv = Math.max(1, ...Object.values(s.sk));
+  Object.entries(s.sk).forEach(([k, v], i) => { const y = 900 + i * 62; g.font = F(600, 30); g.fillStyle = "#111"; g.fillText(names[k], 70, y + 32);
+    g.fillStyle = "#ddd8cc"; g.fillRect(220, y + 6, 640, 34); g.fillStyle = ["#1c7ed6", "#e8590c", "#0e8a6a", "#ae3ec9"][i]; g.fillRect(220, y + 6, 640 * v / maxv, 34);
+    g.fillStyle = "#111"; g.fillText(Math.round(v) + "'", 880, y + 32); });
+  g.font = F(600, 32); g.fillStyle = "#111";
+  g.fillText(`📚 ${s.words} từ mới   🏆 ${s.ach.length} thành tựu   🎯 ${s.band != null ? "Band thi thử " + s.band.toFixed(1) : s.mmN + "/4 phần thi thử"}`, 70, 1190);
+  g.font = F(500, 28); g.fillStyle = "#555"; g.fillText(s.ach.slice(0, 4).map(a => a[1] + " " + a[2]).join("   ").slice(0, 70), 70, 1245);
+  return c;
+}
+function msCard() {
+  const cur = mmMonth(), prev = mmMonth(addDays(cur + "-01", -1)), pick = UI.msM || (+today().slice(8) <= 5 ? prev : cur), s = msOf(pick);
+  const dl = () => msDraw(s).toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = `tong-ket-${s.m}.png`; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }, "image/png");
+  const st = (v, l) => h("div", { class: "ms-st" }, h("b", null, v), h("span", { class: "small muted" }, l));
+  return h("section", { class: "card stack ms-card", style: "gap:12px" },
+    h("div", { class: "row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" }, h("h2", { style: "margin:0" }, "Tổng kết " + mmName(pick)),
+      h("div", { class: "row", style: "gap:6px" }, [prev, cur].map(m => h("button", { class: "opt", type: "button", "aria-pressed": String(m === pick), onclick: () => { UI.msM = m; render(); } }, "T" + +m.slice(5))))),
+    h("div", { class: "ms-grid" }, st(s.full + "/" + s.nd, "ngày đủ nhiệm vụ"), st(s.best, "chuỗi dài nhất"), st(s.min >= 60 ? Math.floor(s.min / 60) + "h" + String(s.min % 60).padStart(2, "0") : s.min + " phút", "thời gian học"), st("+" + s.xp, "XP"), st(s.words, "từ mới"), st(s.ach.length, "thành tựu mở")),
+    s.ach.length ? h("div", { class: "row small", style: "gap:10px;flex-wrap:wrap" }, s.ach.map(a => h("span", null, a[1] + " " + a[2]))) : null,
+    h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: dl }, "⬇ Tải ảnh tổng kết"), h("span", { class: "small muted" }, "Ảnh dọc để đăng story hoặc gửi nhóm.")));
+}
+(function () {
+  const _pp = pagePlan; pagePlan = function () { const n = _pp(), mm = n.querySelector(".mm-card"); const c = msCard(); mm ? mm.after(c) : n.append(c); return n; };
+  document.head.append(h("style", null, ".ms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:600px){.ms-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.ms-st{border:2px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}.ms-st b{font-size:1.5rem}"));
+})();
+
+/* ----- 5. Tải trang nhanh: máy tự giữ một bản web, lần sau mở ngay; có bản mới thì báo để tải lại ----- */
+(function () {
+  if (!("serviceWorker" in navigator) || location.protocol !== "https:") return;
+  navigator.serviceWorker.addEventListener("message", e => {
+    if (e.data?.type !== "sl-update" || document.getElementById("sl-upd")) return;
+    document.body.append(h("div", { id: "sl-upd", role: "status" }, h("span", null, "Có bản web mới."), h("button", { class: "btn btn-primary", type: "button", onclick: () => location.reload() }, "Tải lại"), h("button", { class: "btn btn-quiet", type: "button", onclick: e2 => e2.target.parentElement.remove() }, "Để sau")));
+  });
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+  document.head.append(h("style", null, "#sl-upd{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--surface);border:2px solid var(--edge,#111);box-shadow:4px 4px 0 var(--edge,#111);padding:10px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;max-width:calc(100vw - 32px)}@media (max-width:819px){#sl-upd{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}"));
 })();
 
 </script>

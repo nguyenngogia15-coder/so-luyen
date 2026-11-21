@@ -91,7 +91,7 @@ async function pushApi(req, env, path, b, user) {
   if (path === "/push/key") return out(env, req, 200, { key: (await vapid(env)).pub });
   if (path === "/push/sub") { if (!b.sub?.endpoint) return out(env, req, 400, { error: { code: "bad_request" } }); await env.AUDIO.put("push:" + uid, JSON.stringify({ sub: b.sub, name: String(b.name || "").slice(0, 24) })); return out(env, req, 200, { ok: true }); }
   if (path === "/push/unsub") { await env.AUDIO.delete("push:" + uid); return out(env, req, 200, { ok: true }); }
-  if (path === "/push/status") { await env.AUDIO.put("pst:" + uid, JSON.stringify({ d: String(b.d || ""), left: +b.left || 0, name: String(b.name || "").slice(0, 24) }), { expirationTtl: 604800 }); return out(env, req, 200, { ok: true }); }
+  if (path === "/push/status") { await env.AUDIO.put("pst:" + uid, JSON.stringify({ d: String(b.d || ""), left: +b.left || 0, name: String(b.name || "").slice(0, 24), miss: (Array.isArray(b.miss) ? b.miss : []).slice(0, 5).map(x => String(x).slice(0, 40)), streak: +b.streak || 0 }), { expirationTtl: 604800 }); return out(env, req, 200, { ok: true }); }
   if (path === "/push/poke") {
     const to = await env.AUDIO.get("push:" + String(b.to || ""), "json"); if (!to) return out(env, req, 200, { ok: false, reason: "chưa bật thông báo" });
     const st = await pushSend(env, to.sub, { title: `👉 ${String(b.name || "Bạn học").slice(0, 24)} chọc bạn`, body: "Làm nhiệm vụ tiếng Anh hôm nay đi, cả nhóm đang chờ!", url: "#today" });
@@ -109,15 +109,18 @@ async function pushMsg(req, env) {
   return new Response(JSON.stringify(m || { title: "Sổ luyện IELTS", body: "Vào học tiếng Anh hôm nay nhé!", url: "#today" }), { headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
 }
 /* 20h tối (giờ VN): nhắc ai chưa xong nhiệm vụ, kèm tên những bạn đã xong */
-async function remind(env) {
+async function remind(env, late) {
   if (!env.AUDIO) return; const d = vnDay(), subs = [], st = {};
   for (const k of (await env.AUDIO.list({ prefix: "push:" })).keys) subs.push([k.name.slice(5), await env.AUDIO.get(k.name, "json")]);
   for (const k of (await env.AUDIO.list({ prefix: "pst:" })).keys) st[k.name.slice(4)] = await env.AUDIO.get(k.name, "json");
   const done = Object.values(st).filter(x => x?.d === d && x.left === 0).map(x => x.name).filter(Boolean);
   for (const [uid, s] of subs) {
     const me = st[uid]; if (!s || (me?.d === d && me.left === 0)) continue;
-    const left = me?.d === d ? me.left : 5, others = done.filter(n => n !== s.name);
-    const code = await pushSend(env, s.sub, { title: `Còn ${left} nhiệm vụ tiếng Anh hôm nay`, body: others.length ? `${others.join(", ")} đã xong rồi. Đừng để cả nhóm đứt chuỗi!` : "Hạn chót 23:59. Làm ngay để giữ chuỗi nhé!", url: "#today" });
+    const today = me?.d === d, left = today ? me.left : 5, miss = today && me.miss?.length ? me.miss : [], streak = me?.streak || 0, others = done.filter(n => n !== s.name);
+    const title = late ? (streak > 1 ? `🔥 Chuỗi ${streak} ngày sắp đứt!` : "⏰ Còn 3 tiếng là hết ngày") : `Còn ${left} nhiệm vụ tiếng Anh hôm nay`;
+    const need = miss.length ? "Còn thiếu: " + miss.join(", ") + "." : "Bạn chưa làm nhiệm vụ nào hôm nay.";
+    const tail = late ? " Làm nhanh trước 23:59 nhé!" : others.length ? ` ${others.join(", ")} đã xong rồi, đừng để cả nhóm đứt chuỗi!` : " Hạn chót 23:59.";
+    const code = await pushSend(env, s.sub, { title, body: need + tail, url: "#today" });
     if (code === 404 || code === 410) await env.AUDIO.delete("push:" + uid);
   }
 }
@@ -289,7 +292,8 @@ async function track(env, model, status, j, uid) {
     else if (status === 429) {
       const v = (j?.error?.details || []).flatMap(x => x.violations || []), day1 = v.find(x => /PerDay/i.test(x.quotaId || x.quotaMetric || ""));
       if (day1) { m.out = Date.now(); if (+day1.quotaValue) m.lim = +day1.quotaValue; } else m.rpm = Date.now();
-    } else return;
+    }
+    if (status !== 200) { (d.e ||= []).push({ t: Date.now(), m: model, s: status, msg: String(j?.error?.message || "").slice(0, 200), u: uid || "" }); d.e = d.e.slice(-20); }
     await env.AUDIO.put("q:" + day, JSON.stringify(d), { expirationTtl: 3 * 86400 });
   } catch {}
 }
@@ -299,7 +303,10 @@ async function quota(req, env, uid) {
   const row = m => ({ model: m, used: d.m[m]?.n || 0, lim: lim[m] || d.m[m]?.lim || null, out: !!d.m[m]?.out, busy: !!(d.m[m]?.rpm && Date.now() - d.m[m].rpm < 70000) });
   const tiers = Object.fromEntries(["top", "mid", "lite"].map(t => [t, String(env["MODELS_" + t.toUpperCase()] || TIERS[t]).split(",").map(s => s.trim()).filter(Boolean).filter(m => !MISSING.has(m)).map(row)]));
   const tts = String(env.TTS_MODELS || TTS_MODELS).split(",").map(s => s.trim()).filter(Boolean).map(row);
-  return out(env, req, 200, { day, resetAt, tiers, tts, me: d.u[uid] || 0, total: Object.values(d.u).reduce((a, b) => a + b, 0), people: Object.keys(d.u).length, kv: !!env.AUDIO });
+  const names = {}; if (env.AUDIO) for (const k of (await env.AUDIO.list({ prefix: "pst:" })).keys) { const v = await env.AUDIO.get(k.name, "json").catch(() => null); if (v?.name) names[k.name.slice(4)] = v.name; }
+  const users = Object.entries(d.u || {}).map(([u, n]) => ({ name: names[u] || (u === uid ? "Bạn" : "Một bạn"), n, me: u === uid })).sort((a, b) => b.n - a.n);
+  const errs = (d.e || []).slice().reverse().map(e => ({ ...e, u: undefined, who: names[e.u] || "" }));
+  return out(env, req, 200, { day, resetAt, tiers, tts, users, errs, me: d.u[uid] || 0, total: Object.values(d.u).reduce((a, b) => a + b, 0), people: Object.keys(d.u).length, kv: !!env.AUDIO });
 }
 
 /* ----- Chạy tự động mỗi đêm (Cron Trigger): làm giọng Gemini cho kho bài, rồi soạn thêm bài mới ----- */
@@ -384,4 +391,4 @@ export async function nightly(env, fetchFn = fetch, opts = {}) {
 }
 
 /* Lịch chạy lúc 13:00 UTC (20h VN) để nhắc học; các lịch khác là việc ban đêm (thu giọng đọc, soạn bài nghe) */
-export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => ctx.waitUntil(new Date(ev.scheduledTime).getUTCHours() === 13 ? remind(env) : nightly(env)) };
+export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => { const hr = new Date(ev.scheduledTime).getUTCHours(); ctx.waitUntil(hr === 13 ? remind(env) : hr === 14 ? remind(env, true) : nightly(env)); } };

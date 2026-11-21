@@ -27,7 +27,7 @@ async function puDisable() {
 /* Báo cho Worker biết hôm nay còn mấy nhiệm vụ, để 20h nhắc đúng người và kể tên bạn đã xong */
 let puLast = "";
 function puStatus(force) {
-  if (!window.__push || !P) return; const st = dqToday(today()), b = { d: today(), left: DQ_T.length - st.met.length, name: puName() }, k = JSON.stringify(b);
+  if (!window.__push || !P) return; const st = dqToday(today()), b = { d: today(), left: DQ_T.length - st.met.length, name: puName(), streak: dqStreak(dqS().days), miss: DQ_T.filter(x => !st.met.includes(x.k)).map(x => x.unit ? `${x.name} ${Math.max(0, Math.round((x.need - (st[x.k] || 0)) * 10) / 10)} phút` : x.name) }, k = JSON.stringify(b);
   if (!force && k === puLast) return; puLast = k; window.__push.status(b).catch(() => { puLast = ""; });
 }
 function pushCard(compact) {

@@ -54,6 +54,32 @@ async function syncApply(inc, mode) {
   } catch (e) { console.warn(e); SYNC.msg = "Chưa lưu được: " + (e?.message || e?.code || "lỗi"); }
   SYNC.busy = false; render();
 }
+/* Đồng bộ một chạm: web riêng chép mã ngay vào bộ nhớ tạm; web ngoài đọc bộ nhớ tạm và gộp luôn */
+async function syncQuickCopy(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = "Đang tạo mã…"; }
+  try {
+    const code = await syncEncode(await syncSnapshot()); SYNC.code = code;
+    let ok = false; try { await navigator.clipboard.writeText(code); ok = true; } catch {}
+    P.syncOutAt = Date.now(); saveProfile();
+    toast(ok ? "Đã chép mã. Sang web ngoài, bấm “Dán mã từ web riêng” ở trang Hôm nay." : "Chưa tự chép được, mã đang hiện ở mục Đồng bộ cuối trang, bấm vào ô để chép.");
+    if (!ok) { SYNC.msg = ""; render(); }
+  } catch (e) { toast("Chưa tạo được mã: " + (e?.message || "lỗi")); }
+  if (btn) { btn.disabled = false; btn.textContent = "⇄ Chép mã sang web ngoài"; }
+}
+async function syncQuickPaste() {
+  let txt = ""; try { txt = await navigator.clipboard.readText(); } catch {}
+  if (!/SLSYNC1:/.test(txt)) { SYNC.msg = "Không đọc được mã trong bộ nhớ tạm. Dán mã vào ô ở mục Đồng bộ cuối trang nhé."; render(); document.querySelector(".sync-card")?.setAttribute("open", ""); document.querySelector(".sync-card")?.scrollIntoView({ behavior: "smooth" }); return; }
+  try { const s = await syncDecode(txt); await syncApply(s, "merge"); toast("Đã gộp dữ liệu từ " + s.from); } catch (e) { toast("Mã không đọc được: " + (e?.message || "lỗi")); }
+}
+function syncQuickBar() {
+  if (!syncAllowed()) return null;
+  if (!syncIsFree()) {
+    if (!(P.actAt > (P.syncOutAt || 0))) return null;
+    const b = h("button", { class: "btn btn-primary", type: "button", onclick: () => syncQuickCopy(b) }, "⇄ Chép mã sang web ngoài");
+    return h("div", { class: "note row sync-quick", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" }, h("span", { class: "small" }, "Bạn vừa học ở web riêng. Chép mã sang web ngoài để nhiệm vụ ngày và bảng nhóm được tính (làm trong hôm nay hoặc sáng mai)."), b);
+  }
+  return h("div", { class: "row sync-quick", style: "justify-content:flex-end" }, h("button", { class: "btn btn-quiet", type: "button", onclick: syncQuickPaste }, "📋 Dán mã từ web riêng"));
+}
 async function syncUndo() {
   const u = SYNC.undo; if (!u) return; SYNC.undo = null; await syncApply(u, "replace"); SYNC.undo = null; SYNC.msg = "Đã hoàn tác, dữ liệu trở lại như trước khi đồng bộ."; render();
 }
@@ -91,5 +117,5 @@ function syncCard() {
 }
 (function () {
   const _pt = pageToday;
-  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); return n; };
+  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); const qb = syncQuickBar(); if (qb) { const hd = n.firstElementChild; hd ? hd.after(qb) : n.prepend(qb); } return n; };
 })();
