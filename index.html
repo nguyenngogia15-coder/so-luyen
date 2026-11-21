@@ -1171,6 +1171,10 @@ body.workmode .page-head{display:none}
 .vr-k{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--surface-2);font-size:.75rem}
 .vr-big{font-size:3rem;color:var(--warn);line-height:1}
 
+@media (min-width:820px) and (max-width:1099px){.topbar-in{gap:10px}.topnav{flex:1;min-width:0;justify-content:space-between;gap:0}
+.topnav a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px!important;font-size:.74rem;white-space:nowrap;line-height:1.1;flex:1;min-width:0}
+.topnav a .nav-ic{display:inline-flex}.topnav a .nav-ic svg{width:19px;height:19px}
+#acct{flex:none}#acct .acct-who{display:none}.acct-out{white-space:nowrap;font-size:.78rem;padding:6px 10px}}
 </style>
 </head>
 <body>
@@ -5689,6 +5693,9 @@ function subMenu(key, items) {
   const menu = h("details", { class: "tabmenu" }, h("summary", null, h("span", { class: "small muted" }, "Đang xem"), h("b", null, it[1]), h("span", { class: "tabmenu-car", "aria-hidden": "true" }, "▾")),
     h("div", { class: "tabmenu-pop", role: "menu" }, items.map(([id, label, badge]) => { const desc = SUB_DESC[key + ":" + id]; return h("button", { type: "button", role: "menuitem", class: id === cur ? "on" : null, onclick: () => { UI[key] = id; if (UI.gm) UI.gm.play = null; render(); window.scrollTo(0, 0); } },
       h("span", { class: "row", style: "gap:6px" }, h("b", null, label), badge != null ? h("span", { class: "subtab-b" }, badge) : null), desc ? h("span", { class: "small muted" }, desc) : null); })));
+  menu.addEventListener("toggle", () => { if (!menu.open) return; const pop = menu.querySelector(".tabmenu-pop"); pop.style.left = "0px"; pop.style.right = "auto";
+    const r = pop.getBoundingClientRect(), main = menu.closest("main")?.getBoundingClientRect(), maxR = Math.min(innerWidth - 8, main ? main.right : innerWidth), minL = Math.max(8, main ? main.left : 0);
+    let dx = 0; if (r.right > maxR) dx = maxR - r.right; if (r.left + dx < minL) dx = minL - r.left; pop.style.left = dx + "px"; });
   return { cur, menu, body: [].concat(it[3]()) };
 }
 document.addEventListener("click", e => { document.querySelectorAll("details.tabmenu[open]").forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
