@@ -13107,12 +13107,11 @@ function spChecks(l, an) {
 const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
-  const tab = UI.spTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["pron", "Phát âm"], ["path", "Lộ trình nói"], ["shadow", "Shadowing"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
+  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; }
+  const T = subMenu("spTab", [["pron", "Phát âm", null, () => [spPronTab()]], ["path", "Lộ trình nói", null, () => [spPathTab()]], ["shadow", "Shadowing", null, () => [spShadowTab()]], ["bank", "Luyện đề", null, () => [spBankTab()]], ["test", "Thi thử", null, () => [spTestTab()]], ["hist", "Kết quả", null, () => [spHistTab()]], ...(typeof SP_GAMES !== "undefined" ? SP_GAMES : [])]);
+  UI.spTabSeen = T.cur;
   return h("div", { class: "stack", style: "gap:18px" },
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Speaking"), h("h1", null, "Nói, ghi âm và được chấm"),
-      h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
-    tab === "pron" ? spPronTab() : tab === "path" ? spPathTab() : tab === "shadow" ? spShadowTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
+    pageHead("Speaking", "Nói, ghi âm và được chấm", "Phát âm, lộ trình nói, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS.", T.menu), ...T.body);
 }
 /* Phát âm gộp vào Nói: nội dung trang Phát âm cũ, bỏ phần đầu trang */
 function spPronTab() { const n = pagePron(); const f = n.firstElementChild; if (f?.classList?.contains("page-banner")) f.remove(); return n; }
@@ -13249,7 +13248,7 @@ Chỉ trả lời JSON: {"criteria":[{"name":"Fluency and Coherence","band":5,"c
       const doc = { kind: S.kind, created: Date.now(), items: idx.map(k => ({ part: S.items[k].part, q: S.items[k].q, text: S.ans[k].text, fl: { ...S.ans[k].fl, gaps: null }, pron: { score: S.ans[k].pron.score, bad: S.ans[k].pron.bad, top: S.ans[k].pron.top } })), result: res };
       const id = newId(); await putDoc("speaks", id, JSON.parse(JSON.stringify(doc))).catch(() => {}); SPEAKS.unshift({ ...doc, id });
       award("speaking", 60, "speak"); addAct("speaking", Math.max(5, Math.round(idx.length * 1.5)));
-      UI.spSess = null; UI.room = null; UI.spTab = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
+      UI.spSess = null; UI.room = null; UI.spTab = "hist"; UI.spTabSeen = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); btn.disabled = false; }
     finally { delete UI.busy.spg; }
   } }, allDone ? "Nhờ AI chấm cả bài (1 lượt)" : "Chấm các câu đã trả lời (1 lượt)");
@@ -14334,13 +14333,10 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
-  const tab = UI.lsTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", style: "gap:6px" }, [["path", "Lộ trình"], ["sec", "Luyện theo phần"], ["test", "Đề đầy đủ"], ["nd", "Số & đánh vần"], ["dict", "Nghe chép"], ["ai", "Bài mới (AI)"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.lsTab = k; render(); } }, t)));
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
+  const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Listening"), h("h1", null, "Luyện nghe IELTS"),
-      h("p", { class: "muted", style: "max-width:66ch" }, `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`), tabs),
-    tab === "path" ? lpTab() : tab === "sec" ? lsSecTab() : tab === "test" ? lsTestTab() : tab === "nd" ? lsNdTab() : tab === "dict" ? lsDictTab() : lsAiTab());
+    pageHead("Listening", "Luyện nghe IELTS", `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`, T.menu), ...T.body);
 }
 function lsCard(s, href) {
   const st = (P.ls || {})[s.id] || {};
@@ -15912,6 +15908,11 @@ function heatCard(list) {
     return n;
   };
 })();
+/* Mô tả cho menu "Đang xem" của Nghe và Nói */
+Object.assign(SUB_DESC, {
+  "lsTab:path": "Học từng dạng câu hỏi nghe từ dễ đến khó", "lsTab:sec": "Làm từng Section 1–4, chấm ngay", "lsTab:test": "4 phần · 40 câu như đề thật, ra band", "lsTab:nd": "Số điện thoại, giá tiền, đánh vần tên", "lsTab:dict": "Nghe từng câu rồi gõ lại", "lsTab:ai": "Nhờ AI soạn bài nghe mới",
+  "spTab:pron": "Học âm IPA, cặp âm dễ nhầm, nối âm", "spTab:path": "Luyện trả lời theo từng Part", "spTab:shadow": "Nghe và nói đuổi theo, chấm ngay", "spTab:bank": "Câu hỏi IELTS theo chủ đề", "spTab:test": "Phòng thi Speaking và thi thử có AI chấm band", "spTab:hist": "Các lần nói đã chấm"
+});
 
 /* ===== Cài web như app và thông báo nhắc học: 20h tối nhắc nếu chưa xong nhiệm vụ, lời chọc của bạn đến thẳng điện thoại ===== */
 const PU = { installEvt: null, busy: false, msg: "" };

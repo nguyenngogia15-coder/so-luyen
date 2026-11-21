@@ -205,12 +205,11 @@ function spChecks(l, an) {
 const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
-  const tab = UI.spTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["pron", "Phát âm"], ["path", "Lộ trình nói"], ["shadow", "Shadowing"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
+  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; }
+  const T = subMenu("spTab", [["pron", "Phát âm", null, () => [spPronTab()]], ["path", "Lộ trình nói", null, () => [spPathTab()]], ["shadow", "Shadowing", null, () => [spShadowTab()]], ["bank", "Luyện đề", null, () => [spBankTab()]], ["test", "Thi thử", null, () => [spTestTab()]], ["hist", "Kết quả", null, () => [spHistTab()]], ...(typeof SP_GAMES !== "undefined" ? SP_GAMES : [])]);
+  UI.spTabSeen = T.cur;
   return h("div", { class: "stack", style: "gap:18px" },
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Speaking"), h("h1", null, "Nói, ghi âm và được chấm"),
-      h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
-    tab === "pron" ? spPronTab() : tab === "path" ? spPathTab() : tab === "shadow" ? spShadowTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
+    pageHead("Speaking", "Nói, ghi âm và được chấm", "Phát âm, lộ trình nói, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS.", T.menu), ...T.body);
 }
 /* Phát âm gộp vào Nói: nội dung trang Phát âm cũ, bỏ phần đầu trang */
 function spPronTab() { const n = pagePron(); const f = n.firstElementChild; if (f?.classList?.contains("page-banner")) f.remove(); return n; }
@@ -347,7 +346,7 @@ Chỉ trả lời JSON: {"criteria":[{"name":"Fluency and Coherence","band":5,"c
       const doc = { kind: S.kind, created: Date.now(), items: idx.map(k => ({ part: S.items[k].part, q: S.items[k].q, text: S.ans[k].text, fl: { ...S.ans[k].fl, gaps: null }, pron: { score: S.ans[k].pron.score, bad: S.ans[k].pron.bad, top: S.ans[k].pron.top } })), result: res };
       const id = newId(); await putDoc("speaks", id, JSON.parse(JSON.stringify(doc))).catch(() => {}); SPEAKS.unshift({ ...doc, id });
       award("speaking", 60, "speak"); addAct("speaking", Math.max(5, Math.round(idx.length * 1.5)));
-      UI.spSess = null; UI.room = null; UI.spTab = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
+      UI.spSess = null; UI.room = null; UI.spTab = "hist"; UI.spTabSeen = "hist"; UI.spView = id; render(); window.scrollTo(0, 0);
     } catch (e) { out.replaceChildren(h("p", { class: "note " + (e?.code === "cancelled" ? "" : "bad") }, aiMsg(e))); btn.disabled = false; }
     finally { delete UI.busy.spg; }
   } }, allDone ? "Nhờ AI chấm cả bài (1 lượt)" : "Chấm các câu đã trả lời (1 lượt)");

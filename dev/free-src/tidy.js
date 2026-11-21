@@ -26,3 +26,8 @@
     return n;
   };
 })();
+/* Mô tả cho menu "Đang xem" của Nghe và Nói */
+Object.assign(SUB_DESC, {
+  "lsTab:path": "Học từng dạng câu hỏi nghe từ dễ đến khó", "lsTab:sec": "Làm từng Section 1–4, chấm ngay", "lsTab:test": "4 phần · 40 câu như đề thật, ra band", "lsTab:nd": "Số điện thoại, giá tiền, đánh vần tên", "lsTab:dict": "Nghe từng câu rồi gõ lại", "lsTab:ai": "Nhờ AI soạn bài nghe mới",
+  "spTab:pron": "Học âm IPA, cặp âm dễ nhầm, nối âm", "spTab:path": "Luyện trả lời theo từng Part", "spTab:shadow": "Nghe và nói đuổi theo, chấm ngay", "spTab:bank": "Câu hỏi IELTS theo chủ đề", "spTab:test": "Phòng thi Speaking và thi thử có AI chấm band", "spTab:hist": "Các lần nói đã chấm"
+});

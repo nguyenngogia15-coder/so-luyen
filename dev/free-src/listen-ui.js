@@ -109,13 +109,10 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
-  const tab = UI.lsTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", style: "gap:6px" }, [["path", "Lộ trình"], ["sec", "Luyện theo phần"], ["test", "Đề đầy đủ"], ["nd", "Số & đánh vần"], ["dict", "Nghe chép"], ["ai", "Bài mới (AI)"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.lsTab = k; render(); } }, t)));
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
+  const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Listening"), h("h1", null, "Luyện nghe IELTS"),
-      h("p", { class: "muted", style: "max-width:66ch" }, `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`), tabs),
-    tab === "path" ? lpTab() : tab === "sec" ? lsSecTab() : tab === "test" ? lsTestTab() : tab === "nd" ? lsNdTab() : tab === "dict" ? lsDictTab() : lsAiTab());
+    pageHead("Listening", "Luyện nghe IELTS", `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`, T.menu), ...T.body);
 }
 function lsCard(s, href) {
   const st = (P.ls || {})[s.id] || {};
