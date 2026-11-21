@@ -14,9 +14,28 @@ const dqS = () => {
   const q = P.dq ||= {}; q.days ||= {}; q.fin ||= {}; q.frz ||= {}; q.sk ||= {}; q.rew ||= { color: [], frame: [], badge: [] }; q.poked ||= {}; q.joined ||= today();
   return q;
 };
+/* Phút theo kỹ năng của một ngày: cộng ngăn web riêng và ngăn web ngoài (dữ liệu cũ chỉ có lg.sk là của web ngoài) */
+function dqSkOf(lg) {
+  const by = { ...(lg.by || {}) }; if (!by.f && lg.sk) by.f = lg.sk;
+  const out = {}; for (const b of Object.values(by)) for (const [k, v] of Object.entries(b || {})) out[k] = (out[k] || 0) + v; return out;
+}
+/* Sau khi đồng bộ: chấm lại hôm qua và hôm nay, để bài làm bên web riêng vẫn được tính */
+function dqRecheck() {
+  const q = dqS(); let ch = false;
+  for (const t of [addDays(today(), -1), today()]) {
+    if (t < q.joined) continue;
+    const st = dqToday(t), skStr = st.met.join(""); if (q.sk[t] !== skStr) { q.sk[t] = skStr; ch = true; }
+    if (st.ok && q.days[t] !== 1) {
+      if (q.days[t] === 2) { const w = weekOf(t); if (q.frz[w] === t) delete q.frz[w]; }
+      q.days[t] = 1; q.fin[t] ||= t === today() ? Date.now() : new Date(t + "T21:00:00").getTime(); ch = true;
+      award("daily", 20); toast(`Đã tính đủ nhiệm vụ ${t === today() ? "hôm nay" : "hôm qua"} từ dữ liệu đồng bộ. +20 XP`);
+    }
+  }
+  if (ch) saveProfile(); dqPublish(true);
+}
 /* Tiến độ nhiệm vụ của ngày t */
 function dqToday(t) {
-  const lg = P.log[t] || {}, sk = lg.sk || {}, out = {};
+  const lg = P.log[t] || {}, sk = dqSkOf(lg), out = {};
   out.V = lg.vr || (t === today() && LESSONS.some(l => P.lessons[l.id]?.done && P.lessons[l.id].date === t)) || lg.gr ? 1 : 0;
   for (const x of DQ_T) if (x.k !== "V") out[x.k] = Math.round((sk[x.k] || 0) * 10) / 10;
   const met = DQ_T.filter(x => (out[x.k] || 0) >= x.need).map(x => x.k);
@@ -71,8 +90,6 @@ function dqPublish(now) {
 }
 /* Đếm phút theo kỹ năng mỗi khi làm bài */
 (function () {
-  const _aa = addAct;
-  addAct = function (type, min) { const k = DQ_SK[type]; if (k) { const lg = P.log[today()] ||= { min: 0, acts: [] }; (lg.sk ||= {})[k] = (lg.sk[k] || 0) + min; } return _aa(type, min); };
   const _sp = saveProfile;
   saveProfile = function () { const r = _sp.apply(this, arguments); setTimeout(dqTick, 0); return r; };
 })();
@@ -263,3 +280,5 @@ function pageGroup() {
   const _pt = pageToday;
   pageToday = function () { const n = _pt(); const head = n.firstElementChild; const c = dqCard(); head ? head.after(c) : n.prepend(c); return n; };
 })();
+
+(function () { const _ap = syncApply; syncApply = async function () { const r = await _ap.apply(this, arguments); try { dqRecheck(); } catch (e) { console.warn(e); } return r; }; })();
