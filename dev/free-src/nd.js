@@ -48,7 +48,7 @@ function lsNdTab() {
     const score = N.done ? items.filter(it => ndCheck(it, N.ans[it.id])).length : null;
     const submit = () => {
       N.done = true; P.ndStat ||= {}; P.ndSeen ||= {}; P.ndDay = today();
-      for (const it of items) { const s = P.ndStat[it.c] ||= [0, 0]; s[0]++; if (ndCheck(it, N.ans[it.id])) s[1]++; P.ndSeen[it.id] = (P.ndSeen[it.id] || 0) + 1; }
+      for (const it of items) { const s = P.ndStat[it.c] ||= [0, 0]; s[0]++; if (ndCheck(it, N.ans[it.id])) s[1]++; else if (typeof e4Nd === "function") e4Nd(it, N.ans[it.id]); P.ndSeen[it.id] = (P.ndSeen[it.id] || 0) + 1; }
       award("listening", 10); addAct("listening", 4); saveProfile(); render();
     };
     const tip = N.cat !== "mix" ? h("p", { class: "gnote", style: "margin:0" }, h("b", null, "Mẹo: "), ND_CAT[N.cat][1]) : null;

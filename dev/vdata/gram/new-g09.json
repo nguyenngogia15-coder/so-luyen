@@ -1,0 +1,85 @@
+{
+ "id": "g09",
+ "summary": [
+  "Từ ngắn: <b>-er / the -est</b>. Từ dài: <b>more / the most</b>. Không dùng cả hai cùng lúc.",
+  "Bất quy tắc: good-better-best, bad-worse-worst, far-further-furthest.",
+  "Hơn luôn có <b>than</b>, nhất luôn có <b>the</b>. Bằng: <b>as + adj + as</b>.",
+  "Gấp lần: <b>twice / three times as … as</b>. Càng… càng: <b>The + so sánh hơn, the + so sánh hơn</b>."
+ ],
+ "idea": "Tiếng Việt chỉ thêm chữ \"hơn\", \"nhất\". Tiếng Anh có hai cách tùy độ dài tính từ: từ ngắn thì *gắn đuôi* (-er, -est), từ dài thì *thêm chữ đứng trước* (more, most). Chọn một cách, đừng dùng cả hai.",
+ "img": "Từ ngắn nhẹ nên gắn được đuôi như gắn móc vào xe. Từ dài nặng, đuôi không gắn nổi nên phải có more đi trước kéo.",
+ "steps": [
+  {
+   "t": "Muốn nói hơn hoặc nhất → chọn đuôi hay more",
+   "f": [
+    ["Ngắn", "o:adj + b:-er + x:than · x:the + o:adj + b:-est"],
+    ["Dài", "b:more + o:adj + x:than · x:the + b:most + o:adj"]
+   ],
+   "say": "Một âm tiết (cheap, high) và hai âm tiết tận cùng -y (easy, busy → easier): gắn đuôi. Từ hai âm tiết trở lên còn lại (expensive, popular, modern): dùng more, most. Big gấp đôi phụ âm thành bigger.",
+   "ex": [
+    ["cheap → cheap*er* → the cheap*est*", "rẻ → rẻ hơn → rẻ nhất", ""],
+    ["popular → *more* popular → the *most* popular", "phổ biến → phổ biến hơn → phổ biến nhất", "Từ dài dùng more, most."],
+    ["Flats are *more expensive than* houses here.", "Ở đây căn hộ đắt hơn nhà.", "Hơn luôn có than."]
+   ]
+  },
+  {
+   "t": "Muốn nói nhất → the + so sánh nhất + in / of",
+   "f": [["Nhất", "b:the + o:adj-est / most adj + x:in / of + s:nhóm"]],
+   "say": "Nhất chỉ có một nên luôn có the. Sau đó dùng in + nơi chốn hoặc nhóm (in the class), of + nhóm số nhiều (of all).",
+   "ex": [
+    ["Ho Chi Minh City is *the largest* city *in* Vietnam.", "Thành phố Hồ Chí Minh là thành phố lớn nhất Việt Nam.", ""],
+    ["Social media was *the most popular* activity *among* 16 to 24-year-olds.", "Mạng xã hội là hoạt động phổ biến nhất trong nhóm 16 đến 24 tuổi.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói bằng nhau hoặc gấp mấy lần → as … as",
+   "f": [
+    ["Bằng", "x:as + o:adj + x:as"],
+    ["Không bằng", "x:not as + o:adj + x:as"],
+    ["Gấp lần", "b:twice / three times + x:as + o:adj / many N + x:as"]
+   ],
+   "say": "Tính từ giữa hai chữ as giữ nguyên dạng gốc, không thêm -er. Gấp lần thì đặt twice, three times ngay trước as đầu tiên.",
+   "ex": [
+    ["Cycling is *as fast as* driving in the city centre.", "Đi xe đạp nhanh bằng lái xe ở trung tâm thành phố.", ""],
+    ["Young people spent *three times as many* hours online *as* older people.", "Người trẻ dành số giờ trực tuyến gấp ba lần người lớn tuổi.", "Many đi với danh từ đếm được hours."]
+   ]
+  },
+  {
+   "t": "Muốn nói hơn nhiều hay hơn chút → thêm từ chỉ mức độ",
+   "f": [
+    ["Nhiều", "b:much / far / significantly + o:adj-er + x:than"],
+    ["Ít", "b:slightly / a little + o:adj-er + x:than"]
+   ],
+   "say": "Đặt từ chỉ mức độ ngay trước tính từ so sánh. Không dùng very trước so sánh hơn. Fewer đi với danh từ đếm được, less đi với danh từ không đếm được.",
+   "ex": [
+    ["Costs were *much higher* in 2020 than in 2010.", "Chi phí năm 2020 cao hơn nhiều so với năm 2010.", ""],
+    ["Men spent *slightly less* time on housework than women.", "Nam giới dành thời gian làm việc nhà ít hơn nữ giới một chút.", "Time không đếm được nên dùng less."]
+   ]
+  },
+  {
+   "t": "Muốn nói càng… càng → The more…, the more…",
+   "f": [["Càng", "x:The + o:so sánh hơn + s:S + v:V + x:, the + o:so sánh hơn + s:S + v:V"]],
+   "say": "Hai vế đều bắt đầu bằng the + so sánh hơn. Ngày càng thì lặp lại so sánh hơn: more and more popular, bigger and bigger.",
+   "ex": [
+    ["*The more* you practise, *the better* your English becomes.", "Bạn càng luyện tập nhiều thì tiếng Anh càng tốt.", ""],
+    ["Online shopping is becoming *more and more* popular.", "Mua sắm trực tuyến ngày càng phổ biến.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["This city is *more bigger* than that one.", "This city is *bigger* than that one.", "Đã có đuôi -er thì không thêm more."],
+  ["He is the *most tall* student in the class.", "He is the *tallest* student in the class.", "Tall là từ ngắn nên gắn -est."],
+  ["Life in the city is more stressful *as* in the countryside.", "Life in the city is more stressful *than* in the countryside.", "So sánh hơn đi với than."],
+  ["Prices in 2020 were *very* higher than in 2010.", "Prices in 2020 were *much* higher than in 2010.", "Không dùng very trước so sánh hơn."]
+ ],
+ "apply": [
+  ["Car sales were significantly higher than motorbike sales in 2020.", "Doanh số ô tô cao hơn đáng kể doanh số xe máy trong năm 2020."],
+  ["The figure for the 45+ group was twice as high as that for the 25 to 44 group.", "Con số của nhóm trên 45 tuổi cao gấp đôi con số của nhóm 25 đến 44 tuổi."],
+  ["Public transport is the most affordable way of travelling in big cities.", "Phương tiện công cộng là cách đi lại rẻ nhất ở các thành phố lớn."],
+  ["The more people use public transport, the less air pollution there will be.", "Càng nhiều người dùng phương tiện công cộng thì ô nhiễm không khí càng giảm."]
+ ],
+ "check": [
+  ["So sánh hơn của easy và modern là gì?", "easier (tận cùng -y, đổi y thành i) và more modern (từ dài)."],
+  ["Câu Car sales were higher than motorbikes sai ở đâu?", "Đang so doanh số với xe máy, hai thứ khác loại. Sửa: than motorbike sales hoặc than those of motorbikes."]
+ ]
+}

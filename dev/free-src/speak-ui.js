@@ -206,12 +206,14 @@ const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
   const tab = UI.spTab ||= "path";
-  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["path", "Lộ trình"], ["shadow", "Shadowing"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
+  const tabs = h("div", { class: "row", role: "group", "aria-label": "Chọn phần", style: "gap:6px" }, [["pron", "Phát âm"], ["path", "Lộ trình nói"], ["shadow", "Shadowing"], ["bank", "Luyện đề"], ["test", "Thi thử"], ["hist", "Kết quả"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(tab === k), onclick: () => { UI.spTab = k; UI.spView = null; render(); } }, t)));
   return h("div", { class: "stack", style: "gap:18px" },
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Speaking"), h("h1", null, "Nói, ghi âm và được chấm"),
       h("p", { class: "muted", style: "max-width:66ch" }, "Lộ trình, shadowing và luyện đề chấm ngay trên máy: chép lời, đo độ trôi chảy, chấm phát âm từng âm, không tốn lượt AI. Chỉ phần Thi thử mới nhờ AI chấm band theo 4 tiêu chí IELTS."), tabs),
-    tab === "path" ? spPathTab() : tab === "shadow" ? spShadowTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
+    tab === "pron" ? spPronTab() : tab === "path" ? spPathTab() : tab === "shadow" ? spShadowTab() : tab === "bank" ? spBankTab() : tab === "test" ? spTestTab() : spHistTab());
 }
+/* Phát âm gộp vào Nói: nội dung trang Phát âm cũ, bỏ phần đầu trang */
+function spPronTab() { const n = pagePron(); const f = n.firstElementChild; if (f?.classList?.contains("page-banner")) f.remove(); return n; }
 function spPathTab() {
   const dn = SP_PATH.filter(l => splSt(l.id).done).length;
   return h("div", { class: "stack", style: "gap:12px" }, h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${dn / SP_PATH.length * 100}%` })), h("span", { class: "small muted" }, `${dn}/${SP_PATH.length} bài đạt`)),
@@ -380,7 +382,7 @@ function spHistTab() {
   const _ri = renderInner;
   renderInner = function () {
     const r = UI.route; let node = null;
-    if (r === "ipa") node = pagePron();
+    if (r === "ipa") { UI.spTab = "pron"; node = pageSpeak(); }
     else if (r === "ipa-chart") node = h("div", { class: "stack", style: "gap:12px" }, h("a", { class: "btn btn-quiet", href: "#ipa", style: "align-self:flex-start" }, "‹ Lộ trình phát âm"), pageIPA());
     else if (r.startsWith("pr-") && PR_LESSONS.find(l => l.id === r.slice(3))) node = pagePrLesson(PR_LESSONS.find(l => l.id === r.slice(3)));
     else if (r === "speak") node = pageSpeak();

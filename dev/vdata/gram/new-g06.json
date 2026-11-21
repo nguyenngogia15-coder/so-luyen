@@ -1,0 +1,63 @@
+{
+ "id": "g06",
+ "summary": [
+  "Đếm được số nhiều: <b>many, few, a number of</b>. Không đếm được: <b>much, little, an amount of</b>.",
+  "<b>a few / a little</b> = có một ít (tích cực). <b>few / little</b> = gần như không (tiêu cực).",
+  "<b>each / every</b> + danh từ số ít + động từ số ít.",
+  "Nói chung: <b>most + N</b>. Nhóm cụ thể: <b>most of the + N</b>."
+ ],
+ "idea": "Lượng từ nói \"bao nhiêu\", nhưng phải hợp với loại danh từ đi sau. Thêm nữa, một chữ *a* làm đổi hẳn thái độ: a few là \"có chút\", few là \"hầu như không\".",
+ "img": "Chữ a là ly nước còn một nửa: a few, a little là còn nước. Bỏ chữ a thì ly cạn gần hết: few, little là than phiền.",
+ "steps": [
+  {
+   "t": "Ghép lượng từ với đúng loại danh từ",
+   "f": [["Đếm được", "x:many / a few / few / several / a number of + s:N-s"], ["Không đếm được", "x:much / a little / little / an amount of + s:N"], ["Cả hai", "x:some / a lot of / plenty of / most / all"]],
+   "say": "Danh từ đếm được dùng many, few, several, a number of. Danh từ không đếm được dùng much, little, an amount of. Chưa chắc thì dùng a lot of. Much hay xuất hiện trong câu phủ định và câu hỏi.",
+   "ex": [
+    ["Many *students* work part-time, but they have little *free time*.", "Nhiều sinh viên làm thêm nhưng họ có rất ít thời gian rảnh.", "Students đếm được dùng many, time không đếm được dùng little."],
+    ["A large *number* of cars and a large *amount* of fuel are used every day.", "Một số lượng lớn xe và một lượng lớn nhiên liệu được dùng mỗi ngày.", "Number cho thứ đếm được, amount cho thứ không đếm được."]
+   ]
+  },
+  {
+   "t": "Muốn nói \"có một ít\" hay \"hầu như không\" → a few / few",
+   "f": [["Có một ít", "b:a few + s:N-s / b:a little + s:N"], ["Hầu như không", "b:few + s:N-s / b:little + s:N"]],
+   "say": "Có chữ a thì ý tích cực, đủ dùng. Không có a thì ý tiêu cực, gần như không có. Few, a few đi với đếm được. Little, a little đi với không đếm được.",
+   "ex": [
+    ["He has *a few* friends here, so he is not lonely.", "Anh ấy có vài người bạn ở đây nên không cô đơn.", "A few là có bạn, ổn."],
+    ["There is *little* evidence that this policy works.", "Hầu như không có bằng chứng cho thấy chính sách này hiệu quả.", "Evidence không đếm được, nghĩa tiêu cực."]
+   ]
+  },
+  {
+   "t": "Nói từng cái hay cả nhóm → every / each / all",
+   "f": [["Từng cái", "x:each / every + s:N số ít + v:V-s"], ["Cả nhóm", "x:all + s:N-s + v:V"]],
+   "say": "Each và every nhìn từng cái một nên danh từ và động từ đều số ít. All nhìn cả nhóm nên danh từ và động từ số nhiều.",
+   "ex": [
+    ["*Every student has* a laptop.", "Mỗi học sinh đều có một máy tính xách tay.", "Sau every là student và has."],
+    ["*All students have* laptops.", "Tất cả học sinh đều có máy tính xách tay.", "All đi với số nhiều."]
+   ]
+  },
+  {
+   "t": "Nói chung hay nhóm cụ thể → most / most of the",
+   "f": [["Nói chung", "x:most + s:N"], ["Cụ thể", "x:most of the + s:N"]],
+   "say": "Nói chung về một loại thì dùng most + danh từ. Nói về nhóm cụ thể đã biết thì dùng most of the + danh từ. Không viết most of people.",
+   "ex": [
+    ["*Most people* use smartphones.", "Hầu hết mọi người dùng điện thoại thông minh.", "Nói chung, không có the và of."],
+    ["*Most of the people* in my class use smartphones.", "Hầu hết những người trong lớp tôi dùng điện thoại thông minh.", "Nhóm cụ thể nên dùng most of the."]
+   ]
+  }
+ ],
+ "traps": [
+  ["There are *much* problems.", "There are *many* problems.", "Problems đếm được nên dùng many."],
+  ["*Most of* students agree.", "*Most* students agree. / *Most of the* students agree.", "Sau most of phải có the, these, my. Nói chung thì bỏ of."],
+  ["*Every students have* to wear uniforms.", "*Every student has* to wear a uniform.", "Every đi với danh từ số ít và động từ số ít."]
+ ],
+ "apply": [
+  ["A large number of people move to cities every year in search of better jobs.", "Một số lượng lớn người chuyển lên thành phố mỗi năm để tìm việc tốt hơn."],
+  ["Few tourists visit the region in winter, so local businesses earn little money.", "Rất ít khách du lịch đến vùng này vào mùa đông nên các doanh nghiệp địa phương kiếm được ít tiền."],
+  ["Most people believe that education is the key to a better life.", "Hầu hết mọi người tin rằng giáo dục là chìa khóa của cuộc sống tốt đẹp hơn."]
+ ],
+ "check": [
+  ["\"She has little money\" và \"She has a little money\" khác nhau thế nào?", "Little money: gần như không có tiền. A little money: có một ít, đủ làm việc gì đó."],
+  ["Vì sao nói \"the number of cars\" mà không nói \"the amount of cars\"?", "Cars đếm được nên dùng number. Amount dành cho thứ không đếm được, ví dụ the amount of traffic."]
+ ]
+}

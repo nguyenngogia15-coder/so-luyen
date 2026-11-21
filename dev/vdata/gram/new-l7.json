@@ -1,0 +1,70 @@
+{
+ "id": "l7",
+ "summary": [
+  "<b>while / whereas + mệnh đề</b>: nối hai vế đối lập trong MỘT câu, có dấu phẩy.",
+  "<b>However, / In contrast, / By contrast,</b>: mở đầu câu MỚI, có dấu phẩy sau.",
+  "<b>although / even though + mệnh đề</b>. Không viết Although ..., but ... trong cùng một câu.",
+  "<b>despite / in spite of + danh từ hoặc V-ing</b>.",
+  "Ý cùng chiều: <b>Similarly, Likewise</b>."
+ ],
+ "idea": "So sánh hai đối tượng nghĩa là đặt hai vế cạnh nhau. Có hai khuôn: hai vế *trong một câu* (while, whereas) hoặc *hai câu* (However, In contrast). Chọn khuôn nào thì dấu câu đi theo khuôn đó.",
+ "img": "Cái cân hai đĩa: while / whereas là thanh ngang giữ hai đĩa trong cùng một câu, However là đưa đĩa thứ hai sang câu mới.",
+ "steps": [
+  {
+   "t": "Muốn đối lập hai vế trong một câu → while / whereas",
+   "f": [
+    ["Một câu", "s:A + v:rose + x:, + b:while / whereas + s:B + v:fell"]
+   ],
+   "say": "Vế nào cũng là mệnh đề đầy đủ (có chủ ngữ và động từ). While đứng đầu hoặc giữa câu đều được; whereas trang trọng, hợp Task 1. Mỗi vế có thể nối bằng dấu phẩy.",
+   "ex": [
+    ["Cycling rose in Weston, *whereas* it fell slightly in Easton.", "Đạp xe tăng ở Weston, trong khi giảm nhẹ ở Easton.", ""],
+    ["*While* Northport's rate rose, Easton's fell.", "Trong khi tỷ lệ của Northport tăng thì của Easton giảm.", "While đầu câu thì giữa hai vế có dấu phẩy."]
+   ]
+  },
+  {
+   "t": "Muốn đối lập bằng hai câu → However / In contrast",
+   "f": [
+    ["Hai câu", "s:A + v:increased + x:. + b:However , s:B + v:decreased"]
+   ],
+   "say": "However, In contrast, By contrast đứng đầu câu mới, theo sau là dấu phẩy. Không dùng chúng để nối hai mệnh đề bằng dấu phẩy trong cùng một câu.",
+   "ex": [
+    ["Northport's rate increased. *In contrast*, Easton's decreased.", "Tỷ lệ của Northport tăng. Ngược lại, của Easton giảm.", ""],
+    ["Men preferred football. *However*, women preferred tennis.", "Nam giới thích bóng đá. Tuy nhiên, nữ giới thích quần vợt.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói dù ... vẫn ... → although hoặc despite",
+   "f": [
+    ["Mệnh đề", "x:Although + s:S + v:V , s:S + v:V"],
+    ["Danh từ", "x:Despite + o:N / V-ing , s:S + v:V"]
+   ],
+   "say": "although + mệnh đề đầy đủ, despite + danh từ hoặc V-ing. Chỉ dùng MỘT từ nối: although thì không có but, vì although đã mang nghĩa đối lập.",
+   "ex": [
+    ["*Although* Weston started low, it overtook Easton by 2010.", "Dù Weston bắt đầu thấp, nó đã vượt Easton vào năm 2010.", "Không có but."],
+    ["*Despite* a slight fall, Easton remained above Southbay.", "Dù giảm nhẹ, Easton vẫn cao hơn Southbay.", "Sau despite là danh từ."]
+   ]
+  },
+  {
+   "t": "Muốn thêm ý cùng chiều → Similarly, Likewise",
+   "say": "Similarly, Likewise mở đầu câu mới khi hai đối tượng giống nhau. Hoặc dùng both ... and ... trong một câu.",
+   "ex": [
+    ["Sales in Spain rose steadily. *Similarly*, sales in Italy grew over the period.", "Doanh số ở Tây Ban Nha tăng đều. Tương tự, doanh số ở Ý cũng tăng trong giai đoạn đó.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["*Although* Weston started low, *but* it overtook Easton.", "*Although* Weston started low, it overtook Easton.", "Không dùng although cùng với but."],
+  ["Northport rose, *however*, Easton fell.", "Northport rose. *However*, Easton fell. / Northport rose, *whereas* Easton fell.", "However không nối được hai mệnh đề bằng dấu phẩy."],
+  ["*Despite* Easton fell slightly, it stayed second.", "*Despite* a slight fall, Easton stayed second.", "Sau despite là danh từ, không phải mệnh đề."],
+  ["*However* Easton fell.", "*However*, Easton fell.", "Cần dấu phẩy sau However."]
+ ],
+ "apply": [
+  ["The proportion of men who cycled rose sharply, whereas the figure for women remained stable.", "Tỷ lệ nam giới đạp xe tăng mạnh, trong khi số liệu ở nữ giới giữ ổn định."],
+  ["Sales of petrol cars fell dramatically. In contrast, electric car sales rose steadily.", "Doanh số xe xăng giảm mạnh. Ngược lại, doanh số xe điện tăng đều."],
+  ["Despite a slight decline in 2015, the figure recovered by the end of the period.", "Dù giảm nhẹ vào năm 2015, số liệu đã hồi phục vào cuối giai đoạn."]
+ ],
+ "check": [
+  ["Chọn từ nối: \"Men preferred football. ___, women preferred tennis.\"", "In contrast / By contrast / However. Đây là câu mới nên không dùng while hay whereas."],
+  ["Sửa: \"Although prices rose, but demand stayed high.\"", "Although prices rose, demand stayed high. Bỏ but."]
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "id": "g24",
+ "summary": [
+  "<b>who</b> cho người, <b>which</b> cho vật, <b>that</b> cho cả hai (không dùng sau dấu phẩy), <b>whose</b> + N = của ai, <b>where</b> = nơi, <b>when</b> = lúc.",
+  "Không có dấu phẩy: thông tin bắt buộc. Có dấu phẩy: thông tin thêm, <b>không dùng that</b>.",
+  "Bỏ được who / which / that khi sau nó là một <b>chủ ngữ khác</b>.",
+  "<b>, which + V số ít</b> nhận xét cả câu trước."
+ ],
+ "idea": "Mệnh đề quan hệ là một mệnh đề đứng ngay sau danh từ để nói rõ thêm về nó. Từ mở đầu (who, which…) *thay cho danh từ đó* và nối hai câu ngắn thành một câu dài, điều giám khảo muốn thấy.",
+ "img": "Danh từ là cái móc áo. Mệnh đề quan hệ là chiếc áo treo ngay vào móc đó. Từ who, which là cái khuy gài áo vào móc.",
+ "steps": [
+  {
+   "t": "Muốn gộp hai câu → thay từ lặp bằng who / which / that",
+   "f": [["Gộp", "s:N + b:who / which / that + v:V…"]],
+   "say": "Tìm từ chỉ cùng một người hoặc vật ở hai câu. Ở câu hai, thay nó bằng who (người) hoặc which (vật), rồi đặt cả câu hai ngay sau danh từ. Không nhắc lại bằng it hoặc they.",
+   "ex": [
+    ["Students work part-time. They have less free time. → Students *who work part-time* have less free time.", "Những sinh viên đi làm thêm có ít thời gian rảnh hơn.", ""],
+    ["The government introduced a law. The law reduced pollution. → The government introduced a law *which reduced* pollution.", "Chính phủ ban hành một đạo luật làm giảm ô nhiễm.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói của ai, ở đâu, lúc nào → whose / where / when",
+   "f": [
+    ["Của", "s:N + b:whose + o:N + v:V"],
+    ["Nơi", "s:N chỉ nơi + b:where + s:S + v:V"],
+    ["Lúc", "s:N chỉ thời gian + b:when + s:S + v:V"]
+   ],
+   "say": "Whose thay his, her, their, its. Where thay there (đã có đủ chủ ngữ và động từ). When thay then.",
+   "ex": [
+    ["Students *whose* parents are teachers often read more.", "Những học sinh có bố mẹ là giáo viên thường đọc nhiều hơn.", ""],
+    ["This is the town *where* I grew up.", "Đây là thị trấn nơi tôi lớn lên.", "I grew up there."],
+    ["The city *which* I visited was beautiful.", "Thành phố tôi đã thăm rất đẹp.", "Visit cần tân ngữ nên không dùng where."]
+   ]
+  },
+  {
+   "t": "Có dấu phẩy hay không → bỏ mệnh đề đi còn rõ nghĩa không?",
+   "f": [
+    ["Bắt buộc", "s:N + b:who / that + v:V…"],
+    ["Thêm thông tin", "s:Hanoi + x:, + b:which + v:is… + x:,"]
+   ],
+   "say": "Bỏ mệnh đề mà không biết đang nói ai, cái nào thì nó bắt buộc, không có phẩy. Bỏ mà vẫn biết (tên riêng, chỉ có một) thì là thông tin thêm, có phẩy hai bên và không dùng that.",
+   "ex": [
+    ["Students *who study abroad* become more independent.", "Những sinh viên đi du học trở nên tự lập hơn.", "Chỉ nói nhóm sinh viên đó."],
+    ["Hanoi, *which is the capital*, is very crowded.", "Hà Nội, thủ đô, rất đông đúc.", "Là thông tin thêm."]
+   ]
+  },
+  {
+   "t": "Muốn gọn hơn → bỏ đại từ, hoặc dùng , which",
+   "f": [
+    ["Bỏ được", "s:the book + b:(that) + s:I + v:read"],
+    ["Không bỏ", "s:the man + b:who + v:lives…"],
+    ["Cả câu", "s:S + v:V… + x:, + b:which + v:V-s"]
+   ],
+   "say": "Sau đại từ là chủ ngữ khác thì bỏ được, sau đại từ là động từ thì không. , which nhận xét cả ý ở câu trước và đi với động từ số ít.",
+   "ex": [
+    ["The book *(that)* I read was useful.", "Cuốn sách tôi đọc rất bổ ích.", ""],
+    ["Many graduates cannot find jobs, *which is* worrying.", "Nhiều người tốt nghiệp không tìm được việc, điều này đáng lo ngại.", "Which thay cho cả ý của mệnh đề trước."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The course which I chose *it* was hard.", "The course which I chose was hard.", "Which đã thay danh từ nên không thêm it."],
+  ["Hanoi, *that* is the capital, is busy.", "Hanoi, *which* is the capital, is busy.", "Sau dấu phẩy không dùng that."],
+  ["People *which* live in cities…", "People *who* live in cities…", "Người dùng who hoặc that."],
+  ["The company *for that* she works…", "The company *for which* she works…", "Giới từ + which, không dùng that."]
+ ],
+ "apply": [
+  ["People who live in big cities often suffer from stress, which affects their physical health.", "Những người sống ở thành phố lớn thường bị căng thẳng, điều này ảnh hưởng đến sức khỏe thể chất của họ."],
+  ["Students whose families have low incomes should receive financial support.", "Những sinh viên có gia đình thu nhập thấp nên được hỗ trợ tài chính."],
+  ["Online learning, which has become popular in recent years, offers greater flexibility.", "Học trực tuyến, vốn đã trở nên phổ biến những năm gần đây, mang lại sự linh hoạt cao hơn."]
+ ],
+ "check": [
+  ["Gộp: The government introduced a law. The law reduced pollution.", "The government introduced a law which (that) reduced pollution."],
+  ["Vì sao My father, who is a doctor, works long hours có dấu phẩy?", "Chỉ có một người bố nên bỏ mệnh đề đi vẫn rõ là ai. Đây là thông tin thêm."]
+ ]
+}

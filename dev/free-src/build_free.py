@@ -41,12 +41,13 @@ GATE_HTML = """
 
 assert src.count("\nboot();\n</script>") == 1, "không tìm thấy lời gọi boot()"
 import subprocess as _sp; _sp.run(["python3", str(ROOT / "gen_sync4.py")], check=True, cwd=str(ROOT))
-SPEAK = "".join((ROOT / f).read_text(encoding="utf-8") + "\n" for f in ["speak-engine.js", "speak-data-ipa.js", "speak-data-sp.js", "speak-ui.js", "listen-data-1.js", "listen-data-2.js", "listen-data-3.js", "listen-path.js", "listen-ui.js", "align.js", "shadow.js", "nd.js", "room.js", "quota.js", "sync4-gen.js", "sync4.js", "group.js", "fun.js"])
+SPEAK = "".join((ROOT / f).read_text(encoding="utf-8") + "\n" for f in ["speak-engine.js", "speak-data-ipa.js", "speak-data-sp.js", "speak-ui.js", "listen-data-1.js", "listen-data-2.js", "listen-data-3.js", "listen-path.js", "listen-ui.js", "align.js", "shadow.js", "nd.js", "room.js", "quota.js", "sync4-gen.js", "sync4.js", "group.js", "fun.js", "tidy.js", "push.js", "mock4.js", "errs4.js"])
 SPEAK_CSS = (ROOT / "speak.css").read_text(encoding="utf-8") + (ROOT / "listen.css").read_text(encoding="utf-8")
 out = src.replace("\nboot();\n</script>", "\nwindow.__bootApp = boot;\n</script>\n<style>\n" + SPEAK_CSS + "</style>\n<script>\n" + SPEAK + "</script>")
 i = out.index("<script>", out.index("<body"))
 out = out[:i] + GATE_HTML + out[i:]
 out = out.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
+out = out.replace("</title>", "</title>\n<link rel=\"manifest\" href=\"manifest.webmanifest\"><meta name=\"theme-color\" content=\"#111111\"><link rel=\"apple-touch-icon\" href=\"icon-192.png\"><meta name=\"apple-mobile-web-app-capable\" content=\"yes\">", 1)
 (ROOT / "site").mkdir(exist_ok=True)
 (ROOT / "site" / "index.html").write_text(out, encoding="utf-8")
 (ROOT / "site" / "config.js").write_text((ROOT / "config.js").read_text(encoding="utf-8"), encoding="utf-8") if not (ROOT / "site" / "config.js").exists() else None

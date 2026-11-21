@@ -1,0 +1,79 @@
+{
+ "id": "l6",
+ "summary": [
+  "Đổi % sang phân số: <b>25% = a quarter, 50% = half, 75% = three-quarters, 33% = a third, 10% = one in ten</b>.",
+  "Ước lượng: <b>nearly / almost</b> (hơi thiếu), <b>just over</b> (hơi hơn), <b>around / approximately</b>.",
+  "Động từ cho biểu đồ tròn: <b>account for, make up, represent</b>. Không dùng occupy cho %.",
+  "<b>percent</b> đứng sau số (30 percent); <b>percentage</b> là danh từ (the percentage of).",
+  "Đếm được: <b>many, a large number of, few</b>. Không đếm được: <b>much, a large amount of, little</b>."
+ ],
+ "idea": "Biểu đồ tròn là cái bánh chia phần. Viết 20%, 35%, 12% mãi thì lặp và nhàm. Đổi sang *phân số* và dùng động từ \"chiếm\" giúp câu đa dạng, và từ ước lượng giúp số lẻ nghe tự nhiên.",
+ "img": "Cái bánh pizza: một phần tư là a quarter, một nửa là half. Số lẻ thì nói gần tới hoặc nhỉnh hơn mốc đó.",
+ "steps": [
+  {
+   "t": "Muốn tránh lặp con số → dùng phân số",
+   "f": [
+    ["Phân số", "o:25% = a quarter · 50% = half · 75% = three-quarters"],
+    ["", "o:33% = a third · 66% = two-thirds · 10% = one in ten"]
+   ],
+   "say": "Trên 50% có thể nói the majority. Dưới 50% nhưng lớn nhất thì nói the largest proportion.",
+   "ex": [
+    ["*A quarter* of the budget was spent on food.", "Một phần tư ngân sách được chi cho thực phẩm.", ""],
+    ["*One in three* households owned a car.", "Cứ ba hộ thì có một hộ có ô tô.", ""],
+    ["*The majority* of students lived off campus.", "Phần lớn sinh viên sống ngoài ký túc xá.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói số lẻ → từ ước lượng",
+   "f": [
+    ["Hơi thiếu", "b:nearly / almost + o:a third"],
+    ["Hơi hơn", "b:just over / slightly more than + o:half"]
+   ],
+   "say": "32% thì nearly a third, 52% thì just over half, 19% thì just under a fifth. Dùng around / approximately khi không cần nói rõ hơn hay kém.",
+   "ex": [
+    ["*Just over half* of the respondents preferred online shopping.", "Hơn một nửa người được hỏi thích mua sắm trực tuyến.", "Ví dụ 52%."],
+    ["*Nearly a third* of income was spent on rent.", "Gần một phần ba thu nhập được chi cho tiền thuê nhà.", "Ví dụ 31%."]
+   ]
+  },
+  {
+   "t": "Muốn nói chiếm bao nhiêu → account for / make up",
+   "f": [
+    ["Chiếm", "s:Housing + v:accounted for / made up + o:35%"],
+    ["Danh từ", "x:the percentage / proportion + x:of + s:N"]
+   ],
+   "say": "account for và make up đi thẳng với phần trăm hoặc phân số, không cần giới từ. percent đứng sau số, percentage là danh từ.",
+   "ex": [
+    ["Housing *accounted for* 35% of total spending.", "Nhà ở chiếm 35% tổng chi tiêu.", ""],
+    ["Women *made up* around half of the workforce.", "Phụ nữ chiếm khoảng một nửa lực lượng lao động.", ""],
+    ["*The percentage of* income spent on entertainment rose from 10% to 14%.", "Tỉ lệ thu nhập chi cho giải trí tăng từ 10% lên 14%.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói nhiều ít → chọn lượng từ theo loại danh từ",
+   "f": [
+    ["Đếm được", "x:many / a large number of / few + s:households"],
+    ["Không đếm được", "x:much / a large amount of / little + s:money"]
+   ],
+   "say": "Money, spending, accommodation, furniture không đếm được. Households, people, students đếm được.",
+   "ex": [
+    ["*A large number of* households spent *little* money on clothing.", "Nhiều hộ gia đình chi rất ít tiền cho quần áo.", "households đếm được, money không đếm được."],
+    ["*Few* people spent more than 20% of their income on transport.", "Rất ít người chi hơn 20% thu nhập cho giao thông.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["Housing *occupied* 35% of spending.", "Housing *accounted for* 35% of spending.", "Không dùng occupy cho phần trăm."],
+  ["The *percent* of income rose.", "The *percentage* of income rose.", "percent chỉ đứng sau số."],
+  ["Families spent too *many* money on housing.", "Families spent too *much* money on housing.", "money không đếm được."],
+  ["Housing accounted *for the* 35%.", "Housing accounted *for* 35%.", "Không thêm the trước số liệu."]
+ ],
+ "apply": [
+  ["Housing accounted for just over a third of total household spending, while food made up around a quarter.", "Nhà ở chiếm hơn một phần ba tổng chi tiêu hộ gia đình, trong khi thực phẩm chiếm khoảng một phần tư."],
+  ["The vast majority of respondents, nearly 80%, preferred studying online.", "Đại đa số người được hỏi, gần 80%, thích học trực tuyến."],
+  ["The proportion of income spent on leisure rose from one in ten to one in eight.", "Tỉ lệ thu nhập chi cho giải trí tăng từ một phần mười lên một phần tám."]
+ ],
+ "check": [
+  ["Viết 52% và 31% bằng cách nói tự nhiên.", "52%: just over half. 31%: nearly a third (hoặc just under a third)."],
+  ["Chọn: \"Housing (occupied / accounted for) 35% of spending.\"", "accounted for. occupy không đi với phần trăm."]
+ ]
+}

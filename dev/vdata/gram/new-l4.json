@@ -1,0 +1,76 @@
+{
+ "id": "l4",
+ "summary": [
+  "<b>to</b> = mức đạt tới (rose to 120,000); <b>by</b> = mức chênh (rose by 80,000).",
+  "<b>at</b> = đứng ở mức (stood at 5,000); <b>of</b> sau danh từ (a rise of 80,000).",
+  "<b>from ... to ...</b> = từ mức này đến mức kia; <b>between ... and ...</b> = giữa hai mốc.",
+  "<b>in + năm</b> (trong năm), <b>by + năm</b> (muộn nhất là năm đó)."
+ ],
+ "idea": "Con số trong Task 1 có ba \"vai\": điểm đứng, điểm đến, và khoảng chênh. Mỗi vai có một giới từ riêng. Nhầm giới từ là nhầm nghĩa: rose to 50% và rose by 50% là hai chuyện khác nhau.",
+ "img": "Như đi bộ trên thước: at là chỗ bạn đứng, to là chỗ bạn tới, by là số bước bạn đã đi.",
+ "steps": [
+  {
+   "t": "Muốn nói đứng ở đâu và tới đâu → at và to",
+   "f": [
+    ["Đứng ở", "v:stood + b:at + o:20%"],
+    ["Tới mức", "v:rose / fell + b:to + o:50%"]
+   ],
+   "say": "at cho một mức cố định (stood at, remained at, peaked at). to cho mức đạt được sau khi thay đổi.",
+   "ex": [
+    ["Electric car sales *stood at* 40,000 in 2020.", "Doanh số xe điện ở mức 40.000 chiếc vào năm 2020.", ""],
+    ["Petrol car sales *fell to* 250,000 in 2035.", "Doanh số xe xăng giảm xuống 250.000 chiếc vào năm 2035.", "to = mức cuối."]
+   ]
+  },
+  {
+   "t": "Muốn nói chênh bao nhiêu → by (động từ) hoặc of (danh từ)",
+   "f": [
+    ["Động từ", "v:rose + b:by + o:80,000"],
+    ["Danh từ", "x:a rise + b:of + o:80,000"]
+   ],
+   "say": "by cho biết thay đổi một khoảng bao nhiêu, không phải mức cuối. Sau danh từ chỉ thay đổi dùng of cho độ lớn, và in cho thứ thay đổi.",
+   "ex": [
+    ["Sales *rose by* 80,000 between 2020 and 2025.", "Doanh số tăng thêm 80.000 trong giai đoạn 2020 đến 2025.", "Từ 40,000 lên 120,000: chênh 80,000."],
+    ["There was *a fall of* 200,000 *in* petrol car sales.", "Doanh số xe xăng giảm 200.000 chiếc.", "of + lượng, in + thứ giảm."]
+   ]
+  },
+  {
+   "t": "Muốn nói giai đoạn → from ... to / between ... and",
+   "f": [
+    ["Từ đến", "b:from + o:2000 + b:to + o:2010"],
+    ["Giữa", "b:between + o:2000 + b:and + o:2010"]
+   ],
+   "say": "Không trộn: from đi với to, between đi với and. Dùng from ... to ... cho cả mức số lẫn mốc năm.",
+   "ex": [
+    ["The figure rose *from* 20% *to* 30%, an increase *of* 10%.", "Con số tăng từ 20% lên 30%, tức tăng 10%.", ""],
+    ["*Between* 2015 *and* 2025, sales doubled.", "Từ 2015 đến 2025, doanh số tăng gấp đôi.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói mốc năm → in hoặc by",
+   "f": [
+    ["Trong năm", "b:in + o:2020"],
+    ["Muộn nhất", "b:by + o:2035"]
+   ],
+   "say": "in 2020: xảy ra trong năm đó. by 2035: tính đến năm đó, thường dùng với dự báo.",
+   "ex": [
+    ["Sales are predicted to reach 520,000 *by* 2035.", "Doanh số được dự báo đạt 520.000 chiếc vào năm 2035 (hoặc trước đó).", ""],
+    ["The figure peaked at 520,000 *in* 2020.", "Con số đạt đỉnh 520.000 vào năm 2020.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["It increased *to* 10% (ý là tăng thêm 10%).", "It increased *by* 10%.", "to là điểm đến, by là khoảng tăng."],
+  ["a rise *in* 80,000", "a rise *of* 80,000", "of + lượng, in + thứ tăng."],
+  ["between 2000 *to* 2010", "between 2000 *and* 2010", "between đi với and, from mới đi với to."],
+  ["The number stood *on* 5,000.", "The number stood *at* 5,000.", "stand at + mức."]
+ ],
+ "apply": [
+  ["The proportion of online shoppers rose from 15% in 2010 to 60% in 2020.", "Tỉ lệ người mua sắm trực tuyến tăng từ 15% năm 2010 lên 60% năm 2020."],
+  ["The number of visitors stood at 2 million in 2000 and rose by 1.5 million over the next decade.", "Lượng du khách ở mức 2 triệu năm 2000 và tăng thêm 1,5 triệu trong thập kỷ sau đó."],
+  ["There was a fall of 10% in energy consumption between 2010 and 2015.", "Mức tiêu thụ năng lượng giảm 10% trong giai đoạn 2010 đến 2015."]
+ ],
+ "check": [
+  ["Con số đi từ 40 lên 70. Điền giới từ: \"It rose ___ 30, ___ 40 ___ 70.\"", "It rose by 30, from 40 to 70."],
+  ["Khác nhau thế nào: \"rose to 50%\" và \"rose by 50%\"?", "to 50% là đạt mức 50%. by 50% là tăng thêm 50% so với mức ban đầu."]
+ ]
+}

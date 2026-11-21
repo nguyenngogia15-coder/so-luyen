@@ -1,0 +1,83 @@
+{
+ "id": "g08",
+ "summary": [
+  "<b>Tính từ</b> tả danh từ (đứng trước danh từ hoặc sau be/seem/become). <b>Trạng từ</b> tả hành động hoặc tính từ.",
+  "<b>-ed</b>: người cảm thấy. <b>-ing</b>: thứ gây ra cảm giác.",
+  "Trạng từ tần suất: <b>sau be, trước động từ thường</b>.",
+  "<b>too</b> + adj + to V (quá…để); adj + <b>enough</b> + to V (đủ…để)."
+ ],
+ "idea": "Tiếng Việt dùng chung một chữ cho cả hai: \"tăng *nhanh*\" và \"sự tăng *nhanh*\". Tiếng Anh tách ra: increase *rapidly* nhưng a *rapid* increase. Chỉ cần hỏi: từ này đang tả *danh từ* hay tả *hành động*?",
+ "img": "Tính từ là cái nhãn dán lên danh từ. Trạng từ là cái nút chỉnh âm lượng cho động từ hoặc tính từ.",
+ "steps": [
+  {
+   "t": "Muốn tả danh từ → dùng tính từ",
+   "f": [
+    ["Trước N", "o:adj + s:N"],
+    ["Sau be", "s:S + v:be / seem / remain / become + o:adj"]
+   ],
+   "say": "Tiếng Anh đặt tính từ trước danh từ, ngược tiếng Việt. Sau be, seem, remain, become cũng là tính từ, không phải trạng từ. Tính từ không thêm -s.",
+   "ex": [
+    ["a *serious* problem", "một vấn đề nghiêm trọng", ""],
+    ["Prices remained *stable*.", "Giá vẫn ổn định.", "Sau remained dùng tính từ."],
+    ["two *young* children", "hai đứa trẻ nhỏ", "Tính từ không thêm -s."]
+   ]
+  },
+  {
+   "t": "Muốn tả hành động hoặc mức độ → dùng trạng từ",
+   "f": [
+    ["Hành động", "s:S + v:V + o:adv (-ly)"],
+    ["Mức độ", "x:very / extremely + o:adj"],
+    ["Tần suất", "s:S + x:often / rarely + v:V"]
+   ],
+   "say": "Trạng từ thường là adj + -ly. Trạng từ tần suất (always, often, rarely, never) đứng sau be và trước động từ thường. Ba từ đặc biệt: good → well, còn fast, hard giữ nguyên dạng.",
+   "ex": [
+    ["Sales increased *dramatically*.", "Doanh số tăng mạnh.", "Tả cách tăng."],
+    ["The city is *extremely* crowded.", "Thành phố cực kỳ đông.", "Tả mức độ của crowded."],
+    ["Children *often* learn faster than adults.", "Trẻ em thường học nhanh hơn người lớn.", "Often đứng trước động từ thường."]
+   ]
+  },
+  {
+   "t": "Muốn nói cảm xúc → -ed cho người, -ing cho thứ gây ra",
+   "f": [
+    ["Người", "s:Người + v:be + o:bored / interested"],
+    ["Thứ gây ra", "s:Vật / việc + v:be + o:boring / interesting"]
+   ],
+   "say": "Hỏi: từ này tả người có cảm giác hay tả thứ gây ra cảm giác? Người cảm thấy dùng -ed. Bài học, kết quả, tin tức gây ra cảm giác dùng -ing.",
+   "ex": [
+    ["I am *bored*. The lesson is *boring*.", "Tôi thấy chán. Bài học thì chán.", ""],
+    ["The results were *surprising*, so we were *surprised*.", "Kết quả gây bất ngờ nên chúng tôi bất ngờ.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói mức độ và kết quả → so, such, too, enough",
+   "f": [
+    ["so", "x:so + o:adj / adv + x:that…"],
+    ["such", "x:such + x:a / an + o:adj + s:N"],
+    ["too", "x:too + o:adj + x:to V"],
+    ["enough", "o:adj + x:enough + x:to V"]
+   ],
+   "say": "Sau so không có danh từ, sau such có danh từ. Too mang nghĩa phủ định: quá mức nên không làm được. Enough đứng sau tính từ nhưng đứng trước danh từ.",
+   "ex": [
+    ["The test was *so* difficult that many students failed.", "Bài kiểm tra khó đến mức nhiều học sinh trượt.", ""],
+    ["Children are *too* young to understand grammar rules.", "Trẻ em còn quá nhỏ để hiểu các quy tắc ngữ pháp.", ""],
+    ["We don't have *enough* teachers.", "Chúng ta không có đủ giáo viên.", "Enough đứng trước danh từ."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The economy grew *quick*.", "The economy grew *quickly*.", "Quickly tả việc grew."],
+  ["I am *interesting* in history.", "I am *interested* in history.", "Người cảm thấy thì dùng -ed."],
+  ["She speaks English very *good*.", "She speaks English very *well*.", "Tả hành động speaks nên cần trạng từ well."],
+  ["He is not *enough old* to drive.", "He is not *old enough* to drive.", "Enough đứng sau tính từ."]
+ ],
+ "apply": [
+  ["The number of cars has increased dramatically, which makes traffic extremely heavy in big cities.", "Số lượng ô tô đã tăng mạnh, khiến giao thông ở các thành phố lớn cực kỳ nặng nề."],
+  ["Young children are often better at learning languages because they are not afraid of making mistakes.", "Trẻ nhỏ thường học ngôn ngữ giỏi hơn vì chúng không sợ mắc lỗi."],
+  ["Many students find online lessons boring, so teachers should make them more interesting.", "Nhiều học sinh thấy bài học trực tuyến nhàm chán, nên giáo viên cần làm chúng thú vị hơn."],
+  ["Public transport is not reliable enough to persuade people to leave their cars at home.", "Phương tiện công cộng chưa đủ đáng tin cậy để thuyết phục mọi người để xe ở nhà."]
+ ],
+ "check": [
+  ["Vì sao nói a tiring day nhưng a tired worker?", "Ngày làm việc gây ra mệt nên dùng -ing. Người công nhân cảm thấy mệt nên dùng -ed."],
+  ["Chọn: The economy is growing (rapid / rapidly).", "rapidly. Nó tả hành động growing."]
+ ]
+}

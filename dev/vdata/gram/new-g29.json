@@ -1,0 +1,78 @@
+{
+ "id": "g29",
+ "summary": [
+  "<b>suggest / recommend / insist / demand + that + S + V nguyên mẫu</b> (không -s, không chia thì).",
+  "<b>It is essential / vital / important that + S + V nguyên mẫu</b>. Bị động: <b>be + V3</b>.",
+  "<b>would rather + V</b> (tự mình); <b>would rather + S + V quá khứ</b> (muốn người khác).",
+  "<b>It's (high) time + S + V quá khứ</b>: đã đến lúc, lẽ ra phải làm rồi."
+ ],
+ "idea": "Câu thường nói về điều *có thật*. Giả định nói về điều *chưa có thật*: một đề nghị, một yêu cầu, một mong muốn. Tiếng Anh đánh dấu bằng hai cách: để động từ *nguyên mẫu trần*, hoặc *lùi thì* về quá khứ.",
+ "img": "Điều chưa thành sự thật thì chưa được \"chia\": động từ để trần như chưa mặc áo, hoặc đứng lùi lại phía sau.",
+ "steps": [
+  {
+   "t": "Muốn đề xuất, yêu cầu → that + S + V nguyên mẫu",
+   "f": [
+    ["Đề nghị", "s:S + v:suggest / recommend / insist + x:that + s:S + b:V nguyên mẫu"],
+    ["Phủ định", "x:that + s:S + n:not + b:V nguyên mẫu"]
+   ],
+   "say": "Dùng sau suggest, recommend, propose, demand, insist, require. Mọi chủ ngữ đều giữ động từ nguyên mẫu, không thêm -s. Phủ định đặt not ngay trước động từ, không dùng don't.",
+   "ex": [
+    ["Experts recommend that the government *invest* more in education.", "Các chuyên gia khuyến nghị chính phủ đầu tư nhiều hơn vào giáo dục.", "the government là số ít nhưng vẫn là invest."],
+    ["The teacher insisted that every student *hand* in the essay on time.", "Giáo viên nhất quyết yêu cầu mọi sinh viên nộp bài đúng hạn.", "Không viết hands."],
+    ["They demanded that she *not be* punished.", "Họ yêu cầu cô ấy không bị phạt.", "not đứng trước be."]
+   ]
+  },
+  {
+   "t": "Muốn nhấn mạnh điều cần thiết → It is essential that...",
+   "f": [
+    ["Cần thiết", "x:It is + o:essential / vital / important + x:that + s:S + b:V nguyên mẫu"]
+   ],
+   "say": "Dùng với essential, vital, important, necessary, crucial, urgent. Rất hợp phần giải pháp trong Task 2. Be là dạng giả định cho mọi chủ ngữ.",
+   "ex": [
+    ["It is essential that every child *have* access to education.", "Điều thiết yếu là mọi trẻ em đều được tiếp cận giáo dục.", "Không viết has."],
+    ["It is vital that action *be taken* now.", "Điều quan trọng là phải hành động ngay bây giờ.", "Bị động: be + V3."]
+   ]
+  },
+  {
+   "t": "Muốn nói thích hơn hoặc cảnh báo → would rather, had better",
+   "f": [
+    ["Tự mình", "s:S + x:would rather + b:V"],
+    ["Người khác", "s:S + x:would rather + s:S2 + b:V2"],
+    ["Nên (cảnh báo)", "s:S + x:had better + b:V"]
+   ],
+   "say": "Chủ ngữ khác thì lùi thì, dù nói về hiện tại hoặc tương lai. Sau had better là V nguyên mẫu, không có to, và nghĩa là bây giờ hoặc sắp tới.",
+   "ex": [
+    ["I *would rather walk* than take the bus.", "Tôi thích đi bộ hơn đi xe buýt.", ""],
+    ["I'd rather you *didn't smoke* here.", "Tôi muốn bạn đừng hút thuốc ở đây.", "Chủ ngữ khác nên dùng quá khứ."],
+    ["You *had better leave* now, or you will miss the train.", "Bạn nên đi ngay, nếu không sẽ lỡ tàu.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói đã đến lúc, hoặc như thể → lùi thì",
+   "f": [
+    ["Đã đến lúc", "x:It's (high) time + s:S + b:V2"],
+    ["Như thể", "x:as if + s:S + b:V2 / were"]
+   ],
+   "say": "It's time + S + quá khứ hàm ý việc này đã chậm. Nếu chỉ nói chung chung thì dùng It's time to V. As if + quá khứ báo điều không đúng sự thật.",
+   "ex": [
+    ["It's high time the government *took* action on pollution.", "Đã đến lúc chính phủ phải hành động về ô nhiễm.", "took mang nghĩa bây giờ."],
+    ["He talks as if he *knew* everything.", "Anh ta nói như thể cái gì cũng biết.", "Thực tế anh ta không biết hết."]
+   ]
+  }
+ ],
+ "traps": [
+  ["I suggest that she *goes* to the doctor.", "I suggest that she *go* to the doctor.", "Sau suggest that, động từ nguyên mẫu."],
+  ["It is important that he *is* on time.", "It is important that he *be* on time.", "Giả định của be là be."],
+  ["You had better *to go* now.", "You had better *go* now.", "Sau had better không có to."],
+  ["I suggest *him to see* a doctor.", "I suggest *that he see* a doctor.", "suggest không đi với người + to V."]
+ ],
+ "apply": [
+  ["It is essential that the government invest more in public transport.", "Điều thiết yếu là chính phủ đầu tư nhiều hơn vào giao thông công cộng."],
+  ["Experts recommend that schools teach students how to manage their time.", "Các chuyên gia khuyến nghị các trường dạy học sinh cách quản lý thời gian."],
+  ["It is high time authorities took serious action to reduce air pollution.", "Đã đến lúc chính quyền hành động nghiêm túc để giảm ô nhiễm không khí."]
+ ],
+ "check": [
+  ["Chọn dạng đúng: \"The teacher insisted that every student ___ (hand) in the essay.\"", "hand. Sau insist that dùng nguyên mẫu, không thêm -s dù chủ ngữ là every student."],
+  ["Vì sao \"It's time we went home\" dùng went dù nói về bây giờ?", "Quá khứ ở đây báo việc chưa xảy ra mà lẽ ra nên xảy ra rồi, không chỉ thời gian quá khứ."]
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "id": "g28",
+ "summary": [
+  "<b>said that + mệnh đề</b>; <b>told + người + that + mệnh đề</b>. Không viết \"said me\".",
+  "Động từ tường thuật ở quá khứ thì lùi một bậc: <b>am → was, will → would, have done → had done</b>.",
+  "Câu hỏi tường thuật: <b>asked + if / wh- + S + V</b> (không đảo, không dấu ?).",
+  "Mệnh lệnh: <b>told / asked + sb + (not) to V</b>.",
+  "Task 2: dùng <b>argue, claim, suggest, point out</b> ở hiện tại để dẫn ý kiến, không lùi thì."
+ ],
+ "idea": "Khi kể lại lời người khác, bạn đứng ở một thời điểm *muộn hơn* và là một người *khác* so với người nói. Vì vậy thì, đại từ, và từ chỉ thời gian đều phải dịch chuyển theo góc nhìn của người kể.",
+ "img": "Lời nói như một bức ảnh chụp từ trước. Khi bạn kể lại, bức ảnh đã cũ: mọi thứ lùi một bậc về quá khứ.",
+ "steps": [
+  {
+   "t": "Muốn nói ai đó nói gì → chọn say hoặc tell",
+   "f": [
+    ["say", "s:S + v:said + x:(that) + o:nội dung"],
+    ["tell", "s:S + v:told + b:người nghe + x:(that) + o:nội dung"]
+   ],
+   "say": "*say* đi thẳng với nội dung. *tell* luôn cần người nghe đứng ngay sau. Sau say muốn có người nghe thì phải thêm to: said to me.",
+   "ex": [
+    ["She *said* (that) she was busy.", "Cô ấy nói rằng cô ấy bận.", "Sau said là nội dung."],
+    ["She *told me* (that) she was busy.", "Cô ấy bảo tôi rằng cô ấy bận.", "Sau told phải có người nghe."]
+   ]
+  },
+  {
+   "t": "Muốn kể lại lời đã nói trong quá khứ → lùi thì",
+   "f": [
+    ["Hiện tại đơn", "v:am / is / V-s → b:was / V2"],
+    ["Hiện tại tiếp diễn", "v:is V-ing → b:was V-ing"],
+    ["Quá khứ / hoàn thành", "v:V2 / have V3 → b:had V3"],
+    ["Khuyết thiếu", "v:will / can / must → b:would / could / had to"]
+   ],
+   "say": "Khi said, told ở quá khứ, động từ trong lời nói lùi một bậc. Đại từ cũng đổi theo người kể: I → he / she, my → his / her.",
+   "ex": [
+    ["\"I *am* tired.\" → He said he *was* tired.", "\"Tôi mệt.\" → Anh ấy nói anh ấy mệt.", "am lùi thành was."],
+    ["\"I *will* help.\" → She said she *would* help.", "\"Tôi sẽ giúp.\" → Cô ấy nói cô ấy sẽ giúp.", "will lùi thành would."],
+    ["\"I *have finished* my work.\" → Tom said he *had finished* his work.", "\"Tôi đã làm xong.\" → Tom nói anh ấy đã làm xong.", "have finished lùi thành had finished; my thành his."]
+   ]
+  },
+  {
+   "t": "Muốn đổi mốc thời gian, nơi chốn → dùng từ tương ứng",
+   "f": [
+    ["Thời gian", "x:now → b:then · x:today → b:that day"],
+    ["", "x:yesterday → b:the day before"],
+    ["", "x:tomorrow → b:the next day"],
+    ["Nơi chốn", "x:here → b:there · x:this → b:that"]
+   ],
+   "say": "Lúc kể lại, \"ngày mai\" của người nói đã không còn là ngày mai của bạn. Đổi sang từ không phụ thuộc thời điểm nói.",
+   "ex": [
+    ["\"I will call you *tomorrow*.\" → He said he would call me *the next day*.", "\"Mai tôi sẽ gọi bạn.\" → Anh ấy nói hôm sau anh ấy sẽ gọi tôi.", ""],
+    ["\"I live *here*.\" → She said she lived *there*.", "\"Tôi sống ở đây.\" → Cô ấy nói cô ấy sống ở đó.", ""]
+   ]
+  },
+  {
+   "t": "Muốn thuật lại câu hỏi hoặc yêu cầu → dùng trật tự câu kể",
+   "f": [
+    ["Hỏi có / không", "s:S + v:asked + b:if / whether + s:S + v:V"],
+    ["Hỏi Wh-", "s:S + v:asked + b:where / what + s:S + v:V"],
+    ["Yêu cầu", "s:S + v:told / asked + o:người + b:(not) to V"]
+   ],
+   "say": "Câu hỏi tường thuật bỏ trợ động từ do / does / did, bỏ dấu hỏi, chủ ngữ đứng trước động từ. Yêu cầu dùng to V, phủ định thì thêm not.",
+   "ex": [
+    ["\"Do you like coffee?\" → She asked *if I liked* coffee.", "Cô ấy hỏi tôi có thích cà phê không.", "Thêm if, bỏ do, lùi thì."],
+    ["\"Where do you live?\" → He asked *where I lived*.", "Anh ấy hỏi tôi sống ở đâu.", "Không đảo: where I lived."],
+    ["\"Don't be late.\" → The teacher told us *not to be* late.", "Giáo viên bảo chúng tôi đừng đến muộn.", ""]
+   ]
+  },
+  {
+   "t": "Muốn dẫn ý kiến trong bài viết → dùng động từ tường thuật ở hiện tại",
+   "f": [
+    ["Dẫn ý kiến", "s:Critics + v:claim + x:that + o:mệnh đề"]
+   ],
+   "say": "Đừng chỉ dùng say. *argue* (lập luận), *claim* (khẳng định, tác giả còn nghi ngờ), *suggest* (gợi ý, cho rằng), *point out* (chỉ ra). Vì động từ ở hiện tại nên mệnh đề sau giữ nguyên thì, không lùi.",
+   "ex": [
+    ["Some people *argue that* technology *makes* us lazy.", "Một số người cho rằng công nghệ làm chúng ta lười.", "argue ở hiện tại nên makes giữ nguyên."],
+    ["Critics *claim that* online learning is less effective.", "Những người phản đối khẳng định học trực tuyến kém hiệu quả hơn.", "claim hàm ý tác giả chưa chắc đồng ý."]
+   ]
+  }
+ ],
+ "traps": [
+  ["He *said me* that he was busy.", "He *told me* that he was busy. / He *said* that he was busy.", "say không đi thẳng với người nghe."],
+  ["She asked me where *did I live*.", "She asked me where *I lived*.", "Câu hỏi tường thuật dùng trật tự câu kể."],
+  ["He said that he *will* come.", "He said that he *would* come.", "said ở quá khứ nên will lùi thành would."],
+  ["The teacher told us *don't* use our phones.", "The teacher told us *not to* use our phones.", "Yêu cầu phủ định dùng not to V."]
+ ],
+ "apply": [
+  ["Some experts argue that social media harms young people's concentration.", "Một số chuyên gia cho rằng mạng xã hội làm hại sự tập trung của giới trẻ."],
+  ["The report points out that air pollution has become more serious in big cities.", "Báo cáo chỉ ra rằng ô nhiễm không khí đã trở nên nghiêm trọng hơn ở các thành phố lớn."],
+  ["In the survey, most students said that they preferred studying online.", "Trong khảo sát, hầu hết sinh viên nói rằng họ thích học trực tuyến hơn."],
+  ["The researchers asked whether people would pay more for clean energy.", "Các nhà nghiên cứu hỏi liệu mọi người có sẵn sàng trả nhiều tiền hơn cho năng lượng sạch không."]
+ ],
+ "check": [
+  ["Tường thuật: Tom said, \"I have finished my work.\"", "Tom said (that) he had finished his work. Have finished lùi thành had finished; I thành he, my thành his."],
+  ["Vì sao Task 2 thường viết \"Many people believe that children are...\" mà không phải \"were\"?", "Vì believe ở hiện tại. Chỉ lùi thì khi động từ tường thuật ở quá khứ."]
+ ]
+}

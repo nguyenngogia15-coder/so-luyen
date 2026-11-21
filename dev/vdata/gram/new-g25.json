@@ -1,0 +1,81 @@
+{
+ "id": "g25",
+ "summary": [
+  "Mệnh đề quan hệ chủ động → <b>V-ing</b>: people who live here → people <b>living</b> here.",
+  "Bị động → <b>V3</b>: goods which are made here → goods <b>made</b> here. Sau the first / the only → <b>to V</b>.",
+  "Cụm phân từ đầu câu phải <b>cùng chủ ngữ</b> với mệnh đề chính. Việc xảy ra trước: <b>Having + V3</b>.",
+  "Cuối câu, <b>, V-ing</b> nêu kết quả: …, reaching a peak in 2020."
+ ],
+ "idea": "Khi hai phần câu nói về *cùng một người hoặc vật*, ta cắt phần lặp lại cho gọn. Phần còn lại chỉ là một dạng động từ. Chọn dạng nào chỉ cần hỏi một câu: danh từ đó *tự làm* (V-ing) hay *bị làm* (V3)?",
+ "img": "Mệnh đề đầy đủ như chiếc vali đủ đồ. Rút gọn là bỏ who/which và be, chỉ giữ lại động từ. Hành lý nhẹ hơn nhưng vẫn đủ ý.",
+ "steps": [
+  {
+   "t": "Muốn rút gọn mệnh đề quan hệ → bỏ who / which + be, giữ V-ing hoặc V3",
+   "f": [
+    ["Chủ động", "s:N + x:who + v:V → s:N + b:V-ing"],
+    ["Bị động", "s:N + x:which + v:is V3 → s:N + b:V3"]
+   ],
+   "say": "Tự làm thì dùng V-ing. Bị làm thì dùng V3 (thường có by phía sau). Câu vẫn chỉ có một động từ chia.",
+   "ex": [
+    ["People *living* in big cities often feel stressed.", "Những người sống ở các thành phố lớn thường cảm thấy căng thẳng.", "= who live."],
+    ["Most goods *produced* in this factory are exported.", "Phần lớn hàng hóa sản xuất ở nhà máy này được xuất khẩu.", "= which are produced."],
+    ["The problems *caused* by pollution are serious.", "Những vấn đề do ô nhiễm gây ra rất nghiêm trọng.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói người đầu tiên, duy nhất, cuối cùng → the first / the only + to V",
+   "f": [["to V", "x:the first / the only / the last + s:N + b:to V"]],
+   "say": "Sau the first, the last, the only, dùng to V thay cho mệnh đề quan hệ.",
+   "ex": [
+    ["She was the only student *to pass* the exam.", "Cô ấy là học sinh duy nhất đỗ kỳ thi.", ""],
+    ["He was the first person *to arrive*.", "Anh ấy là người đến đầu tiên.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nối hai mệnh đề cùng chủ ngữ → cụm V-ing / V3 / Having + V3",
+   "f": [
+    ["Cùng lúc, chủ động", "b:V-ing… , s:S + v:V"],
+    ["Bị động", "b:V3… , s:S + v:V"],
+    ["Xong trước", "b:Having + v:V3… , s:S + v:V"]
+   ],
+   "say": "Bỏ chủ ngữ và từ nối ở mệnh đề phụ. Cụm này có thể mang nghĩa vì, khi, hoặc xong rồi mới.",
+   "ex": [
+    ["*Working* from home, employees save travel time.", "Làm việc tại nhà, nhân viên tiết kiệm được thời gian đi lại.", ""],
+    ["*Built* in 1900, the bridge now needs repairs.", "Được xây năm 1900, cây cầu giờ cần sửa chữa.", ""],
+    ["*Having finished* her homework, she watched TV.", "Làm xong bài tập, cô ấy xem tivi.", "Làm bài xong trước."]
+   ]
+  },
+  {
+   "t": "Muốn nêu kết quả trong Task 1 → , V-ing ở cuối câu",
+   "f": [["Kết quả", "s:S + v:V… + x:, + b:V-ing + o:…"]],
+   "say": "Chủ ngữ của V-ing vẫn là chủ ngữ của mệnh đề chính. Rất hợp để tả đỉnh hoặc điểm đến của số liệu.",
+   "ex": [
+    ["The figure rose sharply, *reaching* a peak of 50% in 2020.", "Con số tăng mạnh, đạt đỉnh 50% vào năm 2020.", ""],
+    ["Sales fell steadily, *dropping* to 10,000 units by 2015.", "Doanh số giảm đều, xuống còn 10.000 chiếc vào năm 2015.", ""]
+   ]
+  },
+  {
+   "t": "Kiểm tra bắt buộc → ai là người làm việc V-ing?",
+   "say": "Chủ ngữ ngay sau dấu phẩy phải chính là người hoặc vật làm việc trong cụm đầu câu. Nếu không, câu thành vô nghĩa (lỗi dangling).",
+   "ex": [
+    ["*Walking* to school, *I* got caught in the rain.", "Trên đường đi bộ đến trường, tôi bị mắc mưa.", "Người đi bộ là I."],
+    ["*Using* phones too much, *people* can damage their eyes.", "Dùng điện thoại quá nhiều, con người có thể làm hại mắt.", "Người dùng là people."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The people *lived* in this area are poor.", "The people *living* in this area are poor.", "Người dân tự sống nên dùng V-ing."],
+  ["The problems *causing* by pollution are serious.", "The problems *caused* by pollution are serious.", "Vấn đề bị gây ra nên dùng V3."],
+  ["*Walking* to school, the rain started.", "*Walking* to school, I got caught in the rain.", "Cơn mưa không thể đi bộ. Chủ ngữ phải là người đi bộ."]
+ ],
+ "apply": [
+  ["Employees working from home often feel more productive, but those living alone may feel isolated.", "Nhân viên làm việc tại nhà thường thấy năng suất hơn, nhưng những người sống một mình có thể cảm thấy cô lập."],
+  ["The problems caused by air pollution are becoming increasingly serious in big cities.", "Những vấn đề do ô nhiễm không khí gây ra ngày càng nghiêm trọng ở các thành phố lớn."],
+  ["The number of online students rose steadily, reaching 2 million in 2020.", "Số sinh viên học trực tuyến tăng đều, đạt 2 triệu vào năm 2020."],
+  ["Having completed their degrees, many graduates struggle to find suitable jobs.", "Sau khi hoàn thành bằng cấp, nhiều sinh viên mới tốt nghiệp gặp khó khăn trong việc tìm việc phù hợp."]
+ ],
+ "check": [
+  ["Rút gọn: Students who are taught online need more discipline.", "Students taught online need more discipline. Bị động nên giữ V3."],
+  ["Vì sao Built in 1900, the bridge is still in use dùng Built?", "Chủ ngữ là the bridge. Cây cầu được xây, nên dùng V3."]
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "id": "g33",
+ "summary": [
+  "<b>Danh từ hoá</b>: biến hành động thành danh từ để làm chủ ngữ: <b>Prices rose rapidly → the rapid rise in prices</b>.",
+  "Khi danh từ hoá: động từ → danh từ, trạng từ → tính từ, chủ ngữ cũ đi sau <b>of / in</b>.",
+  "<b>It is + adj + to V / that + mệnh đề</b>: đẩy chủ ngữ dài ra cuối câu. Không bỏ trống chủ ngữ.",
+  "<b>There is / are + N</b> để nói \"có\"; động từ chia theo danh từ đứng sau. Không dùng \"have\" để nói tồn tại.",
+  "Mỗi câu chỉ nên có 1 đến 2 cụm danh từ hoá."
+ ],
+ "idea": "Văn học thuật thích nói về *sự việc* hơn là *hành động*. Biến động từ thành danh từ thì cả một câu thu lại thành một khối, có thể đặt làm chủ ngữ cho câu kế. It và There giữ chỗ vì chủ ngữ tiếng Anh không bao giờ được để trống.",
+ "img": "Danh từ hoá như đóng gói một việc vào thùng, rồi bê cả thùng làm chủ ngữ. Thùng quá nhiều lớp thì nặng không nhấc nổi.",
+ "steps": [
+  {
+   "t": "Muốn viết gọn và học thuật → danh từ hoá",
+   "f": [
+    ["Câu", "s:Prices + v:rose + o:rapidly"],
+    ["Danh từ hoá", "x:the + o:rapid + b:rise + x:in + s:prices"]
+   ],
+   "say": "Ba thứ đổi cùng lúc: động từ thành danh từ, trạng từ thành tính từ, chủ ngữ cũ đi sau of hoặc in. Hay gặp: grow → growth, decide → decision, fail → failure, aware → awareness.",
+   "ex": [
+    ["Prices *rose rapidly*. → *the rapid rise in* prices", "Giá tăng nhanh. → sự tăng giá nhanh", "rose thành rise, rapidly thành rapid."],
+    ["The city *developed*. → *the development of* the city", "Thành phố phát triển. → sự phát triển của thành phố", ""],
+    ["Tourism grew rapidly. This caused traffic problems. → *The rapid growth of tourism* caused traffic problems.", "Du lịch tăng nhanh nên gây ra các vấn đề giao thông.", "Gộp hai câu thành một."]
+   ]
+  },
+  {
+   "t": "Muốn tả xu hướng bằng danh từ → There was a ... in ...",
+   "f": [
+    ["Động từ", "s:N + v:V + o:trạng từ"],
+    ["Danh từ", "x:There was + x:a / an + o:tính từ + b:danh từ + x:in + s:N"]
+   ],
+   "say": "Đây là cách đổi cấu trúc rất cần cho Task 1. Phân biệt: an increase in + thứ tăng, an increase of + con số.",
+   "ex": [
+    ["Sales *fell sharply*. = *There was a sharp fall in* sales.", "Doanh số giảm mạnh.", "fell thành a fall, sharply thành sharp."],
+    ["*There has been an increase of 20%* in house prices.", "Giá nhà đã tăng 20%.", "of + con số."]
+   ]
+  },
+  {
+   "t": "Muốn nối danh từ với động từ → cụm cố định",
+   "say": "Học theo cụm: have an impact / effect on, make a decision, play a role in, pose a threat to, raise awareness of. Chia theo cụm, đừng ghép từng từ.",
+   "ex": [
+    ["Social media has a strong *impact on* teenagers.", "Mạng xã hội có tác động mạnh đến thanh thiếu niên.", ""],
+    ["Plastic waste *poses a threat to* marine life.", "Rác thải nhựa đe dọa sinh vật biển.", ""],
+    ["Campaigns *raise awareness of* road safety.", "Các chiến dịch nâng cao nhận thức về an toàn giao thông.", ""]
+   ]
+  },
+  {
+   "t": "Muốn đưa chủ ngữ dài ra sau → It + be + adj + to V / that",
+   "f": [
+    ["It", "x:It + v:is + o:tính từ + b:to V / that + mệnh đề"]
+   ],
+   "say": "It chỉ giữ chỗ, không chỉ vật nào. Thêm dạng bị động khách quan: It is widely believed that... Tiếng Việt nói \"Quan trọng là...\" không cần chủ ngữ, tiếng Anh thì phải có It.",
+   "ex": [
+    ["*It is* difficult *to find* affordable housing in big cities.", "Việc tìm nhà ở giá phải chăng ở các thành phố lớn rất khó.", "Chủ ngữ thật là to find."],
+    ["*It is clear that* public transport needs more investment.", "Rõ ràng là giao thông công cộng cần được đầu tư nhiều hơn.", ""],
+    ["*It is widely believed that* exercise improves memory.", "Người ta tin rộng rãi rằng tập thể dục cải thiện trí nhớ.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói có tồn tại cái gì → There is / are",
+   "f": [
+    ["There", "x:There + v:is / are / has been + s:N"]
+   ],
+   "say": "Động từ chia theo danh từ đứng sau. Không dùng \"have\" kiểu tiếng Việt \"có\". Đừng danh từ hoá quá tay: nếu câu có ba bốn danh từ trừu tượng nối bằng of, hãy viết lại bằng động từ.",
+   "ex": [
+    ["*There are* several reasons for this trend.", "Có một số lý do cho xu hướng này.", "reasons là số nhiều."],
+    ["*There has been* a significant increase in tourism.", "Đã có sự gia tăng đáng kể về du lịch.", ""],
+    ["In my city, *there are* many parks.", "Ở thành phố của tôi có nhiều công viên.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["the *rapidly* increase in prices", "the *rapid* increase in prices", "increase là danh từ nên từ tả nó là tính từ."],
+  ["There *was* many changes.", "There *were* many changes.", "Chia theo changes (số nhiều)."],
+  ["*Is* difficult to solve this problem.", "*It is* difficult to solve this problem.", "Câu tiếng Anh phải có chủ ngữ."],
+  ["In my city *have* many parks.", "In my city, *there are* many parks.", "Nói tồn tại thì dùng there are."]
+ ],
+ "apply": [
+  ["The rapid growth of online shopping has changed the way people buy goods.", "Sự tăng trưởng nhanh của mua sắm trực tuyến đã thay đổi cách mọi người mua hàng."],
+  ["It is essential to raise public awareness of climate change.", "Việc nâng cao nhận thức cộng đồng về biến đổi khí hậu là điều thiết yếu."],
+  ["There was a sharp rise in the number of visitors between 2010 and 2015.", "Số lượng du khách đã tăng mạnh trong giai đoạn 2010 đến 2015."]
+ ],
+ "check": [
+  ["Danh từ hoá: \"The population grew steadily.\"", "The steady growth of the population. grew thành growth, steadily thành steady."],
+  ["Sao viết \"increase in prices\" nhưng \"increase of 10%\"?", "in + thứ tăng (prices). of + con số tăng (10%)."]
+ ]
+}

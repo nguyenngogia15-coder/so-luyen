@@ -1,0 +1,73 @@
+{
+ "id": "l9",
+ "summary": [
+  "<b>, which + động từ</b>: thêm thông tin cho cả vế trước hoặc một danh từ. Sau dấu phẩy KHÔNG dùng that.",
+  "<b>, who</b> cho người; <b>, which</b> cho vật hoặc cả ý trước.",
+  "Rút gọn khi cùng chủ ngữ: <b>, reaching / accounting for / making up + số liệu</b>.",
+  "Gộp hai câu ngắn thành một câu phức để tăng điểm Grammatical Range.",
+  "Hay dùng: <b>before / after + V-ing</b> và <b>with + N + V-ing</b>."
+ ],
+ "idea": "Chỉ toàn câu đơn (A rose. B fell.) thì bị giới hạn điểm ngữ pháp. Bạn có thể \"nhét\" câu thứ hai vào câu thứ nhất bằng *, which ...* hoặc rút nó thành cụm *V-ing*.",
+ "img": "Như gắn toa vào đầu tàu: câu đầu là đầu tàu, , which và V-ing là toa móc phía sau.",
+ "steps": [
+  {
+   "t": "Muốn thêm nhận xét về cả ý trước → , which + động từ",
+   "f": [
+    ["Gộp câu", "s:Housing rose to 35% + x:, + b:which + v:was + o:the largest share"]
+   ],
+   "say": "Dấu phẩy rồi which, chủ ngữ của which là cả ý phía trước hoặc danh từ đứng ngay trước. Sau dấu phẩy không viết that. Chỉ người thì dùng who.",
+   "ex": [
+    ["Housing rose to 35%, *which was* the largest share.", "Nhà ở tăng lên 35%, đây là phần lớn nhất.", "which thay cho cả ý trước."],
+    ["The highest figure was for the USA, *which accounted for* 40% of the total.", "Số liệu cao nhất thuộc về Mỹ, nước chiếm 40% tổng số.", "which thay cho the USA."]
+   ]
+  },
+  {
+   "t": "Muốn nêu kết quả của xu hướng → , V-ing",
+   "f": [
+    ["Rút gọn", "s:S + v:V + x:, + b:V-ing + o:số liệu"]
+   ],
+   "say": "Khi hai vế cùng chủ ngữ thì vế sau rút thành V-ing. Sau dấu phẩy không thêm một động từ chia nữa. Hay dùng: reaching, accounting for, making up, peaking at.",
+   "ex": [
+    ["Sales grew steadily, *reaching* a peak of 5 million in 2018.", "Doanh số tăng đều, đạt đỉnh 5 triệu vào năm 2018.", ""],
+    ["Housing rose to 35%, *accounting for* over a third of spending.", "Nhà ở tăng lên 35%, chiếm hơn một phần ba chi tiêu.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nối hai giai đoạn → before / after + V-ing",
+   "f": [
+    ["Nối tiếp", "s:S + v:rose + o:to 50% + b:before + v:falling + o:to 30%"]
+   ],
+   "say": "Cùng một chủ ngữ làm hai việc liên tiếp: dùng before + V-ing hoặc after + V-ing cho việc thứ hai.",
+   "ex": [
+    ["The figure rose to 50% *before falling* back to 30%.", "Con số tăng lên 50% trước khi giảm trở lại 30%.", ""]
+   ]
+  },
+  {
+   "t": "Muốn thêm con số minh họa → with + N + V-ing, respectively",
+   "f": [
+    ["with", "s:S + v:was ... + x:, + b:with + s:N + v:V-ing"],
+    ["Lần lượt", "s:A and B + v:were + o:20% and 15% + b:respectively"]
+   ],
+   "say": "with + danh từ + V-ing đưa số liệu vào sau một nhận định. respectively đứng cuối câu, nêu số theo đúng thứ tự tên đã nhắc.",
+   "ex": [
+    ["Japan was the largest exporter, *with* sales *reaching* $50 billion.", "Nhật là nước xuất khẩu lớn nhất, với doanh số đạt 50 tỷ đô.", ""],
+    ["The figures for France and Italy were 20% and 15% *respectively*.", "Số liệu của Pháp và Ý lần lượt là 20% và 15%.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["Food fell to 18%, *that* was a big drop.", "Food fell to 18%, *which* was a big drop.", "Sau dấu phẩy không dùng that."],
+  ["Sales grew, *reached* 5 million.", "Sales grew, *reaching* 5 million.", "Không đặt hai động từ chia nối bằng dấu phẩy. Dùng V-ing."],
+  ["The figure rose to 50% before *fell* to 30%.", "The figure rose to 50% before *falling* to 30%.", "Sau before không có chủ ngữ thì dùng V-ing."],
+  ["The people *which* took part were adults.", "The people *who* took part were adults.", "Chỉ người dùng who."]
+ ],
+ "apply": [
+  ["Entertainment rose from 10% to 14%, which was the biggest relative change.", "Giải trí tăng từ 10% lên 14%, đây là mức thay đổi tương đối lớn nhất."],
+  ["Sales of electric cars grew steadily, reaching 4 million in 2020.", "Doanh số xe điện tăng đều, đạt 4 triệu vào năm 2020."],
+  ["China had the highest emissions, accounting for nearly 30% of the global total.", "Trung Quốc có lượng phát thải cao nhất, chiếm gần 30% tổng toàn cầu."]
+ ],
+ "check": [
+  ["Gộp: \"Entertainment rose from 10% to 14%. This was the biggest change.\"", "Entertainment rose from 10% to 14%, which was the biggest change."],
+  ["Gộp bằng before: \"The price fell to $10. Then it recovered to $15.\"", "The price fell to $10 before recovering to $15."]
+ ]
+}

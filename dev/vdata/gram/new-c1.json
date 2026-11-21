@@ -1,0 +1,73 @@
+{
+ "id": "c1",
+ "summary": [
+  "Modal + <b>V nguyên mẫu</b>: không to, không -s, không mượn do.",
+  "<b>should</b> để đưa giải pháp. <b>may/might/could/can</b> để nói thận trọng, bớt tuyệt đối.",
+  "<b>mustn't</b> = cấm. <b>don't have to</b> = không cần.",
+  "Quá khứ: <b>modal + have + V3</b> (should have done, must have done)."
+ ],
+ "idea": "Modal là một nút chỉnh âm lượng đặt trước động từ. Cùng một việc, bạn chọn nói nó *nên*, *phải*, *có thể* hay *chắc chắn*. Nhờ vậy câu bớt tuyệt đối và nghe học thuật hơn.",
+ "img": "Động từ chính là bài hát. Modal là nút chỉnh âm lượng: must là to hết cỡ, may là vặn nhỏ lại cho khiêm tốn.",
+ "steps": [
+  {
+   "t": "Ghép modal với động từ cho đúng dạng",
+   "f": [["Khẳng định", "s:S + b:modal + v:V"], ["Phủ định", "s:S + b:modal + n:not + v:V"], ["Câu hỏi", "b:Modal + s:S + v:V"]],
+   "say": "Modal không thêm -s, sau nó là động từ nguyên mẫu không có to. Phủ định thêm not ngay sau modal, câu hỏi đảo modal lên trước chủ ngữ. Không mượn do.",
+   "ex": [
+    ["She *can speak* three languages.", "Cô ấy nói được ba thứ tiếng.", "Không viết cans, can to speak, hay can speaks."],
+    ["*Should* governments *ban* single-use plastic?", "Chính phủ có nên cấm nhựa dùng một lần không?", "Đảo should lên trước chủ ngữ."]
+   ]
+  },
+  {
+   "t": "Muốn đề xuất giải pháp → should; muốn nói bắt buộc → must / have to",
+   "f": [["Đề xuất", "s:S + b:should + v:V"], ["Bị động", "s:S + b:should + v:be + v:V3"]],
+   "say": "Should là từ dùng nhiều nhất để đưa giải pháp trong Task 2. Must và have to dùng cho quy định bắt buộc. Ý nội dung bị động thì dùng should be + V3.",
+   "ex": [
+    ["Governments *should invest* in public transport.", "Chính phủ nên đầu tư vào giao thông công cộng.", "Đề xuất."],
+    ["Cars *should be banned* from the city centre.", "Xe hơi nên bị cấm vào trung tâm thành phố.", "Bị động với modal."]
+   ]
+  },
+  {
+   "t": "Muốn nói thận trọng → may / might / could / can",
+   "f": [["Thận trọng", "s:S + b:may / might / could + v:V"]],
+   "say": "Trong Task 2, tránh khẳng định tuyệt đối bằng will hay động từ đơn. Dùng may, might, could, can để ý kiến thuyết phục hơn. Từ chắc nhất đến ít chắc: will, must, should, may/could, might.",
+   "ex": [
+    ["This policy *may reduce* traffic.", "Chính sách này có thể làm giảm giao thông.", "Không khẳng định chắc chắn nên nghe thận trọng."],
+    ["Technology *can cause* problems for young people.", "Công nghệ có thể gây ra vấn đề cho người trẻ.", "Tốt hơn câu tuyệt đối Technology causes problems."]
+   ]
+  },
+  {
+   "t": "Phân biệt mustn't và don't have to",
+   "f": [["Cấm", "s:You + b:mustn't + v:V"], ["Không cần", "s:You + b:don't have to + v:V"]],
+   "say": "Mustn't là bị cấm. Don't have to là không bắt buộc, làm hay không tùy bạn. Tiếng Việt đều nói \"không phải\" nên rất dễ lẫn.",
+   "ex": [
+    ["You *mustn't* use your phone in the exam.", "Bạn không được dùng điện thoại trong kỳ thi.", "Bị cấm."],
+    ["You *don't have to* bring a dictionary.", "Bạn không cần mang từ điển.", "Không bắt buộc."]
+   ]
+  },
+  {
+   "t": "Muốn nói về quá khứ → modal + have + V3",
+   "f": [["Quá khứ", "s:S + b:should / must / might + v:have + v:V3"]],
+   "say": "Should have + V3 là lẽ ra nên làm nhưng đã không làm. Must have + V3 là chắc hẳn đã. Might have + V3 là có lẽ đã. Must không có dạng quá khứ, nghĩa đã phải dùng had to.",
+   "ex": [
+    ["I *should have studied* harder.", "Lẽ ra tôi nên học chăm hơn.", "Thực tế đã không học chăm, thể hiện sự tiếc nuối."],
+    ["He *must have forgotten* the meeting.", "Chắc hẳn anh ấy đã quên cuộc họp.", "Suy đoán chắc chắn về quá khứ."]
+   ]
+  }
+ ],
+ "traps": [
+  ["He *cans* swim. / He can *to* swim.", "He *can swim*.", "Modal không thêm -s và không thêm to."],
+  ["You *don't must* go.", "You *don't have to* go. / You *mustn't* go.", "Must không đi với don't. Chọn theo nghĩa: không cần hay bị cấm."],
+  ["I *must* go to the doctor yesterday.", "I *had to* go to the doctor yesterday.", "Must không có dạng quá khứ, dùng had to."]
+ ],
+ "apply": [
+  ["Governments should invest more in public transport to reduce traffic congestion.", "Chính phủ nên đầu tư nhiều hơn vào giao thông công cộng để giảm ùn tắc."],
+  ["This measure may help to reduce air pollution in large cities.", "Biện pháp này có thể giúp giảm ô nhiễm không khí ở các thành phố lớn."],
+  ["Single-use plastic should be banned in supermarkets.", "Nhựa dùng một lần nên bị cấm ở siêu thị."],
+  ["The authorities should have acted earlier to protect the environment.", "Lẽ ra chính quyền nên hành động sớm hơn để bảo vệ môi trường."]
+ ],
+ "check": [
+  ["\"She might be at home\" và \"She must be at home\" khác nhau thế nào?", "Might: có thể, người nói không chắc. Must: người nói gần như chắc chắn vì có căn cứ."],
+  ["Dịch: \"Lẽ ra chính phủ nên hành động sớm hơn.\"", "The government should have acted earlier."]
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "id": "g15",
+ "summary": [
+  "<b>will + V</b>: dự đoán theo ý kiến, quyết định ngay lúc nói, lời hứa.",
+  "<b>be going to + V</b>: dự định đã có, hoặc dự đoán có bằng chứng trước mắt.",
+  "Dự báo trong bài viết: <b>be expected / predicted / likely to + V</b>. Xong trước mốc tương lai: <b>will have + V3</b>.",
+  "Sau <b>when, if, as soon as, before, after, until</b> dùng hiện tại đơn, không dùng will."
+ ],
+ "idea": "Tiếng Việt chỉ cần chữ \"sẽ\". Tiếng Anh cho người nghe biết thêm: bạn *vừa quyết định*, bạn *đã có kế hoạch*, hay bạn *đang nhìn thấy dấu hiệu*. Mỗi cách nói tương lai gắn với một trong những tình huống đó.",
+ "img": "Will là bật công tắc ngay lúc nói. Be going to là chuyến tàu đã chạy sẵn trên đường ray, hoặc bầu trời đen báo mưa trước mắt bạn.",
+ "steps": [
+  {
+   "t": "Muốn đoán, quyết định ngay hoặc hứa → will + V",
+   "f": [["will", "s:S + b:will / won't + v:V"]],
+   "say": "Will không đổi theo chủ ngữ, sau will là động từ nguyên mẫu. Hay đi với I think, I believe, probably khi nêu ý kiến trong Task 2 và Speaking.",
+   "ex": [
+    ["I think robots *will replace* many jobs in the future.", "Tôi nghĩ robot sẽ thay thế nhiều công việc trong tương lai.", "Dự đoán theo ý kiến."],
+    ["It's hot in here. I *will open* the window.", "Trong này nóng quá. Để tôi mở cửa sổ.", "Vừa quyết định ngay lúc nói."]
+   ]
+  },
+  {
+   "t": "Muốn nói dự định có sẵn hoặc đoán theo bằng chứng → be going to + V",
+   "f": [["going to", "s:S + v:am / is / are + b:going to + v:V"]],
+   "say": "Dùng khi kế hoạch đã có từ trước lúc nói, hoặc khi bạn thấy dấu hiệu rõ ràng. Phải chia be: am, is, are.",
+   "ex": [
+    ["I *am going to study* abroad next year.", "Năm sau tôi định đi du học.", "Kế hoạch có từ trước."],
+    ["Look at those dark clouds. It *is going to rain*.", "Nhìn những đám mây đen kia. Trời sắp mưa rồi.", "Có bằng chứng trước mắt."]
+   ]
+  },
+  {
+   "t": "Muốn nói đã hẹn hoặc có lịch cố định → hiện tại tiếp diễn / hiện tại đơn",
+   "f": [
+    ["Đã hẹn", "s:S + v:am / is / are V-ing + o:tomorrow"],
+    ["Lịch cố định", "s:S + v:V-s + o:at 6 am"]
+   ],
+   "say": "Hiện tại tiếp diễn dùng cho việc đã sắp xếp với người khác và phải có từ chỉ thời gian tương lai. Hiện tại đơn dùng cho thời gian biểu như tàu, lịch học, lịch thi.",
+   "ex": [
+    ["I *am meeting* my teacher tomorrow.", "Ngày mai tôi gặp giáo viên.", ""],
+    ["The exam *starts* at 8 am on Monday.", "Kỳ thi bắt đầu lúc 8 giờ sáng thứ Hai.", ""]
+   ]
+  },
+  {
+   "t": "Muốn dự báo số liệu hoặc xu hướng khách quan → be expected to",
+   "f": [
+    ["Dự báo", "s:S + v:is / are + b:expected / predicted / likely + x:to V"],
+    ["Xong trước mốc", "x:By 2030 , + s:S + v:will have + v:V3"]
+   ],
+   "say": "Cách nói này khách quan hơn will vì là dự báo, không phải ý kiến của bạn. Will have + V3 nói việc sẽ hoàn tất trước một mốc tương lai.",
+   "ex": [
+    ["The population *is expected to reach* 10 million by 2030.", "Dân số được dự báo sẽ đạt 10 triệu người vào năm 2030.", ""],
+    ["By 2030, the city *will have built* two new metro lines.", "Đến năm 2030, thành phố sẽ xây xong hai tuyến tàu điện ngầm mới.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói điều kiện hoặc thời gian trong tương lai → hiện tại đơn",
+   "f": [["Mệnh đề thời gian", "x:When / If / As soon as + s:S + b:V hiện tại + , + s:S + v:will + v:V"]],
+   "say": "Sau when, if, as soon as, before, after, until dùng hiện tại đơn dù nói về tương lai. Chỉ vế chính mới dùng will.",
+   "ex": [
+    ["When I *finish* university, I *will look* for a job.", "Khi học xong đại học, tôi sẽ tìm việc.", "Không viết will finish."],
+    ["If the government *invests* in public transport, traffic *will improve*.", "Nếu chính phủ đầu tư vào giao thông công cộng, tình trạng giao thông sẽ cải thiện.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["If it *will rain*, we will stay at home.", "If it *rains*, we will stay at home.", "Sau if dùng hiện tại đơn."],
+  ["She *will goes* to university.", "She *will go* to university.", "Sau will là động từ nguyên mẫu."],
+  ["As soon as I *will arrive*, I will call you.", "As soon as I *arrive*, I will call you.", "Sau as soon as dùng hiện tại đơn."]
+ ],
+ "apply": [
+  ["I believe that artificial intelligence will change the way students learn.", "Tôi tin rằng trí tuệ nhân tạo sẽ thay đổi cách học sinh học tập."],
+  ["Sales of electric cars are expected to rise sharply and to reach 520,000 by 2035.", "Doanh số xe điện được dự báo sẽ tăng mạnh và đạt 520.000 chiếc vào năm 2035."],
+  ["If governments do not act now, air pollution will become much worse.", "Nếu chính phủ không hành động ngay, ô nhiễm không khí sẽ trở nên tệ hơn nhiều."],
+  ["In the future, I am going to study abroad and become an engineer.", "Trong tương lai, tôi dự định đi du học và trở thành kỹ sư."]
+ ],
+ "check": [
+  ["Bạn vừa nghe tin bạn mình ốm và nói: I ___ visit her tonight. Dùng will hay am going to?", "will, vì bạn vừa quyết định ngay lúc nghe tin."],
+  ["Sửa: When I will graduate, I will find a job.", "When I graduate, I will find a job. Sau when dùng hiện tại đơn."]
+ ]
+}

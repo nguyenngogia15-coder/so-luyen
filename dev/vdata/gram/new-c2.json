@@ -1,0 +1,61 @@
+{
+ "id": "c2",
+ "summary": [
+  "<b>Loại 1</b> (có thể xảy ra): If + hiện tại đơn, <b>will</b> + V.",
+  "<b>Loại 2</b> (giả định, khó xảy ra): If + quá khứ đơn (<b>were</b> cho mọi ngôi), <b>would</b> + V.",
+  "<b>Loại 3</b> (quá khứ, đã không xảy ra): If + <b>had V3</b>, <b>would have V3</b>.",
+  "Vế if không dùng will/would. <b>unless</b> = if ... not."
+ ],
+ "idea": "Điều kiện càng xa sự thật thì động từ càng *lùi về quá khứ*. Lùi thì ở đây không nói về thời gian, nó là dấu hiệu báo \"điều này không có thật\".",
+ "img": "Sự thật đứng ở hiện tại. Điều có thể xảy ra đứng gần. Điều tưởng tượng thì lùi một bước, điều đã qua và không đổi được thì lùi hai bước.",
+ "steps": [
+  {
+   "t": "Muốn nói điều có thể xảy ra, giải pháp → loại 1",
+   "f": [["Loại 1", "x:If + s:S + v:V (hiện tại) , s:S + b:will + v:V"]],
+   "say": "Điều kiện hoàn toàn có thể xảy ra ở hiện tại hoặc tương lai. Vế if dùng hiện tại đơn, không dùng will, dù nói về tương lai. Rất hợp để nêu giải pháp và hậu quả trong Task 2.",
+   "ex": [
+    ["If the government *invests* in buses, traffic *will improve*.", "Nếu chính phủ đầu tư vào xe buýt, giao thông sẽ cải thiện.", "Vế if hiện tại đơn, vế kết quả dùng will."]
+   ]
+  },
+  {
+   "t": "Muốn nói giả định không có thật hoặc khó xảy ra ở hiện tại → loại 2",
+   "f": [["Loại 2", "x:If + s:S + b:V2 / were , s:S + b:would + v:V"]],
+   "say": "Điều kiện trái thực tế bây giờ, hoặc rất xa vời. Động từ ở quá khứ nhưng nghĩa là hiện tại. Với be dùng were cho mọi chủ ngữ.",
+   "ex": [
+    ["If I *had* more money, I *would travel* more.", "Nếu tôi có nhiều tiền hơn, tôi sẽ đi du lịch nhiều hơn.", "Thực tế là tôi không có nhiều tiền."],
+    ["If I *were* you, I *would study* harder.", "Nếu tôi là bạn, tôi sẽ học chăm hơn.", "Dùng were, không dùng was."]
+   ]
+  },
+  {
+   "t": "Muốn nói điều đã qua và tiếc nuối → loại 3",
+   "f": [["Loại 3", "x:If + s:S + b:had V3 , s:S + b:would have + v:V3"]],
+   "say": "Nói về việc đã không xảy ra trong quá khứ và kết quả tưởng tượng của nó. Không thể thay đổi được nữa.",
+   "ex": [
+    ["If I *had studied* harder, I *would have passed* the exam.", "Nếu tôi đã học chăm hơn thì tôi đã đỗ.", "Thực tế là tôi không học chăm và đã trượt."]
+   ]
+  },
+  {
+   "t": "Muốn nói \"trừ khi\" hoặc ước → unless, wish",
+   "f": [["unless", "b:Unless + s:S + v:V , s:S + b:will + v:V"], ["wish", "s:I + x:wish + s:S + b:V2 / had V3"]],
+   "say": "Unless = if ... not, không thêm not nữa. Wish cũng lùi thì như điều kiện: ước điều trái hiện tại dùng quá khứ đơn, ước điều trái quá khứ dùng had V3.",
+   "ex": [
+    ["*Unless* we act now, the problem will get worse.", "Trừ khi chúng ta hành động ngay, vấn đề sẽ tệ hơn.", "Bằng If we do not act now."],
+    ["I wish I *had* more free time.", "Ước gì tôi có nhiều thời gian rảnh hơn.", "Thực tế là bây giờ không có."]
+   ]
+  }
+ ],
+ "traps": [
+  ["If it *will rain*, I will stay at home.", "If it *rains*, I will stay at home.", "Vế if không dùng will."],
+  ["If I *would have* money, I would buy it.", "If I *had* money, I would buy it.", "Would chỉ nằm ở vế kết quả."],
+  ["If I *was* rich, I *will* buy a house.", "If I *were* rich, I *would* buy a house.", "Không trộn loại: vế if lùi quá khứ thì vế kết quả dùng would."]
+ ],
+ "apply": [
+  ["If governments invest in public transport, traffic congestion will decrease.", "Nếu chính phủ đầu tư vào giao thông công cộng, ùn tắc sẽ giảm."],
+  ["If more people cycled to work, the air in cities would be much cleaner.", "Nếu nhiều người đạp xe đi làm hơn, không khí trong thành phố sẽ sạch hơn nhiều."],
+  ["Unless strict measures are taken, the environment will continue to deteriorate.", "Trừ khi có biện pháp nghiêm ngặt, môi trường sẽ tiếp tục xấu đi."]
+ ],
+ "check": [
+  ["\"If I ___ president, I ___ education free.\" Dùng loại nào?", "Loại 2, vì là giả định: If I were president, I would make education free."],
+  ["\"If she had left earlier, she would have caught the train\" cho biết thực tế gì?", "Cô ấy đã không đi sớm và đã lỡ tàu. Loại 3 nói ngược với điều đã xảy ra."]
+ ]
+}

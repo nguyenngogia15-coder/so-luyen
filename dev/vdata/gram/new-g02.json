@@ -1,0 +1,65 @@
+{
+ "id": "g02",
+ "summary": [
+  "Câu nào cũng cần <b>chủ ngữ + động từ đã chia</b>. Tả bằng tính từ thì phải thêm <b>be</b>.",
+  "<b>Ngoại động từ</b> cần tân ngữ (raise taxes). <b>Nội động từ</b> thì không (prices rose).",
+  "Sau <b>be, look, seem, become, feel</b> là tính từ, không phải trạng từ.",
+  "Thứ tự: <b>S + V + O + cách thức + nơi chốn + thời gian</b>. Không chen gì giữa V và O."
+ ],
+ "idea": "Câu tiếng Anh như hàng ghế có số: ghế 1 là chủ ngữ, ghế 2 là động từ, rồi mới tới các phần khác. Tiếng Việt có thể bỏ động từ (\"Thành phố này rất đông\"), tiếng Anh thì không.",
+ "img": "Chủ ngữ là đầu tàu, động từ là móc nối, không có móc thì tàu không chạy. Động từ và tân ngữ dính sát nhau như hai toa liền.",
+ "steps": [
+  {
+   "t": "Muốn tả chủ ngữ bằng tính từ → thêm be",
+   "f": [["Có be", "s:S + v:am / is / are / was / were + o:tính từ"], ["Sai", "n:The city very crowded."]],
+   "say": "Viết xong hãy tự hỏi: chủ ngữ là gì, động từ đã chia là gì? Tiếng Việt không cần be trước tính từ, tiếng Anh bắt buộc có.",
+   "ex": [
+    ["This city *is* very crowded.", "Thành phố này rất đông.", "crowded là tính từ nên phải có is."],
+    ["There *are* many reasons for this.", "Có nhiều lý do cho điều này.", "Thiếu are thì câu không có động từ."]
+   ]
+  },
+  {
+   "t": "Chọn động từ cần tân ngữ hay không",
+   "f": [["Nội động từ", "s:S + v:V"], ["Ngoại động từ", "s:S + v:V + o:O"]],
+   "say": "Nội động từ tự đủ nghĩa: rise, happen, arrive, occur. Ngoại động từ cần tân ngữ: raise, build, reduce, discuss. Thử bằng cách hỏi \"cái gì?\" sau động từ. Nội động từ không có bị động, và discuss không đi với about.",
+   "ex": [
+    ["Prices *rose* last year.", "Giá đã tăng năm ngoái.", "rose không cần tân ngữ."],
+    ["The government *raised* taxes.", "Chính phủ tăng thuế.", "raise cần tân ngữ taxes."],
+    ["We *discussed* the problem.", "Chúng tôi thảo luận về vấn đề đó.", "Không viết discussed about."]
+   ]
+  },
+  {
+   "t": "Sau động từ nối → tính từ",
+   "f": [["Động từ nối", "s:S + v:be / look / seem / become / feel + o:tính từ hoặc danh từ"], ["Make", "s:S + v:make + s:O + o:tính từ"]],
+   "say": "Be, look, seem, become, feel, remain, get đi với tính từ hoặc danh từ để tả chủ ngữ. Make + tân ngữ + tính từ nghĩa là làm cho ai đó thế nào.",
+   "ex": [
+    ["The new park *looks* beautiful.", "Công viên mới trông đẹp.", "Sau look là tính từ, không phải beautifully."],
+    ["Traffic jams make drivers *stressed*.", "Tắc đường làm tài xế căng thẳng.", "make + tân ngữ + tính từ."]
+   ]
+  },
+  {
+   "t": "Xếp thứ tự các phần trong câu",
+   "f": [["Thứ tự", "s:Ai + v:làm gì + o:cái gì + x:thế nào + x:ở đâu + x:khi nào"], ["Tần suất", "s:S + b:often + v:V / s:S + v:be + b:often"]],
+   "say": "Động từ và tân ngữ đứng sát nhau. Cách thức, nơi chốn, thời gian xếp sau. Always, often, never đứng trước động từ thường nhưng sau be.",
+   "ex": [
+    ["She speaks *English* very well.", "Cô ấy nói tiếng Anh rất giỏi.", "Tân ngữ đứng sát động từ, trạng từ ra sau."],
+    ["People *often* drive to work, and the roads are *often* crowded.", "Mọi người thường lái xe đi làm, và đường thường đông.", "Often trước động từ thường, sau be."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The traffic in Hanoi very bad.", "The traffic in Hanoi *is* very bad.", "Bad là tính từ, thiếu động từ be."],
+  ["This problem *is happened* in many cities.", "This problem *happens* in many cities.", "Happen là nội động từ, không dùng bị động."],
+  ["I like *very much* football.", "I like football *very much*.", "Không chen gì giữa like và football."],
+  ["We should discuss *about* this issue.", "We should discuss this issue.", "Discuss đi thẳng với tân ngữ."]
+ ],
+ "apply": [
+  ["Traffic congestion has become a serious problem in many large cities.", "Ùn tắc giao thông đã trở thành vấn đề nghiêm trọng ở nhiều thành phố lớn."],
+  ["The government should reduce air pollution in urban areas.", "Chính phủ nên giảm ô nhiễm không khí ở khu vực đô thị."],
+  ["Heavy traffic makes city residents stressed every day.", "Giao thông đông đúc khiến cư dân thành phố căng thẳng mỗi ngày."]
+ ],
+ "check": [
+  ["\"There many reasons for this.\" sai ở đâu?", "Thiếu động từ. Sửa: There are many reasons for this."],
+  ["Vì sao nói \"The price rose\" nhưng \"They raised the price\"?", "Rise không cần tân ngữ, raise cần tân ngữ the price."]
+ ]
+}

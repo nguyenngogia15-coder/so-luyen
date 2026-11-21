@@ -1,0 +1,67 @@
+{
+ "id": "g14",
+ "summary": [
+  "<b>had + V3</b> dùng cho việc xảy ra <b>trước</b> một mốc hoặc một việc khác trong quá khứ.",
+  "Việc xảy ra trước → had + V3. Việc xảy ra sau → quá khứ đơn.",
+  "Hay đi với <b>by + mốc quá khứ, by the time, before, after, already</b>.",
+  "<b>had been + V-ing</b>: việc kéo dài đến một mốc trong quá khứ."
+ ],
+ "idea": "Khi kể hai việc trong quá khứ, đôi khi cần nói rõ việc nào xảy ra trước. Quá khứ hoàn thành là \"quá khứ của quá khứ\". Chỉ có một việc, hoặc kể đúng thứ tự thời gian, thì không cần thì này.",
+ "img": "Bạn đứng ở một điểm trong quá khứ rồi ngoái đầu nhìn lại một việc còn xa hơn phía sau lưng. Việc phía sau lưng dùng had + V3.",
+ "steps": [
+  {
+   "t": "Muốn nói việc nào xảy ra trước → had + V3",
+   "f": [
+    ["Trước", "s:S + v:had + v:V3"],
+    ["Sau", "s:S + v:V2"]
+   ],
+   "say": "Had dùng cho mọi chủ ngữ. Xác định việc nào xảy ra trước trên thực tế, việc đó dùng had + V3, dù nó được nhắc trước hay sau trong câu. Đổi thì là đổi nghĩa.",
+   "ex": [
+    ["When I arrived, the train *had left*.", "Khi tôi đến thì tàu đã rời đi rồi.", "Tàu đi trước, tôi lỡ tàu."],
+    ["When I arrived, the train *left*.", "Khi tôi đến thì tàu rời đi.", "Hai việc gần như cùng lúc."],
+    ["She *had finished* her work before she *went* out.", "Cô ấy đã làm xong việc trước khi ra ngoài.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói đến một mốc quá khứ đã hoàn tất → by + mốc + had + V3",
+   "f": [["By", "x:By + o:mốc quá khứ + , + s:S + v:had + v:V3"]],
+   "say": "Dùng khi tả số liệu Task 1 tính đến một năm đã qua. Cũng dùng với by the time + quá khứ đơn.",
+   "ex": [
+    ["*By 2010*, the figure *had doubled*.", "Đến năm 2010, con số đã tăng gấp đôi.", ""],
+    ["By the time the police arrived, the thief *had escaped*.", "Khi cảnh sát đến, tên trộm đã trốn thoát.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói chưa từng làm gì trước một việc ở quá khứ → had never + V3",
+   "f": [["Chưa từng", "s:S + v:had + b:never + v:V3 + x:before…"]],
+   "say": "Đây là hiện tại hoàn thành lùi về quá khứ. Hay dùng khi kể trải nghiệm trong Speaking Part 2.",
+   "ex": [
+    ["She *had never seen* snow before she moved to Canada.", "Cô ấy chưa từng thấy tuyết trước khi chuyển đến Canada.", ""],
+    ["I *had never travelled* abroad before I started university.", "Tôi chưa từng đi nước ngoài trước khi vào đại học.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nhấn việc kéo dài đến một mốc quá khứ → had been + V-ing",
+   "f": [["Tiếp diễn", "s:S + v:had + v:been + v:V-ing"]],
+   "say": "Nhấn vào quá trình kéo dài trước một mốc hoặc một việc ở quá khứ.",
+   "ex": [
+    ["She *had been working* there for ten years before she quit.", "Cô ấy đã làm việc ở đó mười năm trước khi nghỉ.", ""],
+    ["He *had been waiting* for two hours when the bus finally came.", "Anh ấy đã đợi hai tiếng thì xe buýt cuối cùng cũng đến.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["Yesterday I *had gone* to the cinema.", "Yesterday I *went* to the cinema.", "Chỉ có một việc trong quá khứ thì dùng quá khứ đơn."],
+  ["After he *finished* dinner, he *had watched* TV.", "After he *had finished* dinner, he *watched* TV.", "Ăn xong là việc trước nên dùng had finished."],
+  ["She had *went* home.", "She had *gone* home.", "Sau had dùng V3."]
+ ],
+ "apply": [
+  ["By 2020, spending on food had fallen to 18% of the household budget.", "Đến năm 2020, chi tiêu cho thực phẩm đã giảm xuống còn 18% ngân sách hộ gia đình."],
+  ["Food, which had been the largest category in 1990, dropped to second place by 2020.", "Thực phẩm, vốn là hạng mục lớn nhất năm 1990, tụt xuống vị trí thứ hai vào năm 2020."],
+  ["I had never used a laptop before I started secondary school.", "Tôi chưa từng dùng máy tính xách tay trước khi vào cấp hai."]
+ ],
+ "check": [
+  ["By the time the police arrived, the thief ___ (escape). Chia thế nào?", "had escaped. Tên trộm trốn trước, cảnh sát đến sau."],
+  ["Khi nào không cần quá khứ hoàn thành dù có hai việc?", "Khi kể đúng thứ tự thời gian bằng and, then, after, before, ví dụ: He got up, had breakfast and left."]
+ ]
+}

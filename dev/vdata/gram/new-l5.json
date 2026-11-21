@@ -1,0 +1,79 @@
+{
+ "id": "l5",
+ "summary": [
+  "So sánh hơn: <b>higher than, more popular than</b>. Nhất: <b>the highest, the most popular</b>.",
+  "Bất quy tắc: <b>good - better - best; bad - worse - worst; many/much - more - most; little - less - least</b>.",
+  "Đếm được: <b>more / fewer</b>. Không đếm được: <b>more / less</b>.",
+  "Mức chênh: <b>much / significantly / slightly + so sánh hơn</b>.",
+  "Gấp mấy lần: <b>twice / three times as + adj + as</b>. Bằng nhau: <b>the same as</b>."
+ ],
+ "idea": "Đề Task 1 đòi \"make comparisons\": đặt hai số cạnh nhau để người đọc thấy ai hơn, ai kém, hơn bao nhiêu. Chỉ cần bốn công cụ: hơn, nhất, gấp mấy lần, bằng nhau.",
+ "img": "Hai cột trên biểu đồ như hai người đứng cạnh nhau: bạn nói ai cao hơn, cao nhất, cao gấp mấy lần.",
+ "steps": [
+  {
+   "t": "Muốn nói A hơn B → so sánh hơn + than",
+   "f": [
+    ["Ngắn", "s:A + v:was + o:higher + x:than + s:B"],
+    ["Dài", "s:A + v:was + o:more popular + x:than + s:B"],
+    ["Mức chênh", "b:much / significantly / slightly + o:higher"]
+   ],
+   "say": "Tính từ ngắn thêm -er, tính từ dài thêm more. Thêm much, far, significantly (hơn nhiều) hoặc slightly (hơn chút) trước từ so sánh. Phải so số liệu với số liệu: dùng that / those để khỏi lặp.",
+   "ex": [
+    ["The figure for Japan was *significantly higher than* that for Korea.", "Số liệu của Nhật cao hơn đáng kể so với của Hàn.", "that = the figure."],
+    ["Women spent *slightly less* time on sport *than* men.", "Phụ nữ dành ít thời gian cho thể thao hơn nam giới một chút.", "time không đếm được nên dùng less."],
+    ["Men watched *fewer* films *than* women.", "Nam giới xem ít phim hơn nữ giới.", "films đếm được nên dùng fewer."]
+   ]
+  },
+  {
+   "t": "Muốn nêu thứ nổi bật nhất → so sánh nhất",
+   "f": [
+    ["Nhất", "x:the + o:highest / most popular + s:N"],
+    ["Hạng hai", "x:the + b:second + o:highest"]
+   ],
+   "say": "Dùng nhiều trong câu tổng quan. Bất quy tắc: good - best, bad - worst, many - most, little - least.",
+   "ex": [
+    ["Social media was *the most popular* activity among 16 to 24-year-olds.", "Mạng xã hội là hoạt động phổ biến nhất ở nhóm 16 đến 24 tuổi.", ""],
+    ["China had *the highest* level of emissions, while India had *the second highest*.", "Trung Quốc có mức phát thải cao nhất, còn Ấn Độ cao thứ hai.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói gấp mấy lần → twice / three times as ... as",
+   "f": [
+    ["Gấp lần", "b:twice / three times + x:as + o:many / much / high + x:as"],
+    ["Gấp đôi", "s:N + b:doubled / tripled"]
+   ],
+   "say": "Số lần đặt trước as ... as, không viết twice more than. doubled và tripled là động từ, không cần thêm twice.",
+   "ex": [
+    ["The UK spent *twice as much* on health *as* Spain.", "Anh chi cho y tế gấp đôi Tây Ban Nha.", ""],
+    ["The 45+ group spent *twice as many hours* reading *as* the 25 to 44 group.", "Nhóm 45 tuổi trở lên đọc sách nhiều gấp đôi số giờ của nhóm 25 đến 44.", ""],
+    ["The number of users *doubled* between 2010 and 2015.", "Số người dùng tăng gấp đôi từ 2010 đến 2015.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói hai thứ như nhau → the same as, similar to",
+   "f": [
+    ["Giống", "s:A + v:was + b:the same as / similar to + s:B"]
+   ],
+   "say": "the same luôn đi với as. similar đi với to. Có thể dùng as + adj + as: as high as.",
+   "ex": [
+    ["The pattern for men was *similar to* that for women.", "Xu hướng ở nam giới tương tự ở nữ giới.", ""],
+    ["Time spent on exercise was *the same* for the two older groups.", "Thời gian tập thể dục là như nhau ở hai nhóm lớn tuổi.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["Japan's figure was higher than *Korea*.", "Japan's figure was higher than *that of Korea*.", "So số liệu với số liệu."],
+  ["*more higher* than", "*much higher* than", "higher đã là so sánh hơn, không thêm more."],
+  ["twice *more than*", "twice *as much as*", "Số lần đi với as ... as."],
+  ["the same *with*", "the same *as*", "the same luôn đi với as."]
+ ],
+ "apply": [
+  ["The figure for women was significantly higher than that for men.", "Số liệu của nữ cao hơn đáng kể so với của nam."],
+  ["Spending on housing was twice as high as spending on transport.", "Chi tiêu cho nhà ở cao gấp đôi chi tiêu cho giao thông."],
+  ["Of all the age groups, teenagers spent the most time on social media.", "Trong các nhóm tuổi, thanh thiếu niên dành nhiều thời gian nhất cho mạng xã hội."]
+ ],
+ "check": [
+  ["A = 60%, B = 20%. Viết một câu so sánh gấp lần.", "The figure for A was three times as high as that for B."],
+  ["Chọn: \"people aged 45+ spent (less / fewer) time on exercise\".", "less, vì time không đếm được."]
+ ]
+}

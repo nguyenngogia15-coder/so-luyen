@@ -1,0 +1,61 @@
+{
+ "id": "b4",
+ "summary": [
+  "<b>a/an</b>: một cái bất kỳ, nhắc lần đầu, danh từ đếm được số ít. Chọn theo <b>âm đầu</b>.",
+  "<b>the</b>: người đọc biết chắc là cái nào (đã nhắc, duy nhất, có cụm xác định, so sánh nhất).",
+  "<b>Không mạo từ</b>: nói chung với danh từ số nhiều hoặc không đếm được.",
+  "Danh từ đếm được số ít <b>không bao giờ đứng trơ trọi</b>."
+ ],
+ "idea": "Tiếng Việt không có a, an, the nên đây là lỗi người Việt khó tự thấy nhất. Cả ba lựa chọn chỉ trả lời một câu hỏi: *người đọc có biết chính xác cái nào không?*",
+ "img": "Bạn đưa người nghe chìa khóa: the là chìa đúng ổ, a là một chìa bất kỳ trong ổ chìa khóa, không mạo từ là nói về cả loại chìa khóa.",
+ "steps": [
+  {
+   "t": "Nói về một cái bất kỳ, nhắc lần đầu → a / an",
+   "f": [["a", "x:a + s:âm phụ âm (a car, a university)"], ["an", "x:an + s:âm nguyên âm (an apple, an hour)"]],
+   "say": "Chỉ dùng với danh từ đếm được số ít. Chọn a hay an theo âm đọc, không theo chữ cái: an hour (h câm), a university (đọc là /ju/).",
+   "ex": [
+    ["I bought *a* book yesterday.", "Hôm qua tôi mua một cuốn sách.", "Người nghe chưa biết cuốn nào."],
+    ["Pollution is *a* serious problem.", "Ô nhiễm là một vấn đề nghiêm trọng.", "problem đếm được, số ít, là một trong nhiều vấn đề."]
+   ]
+  },
+  {
+   "t": "Người đọc biết chắc là cái nào → the",
+   "f": [["Có cụm xác định", "x:the + s:N + o:of... / where..."], ["Có chữ nhất", "x:the + o:highest / first / only + s:N"]],
+   "say": "Dùng the khi: một, vừa nhắc ở câu trước. Hai, chỉ có một (the sun, the internet, the environment). Ba, có cụm đi sau chỉ rõ (the number of tourists). Bốn, có so sánh nhất, số thứ tự, only.",
+   "ex": [
+    ["I bought a book. *The* book is about history.", "Tôi mua một cuốn sách. Cuốn sách đó nói về lịch sử.", "Lần hai nhắc tới nên dùng the."],
+    ["*The* number of tourists has increased.", "Số lượng khách du lịch đã tăng.", "Cụm of tourists chỉ rõ con số nào."]
+   ]
+  },
+  {
+   "t": "Nói chung về cả một loại → không mạo từ",
+   "f": [["Nói chung", "s:N-s / N không đếm được"]],
+   "say": "Danh từ số nhiều hoặc không đếm được, nói chung, thì không đặt gì phía trước. Đây là kiểu câu xuất hiện nhiều nhất trong Task 2.",
+   "ex": [
+    ["*Children* need *sleep*.", "Trẻ em cần ngủ.", "Cả hai đều nói chung nên không dùng the."],
+    ["*Education* is important.", "Giáo dục là quan trọng.", "Viết The education thì người đọc sẽ hỏi giáo dục nào."]
+   ]
+  },
+  {
+   "t": "Chưa chắc → hỏi ba câu theo thứ tự",
+   "say": "Câu 1: người đọc biết chính xác cái nào? Có thì dùng the. Câu 2: nếu không, danh từ đếm được số ít? Có thì dùng a/an. Câu 3: còn lại (số nhiều hoặc không đếm được, nói chung) thì không dùng gì.",
+   "ex": [
+    ["*Unemployment* is rising in many countries.", "Thất nghiệp đang tăng ở nhiều quốc gia.", "unemployment không đếm được và nói chung, nên không dùng mạo từ."]
+   ]
+  }
+ ],
+ "traps": [
+  ["She is student.", "She is *a* student.", "Danh từ đếm được số ít không đứng trơ trọi."],
+  ["*The* technology changes people's lives.", "*Technology* changes people's lives.", "Công nghệ nói chung thì không dùng the."],
+  ["Many people use *internet*.", "Many people use *the* internet.", "Internet là thứ duy nhất, ai cũng biết nên dùng the."]
+ ],
+ "apply": [
+  ["Education is the key to a better future.", "Giáo dục là chìa khóa của một tương lai tốt đẹp hơn."],
+  ["The government should invest more in public transport.", "Chính phủ nên đầu tư nhiều hơn vào giao thông công cộng."],
+  ["Students should be free to choose their own subjects.", "Sinh viên nên được tự do chọn môn học của mình."]
+ ],
+ "check": [
+  ["Vì sao viết \"the cost of living\" nhưng \"Education is expensive\"?", "Cụm of living chỉ rõ chi phí nào nên dùng the. Education ở câu sau là nói chung nên không dùng mạo từ."],
+  ["Điền: \"___ government should build ___ new hospital in ___ rural areas.\"", "The government, a new hospital, rural areas (để trống vì số nhiều và nói chung)."]
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "id": "b2",
+ "summary": [
+  "<b>Hiện tại đơn</b>: điều luôn đúng, thói quen. He/she/it + <b>V-s/es</b>.",
+  "<b>Hiện tại tiếp diễn</b>: <b>am/is/are + V-ing</b> cho việc đang diễn ra, tạm thời, xu hướng đang đổi.",
+  "Có <b>does/don't</b> thì động từ chính trở về nguyên mẫu, không thêm -s.",
+  "Động từ trạng thái (know, believe, want, need, like, seem) không dùng -ing."
+ ],
+ "idea": "Hiện tại đơn nói điều *lúc nào cũng vậy*. Hiện tại tiếp diễn nói điều *đang diễn ra dở dang* quanh lúc nói. Muốn chọn thì, hãy tự hỏi: việc này cố định hay chỉ đang xảy ra?",
+ "img": "Hiện tại đơn là tấm ảnh chụp cả cuộc đời. Hiện tại tiếp diễn là đoạn video đang quay, chưa kết thúc.",
+ "steps": [
+  {
+   "t": "Muốn nói sự thật, thói quen → hiện tại đơn",
+   "f": [["Khẳng định", "s:He / She / It + v:V-s / es"], ["Phủ định", "s:S + x:don't / doesn't + v:V"], ["Câu hỏi", "x:Do / Does + s:S + v:V"]],
+   "say": "Dùng cho sự thật, thói quen, ý kiến. Dấu hiệu: always, usually, often, every day. Ngôi he, she, it hoặc danh từ số ít thì thêm -s/-es. Đã có does thì động từ chính không thêm -s nữa.",
+   "ex": [
+    ["Water *boils* at 100 degrees Celsius.", "Nước sôi ở 100 độ C.", "Sự thật luôn đúng, chủ ngữ số ít nên thêm -s."],
+    ["She *doesn't work* on Sundays.", "Cô ấy không làm việc vào Chủ nhật.", "Có doesn't thì work giữ nguyên."]
+   ]
+  },
+  {
+   "t": "Muốn nói việc đang diễn ra, tạm thời, xu hướng → hiện tại tiếp diễn",
+   "f": [["Khẳng định", "s:S + v:am / is / are + v:V-ing"], ["Phủ định", "s:S + v:am / is / are + n:not + v:V-ing"]],
+   "say": "Phải đủ cả be và -ing. Dấu hiệu: now, at the moment, currently, these days, nowadays. Dạng xu hướng rất hợp để mô tả thay đổi trong Writing.",
+   "ex": [
+    ["She *is working* from home this week.", "Tuần này cô ấy làm việc ở nhà.", "Chỉ tạm thời trong tuần này."],
+    ["More people *are choosing* electric cars these days.", "Ngày nay ngày càng nhiều người chọn xe điện.", "Xu hướng đang thay đổi."]
+   ]
+  },
+  {
+   "t": "Cùng một động từ, đổi thì là đổi nghĩa",
+   "say": "Hiện tại đơn là cố định, lâu dài. Hiện tại tiếp diễn là tạm thời, đang xảy ra. Đọc từng cặp ví dụ để thấy khác biệt.",
+   "ex": [
+    ["I *live* in Hanoi.", "Tôi sống ở Hà Nội.", "Nơi ở cố định."],
+    ["I *am living* in Hanoi at the moment.", "Hiện giờ tôi đang ở Hà Nội.", "Tạm thời, có thể sắp chuyển."]
+   ]
+  },
+  {
+   "t": "Động từ nói về trạng thái → luôn dùng hiện tại đơn",
+   "say": "Know, understand, believe, think (cho rằng), like, love, hate, want, need, prefer, own, belong, seem tả trạng thái trong đầu hoặc sự sở hữu, nên không dùng -ing, kể cả khi nói về lúc này.",
+   "ex": [
+    ["I *know* the answer.", "Tôi biết đáp án.", "Không viết am knowing."],
+    ["Many people *believe* that homework is necessary.", "Nhiều người tin rằng bài tập về nhà là cần thiết.", "Câu mở ý quen thuộc trong Task 2."]
+   ]
+  }
+ ],
+ "traps": [
+  ["She *work* in a bank.", "She *works* in a bank.", "Chủ ngữ she thì động từ phải thêm -s."],
+  ["I *am agree* with this idea.", "I *agree* with this idea.", "agree đã là động từ nên không thêm am."],
+  ["He *doesn't likes* coffee.", "He *doesn't like* coffee.", "Sau doesn't là động từ nguyên mẫu."]
+ ],
+ "apply": [
+  ["Many people believe that technology makes life easier.", "Nhiều người tin rằng công nghệ làm cuộc sống dễ dàng hơn."],
+  ["Nowadays, more and more students are studying online.", "Ngày nay ngày càng nhiều sinh viên học trực tuyến."],
+  ["In my free time, I usually read books or go jogging.", "Lúc rảnh, tôi thường đọc sách hoặc chạy bộ."]
+ ],
+ "check": [
+  ["\"Nowadays, more people ___ (shop) online.\" Dùng thì nào?", "are shopping. Nowadays cho thấy xu hướng đang thay đổi nên dùng hiện tại tiếp diễn."],
+  ["Vì sao \"I am wanting a new phone\" sai?", "want là động từ trạng thái, không dùng -ing. Sửa: I want a new phone."]
+ ]
+}

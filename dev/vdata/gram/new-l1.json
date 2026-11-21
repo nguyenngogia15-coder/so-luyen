@@ -1,0 +1,79 @@
+{
+ "id": "l1",
+ "summary": [
+  "Chủ ngữ số liệu: <b>the number of + N đếm được, the amount of + N không đếm được, the percentage / proportion of + N</b>.",
+  "Động từ chia theo <b>danh từ chính</b>: The number of tourists <b>was</b>; Sales of cars <b>were</b>.",
+  "Mở bài viết lại đề: <b>shows → illustrates / compares / gives information about</b>.",
+  "Chọn thì theo mốc năm: <b>quá khứ đơn</b> (năm đã qua), <b>hiện tại đơn</b> (không có năm), <b>is expected to V</b> (năm tương lai)."
+ ],
+ "idea": "Task 1 là kể lại số liệu, nên câu nào cũng cần một chủ ngữ là *thứ được đo* (số người, lượng nước, tỉ lệ). Động từ chỉ nhìn vào danh từ chính của cụm đó. Thì thì nhìn vào *mốc năm* trên biểu đồ.",
+ "img": "Mỗi câu Task 1 là một tấm nhãn dán số: chủ ngữ nói đang đo cái gì, động từ nói nó đang đứng hay chạy.",
+ "steps": [
+  {
+   "t": "Muốn nói về số lượng → chọn đúng chủ ngữ số liệu",
+   "f": [
+    ["Đếm được", "x:The number of + s:tourists / cars"],
+    ["Không đếm được", "x:The amount of + s:water / money"],
+    ["Phần trăm", "x:The percentage / proportion of + s:students"]
+   ],
+   "say": "Chọn theo loại danh từ đi sau. Dùng number với danh từ số nhiều, amount với danh từ không đếm được. Không viết the number of money.",
+   "ex": [
+    ["*The number of tourists* in City A was 2.1 million in 2000.", "Số du khách ở thành phố A là 2,1 triệu vào năm 2000.", ""],
+    ["*The amount of electricity* used by households rose steadily.", "Lượng điện hộ gia đình sử dụng tăng đều.", "electricity không đếm được."],
+    ["*The percentage of students* who cycled to school was 45%.", "Tỉ lệ học sinh đi xe đạp đến trường là 45%.", ""]
+   ]
+  },
+  {
+   "t": "Muốn chia động từ đúng → nhìn danh từ chính",
+   "f": [
+    ["Số ít", "x:The + b:number / amount / percentage + o:of... + v:was"],
+    ["Số nhiều", "b:Sales / Prices + o:of... + v:were"]
+   ],
+   "say": "Number, amount, percentage luôn là số ít nên dùng was. Sales, prices, figures là số nhiều nên dùng were. Đừng nhìn danh từ đứng gần động từ nhất.",
+   "ex": [
+    ["The *number* of tourists *was* stable.", "Số du khách ổn định.", "number là số ít."],
+    ["*Sales* of bicycles *were* higher in 2020 than in 2010.", "Doanh số xe đạp năm 2020 cao hơn năm 2010.", "sales là số nhiều."]
+   ]
+  },
+  {
+   "t": "Muốn viết câu mở bài → viết lại đề bằng từ khác",
+   "f": [
+    ["Mở bài", "s:The chart + v:illustrates + o:how many... + b:V (thì theo số liệu)"]
+   ],
+   "say": "Đổi shows thành illustrates, compares, gives information about. Phần sau động từ này thì chia theo mốc số liệu. Bản thân biểu đồ đang ở trước mắt nên động từ nói về biểu đồ dùng hiện tại.",
+   "ex": [
+    ["The graph *illustrates how many people visited* the museum between 2000 and 2010.", "Biểu đồ cho thấy có bao nhiêu người đã đến thăm bảo tàng từ 2000 đến 2010.", "illustrates ở hiện tại, visited ở quá khứ."],
+    ["The bar chart *compares the proportion of* men and women who work part-time.", "Biểu đồ cột so sánh tỉ lệ nam và nữ làm việc bán thời gian.", ""]
+   ]
+  },
+  {
+   "t": "Muốn chọn thì cho cả bài → nhìn mốc năm",
+   "f": [
+    ["Năm đã qua", "v:V2"],
+    ["Không có năm", "v:V / V-s"],
+    ["Năm tương lai", "v:is + b:expected / predicted + x:to V"]
+   ],
+   "say": "Mất 10 giây chọn thì ngay từ đầu để khỏi sai cả bài. Số liệu tương lai chỉ là dự báo nên dùng is expected to, is predicted to. Biểu đồ đi qua cả hai thì đổi thì đúng chỗ chuyển.",
+   "ex": [
+    ["In 2010, the figure *stood* at 20%, and it *rose* to 35% in 2015.", "Năm 2010 con số ở mức 20%, rồi tăng lên 35% vào năm 2015.", "Năm đã qua."],
+    ["Men *spend* more time on sport than women.", "Nam giới dành nhiều thời gian cho thể thao hơn nữ giới.", "Không có năm."],
+    ["The population *is expected to reach* 9 billion by 2050.", "Dân số được dự đoán đạt 9 tỉ vào năm 2050.", "Năm tương lai."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The number of money *were* high.", "The *amount* of money *was* high.", "money không đếm được nên dùng amount, và chủ ngữ số ít."],
+  ["Sales of cars *was* high in 2020.", "Sales of cars *were* high in 2020.", "sales là số nhiều."],
+  ["In 2005, the number *increases* to 50.", "In 2005, the number *increased* to 50.", "Năm đã qua phải dùng quá khứ."],
+  ["By 2050, the figure *reached* 80%.", "By 2050, the figure *is expected to reach* 80%.", "Tương lai dùng cấu trúc dự đoán."]
+ ],
+ "apply": [
+  ["The line graph illustrates changes in the number of international students in three countries between 2005 and 2015.", "Biểu đồ đường minh họa sự thay đổi về số sinh viên quốc tế ở ba quốc gia từ 2005 đến 2015."],
+  ["The percentage of households with internet access rose from 20% in 2000 to 85% in 2020.", "Tỉ lệ hộ gia đình có internet tăng từ 20% năm 2000 lên 85% năm 2020."],
+  ["The amount of energy consumed by industry was higher than that used by transport.", "Lượng năng lượng ngành công nghiệp tiêu thụ cao hơn lượng giao thông sử dụng."]
+ ],
+ "check": [
+  ["Biểu đồ tròn về chi tiêu của một gia đình, không ghi năm. Dùng thì gì?", "Hiện tại đơn: The family spends 30% of its income on food."],
+  ["Chọn was hay were: \"The number of visitors ___ 5,000.\"", "was, vì danh từ chính là number (số ít)."]
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "id": "l2",
+ "summary": [
+  "Năm đã qua → <b>quá khứ đơn</b>: rose, fell, was, reached.",
+  "Kéo dài đến nay (since, so far, over the past decade) → <b>hiện tại hoàn thành</b>: has risen.",
+  "Năm tương lai → <b>is expected / predicted / projected to + V</b> (hoặc will + V).",
+  "Không có mốc thời gian (bảng một thời điểm, quy trình) → <b>hiện tại đơn</b>.",
+  "Nhớ ba cột bất quy tắc: rise - rose - risen, fall - fell - fallen, grow - grew - grown."
+ ],
+ "idea": "Thì trong Task 1 không do bạn thích mà do *mốc thời gian trên biểu đồ* quyết định. Nhìn trục thời gian rồi so với hiện tại: đã qua, kéo dài đến nay, chưa tới, hoặc không có mốc.",
+ "img": "Trục thời gian như dòng sông, hiện tại là cái cầu bạn đang đứng. Bên trái cầu dùng quá khứ, bên phải dùng dự báo.",
+ "steps": [
+  {
+   "t": "Muốn tả số liệu năm đã qua → quá khứ đơn",
+   "f": [
+    ["Quá khứ", "s:The figure + v:rose / fell / stood + x:in + o:2010"]
+   ],
+   "say": "Phổ biến nhất. Mốc đã kết thúc thì mọi câu tả số liệu dùng quá khứ đơn. Học kỹ động từ bất quy tắc: rise - rose, fall - fell, grow - grew, stand - stood.",
+   "ex": [
+    ["In 2015, sales of electric cars *were* only 5,000.", "Năm 2015 doanh số xe điện chỉ là 5.000 chiếc.", ""],
+    ["Electric car sales *rose* sharply between 2020 and 2025.", "Doanh số xe điện tăng mạnh từ 2020 đến 2025.", ""],
+    ["Petrol car sales *fell* to 700,000 in 2025.", "Doanh số xe xăng giảm xuống 700.000 chiếc năm 2025.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói thay đổi kéo dài đến nay → hiện tại hoàn thành",
+   "f": [
+    ["Hoàn thành", "s:N + v:has / have + b:V3 + x:since / over the past decade"]
+   ],
+   "say": "Dùng khi đề nói thay đổi bắt đầu trong quá khứ và còn liên quan đến hiện tại, hoặc khi đề ra năm hiện tại. Dấu hiệu: since, so far, over the past decade.",
+   "ex": [
+    ["Since 2015, the popularity of electric cars *has grown* steadily.", "Từ 2015, độ phổ biến của xe điện tăng đều.", "Since + mốc, kéo dài đến nay."],
+    ["The number of users *has risen* sharply over the past decade.", "Số người dùng đã tăng mạnh trong thập kỷ qua.", ""]
+   ]
+  },
+  {
+   "t": "Muốn tả số liệu năm tương lai → cấu trúc dự báo",
+   "f": [
+    ["Dự báo", "s:N + v:is expected / predicted / projected + x:to V"]
+   ],
+   "say": "Số liệu tương lai chỉ là dự báo nên dùng is expected to, is predicted to, is projected to. An toàn và học thuật hơn will. Mệnh đề dự báo luôn là to V.",
+   "ex": [
+    ["By 2035, sales of petrol cars *are expected to fall* to 250,000.", "Đến 2035, doanh số xe xăng được dự báo giảm còn 250.000 chiếc.", ""],
+    ["The population *is projected to reach* 9 billion by 2050.", "Dân số được dự báo đạt 9 tỉ người vào năm 2050.", ""]
+   ]
+  },
+  {
+   "t": "Muốn tả biểu đồ có cả quá khứ và dự báo → đổi thì tại mốc chuyển",
+   "say": "Phần trước hiện tại dùng quá khứ đơn, phần sau dùng dự báo. Biểu đồ không có mốc thời gian thì dùng hiện tại đơn cho cả bài.",
+   "ex": [
+    ["Sales *rose* from 2000 to 2020 and *are projected to fall* by 2040.", "Doanh số tăng từ 2000 đến 2020 và được dự báo giảm vào năm 2040.", ""],
+    ["Men *spend* more time on sport than women.", "Nam giới dành nhiều thời gian cho thể thao hơn nữ giới.", "Không có năm nên dùng hiện tại đơn."]
+   ]
+  }
+ ],
+ "traps": [
+  ["In 2005, the number *increases* to 50.", "In 2005, the number *increased* to 50.", "2005 đã qua nên dùng quá khứ."],
+  ["By 2050, the figure *reached* 80%.", "By 2050, the figure *is expected to reach* 80%.", "2050 là tương lai."],
+  ["Since 2015, sales *grew* steadily.", "Since 2015, sales *have grown* steadily.", "Since + kéo dài đến nay dùng hiện tại hoàn thành."],
+  ["The figure has *rose* sharply.", "The figure has *risen* sharply.", "Hiện tại hoàn thành dùng V3 (risen)."]
+ ],
+ "apply": [
+  ["Sales of electric cars rose sharply between 2015 and 2020 and are expected to double by 2030.", "Doanh số xe điện tăng mạnh từ 2015 đến 2020 và được dự báo tăng gấp đôi vào năm 2030."],
+  ["Over the past decade, the number of online shoppers has grown steadily.", "Trong thập kỷ qua, số người mua sắm trực tuyến đã tăng đều."],
+  ["The proportion of elderly people is projected to reach 25% by 2040.", "Tỉ lệ người cao tuổi được dự báo đạt 25% vào năm 2040."]
+ ],
+ "check": [
+  ["Biểu đồ đường từ 1990 đến 2030 (đề ra năm nay). Chia thì thế nào?", "Từ 1990 đến hiện tại dùng quá khứ đơn. Từ hiện tại đến 2030 dùng is expected to / is predicted to."],
+  ["Viết dạng đúng: \"The figure has (fall) sharply since 2018.\"", "fallen. Hiện tại hoàn thành dùng V3."]
+ ]
+}

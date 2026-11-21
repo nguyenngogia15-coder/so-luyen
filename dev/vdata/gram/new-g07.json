@@ -1,0 +1,75 @@
+{
+ "id": "g07",
+ "summary": [
+  "Động từ chia theo <b>danh từ chính</b>, không theo danh từ đứng sát nó.",
+  "V-ing, to V, mệnh đề làm chủ ngữ → <b>số ít</b>.",
+  "<b>The number of</b> + N số nhiều → số ít. <b>A number of</b> + N số nhiều → số nhiều.",
+  "<b>Either…or / Neither…nor</b>: chia theo chủ ngữ gần động từ hơn."
+ ],
+ "idea": "Động từ phải *khớp số* với chủ ngữ: số ít thì hiện tại thêm -s (it *is*, he *works*), số nhiều thì không. Tiếng Việt không có quy tắc này nên ta hay quên, nhất là khi chủ ngữ dài và có nhiều danh từ.",
+ "img": "Chủ ngữ dài như một chiếc xe có một đầu kéo. Đầu kéo (danh từ chính) quyết định hướng đi. Các toa phía sau (of…, in…, who…) chỉ đi theo.",
+ "steps": [
+  {
+   "t": "Chủ ngữ dài → tìm danh từ chính",
+   "f": [["Che phần phụ", "b:N chính + x:of / in / with / who… + o:phần phụ (bỏ qua) + v:V chia theo N chính"]],
+   "say": "Danh từ chính thường đứng trước giới từ hoặc trước who/which. Lấy tay che phần từ giới từ trở đi, rồi chia động từ theo phần còn lại.",
+   "ex": [
+    ["The *cost* of living in big cities *is* rising.", "Chi phí sinh hoạt ở các thành phố lớn đang tăng.", "Che phần sau of, còn cost, số ít."],
+    ["*Students* who live far from school *spend* more on transport.", "Những sinh viên sống xa trường chi nhiều hơn cho đi lại.", "Danh từ chính là students, số nhiều."],
+    ["*One* of the main problems *is* traffic.", "Một trong những vấn đề chính là giao thông.", "Chủ ngữ là one, không phải problems."]
+   ]
+  },
+  {
+   "t": "Muốn nói về một việc hoặc một con số → số ít",
+   "f": [
+    ["Một việc", "s:V-ing / To V / What… + v:V số ít"],
+    ["Con số", "x:The number of + o:N-s + v:V số ít"],
+    ["Nhiều", "x:A number of + o:N-s + v:V số nhiều"]
+   ],
+   "say": "V-ing, to V và mệnh đề (What students need…) là một việc, nên số ít. Each, every, everyone, nobody, something cũng số ít. Danh từ không đếm được (information, advice) cũng số ít.",
+   "ex": [
+    ["*Learning* online *requires* discipline.", "Học trực tuyến đòi hỏi kỷ luật.", "Việc học là một việc."],
+    ["*The number* of online students *has* doubled.", "Số lượng sinh viên học trực tuyến đã tăng gấp đôi.", "Nói về con số."],
+    ["*A number of* universities *offer* online degrees.", "Nhiều trường đại học cung cấp bằng cấp trực tuyến.", "A number of = many."]
+   ]
+  },
+  {
+   "t": "Hai chủ ngữ nối nhau → xem từ nối",
+   "f": [
+    ["A và B", "s:A + x:and + s:B + v:V số nhiều"],
+    ["Chọn B", "x:Either A or B / Neither A nor B + v:V theo B"],
+    ["Phụ", "s:A + x:along with / as well as + o:B + v:V theo A"]
+   ],
+   "say": "And cộng lại thành số nhiều. Either…or và neither…nor chia theo chủ ngữ gần động từ. Along with, as well as chỉ thêm thông tin nên vẫn chia theo A.",
+   "ex": [
+    ["*Time and money* *are* limited.", "Thời gian và tiền bạc đều có hạn.", "And = cộng lại."],
+    ["Neither the teacher nor the *students* *were* ready.", "Cả giáo viên lẫn học sinh đều chưa sẵn sàng.", "Gần động từ nhất là students."],
+    ["The *teacher*, along with her students, *is* online.", "Cô giáo cùng học sinh của cô đang trực tuyến.", "Along with không làm chủ ngữ thành số nhiều."]
+   ]
+  },
+  {
+   "t": "There is / There are → nhìn danh từ đứng sau",
+   "f": [["Chọn be", "x:There + v:is / are + s:N đứng sau"]],
+   "say": "There không có số. Động từ chia theo danh từ ngay sau nó. Danh từ không đếm được dùng is.",
+   "ex": [
+    ["There *is* a problem. · There *are* many problems.", "Có một vấn đề. · Có nhiều vấn đề.", ""],
+    ["There *is* a lot of traffic in the city centre.", "Có rất nhiều xe cộ ở trung tâm thành phố.", "Traffic không đếm được."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The quality of the courses *are* improving.", "The quality of the courses *is* improving.", "Danh từ chính là quality, không phải courses."],
+  ["The number of students *are* rising.", "The number of students *is* rising.", "Thứ đang tăng là con số."],
+  ["One of my friends *live* abroad.", "One of my friends *lives* abroad.", "Chủ ngữ là one."],
+  ["*There is* many problems in big cities.", "*There are* many problems in big cities.", "Problems số nhiều nên dùng are."]
+ ],
+ "apply": [
+  ["The cost of living in big cities is rising, and a number of young people are moving to rural areas.", "Chi phí sinh hoạt ở các thành phố lớn đang tăng, và nhiều người trẻ đang chuyển về nông thôn."],
+  ["Learning online requires discipline, so students who study alone often find it difficult to stay motivated.", "Học trực tuyến đòi hỏi kỷ luật, nên những sinh viên tự học thường thấy khó giữ động lực."],
+  ["The number of people who use public transport has increased significantly over the last decade.", "Số người sử dụng phương tiện công cộng đã tăng đáng kể trong thập kỷ qua."]
+ ],
+ "check": [
+  ["Chọn is hay are: The quality of these products ___ poor.", "is. Che of these products, danh từ chính là quality, số ít."],
+  ["Khác nhau thế nào giữa The number of và A number of?", "The number of là con số, động từ số ít. A number of nghĩa là nhiều, động từ số nhiều."]
+ ]
+}

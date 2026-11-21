@@ -1,0 +1,80 @@
+{
+ "id": "g19",
+ "summary": [
+  "Bị động = <b>be (chia theo thì) + V3</b>. Tân ngữ của câu chủ động thành chủ ngữ.",
+  "Dùng khi không biết hoặc không cần nói người làm, và trong Task 1 quy trình.",
+  "Nêu giải pháp: <b>modal + be + V3</b> (should be banned). Giọng khách quan: <b>It is believed that…</b>, <b>S is believed to V</b>.",
+  "Động từ không có tân ngữ (happen, occur, rise, arrive) <b>không có bị động</b>."
+ ],
+ "idea": "Câu chủ động nói *ai làm gì*. Khi người làm không quan trọng hoặc không biết, bạn đưa thứ chịu tác động lên làm chủ ngữ. Tiếng Việt dùng \"bị\", \"được\". Tiếng Anh dùng *be + V3*, trong đó be đổi theo thì còn V3 luôn giữ nguyên.",
+ "img": "Chủ động là camera quay người thợ đang xây. Bị động là camera quay cây cầu: người thợ ra khỏi khung hình, chỉ còn cây cầu \"được xây\".",
+ "steps": [
+  {
+   "t": "Muốn nhấn vào thứ nhận hành động → be + V3",
+   "f": [
+    ["Chủ động", "s:Workers + v:built + o:the bridge"],
+    ["Bị động", "o:The bridge + b:was built + x:(by workers)"]
+   ],
+   "say": "Ba bước: đưa tân ngữ lên làm chủ ngữ, đổi động từ thành be + V3 cùng thì với câu gốc, và chỉ giữ by + người làm khi thông tin đó quan trọng.",
+   "ex": [
+    ["The council built a new bridge. → A new bridge *was built*.", "Hội đồng xây một cây cầu mới. → Một cây cầu mới đã được xây.", "Quá khứ đơn nên be là was."],
+    ["My bike *was stolen* last night.", "Xe đạp của tôi bị lấy trộm tối qua.", "Không biết hoặc không cần nói ai trộm."]
+   ]
+  },
+  {
+   "t": "Muốn dùng ở thì khác → chỉ be đổi",
+   "f": [
+    ["Mọi thì", "s:S + b:be (chia theo thì) + v:V3"],
+    ["Modal", "s:S + b:modal + b:be + v:V3"]
+   ],
+   "say": "Hiện tại: is / are built. Quá khứ: was / were built. Đang diễn ra: is being built. Hoàn thành: has been built. Tương lai: will be built. Sau can, should, must: can be built.",
+   "ex": [
+    ["A new road *is being built*.", "Một con đường mới đang được xây.", ""],
+    ["Many trees *have been cut* down since 2010.", "Nhiều cây đã bị chặt từ năm 2010.", ""],
+    ["Plastic bags *should be banned*.", "Túi nhựa nên bị cấm.", "Mẫu nêu giải pháp."]
+   ]
+  },
+  {
+   "t": "Muốn tả quy trình trong Task 1 → bị động liên tiếp",
+   "say": "Mô tả quy trình thường dùng bị động vì người làm không quan trọng. Nối các bước bằng first, then, after that, finally.",
+   "ex": [
+    ["First, the bottles *are collected* and *taken* to a factory.", "Đầu tiên, chai lọ được thu gom và đưa đến nhà máy.", ""],
+    ["Then they *are crushed* and *melted* at a high temperature.", "Sau đó chúng được nghiền và nấu chảy ở nhiệt độ cao.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nêu quan điểm khách quan → It is believed that / S is believed to V",
+   "f": [
+    ["Cách 1", "x:It + v:is + b:said / believed / argued + x:that + s:S + v:V"],
+    ["Cách 2", "s:S + v:is + b:believed + x:to V"]
+   ],
+   "say": "Hai cách có nghĩa gần nhau và đều mang giọng học thuật, hợp để mở bài Task 2.",
+   "ex": [
+    ["*It is widely believed that* technology improves education.", "Nhiều người tin rằng công nghệ cải thiện giáo dục.", ""],
+    ["Tourism *is believed to create* thousands of jobs.", "Du lịch được cho là tạo ra hàng nghìn việc làm.", ""]
+   ]
+  },
+  {
+   "t": "Động từ không có tân ngữ → không có bị động",
+   "say": "Phải có tân ngữ mới đưa lên làm chủ ngữ được. Happen, occur, rise, fall, arrive, appear, die luôn ở dạng chủ động.",
+   "ex": [
+    ["The accident *happened* at night.", "Vụ tai nạn xảy ra vào ban đêm.", "Không viết was happened."],
+    ["Prices *rose* sharply.", "Giá tăng mạnh.", "Không viết were risen."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The problem *is happened* in many countries.", "The problem *happens* in many countries.", "Happen không có tân ngữ nên không có bị động."],
+  ["The bridge *built* in 1990.", "The bridge *was built* in 1990.", "Thiếu be."],
+  ["The data *was collect* by researchers.", "The data *was collected* by researchers.", "Sau be phải là V3."]
+ ],
+ "apply": [
+  ["More trees should be planted in urban areas to reduce air pollution.", "Nên trồng thêm cây ở khu vực đô thị để giảm ô nhiễm không khí."],
+  ["It is often argued that tourism has been over-developed in some regions.", "Người ta thường cho rằng du lịch đã bị phát triển quá mức ở một số vùng."],
+  ["Local culture has been damaged in many popular destinations.", "Văn hóa địa phương đã bị tổn hại ở nhiều điểm đến nổi tiếng."]
+ ],
+ "check": [
+  ["Đổi sang bị động: The government has introduced a new law.", "A new law has been introduced (by the government)."],
+  ["Vì sao The number of cars was increased thường không tự nhiên?", "Số lượng xe tự tăng, nên dùng chủ động: The number of cars increased."]
+ ]
+}

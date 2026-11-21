@@ -1,0 +1,63 @@
+{
+ "id": "c6",
+ "summary": [
+  "Từ phủ định hoặc hạn chế ở đầu câu (<b>Never, Rarely, Not only, Only by</b>) → <b>đảo trợ động từ lên trước chủ ngữ</b>.",
+  "Câu không có trợ động từ thì mượn <b>do/does/did</b>: Rarely <b>do</b> people...",
+  "Câu chẻ: <b>It is + phần nhấn + that ...</b> và <b>What + S + V + is + phần nhấn</b>.",
+  "Mỗi bài Writing chỉ cần <b>1 đến 2 câu</b> loại này, dùng nhiều sẽ thiếu tự nhiên."
+ ],
+ "idea": "Trật tự thường là chủ ngữ rồi tới động từ. Phá trật tự đó khiến người đọc chú ý. Đảo ngữ đưa từ phủ định lên đầu và đảo như câu hỏi. Câu chẻ đặt phần cần nhấn vào một khung cố định.",
+ "img": "Câu bình thường là đường thẳng. Đảo ngữ là bẻ góc ngay đầu câu. Câu chẻ là bật đèn pha rọi đúng một phần của câu.",
+ "steps": [
+  {
+   "t": "Đưa từ phủ định lên đầu câu → đảo trợ động từ",
+   "f": [["Đảo ngữ", "b:Never / Rarely / Seldom + v:trợ động từ + s:S + v:V"]],
+   "say": "Đặt từ phủ định lên đầu, rồi đảo phần sau như câu hỏi. Nếu câu gốc không có trợ động từ thì mượn do, does, did và động từ chính về nguyên mẫu.",
+   "ex": [
+    ["I have never seen such a crowd. → *Never have I* seen such a crowd.", "Chưa bao giờ tôi thấy một đám đông như vậy.", "Đảo have lên trước I."],
+    ["People rarely think about this. → *Rarely do people* think about this.", "Hiếm khi người ta nghĩ về điều này.", "Mượn do vì câu gốc chỉ có động từ thường."]
+   ]
+  },
+  {
+   "t": "Muốn nói \"không chỉ... mà còn\" → Not only does...",
+   "f": [["Not only", "b:Not only + v:does / is + s:S + v:V + x:, but + s:S + x:also + v:V"]],
+   "say": "Mẫu hữu ích nhất cho Task 2. Chỉ vế có Not only bị đảo. Vế but also giữ trật tự bình thường.",
+   "ex": [
+    ["*Not only does* pollution harm health, *but* it *also* damages the economy.", "Ô nhiễm không chỉ gây hại cho sức khỏe mà còn làm tổn hại nền kinh tế.", "Vế đầu mượn does nên harm giữ nguyên mẫu."]
+   ]
+  },
+  {
+   "t": "Muốn nói \"chỉ khi / chỉ bằng cách\" → Only + cụm, rồi đảo",
+   "f": [["Only", "b:Only by / when / if + ... + v:can / do / did + s:S + v:V"]],
+   "say": "Sau cụm Only by, Only when, Only if, phần bị đảo là mệnh đề chính đứng sau cả cụm.",
+   "ex": [
+    ["*Only by* investing in education *can we* reduce poverty.", "Chỉ bằng cách đầu tư vào giáo dục, chúng ta mới giảm được nghèo đói.", "Đảo can lên trước we."],
+    ["Only when I arrived *did I realise* the problem.", "Chỉ khi đến nơi tôi mới nhận ra vấn đề.", "Mượn did, realise về nguyên mẫu."]
+   ]
+  },
+  {
+   "t": "Muốn nhấn một phần của câu → It is ... that hoặc What ... is",
+   "f": [["Câu chẻ", "x:It is / was + b:phần nhấn + x:that + o:phần còn lại"], ["What", "x:What + s:S + v:V + v:is + b:phần nhấn"]],
+   "say": "Đặt phần cần nhấn (ai, cái gì, khi nào, ở đâu) vào giữa It is và that. Hoặc dùng What + chủ ngữ + động từ + is, phần nhấn nằm cuối câu.",
+   "ex": [
+    ["*It is* the government *that* should solve this problem.", "Chính chính phủ là bên nên giải quyết vấn đề này.", "Nhấn vào the government."],
+    ["*What* cities need *is* better public transport.", "Điều các thành phố cần là giao thông công cộng tốt hơn.", "Nhấn vào phần cuối câu."]
+   ]
+  }
+ ],
+ "traps": [
+  ["Never *I have* seen this.", "Never *have I* seen this.", "Sau từ phủ định ở đầu câu phải đảo trợ động từ lên trước chủ ngữ."],
+  ["Not only *it is* cheap, but it is also fast.", "Not only *is it* cheap, but it is also fast.", "Vế Not only phải đảo, is đứng trước it."],
+  ["Only when I arrived *I realised* the problem.", "Only when I arrived *did I realise* the problem.", "Mệnh đề chính phải đảo: mượn did, realise về nguyên mẫu."]
+ ],
+ "apply": [
+  ["Not only does working from home save time, but it also reduces stress.", "Làm việc tại nhà không chỉ tiết kiệm thời gian mà còn giảm căng thẳng."],
+  ["Only by investing in education can governments reduce poverty in the long term.", "Chỉ bằng cách đầu tư vào giáo dục, chính phủ mới giảm được nghèo đói về lâu dài."],
+  ["What remote workers miss most is face-to-face contact with colleagues.", "Điều người làm việc từ xa nhớ nhất là sự gặp gỡ trực tiếp với đồng nghiệp."],
+  ["It is the lack of exercise that causes many health problems among teenagers.", "Chính việc thiếu vận động gây ra nhiều vấn đề sức khỏe ở thanh thiếu niên."]
+ ],
+ "check": [
+  ["Viết lại bắt đầu bằng Rarely: \"We rarely see such results.\"", "Rarely do we see such results. Mượn do vì câu gốc chỉ có động từ thường."],
+  ["Dùng câu chẻ nhấn vào parents: \"Parents should teach children good manners.\"", "It is parents who (hoặc that) should teach children good manners."]
+ ]
+}

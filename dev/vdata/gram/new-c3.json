@@ -1,0 +1,74 @@
+{
+ "id": "c3",
+ "summary": [
+  "Sau <b>giới từ</b> và khi làm <b>chủ ngữ</b> → <b>V-ing</b> (kể cả look forward to, be used to).",
+  "<b>enjoy, avoid, finish, suggest, consider</b> + V-ing. <b>want, decide, plan, hope, need</b> + to V.",
+  "<b>make / let</b> + tân ngữ + V nguyên mẫu. <b>allow / force / encourage</b> + tân ngữ + to V.",
+  "Mục đích: <b>to V</b>, không dùng for + V."
+ ],
+ "idea": "Hai động từ đứng liền nhau thì động từ sau phải đổi dạng, và động từ đầu quyết định dạng nào. Một ý chung: *to V* hướng tới việc *chưa xảy ra*, *V-ing* nói việc *có thật, đã hoặc đang trải qua*.",
+ "img": "To V là mũi tên chỉ về phía trước (muốn, định, hy vọng). V-ing là tấm ảnh chụp lại việc có thật (thích, làm xong, tránh).",
+ "steps": [
+  {
+   "t": "Muốn, dự định, quyết định → to V",
+   "f": [["Hướng tới", "s:S + v:want / plan / decide / hope / need + b:to V"]],
+   "say": "Lúc muốn hay quyết định thì việc kia còn ở phía trước, nên dùng to V. Cũng dùng cho agree, expect, promise, learn, manage, refuse, fail, afford.",
+   "ex": [
+    ["I *decided to study* abroad.", "Tôi quyết định đi du học.", "Lúc quyết định, việc đi du học chưa xảy ra."],
+    ["Many students *hope to find* a good job.", "Nhiều sinh viên hy vọng tìm được việc tốt.", "Việc tìm việc còn ở phía trước."]
+   ]
+  },
+  {
+   "t": "Thích, làm xong, tránh, đề xuất → V-ing",
+   "f": [["Có thật", "s:S + v:enjoy / avoid / finish / suggest / consider + b:V-ing"]],
+   "say": "Chỉ có thể thích, làm xong hay tránh một việc có thật. Cũng dùng cho keep, mind, practise, admit, deny, risk, give up. Chú ý: suggest + V-ing, không dùng suggest to go.",
+   "ex": [
+    ["She *finished writing* the report.", "Cô ấy viết xong bản báo cáo.", "Làm xong một việc đang làm."],
+    ["Experts *suggest reducing* sugar intake.", "Các chuyên gia đề nghị giảm lượng đường nạp vào.", "suggest + V-ing."]
+   ]
+  },
+  {
+   "t": "Ba chỗ chắc chắn: giới từ, chủ ngữ, make/let",
+   "f": [["Sau giới từ", "x:in / of / by / without + b:V-ing"], ["Làm chủ ngữ", "b:V-ing + v:V"], ["make / let", "x:make / let + s:O + b:V"]],
+   "say": "Sau giới từ luôn là V-ing, kể cả to trong look forward to, be used to, contribute to. Động từ làm chủ ngữ cũng là V-ing. Sau make hoặc let + tân ngữ là động từ nguyên mẫu không to.",
+   "ex": [
+    ["She is interested *in learning* English.", "Cô ấy quan tâm đến việc học tiếng Anh.", "in là giới từ."],
+    ["Parents should *let* their children *choose* their own subjects.", "Cha mẹ nên để con cái tự chọn môn học.", "let + tân ngữ + choose, không có to."]
+   ]
+  },
+  {
+   "t": "allow, force, encourage → tân ngữ + to V",
+   "f": [["Cấu trúc", "s:S + v:allow / force / encourage + s:O + b:to V"]],
+   "say": "Các động từ allow, encourage, force, enable, advise, require, persuade đi với tân ngữ rồi to V. Bị động của make thì có to: students are made to do homework.",
+   "ex": [
+    ["Schools should *encourage* students *to think* critically.", "Trường học nên khuyến khích học sinh tư duy phản biện.", "encourage + tân ngữ + to V."],
+    ["The new law *forces* companies *to reduce* waste.", "Luật mới buộc các công ty giảm rác thải.", "force + tân ngữ + to V."]
+   ]
+  },
+  {
+   "t": "Muốn nói mục đích → to V; remember/stop/try đổi nghĩa",
+   "f": [["Mục đích", "s:S + v:V + b:to / in order to + v:V"]],
+   "say": "Nói \"để làm gì\" dùng to V, không dùng for + V. Remember, forget, stop, try + to V là việc phía trước (nhớ làm, dừng lại để làm, cố gắng). + V-ing là việc đã làm (nhớ đã làm, thôi làm, thử làm).",
+   "ex": [
+    ["Many people move to cities *to find* work.", "Nhiều người chuyển lên thành phố để tìm việc.", "Không viết for find hay for finding."],
+    ["He *stopped smoking* last year.", "Năm ngoái anh ấy đã bỏ thuốc.", "stopped to smoke sẽ có nghĩa là dừng lại để hút thuốc."]
+   ]
+  }
+ ],
+ "traps": [
+  ["I enjoy *to read* books.", "I enjoy *reading* books.", "enjoy luôn đi với V-ing."],
+  ["She wants *going* home.", "She wants *to go* home.", "want luôn đi với to V."],
+  ["They are good at *solve* problems.", "They are good at *solving* problems.", "Sau giới từ at là V-ing."],
+  ["My parents made me *to study*.", "My parents made me *study*.", "make + tân ngữ + V nguyên mẫu, không có to."]
+ ],
+ "apply": [
+  ["Learning a foreign language at an early age is highly beneficial.", "Học ngoại ngữ từ sớm rất có lợi."],
+  ["It is easier for children to learn pronunciation than for adults.", "Trẻ em học phát âm dễ hơn người lớn."],
+  ["Governments should encourage people to use public transport.", "Chính phủ nên khuyến khích người dân dùng giao thông công cộng."],
+  ["Many students work part-time to pay for their studies.", "Nhiều sinh viên làm thêm để trả học phí."]
+ ],
+ "check": [
+  ["Vì sao \"look forward to seeing you\" dùng V-ing dù có chữ to?", "To ở đây là giới từ thuộc cụm look forward to. Sau giới từ luôn là V-ing."],
+  ["\"I forgot to send the email\" và \"I forgot sending the email\" khác nhau thế nào?", "Forgot to send: quên nên chưa gửi. Forgot sending: đã gửi rồi nhưng không nhớ."]
+ ]
+}

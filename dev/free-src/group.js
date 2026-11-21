@@ -1,7 +1,7 @@
 /* ===== Nhóm học: nhiệm vụ bắt buộc mỗi ngày (4 kỹ năng + từ vựng/ngữ pháp), bảng cả nhóm, chuỗi cá nhân và chuỗi nhóm,
    vé đóng băng, level, xếp hạng tuần, game pass tháng, chọc bạn, tổng kết tuần, đổi tên và ảnh đại diện ===== */
 const DQ_T = [
-  { k: "V", name: "Từ vựng / Ngữ pháp", need: 1, unit: "", href: "#vocab", go: () => { UI.vTab = "road"; }, how: "Qua 1 bài tập trong Lộ trình từ vựng (bài mới hoặc ôn lại bài cũ), hoặc qua 1 bài ngữ pháp. Từ tự thêm vào sổ không tính." },
+  { k: "V", name: "Từ vựng / Ngữ pháp", need: 1, unit: "", href: "#vocab", go: () => { UI.vTab = "road"; }, how: "Qua 1 bài tập trong Lộ trình từ vựng (bài mới hoặc ôn lại bài cũ), ôn xong phần Ôn từ hay sai, hoặc qua 1 bài ngữ pháp. Từ tự thêm vào sổ không tính." },
   { k: "L", name: "Nghe", need: 5, unit: "phút", href: "#listen", how: "Làm bài nghe, nghe chép, số và đánh vần." },
   { k: "S", name: "Nói", need: 5, unit: "phút", href: "#speak", how: "Shadowing, bài phát âm, luyện nói hoặc phòng thi Speaking." },
   { k: "R", name: "Đọc", need: 10, unit: "phút", href: "#reading", how: "Làm 1 bài đọc hoặc 1 bài trong khóa Đọc." },

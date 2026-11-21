@@ -1,0 +1,62 @@
+{
+ "id": "g05",
+ "summary": [
+  "Chủ ngữ: <b>I/he/they</b>. Tân ngữ: <b>me/him/them</b>. Trước danh từ: <b>my/their</b>. Đứng một mình: <b>mine/theirs</b>.",
+  "Chủ ngữ và tân ngữ là một người → <b>-self</b>: compare <b>themselves</b>.",
+  "<b>This/These + danh từ tóm tắt</b> để nối câu sau với ý câu trước.",
+  "\"Có\" nghĩa tồn tại → <b>There is/are</b>, không phải It has."
+ ],
+ "idea": "Tiếng Việt dùng một chữ \"họ\" cho mọi chỗ. Tiếng Anh thì chữ \"họ\" đổi dạng theo vị trí: they, them, their, theirs. Sai dạng là sai ngữ pháp dù nghĩa vẫn hiểu được.",
+ "img": "Mỗi đại từ là một bộ đồng phục theo vị trí: đứng trước động từ mặc áo they, đứng sau động từ mặc áo them, đứng trước danh từ mặc áo their.",
+ "steps": [
+  {
+   "t": "Chọn dạng theo vị trí của đại từ",
+   "f": [["Chủ ngữ", "b:I / he / she / we / they + v:V"], ["Tân ngữ", "v:V / giới từ + b:me / him / her / us / them"], ["Của ai", "b:my / his / her / our / their + s:N"], ["Đứng một mình", "b:mine / hers / ours / theirs"]],
+   "say": "Trước động từ dùng dạng chủ ngữ. Sau động từ hoặc giới từ dùng dạng tân ngữ. Trước danh từ dùng my, their. Không có danh từ theo sau thì dùng mine, theirs. Its (của nó) không có dấu nháy, it's là it is.",
+   "ex": [
+    ["*They* study hard, so the teacher helps *them*.", "Họ học chăm nên giáo viên giúp họ.", "They trước động từ, them sau động từ."],
+    ["This is *my* book. That one is *yours*.", "Đây là sách của tôi. Cuốn kia là của bạn.", "Yours đứng một mình, thay cho your book."]
+   ]
+  },
+  {
+   "t": "Người làm và người nhận là một → đại từ -self",
+   "f": [["Cùng người", "s:Teenagers + v:compare + b:themselves"], ["Khác người", "s:Teachers + v:help + b:them"]],
+   "say": "Dùng myself, himself, themselves... khi chủ ngữ và tân ngữ là cùng một người. Hai người khác nhau thì dùng me, him, them.",
+   "ex": [
+    ["Teenagers often compare *themselves* with others online.", "Thanh thiếu niên thường so sánh bản thân với người khác trên mạng.", "Người so sánh và người bị so sánh là một."]
+   ]
+  },
+  {
+   "t": "Muốn nối câu sau với câu trước → this / these + danh từ",
+   "f": [["Nối câu", "x:This / These + b:danh từ tóm tắt + v:V"]],
+   "say": "This và these chỉ lại ý vừa nói. This + danh từ tóm tắt rõ hơn dùng it. This, that đi với số ít, these, those đi với số nhiều. Those who nghĩa là những người mà.",
+   "ex": [
+    ["Many cities have banned cars. *This policy* has reduced pollution.", "Nhiều thành phố đã cấm ô tô. Chính sách này đã giảm ô nhiễm.", "This policy gói cả câu trước."],
+    ["*Those who* exercise regularly are usually healthier.", "Những người tập thể dục đều đặn thường khỏe mạnh hơn.", "Those who = những người mà."]
+   ]
+  },
+  {
+   "t": "Muốn nói \"có\" hoặc nhận xét một việc → There / It",
+   "f": [["Có", "x:There + v:is / are + s:N"], ["Nhận xét", "x:It + v:is + o:tính từ + b:to V"]],
+   "say": "Tiếng Anh không bỏ trống chủ ngữ. Nói sự tồn tại dùng There is/are, và động từ chia theo danh từ phía sau. Nhận xét một việc dùng It is + tính từ + to V.",
+   "ex": [
+    ["*There are* many benefits to learning English.", "Học tiếng Anh có nhiều lợi ích.", "Benefits số nhiều nên dùng are."],
+    ["*It is* difficult to find a job without experience.", "Tìm việc mà không có kinh nghiệm thì khó.", "It giữ chỗ chủ ngữ, ý thật nằm ở to find."]
+   ]
+  }
+ ],
+ "traps": [
+  ["*It has* many reasons for this.", "*There are* many reasons for this.", "\"Có nhiều lý do\" nói sự tồn tại nên dùng There are."],
+  ["Social media affects *it's* users.", "Social media affects *its* users.", "Its là của nó, it's là viết tắt của it is."],
+  ["*Me* and my friend go to school.", "My friend and *I* go to school.", "Làm chủ ngữ thì dùng I, không dùng me."]
+ ],
+ "apply": [
+  ["There are several reasons why more people are choosing to work from home.", "Có nhiều lý do khiến ngày càng nhiều người chọn làm việc tại nhà."],
+  ["Many teenagers spend hours online. This can affect their sleep and their grades.", "Nhiều thiếu niên dành hàng giờ trên mạng. Điều này có thể ảnh hưởng đến giấc ngủ và điểm số của họ."],
+  ["Teenagers often compare themselves with celebrities on social media.", "Thanh thiếu niên thường so sánh bản thân với người nổi tiếng trên mạng xã hội."]
+ ],
+ "check": [
+  ["Vì sao viết \"The teacher gave us homework\" chứ không phải \"gave we\"?", "Us đứng sau động từ, là người nhận nên dùng dạng tân ngữ."],
+  ["Chọn Their, There hay They're: \"___ are three main causes.\"", "There. There are nghĩa là có. Their là của họ, they're là they are."]
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "id": "b5",
+ "summary": [
+  "<b>Mệnh đề</b> = chủ ngữ + động từ chia. Mệnh đề phụ (because, although, when, if) không đứng một mình được.",
+  "<b>Câu ghép</b>: mệnh đề + <b>, and / but / so / or</b> + mệnh đề.",
+  "<b>Câu phức</b>: mệnh đề phụ đứng đầu thì có <b>dấu phẩy</b> sau nó.",
+  "Không nối hai mệnh đề chỉ bằng dấu phẩy. Không dùng hai từ nối cho một quan hệ (although ... but)."
+ ],
+ "idea": "Tiếng Việt cho phép đặt hai ý cạnh nhau, chỉ cách bằng dấu phẩy. Tiếng Anh thì *không*: hai mệnh đề đầy đủ phải có từ nối hoặc tách thành hai câu.",
+ "img": "Mỗi mệnh đề đầy đủ là một toa tàu có đầu máy. Muốn nối hai toa phải có móc nối (and, but, so), dấu phẩy không phải là móc.",
+ "steps": [
+  {
+   "t": "Muốn nối hai ý ngang hàng → câu ghép",
+   "f": [["Câu ghép", "s:S + v:V + x:, and / but / so / or + s:S + v:V"]],
+   "say": "Hai vế đều đứng một mình được. Nối bằng and (và), but (nhưng), so (nên), or (hoặc). Đặt dấu phẩy trước từ nối.",
+   "ex": [
+    ["Cars are convenient, *but* they pollute the air.", "Ô tô tiện lợi, nhưng chúng làm ô nhiễm không khí.", "Hai vế đủ chủ ngữ và động từ, có , but ở giữa."],
+    ["The city is crowded, *so* the rent is high.", "Thành phố đông đúc nên tiền thuê nhà cao.", "so nối kết quả."]
+   ]
+  },
+  {
+   "t": "Muốn nêu lý do, nhượng bộ, điều kiện → câu phức",
+   "f": [["Phụ đứng đầu", "b:Although / Because / If + s:S + v:V + x:, + s:S + v:V"], ["Phụ đứng sau", "s:S + v:V + b:because / although + s:S + v:V"]],
+   "say": "Mệnh đề phụ bắt đầu bằng because, although, when, if, while, unless. Nó phải bám vào mệnh đề chính. Phụ đứng đầu thì có dấu phẩy, phụ đứng sau thì thường không có.",
+   "ex": [
+    ["*Although* cars are convenient, they pollute the air.", "Mặc dù ô tô tiện lợi, chúng làm ô nhiễm không khí.", "Phụ đứng đầu nên có dấu phẩy."],
+    ["Many people drive *because* public transport is poor.", "Nhiều người lái xe vì giao thông công cộng kém.", "Phụ đứng sau nên không có dấu phẩy."]
+   ]
+  },
+  {
+   "t": "Muốn dùng however → đặt sau dấu chấm hoặc chấm phẩy",
+   "f": [["however", "s:S + v:V + x:. hoặc ; + b:However , + s:S + v:V"]],
+   "say": "However không phải liên từ, nó không nối được hai mệnh đề bằng dấu phẩy. Trước however phải là dấu chấm hoặc dấu chấm phẩy, sau however là dấu phẩy.",
+   "ex": [
+    ["Cars are useful. *However,* they cause pollution.", "Ô tô hữu ích. Tuy nhiên, chúng gây ô nhiễm.", "However mở đầu một câu mới."],
+    ["Trains are fast; *however,* they are expensive.", "Tàu hỏa nhanh, tuy nhiên chúng đắt.", "Dùng dấu chấm phẩy trước however."]
+   ]
+  },
+  {
+   "t": "Soát lại: tránh câu cụt",
+   "say": "Mệnh đề phụ đứng một mình là câu cụt, người đọc còn chờ vế sau. Hãy kiểm tra mỗi câu có ít nhất một mệnh đề chính không.",
+   "ex": [
+    ["*When people move to cities, they often earn more money.*", "Khi người dân chuyển lên thành phố, họ thường kiếm được nhiều tiền hơn.", "Có mệnh đề chính they often earn, nên câu hoàn chỉnh."]
+   ]
+  }
+ ],
+ "traps": [
+  ["Roads are crowded*,* the government should act.", "Roads are crowded*, so* the government should act.", "Hai mệnh đề đầy đủ không nối bằng dấu phẩy, cần so hoặc dấu chấm."],
+  ["*Although* it is expensive, *but* many people buy it.", "*Although* it is expensive, many people buy it.", "Chỉ dùng một từ nối cho một quan hệ."],
+  ["*Because* the weather was bad.", "*Because* the weather was bad, we stayed at home.", "Mệnh đề phụ đứng một mình là câu cụt."]
+ ],
+ "apply": [
+  ["Although online learning is flexible, it lacks face-to-face interaction.", "Mặc dù học trực tuyến linh hoạt, nó thiếu sự tương tác trực tiếp."],
+  ["Cars are convenient, but they cause serious air pollution.", "Ô tô tiện lợi, nhưng gây ô nhiễm không khí nghiêm trọng."],
+  ["Many people use bicycles because they are cheap and healthy.", "Nhiều người đi xe đạp vì nó rẻ và tốt cho sức khỏe."]
+ ],
+ "check": [
+  ["\"When people move to cities.\" có đúng không?", "Không. Đây là mệnh đề phụ đứng một mình. Cần thêm mệnh đề chính: When people move to cities, they earn more money."],
+  ["Sửa: \"The city is crowded, the rent is high.\"", "The city is crowded, so the rent is high. Hoặc tách thành hai câu bằng dấu chấm."]
+ ]
+}

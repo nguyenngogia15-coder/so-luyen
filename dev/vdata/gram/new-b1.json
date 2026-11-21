@@ -1,0 +1,62 @@
+{
+ "id": "b1",
+ "summary": [
+  "Sau <b>a/the/my</b> hoặc sau tính từ → cần <b>danh từ</b>.",
+  "Trước danh từ, hoặc sau <b>be/become/seem</b> → cần <b>tính từ</b>.",
+  "Sau động từ thường, nói hành động diễn ra thế nào → cần <b>trạng từ (-ly)</b>.",
+  "Nhìn đuôi để đoán từ loại: -tion/-ment (danh từ), -ful/-ous/-ive (tính từ), -ly (trạng từ), -ize/-ify/-en (động từ)."
+ ],
+ "idea": "Tiếng Việt dùng một chữ cho mọi vai: \"ô nhiễm\" trong \"sự ô nhiễm\", \"bị ô nhiễm\", \"gây ô nhiễm\". Tiếng Anh *đổi đuôi* theo vai: pollution, polluted, pollute. Nên trước khi viết, hãy hỏi chỗ đó cần vai gì.",
+ "img": "Mỗi từ là một nhân viên mặc đồng phục. Đuôi từ là đồng phục, chỗ trống trong câu là vị trí, phải xếp đúng người vào đúng ghế.",
+ "steps": [
+  {
+   "t": "Chỗ trống đứng sau a/the hoặc sau tính từ → dùng danh từ",
+   "f": [["Cần danh từ", "x:a / the / my + o:(tính từ) + b:danh từ"]],
+   "say": "Nhìn từ đứng ngay trước chỗ trống. Sau a, an, the, my, hoặc sau một tính từ, câu đang chờ một danh từ. Danh từ cũng làm chủ ngữ hoặc đứng sau giới từ.",
+   "ex": [
+    ["There has been a rapid *development* of technology.", "Công nghệ đã phát triển nhanh chóng.", "Sau a + tính từ rapid cần danh từ."],
+    ["Hard work leads to *success*.", "Làm việc chăm chỉ dẫn đến thành công.", "Sau giới từ to cần danh từ, không dùng succeed hay successful."]
+   ]
+  },
+  {
+   "t": "Muốn tả danh từ hoặc tả chủ ngữ → dùng tính từ",
+   "f": [["Trước danh từ", "x:a / the + b:tính từ + s:danh từ"], ["Sau be", "s:S + v:be / become / seem + b:tính từ"]],
+   "say": "Tính từ đứng ngay trước danh từ, hoặc đứng sau be, become, seem, look để tả chủ ngữ.",
+   "ex": [
+    ["Air pollution is a *serious* problem.", "Ô nhiễm không khí là một vấn đề nghiêm trọng.", "Đứng trước danh từ problem nên là tính từ."],
+    ["Regular exercise is *beneficial* for health.", "Tập thể dục đều đặn có lợi cho sức khỏe.", "Sau is cần tính từ, benefit là danh từ nên không dùng."]
+   ]
+  },
+  {
+   "t": "Muốn nói hành động diễn ra thế nào → dùng trạng từ",
+   "f": [["Trạng từ", "s:S + v:động từ + o:(tân ngữ) + b:trạng từ"], ["Cách tạo", "o:tính từ + x:-ly"]],
+   "say": "Trạng từ bổ nghĩa cho động từ, tính từ hoặc cả câu. Thường là tính từ thêm -ly. Trạng từ cũng đứng trước tính từ để làm rõ mức độ, ví dụ extremely polluted.",
+   "ex": [
+    ["The number of cars has increased *rapidly*.", "Số lượng xe hơi đã tăng nhanh.", "Bổ nghĩa cho động từ increased nên cần trạng từ."],
+    ["The air in the city is *extremely* polluted.", "Không khí trong thành phố bị ô nhiễm rất nặng.", "extremely bổ nghĩa cho tính từ polluted."]
+   ]
+  },
+  {
+   "t": "Không chắc từ loại → nhìn đuôi từ",
+   "say": "Danh từ hay có đuôi -tion, -ment, -ness, -ity. Tính từ có -al, -ful, -ous, -ive, -able. Động từ có -ize, -ify, -en. Chú ý: friendly, costly, likely có -ly nhưng là tính từ. Fast, hard, late vừa là tính từ vừa là trạng từ.",
+   "ex": [
+    ["The government should *strengthen* public transport.", "Chính phủ nên củng cố giao thông công cộng.", "Sau should cần động từ, đuôi -en cho biết đó là động từ."],
+    ["Public transport is more *economical* than driving.", "Phương tiện công cộng tiết kiệm hơn lái xe cá nhân.", "economical là tiết kiệm, economic là thuộc về kinh tế."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The number of cars increased *rapid*.", "The number of cars increased *rapidly*.", "Sau động từ increased cần trạng từ, tiếng Việt \"nhanh\" không đổi dạng nhưng tiếng Anh thì phải."],
+  ["Traffic is a *seriously* problem.", "Traffic is a *serious* problem.", "Trước danh từ problem cần tính từ, đừng thấy -ly là dùng."],
+  ["She is very *friend*.", "She is very *friendly*.", "Sau be very cần tính từ. friendly có -ly nhưng là tính từ."]
+ ],
+ "apply": [
+  ["Air pollution has become a serious problem in many large cities.", "Ô nhiễm không khí đã trở thành vấn đề nghiêm trọng ở nhiều thành phố lớn."],
+  ["The number of online learners has increased significantly in recent years.", "Số người học trực tuyến đã tăng đáng kể trong những năm gần đây."],
+  ["Regular exercise is beneficial for both physical and mental health.", "Tập thể dục đều đặn có lợi cho cả sức khỏe thể chất lẫn tinh thần."]
+ ],
+ "check": [
+  ["Điền dạng đúng của develop: \"There has been a rapid ___ of technology.\"", "development. Sau a + tính từ rapid cần danh từ."],
+  ["Vì sao \"a serious problem\" mà không phải \"a seriously problem\"?", "Từ đứng trước danh từ phải là tính từ, seriously là trạng từ."]
+ ]
+}

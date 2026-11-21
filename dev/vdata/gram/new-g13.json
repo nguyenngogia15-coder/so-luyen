@@ -1,0 +1,76 @@
+{
+ "id": "g13",
+ "summary": [
+  "<b>Quá khứ đơn</b>: V-ed / V2. Phủ định và câu hỏi: <b>did + V nguyên mẫu</b>.",
+  "<b>Quá khứ tiếp diễn</b>: was / were + V-ing, việc đang dở tại một lúc trong quá khứ.",
+  "Việc dài (tiếp diễn) bị việc ngắn (quá khứ đơn) cắt ngang: <b>while</b> + việc dài, <b>when</b> + việc ngắn.",
+  "<b>used to + V</b>: thói quen hoặc trạng thái cũ, nay đã hết. Khác với <b>be used to + V-ing</b> (quen với)."
+ ],
+ "idea": "Tiếng Việt có thể bỏ \"đã\" khi đã có \"hôm qua\". Tiếng Anh thì động từ luôn đổi dạng dù câu có yesterday. Quá khứ đơn kể việc đã xong. Quá khứ tiếp diễn kể việc đang dở. Used to kể thói quen xưa.",
+ "img": "Quá khứ đơn là một dấu chấm trên dòng thời gian. Quá khứ tiếp diễn là một đoạn thẳng dài, và dấu chấm cắt ngang qua nó.",
+ "steps": [
+  {
+   "t": "Muốn kể việc đã xong → quá khứ đơn",
+   "f": [
+    ["Khẳng định", "s:S + v:V-ed / V2"],
+    ["Phủ định", "s:S + x:didn't + v:V"],
+    ["Câu hỏi", "x:Did + s:S + v:V + x:?"]
+   ],
+   "say": "Có did thì động từ chính trở về nguyên mẫu, vì did đã mang nghĩa quá khứ. Dấu hiệu: yesterday, last year, in 2015, two days ago. Nhớ các từ bất quy tắc hay gặp: rise-rose, fall-fell, go-went, grow-grew.",
+   "ex": [
+    ["Sales *rose* sharply in 2015.", "Doanh số tăng mạnh vào năm 2015.", ""],
+    ["They *didn't go* to school yesterday.", "Hôm qua họ không đi học.", "Sau didn't dùng go."],
+    ["The number of visitors *grew* from one million to three million.", "Số lượng du khách tăng từ một triệu lên ba triệu.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói đang làm dở tại một lúc → was / were + V-ing",
+   "f": [["Tiếp diễn", "s:S + v:was / were + v:V-ing"]],
+   "say": "Dùng was với I, he, she, it và were với you, we, they. Thì này làm nền: việc đang diễn ra tại một thời điểm hoặc tại lúc có việc khác xen vào.",
+   "ex": [
+    ["At 8 pm yesterday, she *was studying*.", "Lúc 8 giờ tối qua, cô ấy đang học.", ""],
+    ["While I *was cooking*, my sister *was studying*.", "Trong lúc tôi nấu ăn thì em gái tôi đang học.", "Hai việc song song."]
+   ]
+  },
+  {
+   "t": "Muốn nói việc dài bị việc ngắn cắt ngang → while / when",
+   "f": [
+    ["Việc dài", "b:while + s:S + v:was / were V-ing"],
+    ["Việc ngắn", "b:when + s:S + v:V2"]
+   ],
+   "say": "Việc dài dùng quá khứ tiếp diễn, việc ngắn xen vào dùng quá khứ đơn. While đi với việc dài, when đi với việc ngắn.",
+   "ex": [
+    ["*While* I was walking home, it *started* to rain.", "Trong lúc tôi đang đi bộ về nhà thì trời bắt đầu mưa.", ""],
+    ["I was sleeping *when* the phone *rang*.", "Tôi đang ngủ thì điện thoại reo.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói ngày xưa thường làm, nay không → used to + V",
+   "f": [
+    ["Thói quen cũ", "s:S + b:used to + v:V"],
+    ["Quen với", "s:S + v:be + b:used to + v:V-ing"]
+   ],
+   "say": "Used to ngầm nói bây giờ không còn nữa, rất hợp để so sánh xưa và nay. Phủ định: didn't use to + V. Be used to + V-ing nghĩa là đã quen với, khác hẳn.",
+   "ex": [
+    ["People *used to write* letters, but now they send messages.", "Ngày xưa mọi người hay viết thư, nhưng bây giờ họ nhắn tin.", ""],
+    ["There *used to be* a market here.", "Ngày xưa ở đây có một cái chợ.", "Trạng thái cũ."],
+    ["I *am used to getting* up early.", "Tôi đã quen dậy sớm.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["Yesterday I *go* to the market.", "Yesterday I *went* to the market.", "Có yesterday vẫn phải đổi động từ sang quá khứ."],
+  ["She *didn't went* to school.", "She *didn't go* to school.", "Sau didn't dùng động từ nguyên mẫu."],
+  ["When I was a child, I *was playing* football every day.", "When I was a child, I *played* football every day.", "Thói quen lặp lại dùng quá khứ đơn hoặc used to."],
+  ["I *am used to* get up early.", "I am used to *getting* up early.", "Be used to đi với V-ing."]
+ ],
+ "apply": [
+  ["The number of international students rose steadily from 2000 to 2010, while the figure for domestic students remained stable.", "Số du học sinh quốc tế tăng đều từ năm 2000 đến 2010, trong khi con số của sinh viên trong nước giữ ổn định."],
+  ["People used to rely on printed books, but nowadays many students prefer digital materials.", "Ngày xưa mọi người dựa vào sách in, nhưng ngày nay nhiều sinh viên thích tài liệu số hơn."],
+  ["When I was a child, my family lived in a small town, and I used to walk to school every day.", "Khi còn nhỏ, gia đình tôi sống ở một thị trấn nhỏ, và ngày nào tôi cũng đi bộ đến trường."]
+ ],
+ "check": [
+  ["Chia động từ: While they ___ (watch) TV, the lights ___ (go) out.", "were watching, went. Xem TV là việc dài, mất điện là việc ngắn xen vào."],
+  ["I used to live in Hue cho biết điều gì về hiện tại?", "Bây giờ tôi không còn sống ở Huế nữa."]
+ ]
+}

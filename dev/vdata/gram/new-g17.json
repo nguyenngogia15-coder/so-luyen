@@ -1,0 +1,83 @@
+{
+ "id": "g17",
+ "summary": [
+  "Phủ định và câu hỏi đều cần <b>trợ động từ</b>: be, have, modal. Hiện tại đơn và quá khứ đơn thì mượn <b>do / does / did</b>.",
+  "Phủ định: thêm <b>not</b> sau trợ động từ. Câu hỏi: đưa trợ động từ <b>lên trước chủ ngữ</b>.",
+  "Câu hỏi Wh-: <b>từ hỏi + trợ động từ + S + V</b>. Who / What là chủ ngữ thì không mượn do.",
+  "Câu hỏi nằm trong câu khác: <b>không đảo</b>, trật tự như câu kể."
+ ],
+ "idea": "Tiếng Việt chỉ cần chữ \"không\" và trật tự từ không đổi. Tiếng Anh cần một *trợ động từ* làm hai việc: gắn *not* để phủ định, và nhảy lên trước chủ ngữ để hỏi. Câu chưa có trợ động từ thì mượn do / does / did.",
+ "img": "Trợ động từ là người gác cổng của câu. Muốn phủ định thì đưa not cho người gác. Muốn hỏi thì mời người gác bước lên đứng trước chủ ngữ. Không có người gác thì mượn do.",
+ "steps": [
+  {
+   "t": "Câu đã có be / have / modal → thêm not hoặc đảo lên đầu",
+   "f": [
+    ["Phủ định", "s:S + b:trợ động từ + n:not + v:V"],
+    ["Câu hỏi", "b:Trợ động từ + s:S + v:V + x:?"]
+   ],
+   "say": "Is, are, have, has, will, can, should đều là trợ động từ. Không cần mượn do.",
+   "ex": [
+    ["She *is* working. → She *is not* working. → *Is* she working?", "Cô ấy đang làm việc. → Cô ấy không đang làm việc. → Cô ấy đang làm việc phải không?", ""],
+    ["They *can* swim. → They *cannot* swim. → *Can* they swim?", "Họ biết bơi. → Họ không biết bơi. → Họ biết bơi không?", ""]
+   ]
+  },
+  {
+   "t": "Câu chỉ có động từ thường → mượn do / does / did",
+   "f": [
+    ["Phủ định", "s:S + b:don't / doesn't / didn't + v:V"],
+    ["Câu hỏi", "b:Do / Does / Did + s:S + v:V + x:?"]
+   ],
+   "say": "Do dùng cho I, you, we, they. Does dùng cho he, she, it. Did dùng cho quá khứ. Do, does, did đã mang dấu thì và dấu số ít, nên động từ chính trở về nguyên mẫu.",
+   "ex": [
+    ["He *works* here. → He *doesn't work* here. → *Does* he *work* here?", "Anh ấy làm việc ở đây. → Anh ấy không làm việc ở đây. → Anh ấy làm việc ở đây phải không?", "Chữ s chuyển sang does."],
+    ["They *went* home. → They *didn't go* home. → *Did* they *go* home?", "Họ đã về nhà. → Họ đã không về nhà. → Họ đã về nhà chưa?", "Did mang nghĩa quá khứ nên went trở về go."]
+   ]
+  },
+  {
+   "t": "Muốn hỏi thông tin → từ hỏi + trợ động từ + S + V",
+   "f": [
+    ["Hỏi thường", "x:Where / Why / How + b:do / is / have + s:S + v:V + x:?"],
+    ["Hỏi chủ ngữ", "x:Who / What + v:V đã chia + x:?"]
+   ],
+   "say": "Đặt từ hỏi ở đầu rồi làm như câu hỏi thường. Nếu who hoặc what chính là chủ ngữ (ai làm, cái gì xảy ra) thì không mượn do, không đảo.",
+   "ex": [
+    ["*Why do* so many young people *move* to cities?", "Vì sao nhiều người trẻ chuyển đến các thành phố?", ""],
+    ["*How long have* you *lived* here?", "Bạn sống ở đây bao lâu rồi?", ""],
+    ["*What happened* yesterday?", "Hôm qua đã xảy ra chuyện gì?", "What là chủ ngữ nên không có did."]
+   ]
+  },
+  {
+   "t": "Câu hỏi nằm trong câu khác → trật tự như câu kể",
+   "f": [["Gián tiếp", "x:Could you tell me + b:where / what / if + s:S + v:V"]],
+   "say": "Sau I don't know, Could you tell me, I wonder thì câu hỏi trở lại thành câu kể: chủ ngữ trước, động từ sau, không mượn do.",
+   "ex": [
+    ["Could you tell me where *the station is*?", "Bạn có thể cho tôi biết nhà ga ở đâu không?", "Trực tiếp: Where is the station?"],
+    ["I don't know why *prices are rising*.", "Tôi không biết vì sao giá đang tăng.", ""]
+   ]
+  },
+  {
+   "t": "Muốn hỏi xác nhận trong Speaking → câu hỏi đuôi",
+   "f": [["Đuôi", "s:It + v:is + o:cold , + b:isn't it ?"]],
+   "say": "Lấy lại trợ động từ của câu và đổi dấu: câu khẳng định thì đuôi phủ định, câu phủ định thì đuôi khẳng định. Dùng nhiều trong hội thoại, ít dùng trong Writing.",
+   "ex": [
+    ["It *is* cold, *isn't it*?", "Trời lạnh nhỉ?", ""],
+    ["You *don't* smoke, *do you*?", "Bạn không hút thuốc, phải không?", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["She *not like* coffee.", "She *doesn't like* coffee.", "Không gắn not thẳng vào động từ thường, phải mượn does."],
+  ["Why people *move* to cities?", "Why *do* people move to cities?", "Câu hỏi với động từ thường cần do trước chủ ngữ."],
+  ["I don't know where *does he live*.", "I don't know where *he lives*.", "Câu hỏi nằm trong câu khác không đảo."],
+  ["What *did happen* yesterday?", "What *happened* yesterday?", "What là chủ ngữ nên không mượn did."]
+ ],
+ "apply": [
+  ["Why do so many young people start learning English at such an early age?", "Vì sao nhiều bạn trẻ bắt đầu học tiếng Anh từ rất sớm?"],
+  ["Many students do not have access to reliable internet, which makes online learning difficult.", "Nhiều học sinh không có kết nối internet ổn định, khiến việc học trực tuyến trở nên khó khăn."],
+  ["It is hard to say how governments can reduce traffic without limiting personal freedom.", "Khó nói chính phủ có thể giảm giao thông mà không hạn chế tự do cá nhân bằng cách nào."]
+ ],
+ "check": [
+  ["Đổi sang câu hỏi: She finished the report.", "Did she finish the report? Quá khứ đơn nên mượn did, finished trở về finish."],
+  ["Vì sao What happened? đúng mà không có did?", "What là chủ ngữ. Từ hỏi là chủ ngữ thì không mượn do và không đảo."]
+ ]
+}

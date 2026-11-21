@@ -1,0 +1,74 @@
+{
+ "id": "l8",
+ "summary": [
+  "Quy trình do người làm: <b>hiện tại đơn bị động = is / are + V3</b>. Bỏ <b>by ...</b> vì người làm không quan trọng.",
+  "Quy trình tự nhiên (mưa, vòng đời): dùng <b>chủ động</b> (Water evaporates).",
+  "Từ nối thứ tự: <b>First, Next, Then, After that, Finally</b>.",
+  "Nối hai bước một câu: <b>Once + S + has been V3, ...</b> và <b>before / after + V-ing</b>.",
+  "Bản đồ thay đổi: <b>was built, were demolished, has been converted into, was replaced by</b>."
+ ],
+ "idea": "Sơ đồ quy trình không có số liệu, chỉ có các bước. Vật được làm ra không tự động tay, nên ta dùng *bị động* và bỏ người làm. Các từ nối thứ tự giúp người đọc theo kịp từng bước.",
+ "img": "Băng chuyền trong nhà máy: sản phẩm chạy qua từng trạm và được xử lý, không ai đứng ra giới thiệu công nhân.",
+ "steps": [
+  {
+   "t": "Muốn tả bước do người làm → bị động hiện tại đơn",
+   "f": [
+    ["Bị động", "s:Vật + b:is / are + v:V3"]
+   ],
+   "say": "Chia be theo vật: glass (số ít) thì is, bottles (số nhiều) thì are. V3 hay gặp: collected, sorted, washed, crushed, melted, heated, cooled, moulded, packed, delivered.",
+   "ex": [
+    ["Used bottles *are collected* from homes.", "Chai đã dùng được thu gom từ các hộ gia đình.", "bottles số nhiều nên dùng are."],
+    ["The glass *is washed* and then *crushed*.", "Thủy tinh được rửa rồi nghiền nhỏ.", "Hai V3 chung một is."],
+    ["The crushed glass *is melted* at a very high temperature.", "Thủy tinh đã nghiền được nấu chảy ở nhiệt độ rất cao.", ""]
+   ]
+  },
+  {
+   "t": "Muốn tả quy trình tự nhiên → chủ động",
+   "say": "Vòng đời, mưa, quang hợp: sự vật tự làm, nên dùng chủ động hiện tại đơn. Cả quy trình dùng hiện tại đơn vì lặp lại mọi lần.",
+   "ex": [
+    ["Water *evaporates* from the sea and *forms* clouds.", "Nước bốc hơi từ biển và tạo thành mây.", "Nước tự bốc hơi."]
+   ]
+  },
+  {
+   "t": "Muốn nối các bước → từ nối thứ tự",
+   "f": [
+    ["Trình tự", "b:First , → b:Next , → b:After that , → b:Finally ,"],
+    ["Một câu", "x:Once + s:S + v:has been V3 , s:S + v:is V3"]
+   ],
+   "say": "Từ nối đứng đầu câu, có dấu phẩy. Trong một câu có thể dùng Once hoặc before / after + V-ing. Sau before mà không có chủ ngữ thì dùng being + V3 nếu bị động.",
+   "ex": [
+    ["*First*, the beans are picked. *After that*, they are dried in the sun.", "Đầu tiên, hạt được hái. Sau đó, chúng được phơi nắng.", ""],
+    ["*Once* the glass has melted, it *is moulded* into bottles.", "Khi thủy tinh đã chảy, nó được đúc thành chai.", "Once + hiện tại hoàn thành, bước sau ở hiện tại đơn."],
+    ["The mixture is heated *before being poured* into moulds.", "Hỗn hợp được đun nóng trước khi được đổ vào khuôn.", ""]
+   ]
+  },
+  {
+   "t": "Muốn tả bản đồ thay đổi → bị động theo thì",
+   "f": [
+    ["Hai mốc quá khứ", "s:A + b:was / were + v:V3"],
+    ["Quá khứ đến nay", "s:A + b:has / have been + v:V3"]
+   ],
+   "say": "Hai bản đồ đều ở quá khứ thì dùng quá khứ đơn. Một bản quá khứ và một bản hiện tại thì dùng hiện tại hoàn thành. Công trình không tự xây hay tự phá nên gần như luôn bị động.",
+   "ex": [
+    ["The farmland *was replaced by* a housing estate.", "Đất nông nghiệp được thay bằng một khu nhà ở.", ""],
+    ["The old factory *has been converted into* apartments.", "Nhà máy cũ đã được chuyển thành căn hộ.", ""],
+    ["The trees *have been cut* down.", "Cây đã bị chặt.", "have been + V3."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The bottles *collect* and *wash*.", "The bottles *are collected* and *washed*.", "Chai không tự thu gom, phải dùng bị động."],
+  ["The water *is evaporated* from the sea.", "The water *evaporates* from the sea.", "Hiện tượng tự nhiên dùng chủ động."],
+  ["The tea leaves *were* picked, then dried.", "The tea leaves *are* picked and then dried.", "Quy trình chung dùng hiện tại đơn."],
+  ["The trees *have cut* down.", "The trees *have been cut* down.", "Bị động hiện tại hoàn thành: have been + V3."]
+ ],
+ "apply": [
+  ["The diagram illustrates how glass bottles are recycled.", "Sơ đồ minh họa cách chai thủy tinh được tái chế."],
+  ["Once the glass has been crushed, it is melted and moulded into new bottles.", "Khi thủy tinh đã được nghiền, nó được nấu chảy và đúc thành chai mới."],
+  ["Overall, the process consists of six main stages, beginning with collection and ending with delivery.", "Nhìn chung quy trình gồm sáu giai đoạn chính, bắt đầu từ thu gom và kết thúc ở giao hàng."]
+ ],
+ "check": [
+  ["Chuyển sang câu quy trình: \"Workers pack the bottles into boxes.\"", "The bottles are packed into boxes."],
+  ["Nối bằng Once: \"The paper is dried. It is cut into sheets.\"", "Once the paper has been dried, it is cut into sheets."]
+ ]
+}

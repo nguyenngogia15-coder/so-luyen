@@ -1,0 +1,81 @@
+{
+ "id": "g10",
+ "summary": [
+  "Thời gian: <b>at</b> + giờ; <b>on</b> + ngày; <b>in</b> + tháng, năm, mùa, buổi.",
+  "Nơi chốn: <b>at</b> + điểm; <b>on</b> + bề mặt, đường; <b>in</b> + không gian bao quanh.",
+  "<b>for</b> + bao lâu; <b>since</b> + mốc; <b>by</b> + hạn chót; <b>until</b> + kéo dài đến.",
+  "Giới từ đi kèm phải học theo cụm: <b>impact on, depend on, access to, increase in</b>. Sau giới từ dùng danh từ hoặc V-ing."
+ ],
+ "idea": "Tiếng Việt dùng \"ở, vào, trong\" khá tùy ý, còn tiếng Anh mỗi trường hợp một giới từ. Tin tốt là at, on, in dùng cùng một ý cho cả nơi chốn lẫn thời gian: *at* là một điểm, *on* là một bề mặt hoặc một ngày, *in* là bên trong.",
+ "img": "At là chấm trên bản đồ. On là mặt bàn bạn đặt cuốn sách lên. In là chiếc hộp có thành bao quanh. Thời gian càng dài càng giống cái hộp lớn.",
+ "steps": [
+  {
+   "t": "Muốn nói lúc nào → at / on / in",
+   "f": [
+    ["Điểm", "b:at + s:7 o'clock / night / the weekend"],
+    ["Ngày", "b:on + s:Monday / 5 May"],
+    ["Khoảng dài", "b:in + s:May / 2020 / summer / the morning"]
+   ],
+   "say": "Càng ngắn càng dùng at, ngày cụ thể dùng on, khoảng dài hơn một ngày dùng in. Khi buổi gắn với một ngày cụ thể thì dùng on: on Monday morning.",
+   "ex": [
+    ["The museum opens *at* 9 am *on* weekdays.", "Bảo tàng mở cửa lúc 9 giờ sáng vào các ngày trong tuần.", ""],
+    ["She was born *in* 2004. · I was born *on* 5 May.", "Cô ấy sinh năm 2004. · Tôi sinh ngày 5 tháng 5.", "Có ngày cụ thể thì dùng on."],
+    ["We have a test *on* Monday morning.", "Chúng tôi có bài kiểm tra vào sáng thứ Hai.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói ở đâu → at / on / in",
+   "f": [
+    ["Điểm", "b:at + s:home / school / the bus stop"],
+    ["Bề mặt, đường", "b:on + s:the table / Le Loi Street / the bus"],
+    ["Bên trong", "b:in + s:a room / Hanoi / a car"]
+   ],
+   "say": "At coi nơi đó là một điểm. On là bề mặt hoặc con đường. In là không gian bao quanh, như phòng, thành phố, quốc gia. Phương tiện lớn dùng on (on the bus), xe nhỏ dùng in (in a car).",
+   "ex": [
+    ["The students are waiting *at* the bus stop.", "Các sinh viên đang đợi ở trạm xe buýt.", ""],
+    ["There are many cafes *on* Le Loi Street.", "Có nhiều quán cà phê trên đường Lê Lợi.", ""],
+    ["Many young people move *to* big cities and live *in* small flats.", "Nhiều người trẻ chuyển đến các thành phố lớn và sống trong những căn hộ nhỏ.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói bao lâu, từ khi nào, hạn chót → for / since / by / until",
+   "f": [
+    ["Bao lâu", "b:for + s:three years"],
+    ["Từ mốc", "b:since + s:2019"],
+    ["Hạn chót", "b:by + s:2030"],
+    ["Kéo dài đến", "b:until + s:6 pm"]
+   ],
+   "say": "For đi với độ dài, since đi với mốc bắt đầu. By là hạn chót, xong sớm hơn cũng được. Until là việc cứ tiếp diễn cho đến lúc đó. During đi với tên một giai đoạn: during the summer.",
+   "ex": [
+    ["I have lived here *for* five years, *since* 2021.", "Tôi sống ở đây được năm năm, từ năm 2021.", ""],
+    ["The project must be finished *by* 2030.", "Dự án phải hoàn thành chậm nhất vào năm 2030.", ""],
+    ["The library stays open *until* 9 pm.", "Thư viện mở cửa đến 9 giờ tối.", ""]
+   ]
+  },
+  {
+   "t": "Giới từ đi kèm cố định → học cả cụm",
+   "f": [["Cụm", "s:N / V / adj + b:giới từ cố định"]],
+   "say": "Không suy ra được từ tiếng Việt, chỉ cần nhớ cả cụm. Hay dùng trong IELTS: impact / effect on, depend on, contribute to, lead to, access to, increase in, reason for, responsible for, interested in, different from.",
+   "ex": [
+    ["Tourism has a big *impact on* the environment.", "Du lịch có tác động lớn đến môi trường.", "Không dùng impact to."],
+    ["Many families *depend on* farming.", "Nhiều gia đình sống phụ thuộc vào nông nghiệp.", ""],
+    ["There has been an *increase in* house prices.", "Giá nhà đã tăng.", "Increase in + thứ tăng."]
+   ]
+  }
+ ],
+ "traps": [
+  ["I have lived here *since* five years.", "I have lived here *for* five years.", "Five years là độ dài nên dùng for."],
+  ["We discussed *about* the plan.", "We discussed the plan.", "Discuss không cần giới từ."],
+  ["Tourism has a negative effect *to* local people.", "Tourism has a negative effect *on* local people.", "Effect, impact, influence đi với on."],
+  ["She is interested in *learn* Japanese.", "She is interested in *learning* Japanese.", "Sau giới từ dùng V-ing."]
+ ],
+ "apply": [
+  ["Tourism has a significant impact on local communities, and many families depend on it for their income.", "Du lịch có tác động lớn đến cộng đồng địa phương, và nhiều gia đình phụ thuộc vào nó để có thu nhập."],
+  ["There has been a sharp increase in the number of private cars since 2010.", "Số lượng ô tô cá nhân đã tăng mạnh kể từ năm 2010."],
+  ["Governments should improve access to education in rural areas by 2030.", "Chính phủ nên cải thiện khả năng tiếp cận giáo dục ở vùng nông thôn chậm nhất vào năm 2030."]
+ ],
+ "check": [
+  ["Vì sao nói in the morning nhưng on Monday morning?", "Khi buổi gắn với một ngày cụ thể (Monday) thì theo luật của ngày, dùng on."],
+  ["Điền giới từ: The rise ___ unemployment led ___ social problems.", "in, to. Cụm cố định: a rise in + thứ tăng; lead to + kết quả."]
+ ]
+}

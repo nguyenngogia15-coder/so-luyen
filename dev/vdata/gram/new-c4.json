@@ -1,0 +1,64 @@
+{
+ "id": "c4",
+ "summary": [
+  "Mệnh đề danh từ là <b>cả một ý</b> đứng ở chỗ của danh từ: <b>that</b> (rằng), <b>whether/if</b> (liệu có), <b>what/why/how</b> (điều gì, vì sao).",
+  "Mẫu mở ý Task 2: <b>Many people believe that...</b>, <b>It is clear that...</b>, <b>The fact that...</b>",
+  "Bên trong mệnh đề, trật tự luôn là <b>S + V</b>: không đảo, không mượn do/does/did.",
+  "Mệnh đề làm chủ ngữ được tính là <b>số ít</b>."
+ ],
+ "idea": "Có lúc điều bạn biết hay tin không phải một danh từ mà là cả một ý có chủ ngữ và động từ. Cả ý đó đứng ở chỗ của danh từ nên gọi là mệnh đề danh từ. Câu hỏi nằm trong câu khác thì mất dạng câu hỏi.",
+ "img": "Cả một ý được nhét vào chiếc hộp có nhãn that, whether hay what, rồi đặt vào chỗ của danh từ. Trong hộp vẫn xếp theo kiểu câu kể.",
+ "steps": [
+  {
+   "t": "Muốn nêu ý kiến, khẳng định → that",
+   "f": [["that", "s:S + v:believe / argue / suggest + b:that + s:S + v:V"], ["Chủ ngữ giả", "x:It is + o:clear / true / likely + b:that + s:S + v:V"]],
+   "say": "That nghĩa là \"rằng\". Dùng sau believe, argue, claim, suggest, show và sau cấu trúc It is + tính từ. Trong văn viết nên giữ that cho rõ.",
+   "ex": [
+    ["Many people believe *that* technology improves life.", "Nhiều người tin rằng công nghệ cải thiện cuộc sống.", "Sau believe là cả một ý có chủ ngữ và động từ."],
+    ["It is clear *that* cities are becoming more crowded.", "Rõ ràng là các thành phố đang ngày càng đông đúc.", "It là chủ ngữ giả, nội dung thật nằm sau that."]
+   ]
+  },
+  {
+   "t": "Muốn nói điều chưa biết có hay không, hay thông tin cụ thể → whether, wh-",
+   "f": [["Có hay không", "s:S + v:wonder / don't know + b:whether / if + s:S + v:V"], ["Thông tin", "s:S + v:know + b:what / why / how + s:S + v:V"]],
+   "say": "Whether hoặc if là \"liệu có hay không\". What, why, how, where hỏi một thông tin cụ thể. Đầu câu làm chủ ngữ chỉ dùng whether, không dùng if.",
+   "ex": [
+    ["It is unclear *whether* online exams are fair.", "Chưa rõ liệu các kỳ thi trực tuyến có công bằng không.", "Chưa biết có hay không."],
+    ["Nobody knows *why* prices rose.", "Không ai biết vì sao giá tăng.", "Thông tin chưa biết là lý do."]
+   ]
+  },
+  {
+   "t": "Câu hỏi nằm trong câu khác → giữ trật tự S + V",
+   "f": [["Đúng", "x:I don't know + b:where + s:he + v:lives"], ["Sai", "n:I don't know where does he live"]],
+   "say": "Khi câu hỏi được đặt vào trong câu khác, nó trở lại thành câu kể. Không đảo trợ động từ, không mượn do, does, did, và động từ chia theo chủ ngữ như thường.",
+   "ex": [
+    ["Where does he live? → I don't know where *he lives*.", "Anh ấy sống ở đâu? → Tôi không biết anh ấy sống ở đâu.", "Bỏ does, động từ lives lấy lại -s."],
+    ["What is the problem? → Please explain what *the problem is*.", "Vấn đề là gì? → Hãy giải thích vấn đề là gì.", "Chủ ngữ đứng trước is."]
+   ]
+  },
+  {
+   "t": "Muốn nhấn mạnh → dùng mệnh đề làm chủ ngữ",
+   "f": [["Chủ ngữ", "b:What + s:S + v:V + v:is + o:..."]],
+   "say": "Cả mệnh đề đứng đầu câu làm chủ ngữ, được tính là số ít nên đi với is, remains. Mẫu The fact that cũng dùng được.",
+   "ex": [
+    ["*What young people need* is practical experience.", "Điều giới trẻ cần là kinh nghiệm thực tế.", "Chủ ngữ là cả mệnh đề, động từ chính là is."],
+    ["*The fact that* many graduates are unemployed is worrying.", "Việc nhiều người tốt nghiệp bị thất nghiệp thật đáng lo.", "Động từ chính là is."]
+   ]
+  }
+ ],
+ "traps": [
+  ["I don't know what *is his name*.", "I don't know what *his name is*.", "Trong mệnh đề danh từ, chủ ngữ đứng trước động từ."],
+  ["Can you tell me where *did she go*?", "Can you tell me where *she went*?", "Không mượn did, động từ tự mang thì quá khứ."],
+  ["I wonder *that* he is at home.", "I wonder *whether / if* he is at home.", "Wonder nói về điều chưa biết có hay không nên dùng whether hoặc if."]
+ ],
+ "apply": [
+  ["It is often argued that online learning will replace traditional classrooms.", "Người ta thường cho rằng học trực tuyến sẽ thay thế lớp học truyền thống."],
+  ["I believe that governments should invest more in public transport.", "Tôi tin rằng chính phủ nên đầu tư nhiều hơn vào giao thông công cộng."],
+  ["What students need most is practical experience rather than theory.", "Điều sinh viên cần nhất là kinh nghiệm thực tế hơn là lý thuyết."],
+  ["Whether this policy will work depends on how it is enforced.", "Chính sách này có hiệu quả hay không phụ thuộc vào cách thực thi."]
+ ],
+ "check": [
+  ["Đặt \"How much does it cost?\" vào sau \"I'd like to know\".", "I'd like to know how much it costs. Bỏ does, động từ thêm -s."],
+  ["Vì sao \"What he said was true\" dùng was?", "Chủ ngữ là cả mệnh đề What he said, được coi là số ít."]
+ ]
+}

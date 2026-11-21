@@ -212,6 +212,7 @@ function lsDictTab() {
     const hit = new Set(); let i = 0, j = 0; while (i < N && j < m) { if (want[i] === got[j]) { hit.add(i); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
     const disp = cur.x.split(/\s+/), map = []; let k = 0; for (const w of disp) { const c = words(spSpellKeep(w)).length; map.push([k, k + c]); k += c; }
     D.res = { want: disp, ok: map.map(([x, y]) => y > x && [...Array(y - x).keys()].every(q => hit.has(x + q))), pct: Math.round(hit.size / Math.max(1, N, m) * 100), extra: Math.max(0, m - hit.size) };
+    if (typeof e4Listen === "function") e4Listen(cur.x, D.res.want.filter((w, q) => !D.res.ok[q]), s.id + ":" + (D.i % n), D.res.pct);
     const sd = lsSt("dict"); sd.n = (sd.n || 0) + 1; sd.w = (sd.w || 0) + N; sd.ok = (sd.ok || 0) + hit.size; award("listening", 2); addAct("listening", 1); saveProfile(); render(); };
   const ta = h("textarea", { rows: "2", placeholder: "Gõ lại đúng câu bạn nghe…", oninput: e => { D.typed = e.target.value; }, onkeydown: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); check(); } } }); ta.value = D.typed;
   const resView = D.res ? h("p", { class: "ls-dict-res" }, D.res.want.map((w, k) => [h("span", { class: D.res.ok[k] || !/[a-z0-9]/i.test(w) ? "ok" : "no" }, w), " "])) : null;

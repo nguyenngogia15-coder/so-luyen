@@ -1,0 +1,73 @@
+{
+ "id": "l3",
+ "summary": [
+  "Lên: <b>rise, increase, grow, climb</b>. Xuống: <b>fall, decrease, decline, drop</b>. Giữ nguyên: <b>remain stable, level off</b>. Lên xuống: <b>fluctuate</b>.",
+  "Cách 1: <b>N + động từ + trạng từ</b> (Sales rose sharply).",
+  "Cách 2: <b>There was a + tính từ + danh từ + in + N</b> (There was a sharp rise in sales).",
+  "<b>rise / rose / risen</b> không có tân ngữ; <b>raise</b> là nâng cái gì lên.",
+  "<b>an increase in</b> + thứ tăng; <b>an increase of</b> + con số."
+ ],
+ "idea": "Biểu đồ đường kể một câu chuyện: số liệu lên, xuống, đứng yên hay dao động. Mỗi thay đổi viết được bằng hai khuôn *tương đương*: động từ + trạng từ, hoặc tính từ + danh từ. Đổi qua lại thì bài không bị lặp cấu trúc.",
+ "img": "Con số như người đi đường núi: rise là leo, fall là xuống dốc, level off là đoạn bằng, fluctuate là đường gập ghềnh.",
+ "steps": [
+  {
+   "t": "Muốn nói hướng đi của số liệu → chọn động từ",
+   "say": "Lên: rise, increase, grow, climb. Xuống: fall, decrease, decline, drop. Đứng yên: remain stable, level off (chững lại sau khi thay đổi). Dao động: fluctuate. Đạt đỉnh: peak at. Chạm đáy: hit a low of. Quá khứ bất quy tắc: rose, fell, grew.",
+   "ex": [
+    ["The price *rose* in 2010 and then *levelled off*.", "Giá tăng vào năm 2010 rồi chững lại.", ""],
+    ["The figure *fluctuated* between 20 and 40.", "Con số dao động giữa 20 và 40.", ""],
+    ["Visitor numbers *peaked at* 5.3 million in 2020.", "Lượng du khách đạt đỉnh 5,3 triệu vào năm 2020.", ""]
+   ]
+  },
+  {
+   "t": "Muốn nói mức độ → trạng từ hoặc tính từ",
+   "f": [
+    ["Mạnh", "o:sharp(ly) / dramatic(ally) / significant(ly) / rapid(ly)"],
+    ["Đều", "o:steady / steadily · gradual / gradually"],
+    ["Nhẹ", "o:slight / slightly"]
+   ],
+   "say": "Trạng từ (đuôi -ly) đi với động từ. Tính từ đi với danh từ. Chọn từ theo độ dốc của đường.",
+   "ex": [
+    ["The number *increased slightly*. = There was *a slight increase* in the number.", "Con số tăng nhẹ.", "slightly với động từ, slight với danh từ."]
+   ]
+  },
+  {
+   "t": "Cách 1 → chủ ngữ + động từ + trạng từ",
+   "f": [
+    ["Cách 1", "s:N + v:rose / fell + o:sharply + x:to 50% + x:in 2010"]
+   ],
+   "say": "Thứ thay đổi làm chủ ngữ, rồi động từ, trạng từ, số liệu và thời gian.",
+   "ex": [
+    ["Car sales *fell sharply* to 2 million in 2009.", "Doanh số ô tô giảm mạnh xuống 2 triệu vào năm 2009.", ""]
+   ]
+  },
+  {
+   "t": "Cách 2 → There was a + tính từ + danh từ + in",
+   "f": [
+    ["Cách 2", "x:There was + x:a + o:sharp + b:rise / fall + x:in + s:N"],
+    ["Biến thể", "s:N + v:saw / experienced + x:a + o:sharp + b:rise"]
+   ],
+   "say": "Sau danh từ chỉ thay đổi là in + thứ thay đổi. Biến thể saw / experienced cho thêm một cấu trúc để đổi. Dùng from... to... hoặc between... and... cho giai đoạn, by + năm cho mốc.",
+   "ex": [
+    ["*There was a sharp fall in* car sales in 2009.", "Có một sự sụt giảm mạnh về doanh số ô tô vào năm 2009.", ""],
+    ["Car sales *saw a sharp fall* in 2009.", "Doanh số ô tô chứng kiến sự sụt giảm mạnh vào năm 2009.", ""],
+    ["*Between* 2000 *and* 2010, the figure doubled.", "Từ 2000 đến 2010, con số tăng gấp đôi.", ""]
+   ]
+  }
+ ],
+ "traps": [
+  ["There was a *sharply* rise.", "There was a *sharp* rise.", "rise là danh từ nên cần tính từ."],
+  ["The price *rised* in 2010.", "The price *rose* in 2010.", "Quá khứ của rise là rose."],
+  ["The government *rose* taxes.", "The government *raised* taxes.", "raise cần tân ngữ, rise thì không."],
+  ["an increase *of* sales", "an increase *in* sales", "in + thứ tăng, of + con số tăng."]
+ ],
+ "apply": [
+  ["Sales of electric cars rose sharply from 1 million in 2015 to 4 million in 2020.", "Doanh số xe điện tăng mạnh từ 1 triệu năm 2015 lên 4 triệu năm 2020."],
+  ["There was a gradual decline in the number of newspaper readers over the period.", "Số độc giả báo giấy giảm dần trong suốt giai đoạn."],
+  ["The figure for City B fluctuated between 3 and 5 million before levelling off at 4 million.", "Số liệu của thành phố B dao động từ 3 đến 5 triệu rồi chững lại ở mức 4 triệu."]
+ ],
+ "check": [
+  ["Viết lại bằng cách 2: \"Prices dropped slightly in 2015.\"", "There was a slight drop in prices in 2015."],
+  ["Con số đi 20, 35, 20, 40, 25. Dùng động từ nào?", "fluctuate: The figure fluctuated between 20 and 40."]
+ ]
+}

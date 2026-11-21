@@ -60,10 +60,73 @@ async function gemini(env, model, body, fetchFn) {
   });
 }
 
+/* ----- Thông báo nhắc học (Web Push, không cần Firebase Messaging).
+   Worker tự tạo cặp khóa VAPID lần đầu và cất trong KV, không ai phải dán khóa.
+   Đẩy thông báo rỗng (không mã hóa nội dung); trình duyệt nhận xong tự hỏi /push/msg để lấy chữ hiển thị. ----- */
+const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const vnDay = () => new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
+async function sha(s) { return b64u(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s))).slice(0, 32); }
+async function vapid(env) {
+  let k = await env.AUDIO.get("vapid", "json");
+  if (!k) {
+    const kp = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"]);
+    k = { priv: await crypto.subtle.exportKey("jwk", kp.privateKey), pub: b64u(await crypto.subtle.exportKey("raw", kp.publicKey)) };
+    await env.AUDIO.put("vapid", JSON.stringify(k));
+  }
+  return k;
+}
+async function pushSend(env, sub, msg) {
+  const k = await vapid(env), aud = new URL(sub.endpoint).origin;
+  await env.AUDIO.put("pmsg:" + await sha(sub.endpoint), JSON.stringify({ ...msg, at: Date.now() }), { expirationTtl: 172800 });
+  const enc = o => b64u(new TextEncoder().encode(JSON.stringify(o)));
+  const unsigned = enc({ typ: "JWT", alg: "ES256" }) + "." + enc({ aud, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: "https://nguyenngogia15-coder.github.io/so-luyen/" });
+  const key = await crypto.subtle.importKey("jwk", k.priv, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
+  const sig = b64u(await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, new TextEncoder().encode(unsigned)));
+  const r = await fetch(sub.endpoint, { method: "POST", headers: { TTL: "43200", Urgency: "high", Authorization: `vapid t=${unsigned}.${sig}, k=${k.pub}`, "content-length": "0" } });
+  return r.status;
+}
+async function pushApi(req, env, path, b, user) {
+  if (!env.AUDIO) return out(env, req, 501, { error: { code: "no_kv", message: "Worker chưa gắn KV AUDIO" } });
+  const uid = user.sub;
+  if (path === "/push/key") return out(env, req, 200, { key: (await vapid(env)).pub });
+  if (path === "/push/sub") { if (!b.sub?.endpoint) return out(env, req, 400, { error: { code: "bad_request" } }); await env.AUDIO.put("push:" + uid, JSON.stringify({ sub: b.sub, name: String(b.name || "").slice(0, 24) })); return out(env, req, 200, { ok: true }); }
+  if (path === "/push/unsub") { await env.AUDIO.delete("push:" + uid); return out(env, req, 200, { ok: true }); }
+  if (path === "/push/status") { await env.AUDIO.put("pst:" + uid, JSON.stringify({ d: String(b.d || ""), left: +b.left || 0, name: String(b.name || "").slice(0, 24) }), { expirationTtl: 604800 }); return out(env, req, 200, { ok: true }); }
+  if (path === "/push/poke") {
+    const to = await env.AUDIO.get("push:" + String(b.to || ""), "json"); if (!to) return out(env, req, 200, { ok: false, reason: "chưa bật thông báo" });
+    const st = await pushSend(env, to.sub, { title: `👉 ${String(b.name || "Bạn học").slice(0, 24)} chọc bạn`, body: "Làm nhiệm vụ tiếng Anh hôm nay đi, cả nhóm đang chờ!", url: "#today" });
+    if (st === 404 || st === 410) await env.AUDIO.delete("push:" + b.to);
+    return out(env, req, 200, { ok: st < 300 });
+  }
+  if (path === "/push/test") { const me = await env.AUDIO.get("push:" + uid, "json"); if (!me) return out(env, req, 200, { ok: false }); const st = await pushSend(env, me.sub, { title: "Thông báo đã bật ✓", body: "Mỗi tối 20h web sẽ nhắc nếu bạn chưa xong nhiệm vụ.", url: "#today" }); return out(env, req, 200, { ok: st < 300, status: st }); }
+  return out(env, req, 404, { error: { code: "not_found" } });
+}
+/* Trình duyệt (service worker) hỏi chữ của thông báo vừa nhận, theo địa chỉ đăng ký của chính nó */
+async function pushMsg(req, env) {
+  let b = {}; try { b = await req.json(); } catch {}
+  const key = "pmsg:" + await sha(String(b.endpoint || "")), m = env.AUDIO ? await env.AUDIO.get(key, "json") : null;
+  if (m) await env.AUDIO.delete(key);
+  return new Response(JSON.stringify(m || { title: "Sổ luyện IELTS", body: "Vào học tiếng Anh hôm nay nhé!", url: "#today" }), { headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
+}
+/* 20h tối (giờ VN): nhắc ai chưa xong nhiệm vụ, kèm tên những bạn đã xong */
+async function remind(env) {
+  if (!env.AUDIO) return; const d = vnDay(), subs = [], st = {};
+  for (const k of (await env.AUDIO.list({ prefix: "push:" })).keys) subs.push([k.name.slice(5), await env.AUDIO.get(k.name, "json")]);
+  for (const k of (await env.AUDIO.list({ prefix: "pst:" })).keys) st[k.name.slice(4)] = await env.AUDIO.get(k.name, "json");
+  const done = Object.values(st).filter(x => x?.d === d && x.left === 0).map(x => x.name).filter(Boolean);
+  for (const [uid, s] of subs) {
+    const me = st[uid]; if (!s || (me?.d === d && me.left === 0)) continue;
+    const left = me?.d === d ? me.left : 5, others = done.filter(n => n !== s.name);
+    const code = await pushSend(env, s.sub, { title: `Còn ${left} nhiệm vụ tiếng Anh hôm nay`, body: others.length ? `${others.join(", ")} đã xong rồi. Đừng để cả nhóm đứt chuỗi!` : "Hạn chót 23:59. Làm ngay để giữ chuỗi nhé!", url: "#today" });
+    if (code === 404 || code === 410) await env.AUDIO.delete("push:" + uid);
+  }
+}
+
 export async function handle(req, env, fetchFn = fetch) {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env, req) });
   const url = new URL(req.url);
-  if (req.method !== "POST" || !["/ai", "/tts", "/ls-pool", "/ls-al", "/yt", "/quota"].includes(url.pathname)) return out(env, req, 404, { error: { code: "not_found" } });
+  if (req.method === "POST" && url.pathname === "/push/msg") return pushMsg(req, env);
+  if (req.method !== "POST" || !(["/ai", "/tts", "/ls-pool", "/ls-al", "/yt", "/quota"].includes(url.pathname) || url.pathname.startsWith("/push/"))) return out(env, req, 404, { error: { code: "not_found" } });
   let user;
   try { user = await verifyIdToken((req.headers.get("authorization") || "").replace(/^Bearer\s+/i, ""), env.FIREBASE_PROJECT_ID, fetchFn); }
   catch (e) { return out(env, req, 401, { error: { code: "not_granted", message: "Chưa đăng nhập hoặc phiên đã hết hạn (" + e.message + ")" } }); }
@@ -76,6 +139,7 @@ export async function handle(req, env, fetchFn = fetch) {
   if (url.pathname === "/ls-al") return lsAlign(req, env, b);
   if (url.pathname === "/yt") return ytCaps(req, env, b, fetchFn);
   if (url.pathname === "/quota") return quota(req, env, user.sub);
+  if (url.pathname.startsWith("/push/")) return pushApi(req, env, url.pathname, b, user);
   const msgs = Array.isArray(b.messages) ? b.messages : [];
   if (!msgs.length || JSON.stringify(msgs).length > 400000) return out(env, req, 400, { error: { code: "bad_request", message: "Nội dung trống hoặc quá dài" } });
   const contents = msgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: String(m.content ?? "") }] }));
@@ -285,4 +349,5 @@ export async function nightly(env, fetchFn = fetch, opts = {}) {
   return { log };
 }
 
-export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => ctx.waitUntil(nightly(env)) };
+/* Hai lịch chạy: "0 13 * * *" (20h VN) để nhắc học; lịch còn lại là việc ban đêm (thu giọng đọc, soạn bài nghe) */
+export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => ctx.waitUntil(ev.cron === "0 13 * * *" ? remind(env) : nightly(env)) };

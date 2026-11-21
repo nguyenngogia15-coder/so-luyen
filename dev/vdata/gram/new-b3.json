@@ -1,0 +1,62 @@
+{
+ "id": "b3",
+ "summary": [
+  "Danh từ đếm được <b>số ít</b> luôn cần <b>a/an/the/my...</b> đứng trước.",
+  "Danh từ <b>không đếm được</b>: không -s, không a/an, động từ số ít.",
+  "Muốn đếm: <b>a piece of</b> advice, <b>an item of</b> news.",
+  "Đếm được → <b>many/few</b>. Không đếm được → <b>much/little</b>. Chưa chắc → <b>a lot of</b>."
+ ],
+ "idea": "Tiếng Anh chia danh từ thành hai nhóm. *Đếm được* là vật rời từng cái (a car, two cars). *Không đếm được* là một khối liền như nước (water, traffic, information). Nhóm nào thì quyết định có -s, a/an, many hay much.",
+ "img": "Đếm được là những viên bi, đếm từng viên. Không đếm được là nước trong bình, phải múc bằng cốc: a cup of, a piece of.",
+ "steps": [
+  {
+   "t": "Danh từ đếm được → số ít có mạo từ, số nhiều có -s",
+   "f": [["Số ít", "x:a / the / my / this + s:N"], ["Số nhiều", "s:N-s / N-es"]],
+   "say": "Số ít không bao giờ đứng trơ trọi, phải có a, an, the, my hoặc this. Tiếng Việt không có từ tương ứng nên người Việt hay quên. Số nhiều bất quy tắc: person → people, child → children, man → men, woman → women.",
+   "ex": [
+    ["She is *a* student.", "Cô ấy là sinh viên.", "student đếm được, số ít nên cần a."],
+    ["Many *students* work part-time.", "Nhiều sinh viên đi làm thêm.", "Sau many là danh từ số nhiều."]
+   ]
+  },
+  {
+   "t": "Danh từ không đếm được → không -s, không a/an",
+   "f": [["Không đếm được", "s:N + v:V số ít"]],
+   "say": "Hay gặp nhất: information, advice, knowledge, research, evidence, equipment, furniture, traffic, pollution, homework, news, money, accommodation. Chúng đi với động từ số ít.",
+   "ex": [
+    ["This *information is* useful.", "Thông tin này hữu ích.", "Không viết informations, và động từ là is."],
+    ["There is too much *traffic* in the city centre.", "Có quá nhiều xe cộ ở trung tâm thành phố.", "traffic không đếm được nên dùng much."]
+   ]
+  },
+  {
+   "t": "Muốn đếm danh từ không đếm được → thêm đơn vị",
+   "f": [["Đếm", "x:a piece of / an item of + s:N không đếm được"]],
+   "say": "Thêm cụm đơn vị phía trước. Lúc này -s gắn vào piece, còn danh từ chính giữ nguyên.",
+   "ex": [
+    ["She gave me two *pieces of* advice.", "Cô ấy cho tôi hai lời khuyên.", "Thêm -s vào pieces, không thêm vào advice."],
+    ["We bought a *piece of* furniture.", "Chúng tôi mua một món đồ nội thất.", "Không viết a furniture."]
+   ]
+  },
+  {
+   "t": "Chọn lượng từ theo nhóm danh từ",
+   "f": [["Đếm được", "x:many / a few / few + s:N-s"], ["Không đếm được", "x:much / a little / little + s:N"], ["Cả hai", "x:a lot of / some / any"]],
+   "say": "Few và little mang nghĩa rất ít, gần như không có. A few và a little mang nghĩa có một ít. Chưa chắc danh từ thuộc nhóm nào thì dùng a lot of cho an toàn.",
+   "ex": [
+    ["There are *many* cars but *little* public transport.", "Có nhiều xe hơi nhưng rất ít phương tiện công cộng.", "cars đếm được dùng many. transport không đếm được dùng little."]
+   ]
+  }
+ ],
+ "traps": [
+  ["She gave me some useful *advices*.", "She gave me some useful *advice*.", "advice không có số nhiều dù tiếng Việt nói \"những lời khuyên\"."],
+  ["The news *are* good.", "The news *is* good.", "news có chữ s nhưng là danh từ không đếm được nên đi với is."],
+  ["Many *people is* worried.", "Many *people are* worried.", "people là số nhiều của person nên đi với are."]
+ ],
+ "apply": [
+  ["Working from home saves employees a lot of time and money.", "Làm việc tại nhà giúp nhân viên tiết kiệm nhiều thời gian và tiền bạc."],
+  ["Heavy traffic is a major cause of air pollution in large cities.", "Giao thông đông đúc là nguyên nhân chính gây ô nhiễm không khí ở các thành phố lớn."],
+  ["Students can easily find useful information on the internet.", "Sinh viên có thể dễ dàng tìm thông tin hữu ích trên mạng."]
+ ],
+ "check": [
+  ["Vì sao nói \"a lot of research\" mà không nói \"many researches\"?", "research không đếm được nên không có -s và không đi với many. Muốn đếm thì dùng many studies."],
+  ["\"I need a new furniture\" sai ở đâu?", "furniture không đếm được nên không đi với a. Sửa: I need some new furniture, hoặc a new piece of furniture."]
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "id": "g31",
+ "summary": [
+  "Các ý nối bằng <b>and / or / but</b> phải cùng dạng: danh từ với danh từ, V-ing với V-ing, to V với to V.",
+  "<b>both A and B, either A or B, not only A but also B</b>: A và B cùng loại từ.",
+  "Nối câu bằng <b>this / these + danh từ tóm tắt</b>: this trend, these measures.",
+  "Tránh lặp bằng <b>they, one, do so</b> và từ đồng nghĩa. Ý đã biết đứng đầu câu, ý mới đứng cuối."
+ ],
+ "idea": "Tiếng Việt không đổi dạng từ nên không có lỗi song song, nhưng tiếng Anh thì có. Giám khảo chấm Coherence khi câu *cân đối* và các câu *dính vào nhau*, mỗi câu mở đầu bằng thứ người đọc vừa gặp.",
+ "img": "Như hàng ghế đồng phục: mỗi ghế cùng một kiểu. Và như toa tàu: đuôi câu trước móc vào đầu câu sau.",
+ "steps": [
+  {
+   "t": "Muốn liệt kê nhiều ý → giữ cùng một dạng",
+   "f": [
+    ["Song song", "b:V-ing , b:V-ing + x:and + b:V-ing"],
+    ["Sai", "n:V-ing and to V"]
+   ],
+   "say": "Nhìn dạng của ý đầu tiên rồi viết các ý còn lại y như vậy: cùng danh từ, cùng V-ing, cùng V nguyên mẫu, hoặc cùng tính từ.",
+   "ex": [
+    ["She likes *reading*, *swimming* and *cooking*.", "Cô ấy thích đọc sách, bơi và nấu ăn.", "Ba ý đều là V-ing."],
+    ["The government should *build* more roads and *improve* public transport.", "Chính phủ nên xây thêm đường và cải thiện giao thông công cộng.", "Sau should là hai động từ nguyên mẫu."],
+    ["The city is *crowded*, *noisy* and *polluted*.", "Thành phố đông đúc, ồn ào và ô nhiễm.", "Ba tính từ."]
+   ]
+  },
+  {
+   "t": "Muốn dùng cặp từ nối → hai vế cùng loại",
+   "f": [
+    ["both", "x:both + b:X + x:and + b:X"],
+    ["either", "x:either + b:X + x:or + b:X"],
+    ["not only", "x:not only + b:X + x:but also + b:X"]
+   ],
+   "say": "Thứ đứng ngay sau từ thứ nhất và thứ đứng ngay sau từ thứ hai phải cùng dạng. Đặt từ thứ nhất sát đúng chỗ cần song song.",
+   "ex": [
+    ["Technology is both *useful* and *dangerous*.", "Công nghệ vừa hữu ích vừa nguy hiểm.", "Cùng là tính từ."],
+    ["People can either *take* the bus or *ride* a bike.", "Mọi người có thể đi xe buýt hoặc đạp xe.", "Cùng là động từ."],
+    ["This policy is not only *expensive* but also *unfair*.", "Chính sách này không chỉ đắt mà còn bất công.", "Không viết but also it is unfair."]
+   ]
+  },
+  {
+   "t": "Muốn nối câu sau với câu trước → this / these + danh từ",
+   "f": [
+    ["Liên kết", "x:This / These + b:trend / problem / measures + v:V..."]
+   ],
+   "say": "Mở đầu câu sau bằng this / these cộng một danh từ gói ý câu trước: this trend, this problem, this approach, these changes. Rõ hơn nhiều so với This đứng một mình.",
+   "ex": [
+    ["More people are moving to cities. *This trend* puts pressure on housing.", "Ngày càng nhiều người chuyển lên thành phố. Xu hướng này gây áp lực lên nhà ở.", "This trend gói cả câu trước."],
+    ["Cities attract young workers. *These workers* need affordable housing. *Such housing* is in short supply.", "Thành phố thu hút lao động trẻ. Những lao động này cần nhà ở giá phải chăng. Loại nhà ở đó đang thiếu.", "Mỗi câu mở bằng thứ cuối câu trước."]
+   ]
+  },
+  {
+   "t": "Muốn tránh lặp từ → đại từ, one, do so",
+   "f": [
+    ["Thay cụm động từ", "x:do so"],
+    ["Thay danh từ", "x:one / ones"]
+   ],
+   "say": "*do so* thay cả cụm động từ. *one / ones* thay danh từ đếm được. *the former / the latter* chỉ thứ nhắc trước và thứ nhắc sau. Đổi từ đồng nghĩa: young people, teenagers, the younger generation.",
+   "ex": [
+    ["Some people work from home; others cannot *do so*.", "Một số người làm việc ở nhà; những người khác thì không thể.", "do so thay cho work from home."],
+    ["Many cities have built new roads, but the old *ones* are still crowded.", "Nhiều thành phố đã xây đường mới, nhưng những con đường cũ vẫn đông đúc.", "ones thay roads."]
+   ]
+  }
+ ],
+ "traps": [
+  ["He enjoys *playing* football and *to watch* films.", "He enjoys *playing* football and *watching* films.", "Hai ý nối bằng and phải cùng dạng."],
+  ["The city is crowded, noisy and *has pollution*.", "The city is crowded, noisy and *polluted*.", "Ý thứ ba cũng phải là tính từ."],
+  ["She *not only* speaks English *but also* French.", "She speaks *not only* English *but also* French.", "Đặt not only sát danh từ để hai vế cùng loại."]
+ ],
+ "apply": [
+  ["Social media helps teenagers stay in touch with friends, share ideas and learn new skills.", "Mạng xã hội giúp thanh thiếu niên giữ liên lạc với bạn bè, chia sẻ ý tưởng và học kỹ năng mới."],
+  ["Working from home is both convenient and cost-effective.", "Làm việc tại nhà vừa tiện lợi vừa tiết kiệm chi phí."],
+  ["Many teenagers spend hours online every night. This habit can seriously affect their sleep.", "Nhiều thanh thiếu niên dành hàng giờ trực tuyến mỗi tối. Thói quen này có thể ảnh hưởng nghiêm trọng đến giấc ngủ của họ."]
+ ],
+ "check": [
+  ["Sửa cho song song: \"The course teaches students to think critically, solving problems and how they can work in teams.\"", "The course teaches students to think critically, (to) solve problems and (to) work in teams. Cả ba ý đều dùng to V."],
+  ["Viết câu nối với \"Many teenagers spend hours on social media every day.\" bằng this + danh từ.", "Ví dụ: This habit can affect their sleep. / This behaviour may harm their studies."]
+ ]
+}

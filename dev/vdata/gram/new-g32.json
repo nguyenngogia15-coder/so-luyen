@@ -1,0 +1,79 @@
+{
+ "id": "g32",
+ "summary": [
+  "Cụm danh từ = <b>một danh từ chính</b> + từ bổ nghĩa đứng trước + cụm bổ nghĩa đứng sau.",
+  "Đứng sau: <b>of / in + N</b>, <b>V-ing</b> (chủ động), <b>V3</b> (bị động), <b>who / which</b>.",
+  "Động từ chia theo <b>danh từ chính</b>, không theo danh từ đứng gần nó: <b>The number of cars is...</b>",
+  "Danh từ làm nhãn không thêm -s: <b>a five-year plan, car owners</b>.",
+  "<b>the + tính từ</b> = nhóm người (the elderly, the poor), động từ số nhiều."
+ ],
+ "idea": "Trong bài học thuật, thông tin nằm trong những cụm danh từ dài. Tiếng Việt để danh từ chính ở đầu, còn tiếng Anh để nó ở *giữa*: có từ đứng trước và cụm đứng sau. Tìm đúng danh từ chính là biết đọc câu và chia đúng động từ.",
+ "img": "Danh từ chính như đầu tàu. Toa phía trước và toa phía sau chỉ là hàng hóa kéo theo, động từ chỉ nhìn đầu tàu.",
+ "steps": [
+  {
+   "t": "Muốn đọc hoặc viết cụm dài → xác định danh từ chính",
+   "f": [
+    ["Khung", "x:a / the + o:tính từ / danh từ nhãn + b:DANH TỪ CHÍNH + o:of... / V-ing / V3 / who..."]
+   ],
+   "say": "Che phần từ giới từ, V-ing, V3, who / which trở về sau. Danh từ cuối cùng còn lại là danh từ chính. Bỏ nó thì cả cụm mất nghĩa.",
+   "ex": [
+    ["the rapid *growth* of online shopping in Asia", "sự tăng trưởng nhanh của mua sắm trực tuyến ở châu Á", "growth là danh từ chính."],
+    ["a significant *rise* in the number of cars", "mức tăng đáng kể về số lượng xe ô tô", "rise là danh từ chính."]
+   ]
+  },
+  {
+   "t": "Muốn dùng danh từ làm nhãn → luôn để số ít",
+   "f": [
+    ["Nhãn", "x:a + o:traffic + b:problem"],
+    ["Có số", "x:a + o:five-year + b:plan"],
+    ["Sai", "n:a five-years plan"]
+   ],
+   "say": "Danh từ đứng trước danh từ chính để phân loại thì không thêm -s, kể cả khi có số: a ten-year plan. Chỉ danh từ chính mới chia số ít hoặc số nhiều.",
+   "ex": [
+    ["*water* pollution, *energy* consumption", "ô nhiễm nước, mức tiêu thụ năng lượng", "water, energy là nhãn."],
+    ["She took a *three-year* course.", "Cô ấy học một khóa ba năm.", "Không viết three-years."]
+   ]
+  },
+  {
+   "t": "Muốn thêm thông tin đằng sau → of / V-ing / V3",
+   "f": [
+    ["Giới từ", "b:N + x:of / in + o:N"],
+    ["Tự làm", "b:N + v:V-ing"],
+    ["Bị làm", "b:N + v:V3"]
+   ],
+   "say": "V-ing khi danh từ tự làm việc đó (= who + V). V3 khi danh từ bị tác động (= which + be + V3). Cách này giúp câu gọn, rất hợp Writing.",
+   "ex": [
+    ["students *studying* abroad", "những sinh viên đang học ở nước ngoài", "Sinh viên tự học nên dùng V-ing."],
+    ["the data *collected* in 2020", "dữ liệu được thu thập năm 2020", "Dữ liệu bị thu thập nên dùng V3."],
+    ["the problems *caused* by traffic", "những vấn đề do giao thông gây ra", "V3, không viết causing."]
+   ]
+  },
+  {
+   "t": "Muốn chia động từ đúng → theo danh từ chính",
+   "f": [
+    ["Chia theo N chính", "x:The + b:number + o:of cars + v:is"]
+   ],
+   "say": "Gạch chân danh từ chính, bỏ qua phần sau giới từ, rồi mới chia động từ. Riêng a number of = many nên đi với động từ số nhiều. The + tính từ chỉ nhóm người cũng đi với số nhiều.",
+   "ex": [
+    ["The *number* of people living in cities *is* rising.", "Số người sống ở thành phố đang tăng.", "number là số ít."],
+    ["The *reasons* for this change *are* complex.", "Các lý do của sự thay đổi này khá phức tạp.", "reasons là số nhiều."],
+    ["*The elderly* need more support from the government.", "Người cao tuổi cần được chính phủ hỗ trợ nhiều hơn.", "the elderly = nhóm người, số nhiều."]
+   ]
+  }
+ ],
+ "traps": [
+  ["The quality of the products *are* low.", "The quality of the products *is* low.", "Danh từ chính là quality, không phải products."],
+  ["a *ten-years-old* boy", "a *ten-year-old* boy", "Đứng trước danh từ là nhãn nên year không có -s."],
+  ["the problems *causing* by traffic", "the problems *caused* by traffic", "Vấn đề bị gây ra nên dùng V3."],
+  ["The *poors* need help.", "The *poor* need help.", "the + tính từ không thêm -s."]
+ ],
+ "apply": [
+  ["The number of people living in big cities has risen sharply over the past decade.", "Số người sống ở các thành phố lớn đã tăng mạnh trong thập kỷ qua."],
+  ["The problems caused by heavy traffic include air pollution and noise.", "Những vấn đề do giao thông đông đúc gây ra gồm ô nhiễm không khí và tiếng ồn."],
+  ["The rapid growth of online shopping has changed the way people buy goods.", "Sự tăng trưởng nhanh của mua sắm trực tuyến đã thay đổi cách mọi người mua hàng."]
+ ],
+ "check": [
+  ["Tìm danh từ chính của \"the main advantages of working from home\". Động từ đi sau là is hay are?", "Danh từ chính là advantages (số nhiều) nên dùng are."],
+  ["Vì sao viết \"people affected by the flood\" nhưng \"people living near the river\"?", "Người dân bị lũ tác động (bị động) nên dùng V3. Người dân tự sống gần sông (chủ động) nên dùng V-ing."]
+ ]
+}

@@ -23,6 +23,12 @@ function vrSay(w) { try { speakWord(w); } catch { try { speak(w); } catch {} } }
 function vrSayText(t) { try { stopTTS(); const u = new SpeechSynthesisUtterance(t); u.lang = "en-GB"; u.rate = 0.95; speechSynthesis.speak(u); } catch {} }
 /* Đánh dấu hôm nay đã học Lộ trình từ vựng (cho nhiệm vụ hằng ngày; ôn lại bài cũ cũng tính) */
 function vrMarkDay() { const lg = P.log[today()] ||= { min: 0, acts: [] }; if (!lg.vr) { lg.vr = 1; saveProfile(); } }
+/* Ôn từ hay sai: từ làm sai hoặc đánh dấu Cần ôn trong Lộ trình được đưa vào lịch ôn ngắt quãng riêng (khác Sổ từ tự thêm).
+   Đúng thì giãn lịch 1 → 3 → 7 → 16 → 35 ngày; sai thì ôn lại ngày mai. Đúng 5 lần liền là thuộc, rời khỏi lịch. */
+const VR_IV = [1, 3, 7, 16, 35];
+const vrRev = () => (P.vrr ||= {});
+function vrRevAdd(pid, w) { const k = pid + "|" + w, r = vrRev()[k]; if (r) { r.n = 0; r.due = addDays(today(), 1); } else vrRev()[k] = { pid, w, n: 0, due: addDays(today(), 1) }; saveProfile(); }
+const vrRevDue = () => Object.entries(vrRev()).filter(([, r]) => r.due <= today());
 /* Bài i của phần: các mục từ */
 function vrLesson(part, data, i) { let a = 0; for (let k = 0; k < i; k++) a += part.sizes[k]; return data.slice(a, a + part.sizes[i]); }
 
@@ -31,11 +37,16 @@ function vrPage() {
   const V = UI.vr ||= { mode: "topic", part: null, view: null };
   const box = h("div", { class: "stack vr", style: "gap:16px" }, h("p", { class: "muted" }, "Đang tải lộ trình…"));
   vrIndex().then(ix => {
+    if (V.view?.k === "rev") { vrReview(ix).then(n => box.replaceChildren(n), e => box.replaceChildren(h("p", { class: "note bad" }, "Chưa tải được dữ liệu: " + e.message))); return; }
     const parts = ix[V.mode] || [];
     if (!V.part || !parts.some(p => p.id === V.part)) V.part = (parts.find(p => p.lessons > vrDoneN(p)) || parts[0])?.id;
     const part = parts.find(p => p.id === V.part);
     if (V.view && part) { vrPart(part.id).then(data => box.replaceChildren(vrView(part, data, V.view)), e => box.replaceChildren(h("p", { class: "note bad" }, "Chưa tải được dữ liệu: " + e.message))); return; }
+    const due = vrRevDue().length, all = Object.keys(vrRev()).length;
     box.replaceChildren(
+      all ? h("section", { class: "card row vr-rev", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" },
+        h("div", { class: "stack", style: "gap:2px" }, h("b", null, due ? `Ôn từ hay sai: ${due} từ đến hạn hôm nay` : "Ôn từ hay sai: hôm nay đã ôn xong"), h("span", { class: "small muted" }, `${all} từ trong lịch ôn. Từ làm sai và từ đánh dấu Cần ôn tự vào đây; ôn xong cũng tính là nhiệm vụ từ vựng của ngày.`)),
+        due ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "rev" }; render(); window.scrollTo(0, 0); } }, "Ôn ngay →") : null) : null,
       h("div", { class: "row vr-modes" }, [["topic", "Từ vựng chủ đề"], ["cefr", "Từ vựng CEFR"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(V.mode === k), onclick: () => { V.mode = k; V.part = null; render(); } }, t))),
       h("div", { class: "vr-layout" },
         h("aside", { class: "vr-parts" }, h("span", { class: "eyebrow" }, V.mode === "topic" ? `${parts.length} chủ đề · ${parts.reduce((a, p) => a + p.n, 0)} mục từ` : `Chuẩn CEFR · ${parts.length} phần`),
@@ -82,10 +93,10 @@ function vrCards(part, items, v, head, back) {
   const C = v.c ||= { i: 0, flip: false, front: "en", need: [] }, it = items[C.i];
   if (!it) {
     const s = vrL(part.id, v.i); if (!s.c) { s.c = 1; award("vocab", 5); addAct("vocab", Math.max(2, Math.round(items.length / 4))); saveProfile(); }
-    return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Đã xem hết thẻ", `Bạn đã xem ${items.length} thẻ. Mức Bài tập của bài này đã mở.` + (C.need.length ? ` Có ${C.need.length} từ bạn đánh dấu Cần ôn, đã đưa vào Sổ từ vựng.` : ""), [h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.vr.view = { k: "quiz", i: v.i }; render(); } }, "Làm bài tập →"), h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")]));
+    return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Đã xem hết thẻ", `Bạn đã xem ${items.length} thẻ. Mức Bài tập của bài này đã mở.` + (C.need.length ? ` Có ${C.need.length} từ bạn đánh dấu Cần ôn, đã đưa vào lịch Ôn từ hay sai.` : ""), [h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.vr.view = { k: "quiz", i: v.i }; render(); } }, "Làm bài tập →"), h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")]));
   }
   const flip = () => { C.flip = !C.flip; render(); };
-  const mark = async need => { if (!C.flip) return; if (need) { C.need.push(it.w); if (!VOCAB.some(x => vrKey(x.word) === vrKey(it.w))) addVocab({ word: it.w, pos: vrPos(it.p), ipa: it.ipa || "", meaning: it.vi, def: it.d, example: it.e[0][0], topic: part.title }).catch(() => {}); } C.i++; C.flip = false; render(); };
+  const mark = async need => { if (!C.flip) return; if (need) { C.need.push(it.w); vrRevAdd(part.id, it.w); } C.i++; C.flip = false; render(); };
   UI.keyH = e => { if (e.target.closest("input,textarea")) return; if (e.code === "Space") { e.preventDefault(); flip(); } else if (e.key === "1") mark(true); else if (e.key === "2") mark(false); else if (e.key.toLowerCase() === "a") vrSay(it.w); };
   const front = C.front === "en" ? h("div", { class: "fc-mid" }, h("span", { class: "fc-word" }, it.w), it.ipa ? h("span", { class: "fc-ipa" }, it.ipa) : null, h("span", { class: "fc-pos" }, vrPos(it.p)))
     : h("div", { class: "fc-mid" }, h("span", { class: "fc-word", style: "font-size:clamp(1.8rem,4.6vw,3rem)" }, it.vi), h("span", { class: "fc-pos" }, vrPos(it.p)));
@@ -122,7 +133,7 @@ function vrQuiz(part, data, items, v, head, back) {
   }
   if (q.auto && !q.played) { q.played = true; setTimeout(() => vrSay(q.it.w), 150); }
   const wrong = Q.picked && !Q.picked.ok;
-  const choose = o => { if (Q.picked) return; Q.picked = o; if (o.ok) { setTimeout(() => { if (UI.vr.view !== v) return; Q.i++; Q.picked = null; render(); }, 650); } render(); };
+  const choose = o => { if (Q.picked) return; Q.picked = o; if (!o.ok) vrRevAdd(part.id, q.it.w); if (o.ok) { setTimeout(() => { if (UI.vr.view !== v) return; Q.i++; Q.picked = null; render(); }, 650); } render(); };
   UI.keyH = e => { if (e.target.closest("input,textarea")) return; const n = +e.key; if (n >= 1 && n <= q.opts.length) choose(q.opts[n - 1]); if (e.key === "Enter" && wrong) restart(); };
   const restart = () => { v.q = { round: Q.round + 1, i: 0, list: vrShuf(items).map(it => vrQ(it, items.length >= 8 ? items : data)), picked: null }; render(); };
   return h("div", { class: "stack", style: "gap:14px" }, head,
@@ -141,7 +152,7 @@ function vrDict(part, items, v, head, back) {
   }
   if (!D.played) { D.played = true; setTimeout(() => vrSay(it.w), 150); }
   const ok = t => vrKey(t).replace(/[^a-z' -]/g, "") === vrKey(it.w).replace(/[^a-z' -]/g, "");
-  const check = () => { if (D.res) { D.i++; D.typed = ""; D.res = null; D.played = false; render(); return; } if (!D.typed.trim()) return; D.res = ok(D.typed) ? "ok" : "no"; if (D.res === "no") D.err++; render(); };
+  const check = () => { if (D.res) { D.i++; D.typed = ""; D.res = null; D.played = false; render(); return; } if (!D.typed.trim()) return; D.res = ok(D.typed) ? "ok" : "no"; if (D.res === "no") { D.err++; vrRevAdd(part.id, it.w); } render(); };
   const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ từ vừa nghe…", value: D.typed, oninput: e => { D.typed = e.target.value; }, onkeydown: e => { if (e.key === "Enter") { e.preventDefault(); check(); } } });
   setTimeout(() => inp.focus(), 0);
   return h("div", { class: "stack", style: "gap:14px" }, head, h("div", { class: "meter" }, h("i", { style: `width:${D.i / D.list.length * 100}%` })),
@@ -174,12 +185,38 @@ function vrExam(part, data, head, back) {
   if (q.kind === "dict") {
     if (!q.played) { q.played = true; setTimeout(() => vrSay(q.it.w), 150); }
     const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ từ vừa nghe…", value: E.typed, oninput: e => { E.typed = e.target.value; }, onkeydown: e => { if (e.key === "Enter") go(); } });
-    const go = () => { if (E.picked) return next(); if (!E.typed.trim()) return; E.picked = vrKey(E.typed) === vrKey(q.it.w) ? "ok" : "no"; if (E.picked === "ok") E.ok++; render(); };
+    const go = () => { if (E.picked) return next(); if (!E.typed.trim()) return; E.picked = vrKey(E.typed) === vrKey(q.it.w) ? "ok" : "no"; if (E.picked === "ok") E.ok++; else vrRevAdd(part.id, q.it.w); render(); };
     setTimeout(() => inp.focus(), 0);
     return h("div", { class: "stack", style: "gap:14px" }, top, h("section", { class: "card vr-q" }, h("span", { class: "small muted" }, "Nghe viết"), h("button", { class: "btn btn-primary", type: "button", onclick: () => vrSay(q.it.w) }, "🔊 Nghe"), h("div", { class: "fc-ask" }, inp, h("button", { class: "btn btn-primary", type: "button", onclick: go }, E.picked ? "Tiếp →" : "Kiểm tra")), E.picked ? h("p", { class: "note " + (E.picked === "ok" ? "" : "bad"), style: "margin:0" }, E.picked === "ok" ? "✓ Đúng" : "✗ Đáp án: " + q.it.w) : null));
   }
   if (q.auto && !q.played) { q.played = true; setTimeout(() => vrSay(q.it.w), 150); }
-  const choose = o => { if (E.picked) return; E.picked = o; if (o.ok) E.ok++; render(); setTimeout(() => { if (UI.vr.view?.e === E && E.list[E.i] === q) next(); }, o.ok ? 500 : 1300); };
+  const choose = o => { if (E.picked) return; E.picked = o; if (o.ok) E.ok++; else vrRevAdd(part.id, q.it.w); render(); setTimeout(() => { if (UI.vr.view?.e === E && E.list[E.i] === q) next(); }, o.ok ? 500 : 1300); };
   return h("div", { class: "stack", style: "gap:14px" }, top, h("div", { class: "meter" }, h("i", { style: `width:${E.i / 30 * 100}%` })),
     h("section", { class: "card vr-q" }, q.ask, h("div", { class: "vr-opts" }, q.opts.map((o, k) => h("button", { type: "button", class: "vr-o" + (E.picked ? (o.ok ? " right" : o === E.picked ? " wrong" : "") : ""), disabled: E.picked || null, onclick: () => choose(o) }, h("span", { class: "vr-k" }, k + 1), o.t)))));
+}
+/* Phiên ôn từ hay sai: tối đa 20 từ đến hạn, câu hỏi như bài tập nhưng sai không phải làm lại */
+async function vrReview(ix) {
+  const V = UI.vr, back = () => { V.view = null; render(); window.scrollTo(0, 0); };
+  const R = V.view.r ||= await (async () => {
+    const due = vrRevDue().slice(0, 20), data = {}, list = [];
+    for (const [k, r] of due) { data[r.pid] ||= await vrPart(r.pid).catch(() => []); const it = data[r.pid].find(x => x.w === r.w); if (it) list.push({ k, q: vrQ(it, data[r.pid]) }); else delete vrRev()[k]; }
+    return { i: 0, list: vrShuf(list), ok: 0, picked: null };
+  })();
+  const head = h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "× Thoát"), h("span", { class: "small muted" }, "Ôn từ hay sai"), h("span", { class: "small muted" }, `${Math.min(R.i + 1, R.list.length)}/${R.list.length}`));
+  const cur = R.list[R.i];
+  if (!cur) {
+    if (R.list.length && !R.done) { R.done = 1; award("vocab", Math.min(20, R.list.length * 2)); addAct("vocab", Math.max(2, Math.round(R.list.length / 3))); vrMarkDay(); saveProfile(); }
+    return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Ôn xong", R.list.length ? `Đúng ${R.ok}/${R.list.length} từ. Từ đúng được giãn lịch ôn, từ sai sẽ gặp lại ngày mai.` : "Không có từ nào đến hạn.", [h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình")]));
+  }
+  const q = cur.q;
+  if (q.auto && !q.played) { q.played = true; setTimeout(() => vrSay(q.it.w), 150); }
+  const choose = o => {
+    if (R.picked) return; R.picked = o; const r = vrRev()[cur.k];
+    if (r) { if (o.ok) { r.n++; if (r.n >= VR_IV.length) delete vrRev()[cur.k]; else r.due = addDays(today(), VR_IV[r.n]); R.ok++; } else { r.n = 0; r.due = addDays(today(), 1); } saveProfile(); }
+    render(); setTimeout(() => { if (UI.vr.view?.r === R && R.list[R.i] === cur) { R.i++; R.picked = null; render(); } }, o.ok ? 600 : 1800);
+  };
+  UI.keyH = e => { if (e.target.closest("input,textarea")) return; const n = +e.key; if (n >= 1 && n <= q.opts.length) choose(q.opts[n - 1]); };
+  return h("div", { class: "stack", style: "gap:14px" }, head, h("div", { class: "meter" }, h("i", { style: `width:${R.i / R.list.length * 100}%` })),
+    h("section", { class: "card vr-q" }, q.ask, h("div", { class: "vr-opts" }, q.opts.map((o, k) => h("button", { type: "button", class: "vr-o" + (R.picked ? (o.ok ? " right" : o === R.picked ? " wrong" : "") : ""), disabled: R.picked || null, onclick: () => choose(o) }, h("span", { class: "vr-k" }, k + 1), o.t))),
+      R.picked && !R.picked.ok ? h("p", { class: "note bad", style: "margin:0" }, `Đáp án: ${q.it.w} (${vrPos(q.it.p)}) = ${q.it.vi}. ${q.it.e[0][0]}`) : null));
 }

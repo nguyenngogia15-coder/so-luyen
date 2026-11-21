@@ -1,0 +1,69 @@
+{
+ "id": "g21",
+ "summary": [
+  "Cụm động từ = <b>động từ + tiểu từ</b> (up, down, out, off, on…), nghĩa thường khác động từ gốc. Học cả cụm.",
+  "Loại tách được: tân ngữ là <b>đại từ</b> phải đứng giữa (turn <b>it</b> off).",
+  "Loại không tách được: <b>look after, deal with, come across</b>.",
+  "Trong Writing, ưu tiên từ trang trọng (<b>reduce, tackle, establish</b>). Speaking dùng cụm động từ thoải mái."
+ ],
+ "idea": "Động từ gắn với một từ nhỏ tạo ra nghĩa mới: give là \"cho\", give up là \"từ bỏ\". Không dịch từng chữ được, phải học như một từ. Từ nhỏ thường mang ý về hướng nên giúp đoán nghĩa.",
+ "img": "Động từ là chiếc xe, tiểu từ là biển chỉ đường. Cùng một chiếc xe, gắn biển up, down, out, off thì đi đến những nơi khác nhau.",
+ "steps": [
+  {
+   "t": "Muốn đoán nghĩa → nhìn tiểu từ",
+   "f": [["Ý của tiểu từ", "b:up = tăng / xong · down = giảm · out = hết / ra ngoài · off = tắt / hoãn · on = tiếp tục"]],
+   "say": "Tiểu từ thường cho một ý về hướng, giúp đoán nghĩa nhanh. Đây chỉ là mẹo đoán, vẫn cần học cả cụm.",
+   "ex": [
+    ["We ran *out of* time.", "Chúng tôi hết thời gian.", ""],
+    ["The meeting has been put *off* until next week.", "Cuộc họp bị hoãn đến tuần sau.", ""],
+    ["She carried *on* working after the break.", "Cô ấy tiếp tục làm việc sau giờ nghỉ.", ""]
+   ]
+  },
+  {
+   "t": "Cụm tách được → đại từ phải đứng giữa",
+   "f": [
+    ["Danh từ", "v:turn off + o:the light · v:turn + o:the light + v:off"],
+    ["Đại từ", "v:turn + b:it + v:off"]
+   ],
+   "say": "Danh từ đứng sau cả cụm hoặc chen giữa đều được. Đại từ (it, them, him) bắt buộc đứng giữa. Cụm hay gặp: turn on / off, put off, set up, give up, carry out, pick up.",
+   "ex": [
+    ["Turn off *the light*. · Turn *it* off.", "Tắt đèn đi. · Tắt nó đi.", "Không viết turn off it."],
+    ["Smoking is a bad habit, so you should *give it up*.", "Hút thuốc là thói quen xấu nên bạn nên bỏ nó.", ""]
+   ]
+  },
+  {
+   "t": "Cụm không tách được → tân ngữ luôn đứng sau",
+   "f": [["Không tách", "v:look after / deal with / come across + o:O"]],
+   "say": "Các cụm hay dùng: look after (chăm sóc), deal with (xử lý), come across (tình cờ gặp), rely on, cope with, run out of. Sau cụm động từ có tân ngữ thì không chen tân ngữ vào giữa.",
+   "ex": [
+    ["She *looks after* her parents.", "Cô ấy chăm sóc bố mẹ.", ""],
+    ["Governments must *deal with* this problem.", "Chính phủ phải giải quyết vấn đề này.", ""],
+    ["Some people *give up* smoking after a health scare.", "Một số người bỏ thuốc sau một lần lo ngại về sức khỏe.", "Sau cụm động từ dùng V-ing."]
+   ]
+  },
+  {
+   "t": "Muốn viết trang trọng → thay bằng một động từ",
+   "f": [["Thay thế", "x:find out → discover · set up → establish · cut down on → reduce · deal with → tackle · put off → postpone · look into → investigate"]],
+   "say": "Cụm động từ nghe thân mật. Trong Writing, nên đổi sang động từ trang trọng. Vài cụm vẫn tốt trong văn viết: carry out, account for, point out, rely on.",
+   "ex": [
+    ["The company was *established* in 1990.", "Công ty được thành lập năm 1990.", "Trang trọng hơn was set up."],
+    ["Scientists are *investigating* the causes.", "Các nhà khoa học đang điều tra nguyên nhân.", "Thay cho looking into."],
+    ["Cars *account for* 40% of emissions.", "Ô tô chiếm 40% lượng khí thải.", "Rất hợp để tả biểu đồ tròn."]
+   ]
+  }
+ ],
+ "traps": [
+  ["Please pick *up it*.", "Please pick *it up*.", "Đại từ phải đứng giữa động từ và tiểu từ."],
+  ["I am looking forward to *see* you.", "I am looking forward to *seeing* you.", "To ở đây là giới từ nên theo sau là V-ing."],
+  ["He gave up *to smoke*.", "He gave up *smoking*.", "Sau cụm động từ dùng V-ing."]
+ ],
+ "apply": [
+  ["Governments should tackle traffic congestion by investing in public transport.", "Chính phủ nên giải quyết tình trạng kẹt xe bằng cách đầu tư vào giao thông công cộng."],
+  ["Individuals can reduce their carbon footprint by cutting down on car use.", "Cá nhân có thể giảm lượng khí thải carbon bằng cách giảm dùng ô tô."],
+  ["Researchers have carried out several studies to find out why young people give up exercise.", "Các nhà nghiên cứu đã tiến hành nhiều nghiên cứu để tìm hiểu vì sao người trẻ bỏ tập thể dục."]
+ ],
+ "check": [
+  ["Vì sao nói give up smoking, không nói give up to smoke?", "Sau cụm động từ dùng V-ing: give up smoking, carry on working."],
+  ["Viết trang trọng hơn: Scientists are looking into the causes.", "Scientists are investigating the causes."]
+ ]
+}
