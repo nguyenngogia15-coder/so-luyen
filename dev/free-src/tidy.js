@@ -35,6 +35,8 @@ Object.assign(SUB_DESC, {
 (function () {
   const _m = aiMsg;
   aiMsg = function (e) {
+    if (e?.code === "geo_blocked") return "Gemini từ chối vì máy chủ trung gian đang chạy ở vùng Google chưa hỗ trợ. Chi tiết: " + String(e.message || "").slice(0, 220);
+    if (e?.code === "rate_limited" && e.message) return "Gemini báo hết lượt hoặc gọi quá nhanh. Chi tiết: " + String(e.message).slice(0, 260);
     if (!e?.code || /^(not_granted|sampling_disabled|rate_limited|cancelled)$/.test(e.code)) return _m(e).replace(/Claude/g, "Gemini");
     const why = String(e.message || "").replace(/^[\w.-]+:\s*/, "").slice(0, 160);
     return `Gemini đang lỗi (${e.code})${why ? ": " + why : ""}. Thử lại sau ít phút.`;

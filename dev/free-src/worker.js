@@ -169,8 +169,9 @@ export async function handle(req, env, fetchFn = fetch) {
     if (r.status === 400 && /api key|API_KEY/i.test(lastErr.message)) break;
     if (r.status >= 400 && r.status < 600) continue;
   }
+  if (lastErr && /location is not supported/i.test(lastErr.message)) return out(env, req, 502, { error: { code: "geo_blocked", message: "Google không nhận yêu cầu từ máy chủ Cloudflare ở khu vực này (" + (req.cf?.colo || "?") + "). " + lastErr.message } });
   if (lastErr && !last429) return out(env, req, 502, { error: lastErr });
-  return out(env, req, 429, { error: { code: "rate_limited", message: "Đã hết lượt AI miễn phí hôm nay hoặc đang gọi quá nhanh. " + (last429 || "") } });
+  return out(env, req, 429, { error: { code: "rate_limited", message: "Đã hết lượt AI miễn phí hôm nay hoặc đang gọi quá nhanh. " + (last429 || "") + (lastErr ? " | " + lastErr.message : "") } });
 }
 
 /* ----- Listening: đọc bài bằng Gemini TTS, lưu vào KV "AUDIO" để cả nhóm nghe chung.
