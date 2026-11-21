@@ -151,7 +151,7 @@ export async function handle(req, env, fetchFn = fetch) {
 
   const tier = b.tier === "top" || b.tier === "complex" ? "top" : b.tier === "lite" || b.tier === "quick" ? "lite" : "mid";
   const order = String(env["MODELS_" + tier.toUpperCase()] || TIERS[tier]).split(",").map(s => s.trim()).filter(m => m && !MISSING.has(m));
-  let last429 = null;
+  let last429 = null, lastErr = null;
   for (const model of order) {
     if (await isOut(env, model)) { last429 = model + ": đã hết lượt hôm nay"; continue; }
     const r = await gemini(env, model, body, fetchFn);
@@ -165,8 +165,11 @@ export async function handle(req, env, fetchFn = fetch) {
     }
     if (r.status === 404) MISSING.add(model);
     if (r.status === 429 || r.status === 503 || r.status === 404) { last429 = model + ": " + (j.error?.message || "hết lượt"); continue; }
-    return out(env, req, 502, { error: { code: "gemini_" + r.status, message: j.error?.message || "Gemini báo lỗi" } });
+    lastErr = { code: "gemini_" + r.status, message: model + ": " + (j.error?.message || "Gemini báo lỗi") };
+    if (r.status === 400 && /api key|API_KEY/i.test(lastErr.message)) break;
+    if (r.status >= 400 && r.status < 600) continue;
   }
+  if (lastErr && !last429) return out(env, req, 502, { error: lastErr });
   return out(env, req, 429, { error: { code: "rate_limited", message: "Đã hết lượt AI miễn phí hôm nay hoặc đang gọi quá nhanh. " + (last429 || "") } });
 }
 

@@ -15907,6 +15907,15 @@ Object.assign(SUB_DESC, {
   "lsTab:path": "Học từng dạng câu hỏi nghe từ dễ đến khó", "lsTab:sec": "Làm từng Section 1–4, chấm ngay", "lsTab:test": "4 phần · 40 câu như đề thật, ra band", "lsTab:nd": "Số điện thoại, giá tiền, đánh vần tên", "lsTab:dict": "Nghe từng câu rồi gõ lại", "lsTab:ai": "Nhờ AI soạn bài nghe mới",
   "spTab:pron": "Học âm IPA, cặp âm dễ nhầm, nối âm", "spTab:path": "Luyện trả lời theo từng Part", "spTab:shadow": "Nghe và nói đuổi theo, chấm ngay", "spTab:bank": "Câu hỏi IELTS theo chủ đề", "spTab:test": "Phòng thi Speaking và thi thử có AI chấm band", "spTab:hist": "Các lần nói đã chấm"
 });
+/* Lỗi AI trên web ngoài: ghi rõ là Gemini và kèm lý do để biết sửa ở đâu */
+(function () {
+  const _m = aiMsg;
+  aiMsg = function (e) {
+    if (!e?.code || /^(not_granted|sampling_disabled|rate_limited|cancelled)$/.test(e.code)) return _m(e).replace(/Claude/g, "Gemini");
+    const why = String(e.message || "").replace(/^[\w.-]+:\s*/, "").slice(0, 160);
+    return `Gemini đang lỗi (${e.code})${why ? ": " + why : ""}. Thử lại sau ít phút.`;
+  };
+})();
 
 /* ===== Cài web như app và thông báo nhắc học: 20h tối nhắc nếu chưa xong nhiệm vụ, lời chọc của bạn đến thẳng điện thoại ===== */
 const PU = { installEvt: null, busy: false, msg: "" };
