@@ -11,7 +11,7 @@ async function gmAudio(key, rate = 1) {
   const url = URL.createObjectURL(new Blob([new Uint8Array(ab, ix[1], ix[2])], { type: "audio/mpeg" })), a = new Audio(url); a.playbackRate = rate; try { a.preservesPitch = true; } catch {}
   AL_PLAY.a = a; AL_PLAY.url = url; await a.play(); return new Promise(res => { a.onended = () => res(); });
 }
-const gmXp = (n, skill, min) => { XP_CAP.game ??= 80; award("game", n); addAct(skill, min); saveProfile(); };
+const gmXp = (n, skill, min, key) => { XP_CAP.game ??= 80; if (key) { const t = gmSt(key); t.n = (t.n || 0) + 1; } award("game", n); addAct(skill, min); try { achCheck(); } catch {} saveProfile(); };
 const gmHead = (title, sub, best) => h("div", { class: "row gm-head", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", { style: "margin:0" }, title), h("span", { class: "small muted" }, sub)), best != null ? h("span", { class: "chip acc" }, "Kỷ lục: " + best) : null);
 const gmHearts = n => h("span", { class: "gm-hearts", "aria-label": n + " mạng" }, "❤️".repeat(Math.max(0, n)) + "🖤".repeat(Math.max(0, 3 - n)));
 
@@ -35,11 +35,11 @@ function gmNews() {
     const submit = () => {
       if (G.res) return; G.res = it.a.map((a, i) => gmNorm(G.ans[i]) === gmNorm(a)); const n = G.res.filter(Boolean).length;
       G.score += n * 10 * G.lv; if (n === 5) { G.perfect++; G.score += 20 * G.lv; } else { G.perfect = 0; G.lives--; }
-      gmXp(n * 2, "listening", 2);
+      if (n === 5) st.perf = (st.perf || 0) + 1; gmXp(n * 2, "listening", 2, "news");
       if (G.lives <= 0) { G.over = true; if (G.score > (st.best || 0)) st.best = G.score; saveProfile(); }
       render();
     };
-    const next = () => { if (G.perfect >= 2 && G.lv < 3) { G.lv++; G.perfect = 0; toast("Lên cấp " + G.lv + ": đọc nhanh hơn, chỉ nghe 1 lần"); } G.item = null; render(); };
+    const next = () => { if (G.perfect >= 2 && G.lv < 3) { G.lv++; G.perfect = 0; toast("Lên cấp " + G.lv + ": đọc nhanh hơn, chỉ nghe 1 lần"); if (G.lv > (st.lv || 1)) st.lv = G.lv; } G.item = null; render(); };
     const lbl = () => G.plays ? (G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại") : "▶ Nghe bản tin";
     const left = h("span", { class: "small muted" }, `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`);
     const done = () => { playBtn.classList.remove("gm-playing"); playBtn.disabled = G.plays >= maxPlay; playBtn.replaceChildren(lbl()); stopBtn.disabled = true; };
@@ -75,7 +75,7 @@ function gmChase() {
   const round = () => ndIndex().then(D => { const pool = D.items.filter(x => x.c !== "addr"); C.it = pool[Math.floor(Math.random() * pool.length)]; C.val = ""; C.res = null; C.t0 = Date.now() + 99e9; render(); ndPlay(C.it, C.rate).then(a => { a.onended = () => { C.t0 = Date.now(); }; }).catch(() => { C.t0 = Date.now(); }); });
   const judge = timeout => { if (C.res) return; const ok = !timeout && ndCheck(C.it, C.val); C.res = ok ? "ok" : timeout ? "time" : "bad";
     if (ok) { C.n++; C.rate = Math.min(1.8, +(C.rate + 0.07).toFixed(2)); C.lim = Math.max(7, C.lim - 0.5); } else C.lives--;
-    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(2, Math.round(C.n / 2))); }
+    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(2, Math.round(C.n / 2)), "chase"); }
     render(); if (!C.over) setTimeout(() => { if (UI.gc === C && C.res) round(); }, ok ? 700 : 2200); };
   if (C.on && C.it && !C.res) { clearInterval(GM.tk); GM.tk = setInterval(() => { if (UI.gc !== C || C.res || !document.querySelector(".gm-chase")) return clearInterval(GM.tk); const left = C.lim - (Date.now() - C.t0) / 1000, bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.max(0, Math.min(100, left / C.lim * 100)) + "%"; if (left <= 0) { clearInterval(GM.tk); judge(true); } }, 100); }
   const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ điều bạn nghe…", value: C.val, disabled: !!C.res || null, oninput: e => { C.val = e.target.value; }, onkeydown: e => { if (e.key === "Enter") judge(false); } });
@@ -95,7 +95,7 @@ function gmSpell() {
   const S = UI.gs ||= { seal: null, i: 0, sc: {}, res: null }, st = gmSt("spell"); st.won ||= {};
   const box = h("div", { class: "stack", style: "gap:12px" });
   gmIndex().then(D => {
-    const seals = D.spells;
+    const seals = D.spells; st.all = seals.length;
     if (S.seal == null) {
       box.replaceChildren(gmHead("Đọc thần chú", "Mỗi phong ấn là 3 câu luyện một âm khó với người Việt. Đọc to, máy chấm từng âm; trung bình từ 75 điểm là phá được phong ấn và mở phong ấn tiếp theo.", Object.keys(st.won).length + "/" + seals.length + " phong ấn"),
         h("div", { class: "gm-seals" }, seals.map((s, i) => { const open = i === 0 || st.won[seals[i - 1].id] != null, w = st.won[s.id]; return h("button", { type: "button", class: "gm-seal" + (w != null ? " won" : "") + (open ? "" : " lock"), disabled: !open || null, onclick: () => { Object.assign(S, { seal: i, i: 0, sc: {}, res: null }); render(); } }, h("span", { class: "gm-rune" }, w != null ? "✦" : open ? "◈" : "🔒"), h("b", null, s.t), h("span", { class: "small muted" }, w != null ? `Đã phá · ${w} điểm` : open ? "Sẵn sàng" : "Phá phong ấn trước để mở")); })));
@@ -105,7 +105,7 @@ function gmSpell() {
     if (txt == null) {
       const vals = Object.values(S.sc), avg = vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0, win = avg >= 75;
       if (win && (st.won[seal.id] ?? -1) < avg) { st.won[seal.id] = avg; saveProfile(); }
-      if (!S.paid) { S.paid = 1; gmXp(win ? 20 : 6, "speaking", 3); }
+      if (!S.paid) { S.paid = 1; gmXp(win ? 20 : 6, "speaking", 3, "spell"); }
       box.replaceChildren(gmHead("Đọc thần chú · " + seal.t, "", null), h("section", { class: "card stack gm-over" + (win ? " gm-win" : ""), style: "gap:10px;align-items:center;text-align:center" }, h("span", { class: "gm-big" }, win ? "✦" : avg), h("p", { style: "margin:0" }, win ? `Phong ấn đã vỡ! Trung bình ${avg} điểm.` : `Trung bình ${avg} điểm, cần 75. Thử lại nhé!`),
         h("div", { class: "row", style: "justify-content:center" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { Object.assign(S, { i: 0, sc: {}, res: null, paid: 0 }); render(); } }, "Đọc lại"), h("button", { class: "btn", type: "button", onclick: back }, "Về bản đồ phong ấn"))));
       return;
@@ -132,7 +132,7 @@ function gmTalk() {
       const blob = await autoRec({ maxSec: 60, quietSec: 3, idleSec: 6, onState: (s, x) => { if (x) { T.el = x.el; const el = document.querySelector(".gm-talk-t"); if (el) el.textContent = Math.floor(x.el) + " giây"; const bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.min(100, x.el / 60 * 100) + "%"; } } });
       const a = await spDecode(blob), z = spPauses(a), secs = Math.min(60, Math.round(a.length / 16000));
       T.res = { secs, win: secs >= 59, speech: z.speech, blob, words: null }; T.phase = "done";
-      if (secs > (st.best || 0)) st.best = secs; gmXp(T.res.win ? 25 : 5, "speaking", 2); render();
+      if (secs > (st.best || 0)) st.best = secs; if (T.res.win) st.w = (st.w || 0) + 1; gmXp(T.res.win ? 25 : 5, "speaking", 2, "talk"); render();
     } catch (e) { T.phase = "pick"; toast(e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro." : "Chưa ghi âm được."); render(); }
   };
   const count = async () => { T.res.words = "…"; render(); try { const tr = await spTranscribe(await spDecode(T.res.blob)); const n = tr.text.split(/\s+/).filter(Boolean).length; T.res.words = n; T.res.wpm = Math.round(n / Math.max(1, T.res.secs) * 60); T.res.text = tr.text; } catch (e) { T.res.words = null; toast("Chưa đếm được từ"); } render(); };
@@ -158,7 +158,7 @@ function gmQuick() {
     try {
       const blob = await autoRec({ maxSec: 25, quietSec: 2, idleSec: 3 }), a = await spDecode(blob), z = spPauses(a);
       if (z.speech >= 4) { Q.streak++; Q.msg = `Tốt! Nói ${Math.round(z.speech)} giây.`; addAct("speaking", 1); ask(); }
-      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", 1); render(); }
+      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", 1, "quick"); render(); }
     } catch (e) { Q.phase = "start"; toast("Chưa ghi âm được."); render(); }
   };
   return h("div", { class: "stack", style: "gap:12px" },
@@ -214,7 +214,7 @@ function gmTone() {
     if (!N.key) N.key = keys[Math.floor(Math.random() * keys.length)];
     const text = N.key.charAt(0).toUpperCase() + N.key.slice(1);
     const model = async () => { const gc = typeof gemClip === "function" ? await gemClip("sp", N.key).catch(() => null) : null; if (gc) return spTrim(await spDecode(gc)); const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
-    const judge = async (blob, say) => { say?.("Đang so giọng…"); const m = gmPitch(await model()), u = gmPitch(spTrim(await spDecode(blob))); if (u.filter(x => x.st != null).length < 5) throw { vn: "Chưa nghe rõ giọng bạn. Nói to và gần micro hơn." }; const r = gmCompare(m, u); N.res = { ...r, m, u }; if (r.score > (st.best || 0)) st.best = r.score; gmXp(Math.round(r.score / 10), "speaking", 1); render(); };
+    const judge = async (blob, say) => { say?.("Đang so giọng…"); const m = gmPitch(await model()), u = gmPitch(spTrim(await spDecode(blob))); if (u.filter(x => x.st != null).length < 5) throw { vn: "Chưa nghe rõ giọng bạn. Nói to và gần micro hơn." }; const r = gmCompare(m, u); N.res = { ...r, m, u }; if (r.score > (st.best || 0)) st.best = r.score; gmXp(Math.round(r.score / 10), "speaking", 1, "tone"); render(); };
     box.replaceChildren(gmHead("Nhại ngữ điệu", "Nghe câu mẫu rồi nói lại y hệt cách lên xuống giọng và chỗ nhấn. Máy vẽ đường giọng của bạn (cam) lên giọng mẫu (xanh) và chấm như karaoke.", st.best),
       h("section", { class: "card stack", style: "gap:12px;align-items:center;text-align:center" }, h("p", { class: "gm-incant" }, text),
         h("div", { class: "row", style: "gap:8px;justify-content:center" }, h("button", { class: "btn", type: "button", onclick: () => spSay(N.key) }, "🔊 Nghe mẫu"), h("button", { class: "btn", type: "button", onclick: () => spSay(N.key, 0.8) }, "🐢 Nghe chậm")),
@@ -251,3 +251,33 @@ document.head.append(h("style", null, `.gm-hearts{font-size:1.1rem;letter-spacin
 .gm-incant{font-size:1.35rem;font-weight:700;margin:0;max-width:30ch}.gm-win{background:color-mix(in srgb,#ffd43b 22%,var(--surface))}.gm-live{color:#e03131;animation:gmGlow 1s infinite}
 .gm-tone{width:100%;color:var(--ink)}.gm-tone-svg{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 @keyframes gmGlow{50%{opacity:.45}}`));
+
+/* ===== Thành tựu cho các game Nghe/Nói, và đặt lại tên mọi thành tựu cho vui ===== */
+(function () {
+  const g = k => P.gm?.[k] || {}, won = () => Object.keys(g("spell").won || {}).length;
+  ACH.push(
+    ["gn10", "📰", "Phóng viên tập sự", "Chơi 10 bản tin Nhà báo điền tin", () => (g("news").n || 0) >= 10],
+    ["gn3", "🗞️", "Trùm hóng biến", "Lên cấp 3 trong Nhà báo điền tin", () => (g("news").lv || 1) >= 3],
+    ["gn500", "📢", "Tổng biên tập", "Đạt 500 điểm một ván Nhà báo điền tin", () => (g("news").best || 0) >= 500],
+    ["gc15", "🐇", "Tai thỏ", "Đuổi kịp 15 câu một ván Đuổi giọng", () => (g("chase").best || 0) >= 15],
+    ["gc30", "🏎️", "Tốc độ bàn thờ", "Đuổi kịp 30 câu một ván Đuổi giọng", () => (g("chase").best || 0) >= 30],
+    ["gs1", "🧙", "Thầy pháp tập sự", "Phá phong ấn đầu tiên trong Đọc thần chú", () => won() >= 1],
+    ["gs30", "📿", "Chú Đại Bi", "Đọc thần chú 30 lần", () => (g("spell").n || 0) >= 30],
+    ["gsall", "🔮", "Phá đảo phong ấn", "Phá hết mọi phong ấn trong Đọc thần chú", () => g("spell").all > 0 && won() >= g("spell").all],
+    ["gt1", "🗣️", "Bà tám", "Nói đủ 60 giây không ngừng lần đầu", () => (g("talk").w || 0) >= 1],
+    ["gt10", "📣", "Loa phường", "Nói đủ 60 giây 10 lần", () => (g("talk").w || 0) >= 10],
+    ["gq5", "⚡", "Mồm nhanh hơn não", "Chuỗi 5 câu Phản xạ nhanh", () => (g("quick").best || 0) >= 5],
+    ["gq10", "🌪️", "Phản xạ thần sầu", "Chuỗi 10 câu Phản xạ nhanh", () => (g("quick").best || 0) >= 10],
+    ["gto10", "🚿", "Ca sĩ phòng tắm", "Chơi Nhại ngữ điệu 10 lần", () => (g("tone").n || 0) >= 10],
+    ["gto85", "🎤", "Idol karaoke", "Đạt 85 điểm Nhại ngữ điệu", () => (g("tone").best || 0) >= 85],
+    ["gall", "🕹️", "Nghiện game có học", "Chơi đủ cả 6 game Nghe và Nói", () => ["news", "chase", "spell", "talk", "quick", "tone"].every(k => (g(k).n || 0) > 0)]);
+  const NEW = { d1: ["Ngày đầu đi học", "Lần đầu làm đủ nhiệm vụ trong ngày"], s7: ["Lửa chưa tắt", "Chuỗi 7 ngày"], s30: ["Trâu cày 30 ngày", "Chuỗi 30 ngày"], s100: ["Không phải người", "Chuỗi 100 ngày"],
+    early: ["Gà chưa gáy đã học", "Xong nhiệm vụ trước 7 giờ sáng"], owl: ["Cú đêm chạy deadline", "Xong nhiệm vụ sau 23 giờ"], week: ["Full tuần không trốn", "Làm đủ cả 7 ngày từ thứ Hai đến Chủ nhật"],
+    vr10: ["Mọt từ mới nở", "Qua 10 bài Lộ trình từ vựng"], vr50: ["Từ điển biết đi", "Qua 50 bài Lộ trình từ vựng"], spk: ["Mồm không nghỉ", "14 ngày liền làm đủ phần Nói"], lst: ["Thính như dơi", "7 ngày liền làm đủ phần Nghe"],
+    boss: ["Hội đồng đánh boss", "Cùng nhóm hạ một boss tuần"], pet1: ["Bỉm sữa thần thú", "Nuôi một thần thú đến lúc thuần hóa"], pet4: ["Sở thú di động", "Thuần hóa đủ 4 thần thú"],
+    chest: ["Nghiện mở hộp", "Mở 10 rương"], legend: ["Nhân phẩm vô cực", "Mở trúng đồ Huyền thoại"], poke: ["Thánh chọc", "Chọc bạn 10 lần"], lv5: ["Hết gà", "Đạt Level 5"], lv10: ["Cao thủ ẩn danh", "Đạt Level 10"],
+    top: ["Trùm tuần", "Đứng đầu xếp hạng một tuần đã kết thúc"], mock4: ["Thi thử không run", "Thi thử đủ Listening, Reading, Writing, Speaking trong một tháng"],
+    "rg-eagle": ["Mắt cú vọ", "Scan đúng dưới 5 giây"], "rg-judge": ["Bao Công đọc hiểu", "5 phán quyết đúng cả bằng chứng liên tiếp"], "rg-detective": ["Thám tử lừa đâu được", "Qua một màn Kẻ giả danh không mất tim"],
+    "rg-locksmith": ["Trộm chuyên nghiệp", "Qua một màn Mở khóa không mất tim"], "rg-conductor": ["Lái tàu không trật ray", "Qua một màn Nối ray không mất tim"], "rg-combo": ["Combo không phanh", "Đúng 5 câu liên tiếp"], "rg-boss": ["Đấm trùm", "Thắng một màn trùm"] };
+  for (const a of ACH) if (NEW[a[0]]) { a[2] = NEW[a[0]][0]; a[3] = NEW[a[0]][1]; }
+})();
