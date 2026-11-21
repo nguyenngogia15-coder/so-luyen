@@ -16184,12 +16184,26 @@ function gmNews() {
       render();
     };
     const next = () => { if (G.perfect >= 2 && G.lv < 3) { G.lv++; G.perfect = 0; toast("Lên cấp " + G.lv + ": đọc nhanh hơn, chỉ nghe 1 lần"); } G.item = null; render(); };
+    const lbl = () => G.plays ? (G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại") : "▶ Nghe bản tin";
+    const left = h("span", { class: "small muted" }, `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`);
+    const done = () => { playBtn.classList.remove("gm-playing"); playBtn.disabled = G.plays >= maxPlay; playBtn.replaceChildren(lbl()); stopBtn.disabled = true; };
+    const playBtn = h("button", { class: "btn btn-primary gm-play", type: "button", disabled: G.plays >= maxPlay || null, onclick: async () => {
+      if (playBtn.classList.contains("gm-playing")) return; G.plays++; left.textContent = `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`;
+      playBtn.classList.add("gm-playing"); playBtn.replaceChildren(h("span", { class: "gm-wave" }, h("i"), h("i"), h("i"), h("i")), "Đang phát"); stopBtn.disabled = false;
+      try { await gmAudio(it.id); } catch (er) { toast("Chưa phát được: " + er.message); } done(); } }, lbl());
+    const stopBtn = h("button", { class: "btn gm-stop", type: "button", disabled: true, onclick: () => { gmStopAll(); done(); } }, "■ Dừng");
+    const playRow = h("div", { class: "row", style: "gap:10px;align-items:center;flex-wrap:wrap" }, playBtn, stopBtn, left);
+    const wide = a => /^[\d£$.,:\s%-]+$/.test(a) ? " gm-s" : String(a).length > 9 ? " gm-l" : "";
+    inputs.forEach((el, i) => { el.className += wide(it.a[i]); });
+    const again = h("button", { class: "btn btn-quiet gm-again", type: "button", onclick: () => {
+      if (!again.dataset.ok && (G.score || G.plays)) { again.dataset.ok = 1; again.textContent = "Bấm lần nữa để chơi lại từ đầu"; setTimeout(() => { if (again.isConnected) { delete again.dataset.ok; again.textContent = "↺ Chơi lại"; } }, 3000); return; }
+      gmStopAll(); if (G.score > (st.best || 0)) { st.best = G.score; saveProfile(); } restart(); } }, "↺ Chơi lại");
     let k = 0; const text = h("p", { class: "gm-news" }, it.d.map(p => typeof p === "string" ? p : inputs[p.b]));
     box.replaceChildren(
       gmHead("Nhà báo điền tin", "Nghe bản tin, điền 5 chỗ trống (số, tên, ngày giờ). Sai một chỗ là mất 1 mạng. Đúng hết 2 bản liền thì lên cấp.", st.best),
-      h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(G.lives), h("b", null, `Điểm ${G.score}`), h("span", { class: "chip" }, ["", "Cấp 1 · chậm, nghe 2 lần", "Cấp 2 · bình thường, nghe 1 lần", "Cấp 3 · nhanh, nghe 1 lần"][G.lv])),
+      h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(G.lives), h("b", null, `Điểm ${G.score}`), h("span", { class: "chip" }, ["", "Cấp 1 · chậm, nghe 2 lần", "Cấp 2 · bình thường, nghe 1 lần", "Cấp 3 · nhanh, nghe 1 lần"][G.lv]), again),
       h("section", { class: "card stack", style: "gap:12px" }, h("span", { class: "eyebrow" }, "Bản tin: " + it.t),
-        h("div", { class: "row", style: "gap:8px;align-items:center" }, h("button", { class: "btn btn-primary", type: "button", disabled: G.plays >= maxPlay || null, onclick: async e => { G.plays++; e.target.disabled = G.plays >= maxPlay; e.target.textContent = "Đang phát…"; try { await gmAudio(it.id); } catch (er) { toast("Chưa phát được: " + er.message); } e.target.textContent = G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại"; } }, G.plays ? (G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại") : "▶ Nghe bản tin"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => gmStopAll() }, "⏹ Dừng"), h("span", { class: "small muted" }, `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`)),
+        playRow,
         text, h("p", { class: "small muted", style: "margin:0" }, "Gõ số bằng chữ số (45, 8:30, £12). Tên riêng gõ đúng chính tả như được đánh vần."),
         G.res ? h("div", { class: "stack", style: "gap:6px" }, h("p", { class: "note " + (G.res.every(Boolean) ? "good" : "bad"), style: "margin:0" }, G.res.every(Boolean) ? "Chuẩn như nhà báo! +" + (70 * G.lv) + " điểm" : `Đúng ${G.res.filter(Boolean).length}/5, mất 1 mạng. Đáp án: ` + it.a.map((a, i) => G.res[i] ? null : `(${i + 1}) ${a}`).filter(Boolean).join(", ")),
           h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: next }, "Bản tin tiếp →")) : h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: submit }, "Nộp bài")));
@@ -16365,8 +16379,16 @@ const LS_GAMES = [["g-news", "🎮 Nhà báo điền tin", null, () => [gmNews()
 const SP_GAMES = [["g-spell", "🎮 Đọc thần chú", null, () => [gmSpell()]], ["g-talk", "🎮 Nói 1 phút không ngừng", null, () => [gmTalk()]], ["g-quick", "🎮 Phản xạ nhanh", null, () => [gmQuick()]], ["g-tone", "🎮 Nhại ngữ điệu", null, () => [gmTone()]]];
 Object.assign(SUB_DESC, { "lsTab:g-news": "Nghe bản tin, điền 5 chỗ trống, sai mất mạng", "lsTab:g-chase": "Số và tên đọc ngày càng nhanh, gõ kịp thì sống", "spTab:g-spell": "Đọc câu luyện âm khó để phá phong ấn", "spTab:g-talk": "Nói liền 60 giây, ngừng 3 giây là thua", "spTab:g-quick": "5 giây suy nghĩ rồi trả lời ngay", "spTab:g-tone": "Nói lại theo giọng mẫu, chấm như karaoke" });
 document.head.append(h("style", null, `.gm-hearts{font-size:1.1rem;letter-spacing:2px}.gm-big{font-size:2.6rem;font-weight:800;line-height:1}
-.gm-news{font-size:1.08rem;line-height:2.2;margin:0}.gm-news input.gm-in{width:7.5em!important;min-width:0;display:inline-block;vertical-align:baseline;margin:0 4px;padding:2px 8px;border:2px solid var(--edge,#111);border-radius:6px;font:inherit;background:var(--surface)}
-.gm-in.ok{border-color:var(--good,#0e8a6a);background:color-mix(in srgb,var(--good,#0e8a6a) 12%,var(--surface))}.gm-in.bad{border-color:#e03131;background:color-mix(in srgb,#e03131 10%,var(--surface))}
+.gm-news{font-size:1.1rem;line-height:2.1;margin:0}
+.gm-news input.gm-in{width:7em!important;min-width:0!important;height:auto!important;min-height:0!important;display:inline-block;vertical-align:baseline;margin:0 3px;padding:0 4px 1px!important;border:0!important;border-bottom:2px solid var(--edge,#111)!important;border-radius:0!important;box-shadow:none!important;font:inherit;font-weight:700;text-align:center;background:color-mix(in srgb,var(--ink,#111) 5%,transparent)!important;line-height:1.3}
+.gm-news input.gm-in.gm-s{width:4.5em!important}.gm-news input.gm-in.gm-l{width:10em!important}
+.gm-news input.gm-in:focus{outline:none;border-bottom-color:#1c7ed6!important;background:color-mix(in srgb,#1c7ed6 10%,transparent)!important}
+.gm-news input.gm-in.ok{border-bottom-color:var(--good,#0e8a6a)!important;color:var(--good,#0e8a6a);background:color-mix(in srgb,var(--good,#0e8a6a) 12%,transparent)!important}
+.gm-news input.gm-in.bad{border-bottom-color:#e03131!important;color:#e03131;text-decoration:line-through;background:color-mix(in srgb,#e03131 10%,transparent)!important}
+.gm-play,.gm-stop{min-width:9.5em;justify-content:center}@media (max-width:480px){.gm-play,.gm-stop{min-width:0}}.gm-stop{background:var(--surface);color:var(--ink,#111)}.gm-stop:disabled{opacity:.4}
+.gm-play.gm-playing{opacity:.85;cursor:default}.gm-wave{display:inline-flex;gap:2px;align-items:flex-end;height:14px;margin-right:8px;vertical-align:-1px}
+.gm-wave i{width:3px;height:100%;background:currentColor;animation:gmWave .9s ease-in-out infinite}.gm-wave i:nth-child(2){animation-delay:.15s}.gm-wave i:nth-child(3){animation-delay:.3s}.gm-wave i:nth-child(4){animation-delay:.45s}
+@keyframes gmWave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}.gm-again{margin-left:auto}
 .gm-time{height:10px;border:2px solid var(--edge,#111);border-radius:6px;overflow:hidden}.gm-time i{display:block;height:100%;background:#f08c00;transition:width .1s linear}
 .gm-seals{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}.gm-seal{border:2px solid var(--edge,#111);border-radius:14px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;cursor:pointer;font:inherit;color:inherit}
 .gm-seal.lock{opacity:.45;cursor:not-allowed}.gm-seal.won{background:color-mix(in srgb,#ffd43b 25%,var(--surface))}.gm-rune{font-size:2rem;color:#7048e8}.gm-rune.big{font-size:3rem;animation:gmGlow 2s ease-in-out infinite}
