@@ -23,6 +23,25 @@ function gemSplit(a, n) {
   for (const [a0, b0] of cut) { segs.push([s, a0]); s = b0; } segs.push([s, last + 1]);
   return segs.map(([x, y]) => [Math.max(0, (x - 12) * hop), Math.min(a.length, (y + 15) * hop)]);
 }
+/* Câu của game, số và đánh vần: chưa có giọng Gemini thì nhờ Worker đọc ngay bằng model bản nhẹ (chạy nền, lần sau là có) */
+const GEM_GEN = {};
+function gemGen(b) {
+  if (!/^(gm|nd)$/.test(b.p) || GEM_GEN[b.k] || !window.__tts) return; GEM_GEN[b.k] = 1; GEM_Q.push(b); gemRun();
+}
+/* Đọc lần lượt từng mẻ, cách nhau vài giây, để không vượt giới hạn lượt mỗi phút */
+const GEM_Q = []; let gemRunning = false;
+async function gemRun() {
+  if (gemRunning) return; gemRunning = true;
+  while (GEM_Q.length) {
+    const b = GEM_Q.shift();
+    try { const blob = await window.__tts({ key: "vb-" + b.k, gen: true }); try { await (await caches.open("gem-v1")).put(new URL("__gem/" + b.k, location.href).href, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {} delete GEMV.miss[b.k]; delete GEMV.batches[b.k]; }
+    catch (e) { if (e?.code === "rate_limited") { GEM_Q.length = 0; break; } }
+    await new Promise(r => setTimeout(r, 6500));
+  }
+  gemRunning = false;
+}
+/* Đọc trước các mẻ của game khi mở game */
+async function gemWarm(pack) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack)) gemBatch(b); }
 function gemBatch(b) {
   if (GEMV.miss[b.k] && Date.now() - GEMV.miss[b.k] < 1800e3) return Promise.resolve(null);
   return GEMV.batches[b.k] ||= (async () => {
@@ -30,7 +49,8 @@ function gemBatch(b) {
     try { const hit = await (await caches.open("gem-v1")).match(url); if (hit) blob = await hit.blob(); } catch {}
     if (!blob) {
       if (!window.__tts) throw 0;
-      blob = await window.__tts({ key: "vb-" + b.k, cacheOnly: true });
+      try { blob = await window.__tts({ key: "vb-" + b.k, cacheOnly: true }); }
+      catch (e) { gemGen(b); throw e; }
       try { await (await caches.open("gem-v1")).put(url, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {}
     }
     const a = await spDecode(blob), segs = b.ids.length === 1 ? [[0, a.length]] : gemSplit(a, b.ids.length);

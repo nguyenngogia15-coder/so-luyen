@@ -185,9 +185,11 @@ function ttsBody(sp, turns) {
   return { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig } };
 }
 /* Gọi Gemini TTS, trả về {mime, b64} hoặc {limited:true} khi mọi model hết lượt */
-async function ttsRender(env, sp, turns, fetchFn, uid = null, body = null) {
+async function ttsRender(env, sp, turns, fetchFn, uid = null, body = null, liteFirst = false) {
   body ||= ttsBody(sp, turns); let last = null;
-  for (const model of String(env.TTS_MODELS || TTS_MODELS).split(",").map(s => s.trim()).filter(m => m && !MISSING.has(m))) {
+  let models = String(env.TTS_MODELS || TTS_MODELS).split(",").map(s => s.trim()).filter(m => m && !MISSING.has(m));
+  if (liteFirst) models = [...models.filter(m => /lite/.test(m)), ...models.filter(m => !/lite/.test(m))];
+  for (const model of models) {
     if (await isOut(env, model)) { last = model + ": đã hết lượt hôm nay"; continue; }
     const r = await gemini(env, model, body, fetchFn);
     if (r.ok) { await track(env, model, 200, null, uid);
@@ -209,6 +211,17 @@ async function tts(req, env, b, fetchFn, uid) {
   const key = b.key ? kvAudioKey(b.key) : null;
   const send = (mime, b64, hit, model) => new Response(b64, { status: 200, headers: { "content-type": "text/plain", "x-mime": mime, "x-cache": hit ? "hit" : "miss", "x-model": model || "", "access-control-expose-headers": "x-cache, x-model, x-mime", ...cors(env, req) } });
   if (key && env.AUDIO) { const hit = await env.AUDIO.getWithMetadata(key, "text"); if (hit?.value) return send(hit.metadata?.mime || "audio/wav", hit.value, true); }
+  /* Mẻ câu của game và số/đánh vần: chưa có thì đọc ngay bằng model TTS bản nhẹ (nhiều lượt) */
+  if (b.gen && key && /^ls:vb-(gm|nd)-/.test(key)) {
+    const site = String(env.SITE_URL || (String(env.ALLOWED_ORIGIN || "").split(",")[0].trim().replace(/\/$/, "") + "/so-luyen/"));
+    let plan = []; try { plan = await (await fetchFn(site + "voice/gem.json")).json(); } catch {}
+    const bt = plan.find(x => kvAudioKey("vb-" + x.k) === key); if (!bt) return out(env, req, 404, { error: { code: "not_found" } });
+    const r = await ttsRender(env, null, null, fetchFn, uid, gemBatchBody(bt), true);
+    if (r.limited) return out(env, req, 429, { error: { code: "rate_limited" } });
+    if (r.error || !r.b64) return out(env, req, 502, { error: { code: "gemini_tts", message: r.error } });
+    try { await env.AUDIO.put(key, r.b64, { metadata: { mime: r.mime } }); } catch {}
+    return send(r.mime, r.b64, false, r.model);
+  }
   if (b.cacheOnly) return out(env, req, 404, { error: { code: "not_cached" } });
   const sp = b.speakers || {}, names = Object.keys(sp), turns = Array.isArray(b.turns) ? b.turns : [];
   if (!turns.length || names.length < 1 || names.length > 2 || JSON.stringify(turns).length > 20000) return out(env, req, 400, { error: { code: "bad_request", message: "Bài nghe trống, quá dài hoặc quá 2 người nói" } });
@@ -312,6 +325,13 @@ Return ONLY JSON: {"title":"...","ctx":"one Vietnamese sentence describing the s
   }
   return null;
 }
+/* Lời nhắc cho một mẻ câu ngắn (hoặc một bản tin) */
+function gemBatchBody(b) {
+  const acc = b.acc === "gb" ? "British" : "American";
+  const text = b.news ? `Read this short local news bulletin aloud like a friendly radio presenter, in a clear ${acc} English accent at a natural pace. Letters separated by commas are spelled out one letter at a time.\n\n${b.lines[0]}`
+    : `Read each of the following lines aloud, one by one, in a clear, natural ${acc} English accent at a natural pace. After each line, stay completely silent for two full seconds before the next line. Read only the words in the lines, nothing else. Letters separated by commas are spelled out one letter at a time.\n\n` + b.lines.join("\n");
+  return { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: b.v || "Kore" } } } } };
+}
 export async function nightly(env, fetchFn = fetch, opts = {}) {
   if (!env.AUDIO) return { note: "chưa gắn KV AUDIO" };
   const log = []; let budget = opts.budget ?? +(env.TTS_PER_RUN || 10);
@@ -341,10 +361,7 @@ export async function nightly(env, fetchFn = fetch, opts = {}) {
   for (const b of gem) {
     if (budget <= 0) break;
     const key = kvAudioKey("vb-" + b.k); if (await env.AUDIO.get(key, "stream").then(x => { x?.cancel?.(); return !!x; })) continue;
-    const acc = b.acc === "gb" ? "British" : "American";
-    const text = b.news ? `Read this short local news bulletin aloud like a friendly radio presenter, in a clear ${acc} English accent at a natural pace. Letters separated by commas are spelled out one letter at a time.\n\n${b.lines[0]}`
-      : `Read each of the following lines aloud, one by one, in a clear, natural ${acc} English accent at a natural pace. After each line, stay completely silent for two full seconds before the next line. Read only the words in the lines, nothing else. Letters separated by commas are spelled out one letter at a time.\n\n` + b.lines.join("\n");
-    const r = await ttsRender(env, null, null, fetchFn, null, { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: b.v || "Kore" } } } } });
+    const r = await ttsRender(env, null, null, fetchFn, null, gemBatchBody(b));
     if (r.limited) { log.push("hết lượt TTS"); return { log }; }
     if (r.b64) { await env.AUDIO.put(key, r.b64, { metadata: { mime: r.mime } }); log.push("mẻ giọng " + b.k); budget--; await sleep(opts.gap ?? 21000); }
   }

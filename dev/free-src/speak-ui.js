@@ -205,7 +205,7 @@ function spChecks(l, an) {
 const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
-  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; }
+  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; try { gmStopAll(); } catch {} if (/^g-/.test(UI.spTab || "")) try { gemWarm("gm"); } catch {} }
   const T = subMenu("spTab", [["pron", "Phát âm", null, () => [spPronTab()]], ["path", "Lộ trình nói", null, () => [spPathTab()]], ["shadow", "Shadowing", null, () => [spShadowTab()]], ["bank", "Luyện đề", null, () => [spBankTab()]], ["test", "Thi thử", null, () => [spTestTab()]], ["hist", "Kết quả", null, () => [spHistTab()]], ...(typeof SP_GAMES !== "undefined" ? SP_GAMES : [])]);
   UI.spTabSeen = T.cur;
   return h("div", { class: "stack", style: "gap:18px" },

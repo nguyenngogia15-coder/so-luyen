@@ -13109,7 +13109,7 @@ function spChecks(l, an) {
 const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
-  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; }
+  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; try { gmStopAll(); } catch {} if (/^g-/.test(UI.spTab || "")) try { gemWarm("gm"); } catch {} }
   const T = subMenu("spTab", [["pron", "Phát âm", null, () => [spPronTab()]], ["path", "Lộ trình nói", null, () => [spPathTab()]], ["shadow", "Shadowing", null, () => [spShadowTab()]], ["bank", "Luyện đề", null, () => [spBankTab()]], ["test", "Thi thử", null, () => [spTestTab()]], ["hist", "Kết quả", null, () => [spHistTab()]], ...(typeof SP_GAMES !== "undefined" ? SP_GAMES : [])]);
   UI.spTabSeen = T.cur;
   return h("div", { class: "stack", style: "gap:18px" },
@@ -14335,6 +14335,7 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
+  if (UI.lsTabSeen !== UI.lsTab) { UI.lsTabSeen = UI.lsTab; try { gmStopAll(); } catch {} if (/^g-/.test(UI.lsTab || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
   const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
@@ -16188,7 +16189,7 @@ function gmNews() {
       gmHead("Nhà báo điền tin", "Nghe bản tin, điền 5 chỗ trống (số, tên, ngày giờ). Sai một chỗ là mất 1 mạng. Đúng hết 2 bản liền thì lên cấp.", st.best),
       h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(G.lives), h("b", null, `Điểm ${G.score}`), h("span", { class: "chip" }, ["", "Cấp 1 · chậm, nghe 2 lần", "Cấp 2 · bình thường, nghe 1 lần", "Cấp 3 · nhanh, nghe 1 lần"][G.lv])),
       h("section", { class: "card stack", style: "gap:12px" }, h("span", { class: "eyebrow" }, "Bản tin: " + it.t),
-        h("div", { class: "row", style: "gap:8px;align-items:center" }, h("button", { class: "btn btn-primary", type: "button", disabled: G.plays >= maxPlay || null, onclick: async e => { G.plays++; e.target.disabled = G.plays >= maxPlay; e.target.textContent = "Đang phát…"; try { await gmAudio(it.id); } catch (er) { toast("Chưa phát được: " + er.message); } e.target.textContent = G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại"; } }, G.plays ? (G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại") : "▶ Nghe bản tin"), h("span", { class: "small muted" }, `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`)),
+        h("div", { class: "row", style: "gap:8px;align-items:center" }, h("button", { class: "btn btn-primary", type: "button", disabled: G.plays >= maxPlay || null, onclick: async e => { G.plays++; e.target.disabled = G.plays >= maxPlay; e.target.textContent = "Đang phát…"; try { await gmAudio(it.id); } catch (er) { toast("Chưa phát được: " + er.message); } e.target.textContent = G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại"; } }, G.plays ? (G.plays >= maxPlay ? "Hết lượt nghe" : "▶ Nghe lại") : "▶ Nghe bản tin"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => gmStopAll() }, "⏹ Dừng"), h("span", { class: "small muted" }, `Còn ${Math.max(0, maxPlay - G.plays)} lượt nghe`)),
         text, h("p", { class: "small muted", style: "margin:0" }, "Gõ số bằng chữ số (45, 8:30, £12). Tên riêng gõ đúng chính tả như được đánh vần."),
         G.res ? h("div", { class: "stack", style: "gap:6px" }, h("p", { class: "note " + (G.res.every(Boolean) ? "good" : "bad"), style: "margin:0" }, G.res.every(Boolean) ? "Chuẩn như nhà báo! +" + (70 * G.lv) + " điểm" : `Đúng ${G.res.filter(Boolean).length}/5, mất 1 mạng. Đáp án: ` + it.a.map((a, i) => G.res[i] ? null : `(${i + 1}) ${a}`).filter(Boolean).join(", ")),
           h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: next }, "Bản tin tiếp →")) : h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: submit }, "Nộp bài")));
@@ -16356,6 +16357,10 @@ function gmTone() {
   return box;
 }
 
+/* Dừng mọi âm thanh đang phát (khi bấm Dừng, đổi mục hoặc chuyển trang) */
+function gmStopAll() { try { alStop(); } catch {} try { SPV.audio?.pause(); } catch {} try { speechSynthesis.cancel(); } catch {} try { stopTTS(); } catch {} }
+window.addEventListener("hashchange", gmStopAll);
+document.addEventListener("visibilitychange", () => { if (document.hidden) gmStopAll(); });
 const LS_GAMES = [["g-news", "🎮 Nhà báo điền tin", null, () => [gmNews()]], ["g-chase", "🎮 Đuổi giọng", null, () => [gmChase()]]];
 const SP_GAMES = [["g-spell", "🎮 Đọc thần chú", null, () => [gmSpell()]], ["g-talk", "🎮 Nói 1 phút không ngừng", null, () => [gmTalk()]], ["g-quick", "🎮 Phản xạ nhanh", null, () => [gmQuick()]], ["g-tone", "🎮 Nhại ngữ điệu", null, () => [gmTone()]]];
 Object.assign(SUB_DESC, { "lsTab:g-news": "Nghe bản tin, điền 5 chỗ trống, sai mất mạng", "lsTab:g-chase": "Số và tên đọc ngày càng nhanh, gõ kịp thì sống", "spTab:g-spell": "Đọc câu luyện âm khó để phá phong ấn", "spTab:g-talk": "Nói liền 60 giây, ngừng 3 giây là thua", "spTab:g-quick": "5 giây suy nghĩ rồi trả lời ngay", "spTab:g-tone": "Nói lại theo giọng mẫu, chấm như karaoke" });
@@ -16394,6 +16399,25 @@ function gemSplit(a, n) {
   for (const [a0, b0] of cut) { segs.push([s, a0]); s = b0; } segs.push([s, last + 1]);
   return segs.map(([x, y]) => [Math.max(0, (x - 12) * hop), Math.min(a.length, (y + 15) * hop)]);
 }
+/* Câu của game, số và đánh vần: chưa có giọng Gemini thì nhờ Worker đọc ngay bằng model bản nhẹ (chạy nền, lần sau là có) */
+const GEM_GEN = {};
+function gemGen(b) {
+  if (!/^(gm|nd)$/.test(b.p) || GEM_GEN[b.k] || !window.__tts) return; GEM_GEN[b.k] = 1; GEM_Q.push(b); gemRun();
+}
+/* Đọc lần lượt từng mẻ, cách nhau vài giây, để không vượt giới hạn lượt mỗi phút */
+const GEM_Q = []; let gemRunning = false;
+async function gemRun() {
+  if (gemRunning) return; gemRunning = true;
+  while (GEM_Q.length) {
+    const b = GEM_Q.shift();
+    try { const blob = await window.__tts({ key: "vb-" + b.k, gen: true }); try { await (await caches.open("gem-v1")).put(new URL("__gem/" + b.k, location.href).href, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {} delete GEMV.miss[b.k]; delete GEMV.batches[b.k]; }
+    catch (e) { if (e?.code === "rate_limited") { GEM_Q.length = 0; break; } }
+    await new Promise(r => setTimeout(r, 6500));
+  }
+  gemRunning = false;
+}
+/* Đọc trước các mẻ của game khi mở game */
+async function gemWarm(pack) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack)) gemBatch(b); }
 function gemBatch(b) {
   if (GEMV.miss[b.k] && Date.now() - GEMV.miss[b.k] < 1800e3) return Promise.resolve(null);
   return GEMV.batches[b.k] ||= (async () => {
@@ -16401,7 +16425,8 @@ function gemBatch(b) {
     try { const hit = await (await caches.open("gem-v1")).match(url); if (hit) blob = await hit.blob(); } catch {}
     if (!blob) {
       if (!window.__tts) throw 0;
-      blob = await window.__tts({ key: "vb-" + b.k, cacheOnly: true });
+      try { blob = await window.__tts({ key: "vb-" + b.k, cacheOnly: true }); }
+      catch (e) { gemGen(b); throw e; }
       try { await (await caches.open("gem-v1")).put(url, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {}
     }
     const a = await spDecode(blob), segs = b.ids.length === 1 ? [[0, a.length]] : gemSplit(a, b.ids.length);
