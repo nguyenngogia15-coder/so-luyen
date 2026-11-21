@@ -16414,6 +16414,38 @@ document.head.append(h("style", null, `.gm-hearts{font-size:1.1rem;letter-spacin
     "rg-locksmith": ["Trộm chuyên nghiệp", "Qua một màn Mở khóa không mất tim"], "rg-conductor": ["Lái tàu không trật ray", "Qua một màn Nối ray không mất tim"], "rg-combo": ["Combo không phanh", "Đúng 5 câu liên tiếp"], "rg-boss": ["Đấm trùm", "Thắng một màn trùm"] };
   for (const a of ACH) if (NEW[a[0]]) { a[2] = NEW[a[0]][0]; a[3] = NEW[a[0]][1]; }
 })();
+/* ===== Chia thành tựu thành nhóm, mỗi nhóm có bậc rank theo số đã mở ===== */
+const ACH_GROUPS = [
+  ["⚔️", "Ý Chí Bất Khuất", "Kỷ luật, chuỗi ngày và giờ giấc", id => /^(d1|s7|s30|s100|early|owl|week)$/.test(id)],
+  ["🧠", "Bậc Thầy Học Thuật", "Lộ trình từ vựng, level và thi thử", id => /^(vr10|vr50|lv5|lv10|mock4)$/.test(id)],
+  ["🎧", "Đấu Trường Thính Giả", "Nghe và các game Nghe", id => /^(lst|gn|gc)/.test(id)],
+  ["🎙️", "Võ Đài Khẩu Chiến", "Nói và các game Nói", id => /^(spk|gs|gt|gq)/.test(id)],
+  ["📖", "Chiến Trường Văn Tự", "Các game Đọc", id => id.startsWith("rg-")],
+  ["🛡️", "Tình Huynh Đệ", "Cùng nhóm đánh boss, chọc bạn, đua hạng", id => /^(boss|poke|top)$/.test(id)],
+  ["🐉", "Thuần Thú Sư", "Nuôi thần thú", id => /^pet/.test(id)],
+  ["💎", "Thợ Săn Kho Báu", "Rương, đồ hiếm và chơi đủ game", id => /^(chest|legend|gall)$/.test(id)]];
+const ACH_RANK = [[0, "Chưa xếp hạng", "#868e96"], [1, "Sắt", "#6b5e55"], [.2, "Đồng", "#a0522d"], [.4, "Bạc", "#7d8a96"], [.6, "Vàng", "#c79100"], [.8, "Kim Cương", "#1c7ed6"], [1, "Thách Đấu", "#d9480f"]];
+function achRank(n, tot) { if (!n) return ACH_RANK[0]; if (n >= tot) return ACH_RANK[6]; const r = n / tot; return r >= .8 ? ACH_RANK[5] : r >= .6 ? ACH_RANK[4] : r >= .4 ? ACH_RANK[3] : r >= .2 ? ACH_RANK[2] : ACH_RANK[1]; }
+achCard = function (list) {
+  const q = fq(), me = window.__grp?.uid, used = new Set();
+  const groups = ACH_GROUPS.map(([ico, name, sub, f]) => { const a = ACH.filter(x => !used.has(x[0]) && f(x[0])); a.forEach(x => used.add(x[0])); return [ico, name, sub, a]; });
+  const rest = ACH.filter(x => !used.has(x[0])); if (rest.length) groups.push(["✨", "Bí Ẩn", "Thành tựu khác", rest]);
+  const tile = ([id, ico, name, how]) => h("div", { class: "ach" + (q.ach[id] ? " on" : ""), title: how }, h("span", { class: "ach-ico" }, ico), h("b", null, name), h("span", { class: "small muted" }, how), q.ach[id] ? h("span", { class: "small" }, "Mở ngày " + fmtDate(new Date(q.ach[id] + "T00:00:00"))) : null);
+  const tot = Object.keys(q.ach).filter(id => ACH.some(x => x[0] === id)).length, R = achRank(tot, ACH.length);
+  return h("section", { class: "card stack", style: "gap:12px" },
+    h("div", { class: "row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" }, h("h2", { style: "margin:0" }, "Thành tựu"),
+      h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "ach-rk", style: `--rk:${R[2]}` }, R[1]), h("b", null, `${tot}/${ACH.length}`))),
+    h("div", { class: "stack", style: "gap:8px" }, groups.map(([ico, name, sub, a]) => { const n = a.filter(x => q.ach[x[0]]).length, r = achRank(n, a.length);
+      return h("details", { class: "ach-g", open: true }, h("summary", null, h("span", { class: "ach-gi" }, ico), h("span", { class: "stack", style: "gap:0;flex:1;min-width:0" }, h("b", null, name), h("span", { class: "small muted" }, sub)),
+        h("span", { class: "ach-rk", style: `--rk:${r[2]}` }, r[1]), h("b", { class: "ach-gn" }, `${n}/${a.length}`), h("i", { class: "ach-bar" }, h("i", { style: `width:${Math.round(n / a.length * 100)}%;background:${r[2]}` }))),
+        h("div", { class: "ach-grid" }, a.map(tile))); })),
+    h("div", { class: "stack", style: "gap:6px" }, list.filter(m => m.id !== me).map(m => { const mine = (m.ach || []).filter(a => ACH.some(z => z[0] === a)), mr = achRank(mine.length, ACH.length);
+      return h("div", { class: "row small", style: "gap:8px;flex-wrap:wrap;align-items:center" }, gAva(m, 22), h("b", null, m.name + ":"), h("span", { class: "ach-rk", style: `--rk:${mr[2]}` }, mr[1]), mine.length ? mine.map(a => { const x = ACH.find(z => z[0] === a); return h("span", { title: x[2] }, x[1]); }) : h("span", { class: "muted" }, "chưa có")); })));
+};
+document.head.append(h("style", null, `.ach-g{border:2px solid var(--edge,#111);background:var(--surface)}.ach-g>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;flex-wrap:wrap;position:relative}
+.ach-g>summary::-webkit-details-marker{display:none}.ach-g>summary::before{display:none!important}.ach-g[open]>summary{border-bottom:1px solid var(--line)}.ach-g>.ach-grid{padding:10px}
+.ach-gi{font-size:1.7rem;line-height:1}.ach-gn{min-width:3.2em;text-align:right}.ach-bar{flex-basis:100%;height:5px;background:var(--line);display:block}.ach-bar>i{display:block;height:100%}
+.ach-rk{font-family:var(--font-mono);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border:2px solid var(--rk);color:var(--rk);white-space:nowrap}`));
 
 /* ===== Giọng Gemini cho mọi câu mẫu: Worker thu dần mỗi đêm theo từng mẻ (voice/gem.json). Mẻ nào đã có thì web dùng giọng Gemini,
    cắt mẻ thành từng câu theo khoảng lặng; chưa có thì vẫn dùng giọng máy thu sẵn như cũ. Mẻ đã tải được nhớ trong trình duyệt. ===== */
