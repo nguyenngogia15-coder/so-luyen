@@ -1,12 +1,22 @@
 /* ===== Đặt lại thành tựu và tiến độ cả nhóm (chỉ tài khoản chủ trang bấm được).
-   Xóa: XP, level, chuỗi ngày, nhiệm vụ đã tick, vé, rương, game pass, thành tựu, huy hiệu, kỷ lục game, lịch sử học, sổ lỗi nghe/nói.
-   Giữ: bài đã học (ngữ pháp, khóa Đọc/Viết, Lộ trình từ vựng, bài nghe/nói), từ vựng đã thêm, bài viết, bài đọc, tên và ảnh đại diện. ===== */
+   Xóa: XP, level, chuỗi ngày, nhiệm vụ đã tick, vé, rương, game pass, thành tựu, huy hiệu, kỷ lục game, lịch sử học, sổ lỗi,
+   kết quả làm thử (band Writing/Reading/Listening/Speaking, bài viết đã chấm, đề thi thử, bài nói đã chấm, thống kê âm hay sai, shadowing).
+   Giữ: bài đã học (ngữ pháp, khóa Đọc/Viết, Lộ trình từ vựng, lộ trình nghe/nói), từ vựng đã thêm, bài đọc (chỉ xóa lần làm), tên và ảnh. ===== */
 const RS = { at: 0, busy: false, sure: 0 };
-const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen"];
+const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen", "pron", "shStat", "lsTests", "ls", "placement", "wscores", "ndStat", "ndSeen", "errAdvice"];
 function rsApply(at) {
   for (const k of RS_KEYS) delete P[k];
   Object.assign(P, { xp: 0, xpDay: {}, wk: {}, badges: {}, rbadge: {}, log: {} });
   P.resetAt = at; saveProfile();
+  /* Kết quả làm thử: bài viết đã chấm, đề thi thử, bài nói đã chấm, sổ lỗi; bài đọc giữ lại nhưng xóa các lần làm */
+  (async () => {
+    try {
+      for (const c of ["writings", "mocks", "speaks", "mistakes"]) for (const d of await store.list(c).catch(() => [])) await store.del(c, d.id).catch(() => {});
+      for (const d of await store.list("readings").catch(() => [])) if (d.attempts?.length) { const { id, ...doc } = d; doc.attempts = []; await store.put("readings", id, doc).catch(() => {}); }
+      try { SPEAKS.splice(0, SPEAKS.length); } catch {}
+      await store.setProfile(P); await loadAll(); render();
+    } catch (e) { console.warn(e); }
+  })();
   try { G.last = ""; G.pokes.forEach(p => window.__grp.clear(p.id).catch(() => {})); } catch {}
   setTimeout(() => { try { dqTick(); dqPublish(true); } catch {} render(); }, 300);
 }
@@ -24,7 +34,7 @@ async function rsAll() {
 function rsCard() {
   if (!window.__isOwner) return null;
   return h("section", { class: "card stack rs-card", style: "gap:8px" }, h("h2", { style: "margin:0" }, "🛠 Quản lý nhóm (chỉ bạn thấy)"),
-    h("p", { class: "small muted", style: "margin:0" }, "Đặt lại thành tựu và tiến độ của tất cả thành viên, cả bạn: XP, level, chuỗi ngày, nhiệm vụ, rương, game pass, thành tựu, boss, thần thú, kỷ lục game, lịch sử học. Giữ nguyên bài đã học, từ vựng đã thêm, bài viết, bài đọc, tên và ảnh."),
+    h("p", { class: "small muted", style: "margin:0" }, "Đặt lại của tất cả thành viên, cả bạn: XP, level, chuỗi ngày, nhiệm vụ, rương, game pass, thành tựu, boss, thần thú, kỷ lục game, lịch sử học, sổ lỗi và mọi kết quả làm thử (band 4 kỹ năng, bài viết và bài nói đã chấm, đề thi thử, âm hay sai). Giữ nguyên bài đã học, từ vựng đã thêm, bài đọc, tên và ảnh."),
     h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" },
       h("button", { class: "btn" + (RS.sure ? " btn-primary" : ""), type: "button", disabled: RS.busy || null, onclick: () => { if (!RS.sure) { RS.sure = 1; render(); return; } rsAll(); } }, RS.busy ? "Đang đặt lại…" : RS.sure ? "Bấm lần nữa để xác nhận đặt lại cả nhóm" : "Đặt lại tiến độ cả nhóm"),
       RS.sure ? h("button", { class: "btn btn-quiet", type: "button", onclick: () => { RS.sure = 0; render(); } }, "Hủy") : null),
