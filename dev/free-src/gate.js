@@ -141,7 +141,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
     try { const hb = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(user.email || "").toLowerCase())); window.__isOwner = [...new Uint8Array(hb)].map(b => b.toString(16).padStart(2, "0")).join("") === "ac659011536510d5edf2a23f4a961be12a2d0d7c28a3fe70a4673c9fd7be6a85"; } catch { window.__isOwner = false; }
     /* Nhóm học: mỗi người ghi bản tóm tắt của mình vào group/{uid}, ai trong nhóm cũng đọc được */
     window.__grp = {
-      uid: user.uid, dname: user.displayName || "",
+      uid: user.uid, dname: user.displayName || "", photo: user.photoURL || "",
       put: d => setDoc(doc(fs, "group/" + user.uid), d),
       watch: (cb, err) => onSnapshot(collection(fs, "group"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), e => err?.(e)),
       poke: (to, name) => setDoc(doc(fs, "group/" + to + "/pokes/" + user.uid + "_" + Date.now()), { from: user.uid, name, at: Date.now() }),

@@ -1402,7 +1402,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
     try { const hb = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(user.email || "").toLowerCase())); window.__isOwner = [...new Uint8Array(hb)].map(b => b.toString(16).padStart(2, "0")).join("") === "ac659011536510d5edf2a23f4a961be12a2d0d7c28a3fe70a4673c9fd7be6a85"; } catch { window.__isOwner = false; }
     /* Nhóm học: mỗi người ghi bản tóm tắt của mình vào group/{uid}, ai trong nhóm cũng đọc được */
     window.__grp = {
-      uid: user.uid, dname: user.displayName || "",
+      uid: user.uid, dname: user.displayName || "", photo: user.photoURL || "",
       put: d => setDoc(doc(fs, "group/" + user.uid), d),
       watch: (cb, err) => onSnapshot(collection(fs, "group"), s => cb(s.docs.map(x => ({ ...x.data(), id: x.id }))), e => err?.(e)),
       poke: (to, name) => setDoc(doc(fs, "group/" + to + "/pokes/" + user.uid + "_" + Date.now()), { from: user.uid, name, at: Date.now() }),
@@ -15446,7 +15446,7 @@ setInterval(() => { if (!G.started) grpStart(); }, 1500);
 const FRAME_C = { bronze: "#b87333", silver: "#9aa4ad", gold: "#d4a017" };
 function gAva(m, sz = 40) {
   const st = `width:${sz}px;height:${sz}px;font-size:${Math.round(sz * 0.55)}px;` + (m.frame && FRAME_C[m.frame] ? `box-shadow:0 0 0 3px ${FRAME_C[m.frame]};` : "");
-  if (m.ava && /^data:image\//.test(m.ava)) return h("img", { class: "g-ava", src: m.ava, alt: "", style: st });
+  if (m.ava && /^(data:image\/|https:\/\/)/.test(m.ava)) return h("img", { class: "g-ava", src: m.ava, alt: "", style: st, referrerpolicy: "no-referrer", onerror: e => { e.target.replaceWith(h("span", { class: "g-ava", style: st }, (m.name || "?").trim().charAt(0).toUpperCase())); } });
   return h("span", { class: "g-ava", style: st }, m.ava || (m.name || "?").trim().charAt(0).toUpperCase());
 }
 const gName = m => h("b", { class: "g-name", style: m.color ? "color:" + m.color : null }, m.name || "Bạn học");
@@ -15559,13 +15559,26 @@ function grpProfile() {
     h("div", { class: "row", style: "gap:14px;align-items:center" }, gAva({ ...E, name: E.name }, 64), h("label", { class: "stack", style: "gap:4px;flex:1" }, h("span", { class: "small muted" }, "Tên hiện với cả nhóm (tối đa 24 ký tự)"), nameIn)),
     h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small muted" }, "Ảnh đại diện"),
       h("div", { class: "g-emo" }, h("button", { type: "button", class: "g-e" + (!E.ava ? " on" : ""), onclick: () => pick("ava", "") }, (E.name || "?").charAt(0).toUpperCase()), AVA_EMO.map(x => h("button", { type: "button", class: "g-e" + (E.ava === x ? " on" : ""), onclick: () => pick("ava", x) }, x)),
-        h("button", { type: "button", class: "g-e" + (/^data:/.test(E.ava) ? " on" : ""), onclick: () => up.click(), title: "Tải ảnh của bạn" }, "📷"), up)),
+        up),
+      h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" },
+        h("button", { type: "button", class: "btn", onclick: () => up.click() }, "📷 Tải ảnh từ máy"),
+        window.__grp?.photo ? h("button", { type: "button", class: "btn", onclick: () => grpUrlAva(window.__grp.photo, E) }, "Dùng ảnh tài khoản Google") : null),
+      h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" }, (() => { const inp = h("input", { type: "url", placeholder: "Hoặc dán link ảnh (https://…)", style: "flex:1;min-width:200px" }); return [inp, h("button", { type: "button", class: "btn", onclick: () => grpUrlAva(inp.value.trim(), E) }, "Dùng link này")]; })()),
+      h("span", { class: "small muted" }, "Ảnh được thu nhỏ còn 96×96 (khoảng 5 KB) và thay thẳng ảnh cũ, nên ảnh cũ bị xóa luôn, không chiếm thêm chỗ.")),
     h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small muted" }, "Màu tên (mở thêm bằng game pass)"),
       h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" }, ["", ...q.rew.color].map(c => h("button", { type: "button", class: "btn" + (E.color === c ? " btn-primary" : ""), onclick: () => pick("color", c) }, h("span", { style: c ? `color:${E.color === c ? "inherit" : c};font-weight:700` : null }, c ? PASS_R.find(r => r[2] === c)?.[3] || "Màu" : "Mặc định"))))),
     h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "small muted" }, "Khung ảnh (mở thêm bằng game pass)"),
       h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" }, ["", ...q.rew.frame].map(f => h("button", { type: "button", class: "btn" + (E.frame === f ? " btn-primary" : ""), onclick: () => pick("frame", f) }, f ? PASS_R.find(r => r[2] === f)?.[3] || f : "Không khung")))),
     h("div", { class: "row", style: "gap:8px" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => { Object.assign(me, { name: (E.name || "").trim().slice(0, 24), ava: E.ava, color: E.color, frame: E.frame }); G.edit = null; saveProfile(); dqPublish(true); render(); } }, "Lưu"),
       h("button", { class: "btn btn-quiet", type: "button", onclick: () => { G.edit = null; render(); } }, "Hủy")));
+}
+/* Ảnh từ link: thu nhỏ được thì lưu bản nhỏ; trang ảnh chặn đọc thì lưu nguyên link */
+function grpUrlAva(u, E) {
+  if (!/^https:\/\/\S+$/.test(u || "")) { toast("Link ảnh phải bắt đầu bằng https://"); return; }
+  const img = new Image(); img.crossOrigin = "anonymous"; img.referrerPolicy = "no-referrer";
+  img.onload = () => { try { const c = document.createElement("canvas"); c.width = c.height = 96; const s = Math.min(img.width, img.height); c.getContext("2d").drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, 96, 96); E.ava = c.toDataURL("image/jpeg", 0.8); } catch { E.ava = u.slice(0, 500); } render(); };
+  img.onerror = () => { const t = new Image(); t.referrerPolicy = "no-referrer"; t.onload = () => { E.ava = u.slice(0, 500); render(); }; t.onerror = () => toast("Không mở được ảnh từ link này"); t.src = u; };
+  img.src = u;
 }
 /* Thu ảnh về 96×96 để lưu gọn (khoảng 5 KB) */
 function grpShrink(file) {
