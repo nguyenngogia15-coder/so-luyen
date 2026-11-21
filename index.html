@@ -16426,6 +16426,59 @@ const ACH_GROUPS = [
   ["💎", "Thợ Săn Kho Báu", "Rương, đồ hiếm và chơi đủ game", id => /^(chest|legend|gall)$/.test(id)]];
 const ACH_RANK = [[0, "Chưa xếp hạng", "#868e96"], [1, "Sắt", "#6b5e55"], [.2, "Đồng", "#a0522d"], [.4, "Bạc", "#7d8a96"], [.6, "Vàng", "#c79100"], [.8, "Kim Cương", "#1c7ed6"], [1, "Thách Đấu", "#d9480f"]];
 function achRank(n, tot) { if (!n) return ACH_RANK[0]; if (n >= tot) return ACH_RANK[6]; const r = n / tot; return r >= .8 ? ACH_RANK[5] : r >= .6 ? ACH_RANK[4] : r >= .4 ? ACH_RANK[3] : r >= .2 ? ACH_RANK[2] : ACH_RANK[1]; }
+/* ===== Thêm thành tựu (đợt 2) ===== */
+(function () {
+  const sum = o => Object.values(o || {}).reduce((a, v) => a + (Array.isArray(v) ? v[0] : 0), 0);
+  const hist = k => { try { return planHistory().filter(x => x.k === k); } catch { return []; } };
+  const wb = () => (typeof WRIT !== "undefined" ? WRIT : []).filter(w => w.result?.overall != null);
+  const rdN = () => (typeof READS !== "undefined" ? READS : []).reduce((a, r) => a + (r.attempts || []).length, 0);
+  const done = L => (L || []).filter(l => P.lessons?.[l.id]?.done).length;
+  ACH.push(
+    ["s3", "🍚", "Cơm nhà đủ ba bữa", "Chuỗi 3 ngày", q => q.best >= 3],
+    ["s14", "🧱", "Lì như bê tông", "Chuỗi 14 ngày", q => q.best >= 14],
+    ["s60", "🗿", "Tượng đài kỷ luật", "Chuỗi 60 ngày", q => q.best >= 60],
+    ["d10", "🔟", "Mười ngày như một", "Tổng cộng 10 ngày làm đủ nhiệm vụ", q => Object.values(q.days).filter(v => v === 1).length >= 10],
+    ["d50", "🏅", "Nửa trăm ngày vàng", "Tổng cộng 50 ngày làm đủ nhiệm vụ", q => Object.values(q.days).filter(v => v === 1).length >= 50],
+    ["sun", "⛪", "Chủ nhật không nghỉ lễ", "Làm đủ nhiệm vụ vào một ngày Chủ nhật", q => Object.keys(q.days).some(d => q.days[d] === 1 && new Date(d + "T00:00:00").getDay() === 0)],
+    ["m60", "☕", "Cày xuyên trưa", "Học từ 60 phút trong một ngày", q => Object.values(q.hm).some(v => v >= 60)],
+    ["m120", "🥵", "Ôn thi như thi đại học", "Học từ 120 phút trong một ngày", q => Object.values(q.hm).some(v => v >= 120)],
+    ["frz", "🧊", "Phao cứu sinh", "Được vé đóng băng cứu chuỗi một lần", q => Object.values(q.frz || {}).some(Boolean)],
+    ["vb100", "🎒", "Kho chữ di động", "Có 100 từ trong sổ từ vựng", () => VOCAB.length >= 100],
+    ["vb500", "🏦", "Ngân hàng từ vựng", "Có 500 từ trong sổ từ vựng", () => VOCAB.length >= 500],
+    ["gr10", "🧩", "Ngữ pháp hết là ác mộng", "Qua 10 bài ngữ pháp", () => done(LESSONS) >= 10],
+    ["grall", "🎓", "Giáo sư ngữ pháp", "Qua hết các bài ngữ pháp", () => LESSONS.length > 0 && done(LESSONS) >= LESSONS.length],
+    ["rcall", "🐛", "Mọt sách chính hiệu", "Qua hết khóa Đọc", () => RL.length > 0 && done(RL) >= RL.length],
+    ["wcall", "🖋️", "Bút sa gà chết", "Qua hết khóa Viết", () => WL.length > 0 && done(WL) >= WL.length],
+    ["wn10", "✍️", "Tay viết không mỏi", "Nộp 10 bài viết để chấm", () => wb().length >= 10],
+    ["w6", "📝", "Ngòi bút có tâm", "Một bài viết đạt band 6.0", () => wb().some(w => w.result.overall >= 6)],
+    ["w7", "🏆", "Văn hay chữ tốt", "Một bài viết đạt band 7.0", () => wb().some(w => w.result.overall >= 7)],
+    ["lv20", "🌌", "Huyền thoại sống", "Đạt Level 20", () => levelOf(P.xp || 0).L >= 20],
+    ["plc", "🔍", "Biết người biết ta", "Làm bài kiểm tra đầu vào đủ 4 kỹ năng", () => ["L", "R", "W", "S"].every(k => P.placement?.[k] != null)],
+    ["dict100", "📼", "Máy ghi âm biết đi", "Nghe chép 100 câu", () => (P.ls?.dict?.n || 0) >= 100],
+    ["nd50", "☎️", "Tổng đài viên", "Làm 50 lượt Số và đánh vần", () => sum(P.ndStat) >= 50],
+    ["lsf", "🪑", "Ngồi im 30 phút", "Làm một đề Listening đầy đủ 40 câu", () => hist("L").length > 0],
+    ["lsb7", "🦇", "Tai dơi chúa", "Band Listening từ 7.0", () => hist("L").some(x => (x.band || 0) >= 7)],
+    ["sh100", "👥", "Cái bóng người bản xứ", "Shadowing 100 câu", () => (P.shStat?.n || 0) >= 100],
+    ["pr200", "👅", "Lưỡi không xương", "Luyện 200 âm trong bài phát âm", () => sum(P.pron) >= 200],
+    ["room", "🎤", "Gan lì trước giám khảo", "Thi đủ 3 phần trong phòng thi Speaking", () => hist("S").some(x => /Thi thử đầy đủ|Phòng thi/.test(x.title || ""))],
+    ["rd10", "📠", "Máy quét chữ", "Làm 10 lượt bài đọc", () => rdN() >= 10],
+    ["rex", "⏳", "Sinh tồn 60 phút", "Làm Reading chế độ thi 60 phút", () => hist("R").some(x => /thi thử/.test(x.sub || ""))],
+    ["rb7", "📜", "Đọc như đọc truyện tranh", "Band Reading từ 7.0", () => hist("R").some(x => (x.band || 0) >= 7)],
+    ["pk50", "🫵", "Chọc tới khi nào học thì thôi", "Chọc bạn 50 lần", q => q.pokeN >= 50],
+    ["boss3", "🗡️", "Sát thủ săn boss", "Cùng nhóm hạ 3 boss tuần", q => Object.keys(q.bossW).length >= 3],
+    ["chest50", "💰", "Đại gia rương", "Mở 50 rương", q => q.opened >= 50],
+    ["pet2", "🐣", "Trại thú mini", "Thuần hóa 2 thần thú", () => petState(grpMine()).gc >= PET_DAYS * 2],
+    ["pet3", "🦚", "Vườn thú gia đình", "Thuần hóa 3 thần thú", () => petState(grpMine()).gc >= PET_DAYS * 3],
+    ["rew5", "👗", "Tủ đồ hàng hiệu", "Sưu tầm 5 món đồ từ rương", q => Object.values(q.rew || {}).reduce((a, v) => a + (Array.isArray(v) ? v.length : 0), 0) >= 5]);
+  const G = ACH_GROUPS;
+  G[0][3] = id => /^(d1|d10|d50|s\d+|early|owl|week|sun|m60|m120|frz)$/.test(id);
+  G[1][3] = id => /^(vr10|vr50|lv\d+|mock4|vb\d+|gr10|grall|rcall|wcall|wn10|w6|w7|plc)$/.test(id);
+  G[2][3] = id => /^(lst|gn|gc|dict|nd50|lsf|lsb)/.test(id);
+  G[3][3] = id => /^(spk|gs|gt|gq|sh100|pr200|room)/.test(id);
+  G[4][3] = id => /^(rg-|rd10|rex|rb7)/.test(id);
+  G[5][3] = id => /^(boss|poke|top|pk50)/.test(id);
+  G[7][3] = id => /^(chest|legend|gall|rew5)/.test(id);
+})();
 achCard = function (list) {
   const q = fq(), me = window.__grp?.uid, used = new Set();
   const groups = ACH_GROUPS.map(([ico, name, sub, f]) => { const a = ACH.filter(x => !used.has(x[0]) && f(x[0])); a.forEach(x => used.add(x[0])); return [ico, name, sub, a]; });
