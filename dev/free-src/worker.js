@@ -349,5 +349,5 @@ export async function nightly(env, fetchFn = fetch, opts = {}) {
   return { log };
 }
 
-/* Hai lịch chạy: "0 13 * * *" (20h VN) để nhắc học; lịch còn lại là việc ban đêm (thu giọng đọc, soạn bài nghe) */
-export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => ctx.waitUntil(ev.cron === "0 13 * * *" ? remind(env) : nightly(env)) };
+/* Lịch chạy lúc 13:00 UTC (20h VN) để nhắc học; các lịch khác là việc ban đêm (thu giọng đọc, soạn bài nghe) */
+export default { fetch: (req, env) => handle(req, env), scheduled: (ev, env, ctx) => ctx.waitUntil(new Date(ev.scheduledTime).getUTCHours() === 13 ? remind(env) : nightly(env)) };
