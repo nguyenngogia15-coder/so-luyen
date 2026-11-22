@@ -1400,6 +1400,13 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
 const APP_VER = "91 (15/11)";
 /* ---------- helpers ---------- */
 const rnd = n => Math.floor(Math.random() * n), pick = a => a[rnd(a.length)];
+/* Chọn ngẫu nhiên mà không lặp lại: món đã gặp phải đợi tới khi gặp hết khoảng 80% số món mới được ra lại. Nhớ theo tài khoản (đồng bộ được). */
+function deckPick(key, arr, idOf = x => (x && typeof x === "object" ? x.id ?? JSON.stringify(x).slice(0, 80) : String(x))) {
+  if (!arr?.length) return null;
+  const S = (P.gmSeen ||= {}), seen = S[key] ||= [], keep = Math.max(1, Math.floor(arr.length * 0.8)), recent = new Set(seen.slice(-keep));
+  let pool = arr.filter(x => !recent.has(String(idOf(x)))); if (!pool.length) pool = arr;
+  const x = pool[Math.floor(Math.random() * pool.length)]; seen.push(String(idOf(x))); if (seen.length > 400) seen.splice(0, seen.length - 400); saveProfile(); return x;
+}
 const $ = (s, r = document) => r.querySelector(s);
 { const ap = Element.prototype.append; Element.prototype.append = function (...a) { return ap.apply(this, a.flat(Infinity).filter(x => x != null && x !== false)); }; }
 function h(tag, props, ...kids) {
@@ -7474,7 +7481,7 @@ function paraphraseCard() {
   const card = h("section", { class: "card" });
   const draw = () => {
     const kids = [h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Paraphrase 60 giây"), h("span", { class: "small muted" }, "Viết lại câu đề bằng cách khác, giữ nguyên nghĩa"))];
-    if (!S.src) { kids.push(h("p", { class: "small muted" }, "Kỹ năng dùng cho câu mở bài của cả Task 1 và Task 2: đổi từ, đổi cấu trúc mà không đổi nghĩa."), h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", disabled: !sample || null, onclick: () => { S.src = pick(paraSources()); S.start = Date.now(); S.res = null; S.typed = ""; draw(); } }, "Bắt đầu")); card.replaceChildren(...kids); return; }
+    if (!S.src) { kids.push(h("p", { class: "small muted" }, "Kỹ năng dùng cho câu mở bài của cả Task 1 và Task 2: đổi từ, đổi cấu trúc mà không đổi nghĩa."), h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", disabled: !sample || null, onclick: () => { S.src = deckPick("para", paraSources(), String); S.start = Date.now(); S.res = null; S.typed = ""; draw(); } }, "Bắt đầu")); card.replaceChildren(...kids); return; }
     const left = 60 - Math.floor((Date.now() - S.start) / 1000);
     const tEl = h("span", { class: "timer" + (left <= 10 ? " over" : "") }, mmss(Math.max(0, left)));
     const ta = h("textarea", { id: "para-in", rows: "3", style: "min-height:70px", spellcheck: "false", disabled: S.res ? true : null, placeholder: "Câu viết lại của bạn…" }); ta.value = S.typed;
@@ -7491,7 +7498,7 @@ function paraphraseCard() {
     kids.push(h("div", { class: "task-box" }, h("span", { class: "eyebrow" }, "Câu đề"), h("p", { class: "prompt" }, S.src)), h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "small muted" }, "Còn"), tEl), ta);
     if (S.res) kids.push(h("div", { class: "row" }, h("span", { class: "chip acc" }, `${S.res.score}/10`), h("span", { class: "chip " + (S.res.same ? "good" : "bad") }, S.res.same ? "Giữ đúng nghĩa" : "Lệch nghĩa"), h("span", { class: "chip " + (S.res.changed ? "good" : "warn") }, S.res.changed ? "Đổi đủ nhiều" : "Còn giống đề quá")),
       h("p", { class: "small" }, S.res.feedback), S.res.better.length ? h("ul", { style: "margin:0;padding-left:20px" }, S.res.better.map(b => h("li", { class: "model-text", style: "font-size:1rem" }, b))) : null,
-      h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: () => { S.src = pick(paraSources()); S.start = Date.now(); S.res = null; S.typed = ""; draw(); } }, "Câu khác"));
+      h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: () => { S.src = deckPick("para", paraSources(), String); S.start = Date.now(); S.res = null; S.typed = ""; draw(); } }, "Câu khác"));
     else kids.push(h("button", { class: "btn btn-primary", type: "button", style: "align-self:flex-start", onclick: submit }, "Nộp"), out);
     card.replaceChildren(...kids);
     if (!S.res) { setTimeout(() => ta.focus(), 0); const iv = setInterval(() => { if (!document.body.contains(tEl)) { clearInterval(iv); return; } const l = 60 - Math.floor((Date.now() - S.start) / 1000); tEl.textContent = mmss(Math.max(0, l)); tEl.classList.toggle("over", l <= 10); if (l <= 0) { clearInterval(iv); S.typed = ta.value; if (wc(S.typed) >= 4) submit(); else { S.res = { score: 0, same: false, changed: false, feedback: "Hết giờ khi chưa viết xong. Thử lại câu khác nhé.", better: [] }; draw(); } } }, 1000); }
@@ -16244,7 +16251,7 @@ async function gmAudio(key, rate = 1) {
   AL_PLAY.a = a; AL_PLAY.url = url; await a.play(); return new Promise(res => { a.onended = () => res(); });
 }
 const gmXp = (n, skill, min, key) => { XP_CAP.game ??= 80; if (key) { const t = gmSt(key); t.n = (t.n || 0) + 1; } award("game", n); addAct(skill, min); try { achCheck(); } catch {} saveProfile(); };
-const gmHead = (title, sub, best) => h("div", { class: "row gm-head", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", { style: "margin:0" }, title), h("span", { class: "small muted" }, sub)), best != null ? h("span", { class: "chip acc" }, "Kỷ lục: " + best) : null);
+const gmHead = (title, sub, best) => h("div", { class: "row gm-head", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", { style: "margin:0" }, title), h("span", { class: "small muted" }, sub)), h("div", { class: "row", style: "gap:8px;align-items:center" }, h("button", { class: "btn btn-quiet small", type: "button", title: "Dừng mọi âm thanh đang phát", onclick: () => { gmStopAll(); render(); } }, "⏹ Dừng âm thanh"), best != null ? h("span", { class: "chip acc" }, "Kỷ lục: " + best) : null));
 const gmHearts = n => h("span", { class: "gm-hearts", "aria-label": n + " mạng" }, "❤️".repeat(Math.max(0, n)) + "🖤".repeat(Math.max(0, 3 - n)));
 
 /* ----- Nhà báo điền tin ----- */
@@ -16259,7 +16266,7 @@ function gmNews() {
   const G = UI.gn ||= { lv: 1, lives: 3, score: 0, perfect: 0, item: null, ans: {}, plays: 0, res: null, over: false, seen: [] }, st = gmSt("news");
   const box = h("div", { class: "stack", style: "gap:12px" }, h("p", { class: "muted" }, "Đang tải bản tin…"));
   gmIndex().then(D => {
-    if (!G.item) { const pool = D.news.filter(n => n.lv === G.lv && !G.seen.includes(n.id)); const p = pool.length ? pool : D.news.filter(n => n.lv === G.lv); G.item = p[Math.floor(Math.random() * p.length)]; G.seen.push(G.item.id); G.ans = {}; G.plays = 0; G.res = null; }
+    if (!G.item) { G.item = deckPick("news", D.news.filter(n => n.lv === G.lv)); G.seen.push(G.item.id); G.ans = {}; G.plays = 0; G.res = null; }
     const it = G.item, maxPlay = G.lv === 1 ? 2 : 1;
     const restart = () => { UI.gn = null; render(); };
     if (G.over) { box.replaceChildren(gmHead("Nhà báo điền tin", "Hết mạng rồi!", st.best), h("section", { class: "card stack gm-over", style: "gap:10px;align-items:center;text-align:center" }, h("span", { class: "gm-big" }, G.score), h("span", { class: "eyebrow" }, "điểm"), h("p", { style: "margin:0" }, G.score >= (st.best || 0) ? "Kỷ lục mới!" : `Kỷ lục của bạn: ${st.best}`), h("button", { class: "btn btn-primary", type: "button", onclick: restart }, "Chơi lại"))); return; }
@@ -16304,20 +16311,21 @@ function gmChase() {
   const C = UI.gc ||= { on: false, over: false, lives: 3, n: 0, rate: 1, lim: 15, it: null, val: "", t0: 0, res: null }, st = gmSt("chase");
   const box = h("div", { class: "stack", style: "gap:12px" });
   const start = () => { Object.assign(C, { on: true, over: false, lives: 3, n: 0, rate: 1, lim: 15, it: null, res: null }); round(); };
-  const round = () => ndIndex().then(D => { const pool = D.items.filter(x => x.c !== "addr"); C.it = pool[Math.floor(Math.random() * pool.length)]; C.val = ""; C.res = null; C.t0 = Date.now() + 99e9; render(); ndPlay(C.it, C.rate).then(a => { a.onended = () => { C.t0 = Date.now(); }; }).catch(() => { C.t0 = Date.now(); }); });
-  const judge = timeout => { if (C.res) return; const ok = !timeout && ndCheck(C.it, C.val); C.res = ok ? "ok" : timeout ? "time" : "bad";
+  const round = () => ndIndex().then(D => { C.it = deckPick("chase", D.items.filter(x => x.c !== "addr"), x => x.id ?? x.a); C.paused = false; C.val = ""; C.res = null; C.t0 = Date.now() + 99e9; render(); ndPlay(C.it, C.rate).then(a => { if (C.paused || UI.gc !== C) { try { a.pause(); } catch {} return; } a.onended = () => { C.t0 = Date.now(); }; }).catch(() => { C.t0 = Date.now(); }); });
+  const judge = timeout => { if (C.res || C.paused) return; const ok = !timeout && ndCheck(C.it, C.val); C.res = ok ? "ok" : timeout ? "time" : "bad";
     if (ok) { C.n++; C.rate = Math.min(1.8, +(C.rate + 0.07).toFixed(2)); C.lim = Math.max(7, C.lim - 0.5); } else C.lives--;
     if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(0.5, C.n * 0.5), "chase"); }
     render(); if (!C.over) setTimeout(() => { if (UI.gc === C && C.res) round(); }, ok ? 700 : 2200); };
-  if (C.on && C.it && !C.res) { clearInterval(GM.tk); GM.tk = setInterval(() => { if (UI.gc !== C || C.res || !document.querySelector(".gm-chase")) return clearInterval(GM.tk); const left = C.lim - (Date.now() - C.t0) / 1000, bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.max(0, Math.min(100, left / C.lim * 100)) + "%"; if (left <= 0) { clearInterval(GM.tk); judge(true); } }, 100); }
+  if (C.on && C.it && !C.res && !C.paused) { clearInterval(GM.tk); GM.tk = setInterval(() => { if (UI.gc !== C || C.res || !document.querySelector(".gm-chase")) return clearInterval(GM.tk); const left = C.lim - (Date.now() - C.t0) / 1000, bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.max(0, Math.min(100, left / C.lim * 100)) + "%"; if (left <= 0) { clearInterval(GM.tk); judge(true); } }, 100); }
   const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ điều bạn nghe…", value: C.val, disabled: !!C.res || null, oninput: e => { C.val = e.target.value; }, onkeydown: e => { if (e.key === "Enter") judge(false); } });
   if (C.on && !C.res) setTimeout(() => inp.focus(), 0);
   box.append(gmHead("Đuổi giọng", "Nghe số điện thoại, giá tiền, ngày giờ, tên đánh vần. Mỗi câu đúng giọng đọc nhanh hơn và thời gian ngắn lại. Sai hoặc hết giờ mất 1 mạng.", st.best),
     !C.on ? h("section", { class: "card stack gm-over", style: "gap:10px;align-items:center;text-align:center" }, C.over ? [h("span", { class: "gm-big" }, C.n), h("span", { class: "eyebrow" }, "câu đúng"), h("p", { style: "margin:0" }, C.n >= (st.best || 0) ? "Kỷ lục mới!" : "Kỷ lục: " + st.best)] : h("p", { style: "margin:0" }, "Bắt đầu ở tốc độ bình thường, cao nhất gấp 1,8 lần."), h("button", { class: "btn btn-primary", type: "button", onclick: start }, C.over ? "Chơi lại" : "Bắt đầu"))
       : h("section", { class: "card stack gm-chase", style: "gap:12px" },
-        h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(C.lives), h("b", null, `Đúng ${C.n}`), h("span", { class: "chip" }, `Tốc độ ×${C.rate.toFixed(2)}`), h("span", { class: "chip" }, ND_CAT[C.it?.c]?.[0] || "")),
-        h("div", { class: "gm-time" }, h("i", { style: "width:100%" })),
-        h("div", { class: "fc-ask" }, inp, h("button", { class: "btn btn-primary", type: "button", disabled: !!C.res || null, onclick: () => judge(false) }, "Chốt")),
+        h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(C.lives), h("b", null, `Đúng ${C.n}`), h("span", { class: "chip" }, `Tốc độ ×${C.rate.toFixed(2)}`), h("span", { class: "chip" }, ND_CAT[C.it?.c]?.[0] || ""), C.paused ? null : h("button", { class: "btn btn-quiet", type: "button", style: "margin-left:auto", onclick: () => { C.paused = true; clearInterval(GM.tk); gmStopAll(); render(); } }, "⏸ Tạm dừng")),
+        C.paused ? h("div", { class: "note stack", style: "gap:8px;align-items:center;text-align:center" }, h("b", null, "⏸ Đang tạm dừng"), h("span", { class: "small muted" }, "Mạng và điểm vẫn giữ. Tiếp tục thì nghe câu mới, đồng hồ chạy lại từ đầu."), h("button", { class: "btn btn-primary", type: "button", onclick: () => { C.paused = false; round(); } }, "▶ Tiếp tục")) : null,
+        C.paused ? null : h("div", { class: "gm-time" }, h("i", { style: "width:100%" })),
+        C.paused ? null : h("div", { class: "fc-ask" }, inp, h("button", { class: "btn btn-primary", type: "button", disabled: !!C.res || null, onclick: () => judge(false) }, "Chốt")),
         C.res ? h("p", { class: "note " + (C.res === "ok" ? "good" : "bad"), style: "margin:0" }, C.res === "ok" ? "✓ Đúng!" : (C.res === "time" ? "Hết giờ! " : "Sai! ") + "Đáp án: " + C.it.a) : h("span", { class: "small muted" }, "Đồng hồ chạy khi giọng đọc xong. Enter để chốt.")));
   return box;
 }
@@ -16354,10 +16362,12 @@ function gmSpell() {
 }
 
 /* ----- Nói 1 phút không ngừng ----- */
+/* Thêm chủ đề cho game Nói 1 phút để ít gặp lại */
+const GM_CARDS = [{"card": "Describe a place in your city where you like to relax.", "pts": ["where it is", "how often you go there", "what you do there", "and explain why it helps you relax"]}, {"card": "Describe a time you helped someone.", "pts": ["who you helped", "what the problem was", "how you helped", "and explain how you felt afterwards"]}, {"card": "Describe a book or film that changed how you think.", "pts": ["what it was", "when you read or watched it", "what it was about", "and explain how it changed your thinking"]}, {"card": "Describe a teacher who influenced you.", "pts": ["who the teacher was", "what subject they taught", "what they did that was special", "and explain how they influenced you"]}, {"card": "Describe a journey you remember well.", "pts": ["where you went", "how you travelled", "who you went with", "and explain why you remember it"]}, {"card": "Describe a piece of technology you use every day.", "pts": ["what it is", "how long you have used it", "what you use it for", "and explain how your life would be without it"]}, {"card": "Describe a goal you hope to achieve in the next five years.", "pts": ["what the goal is", "why it matters to you", "what you are doing to reach it", "and explain how you will feel if you achieve it"]}, {"card": "Describe a family celebration you enjoyed.", "pts": ["what the occasion was", "where it took place", "what people did", "and explain why you enjoyed it"]}, {"card": "Describe a time you had to make a difficult decision.", "pts": ["what the decision was", "when it happened", "what options you had", "and explain why you chose what you did"]}, {"card": "Describe a traditional food from your country.", "pts": ["what it is", "how it is made", "when people eat it", "and explain why it is special"]}, {"card": "Describe a sport or exercise you enjoy.", "pts": ["what it is", "when you started", "how often you do it", "and explain why you enjoy it"]}, {"card": "Describe a person you admire who is not famous.", "pts": ["who the person is", "how you know them", "what they do", "and explain why you admire them"]}, {"card": "Describe a time you learned something from a mistake.", "pts": ["what the mistake was", "when it happened", "what happened next", "and explain what you learned"]}, {"card": "Describe an interesting building you have seen.", "pts": ["where it is", "what it looks like", "what it is used for", "and explain why you find it interesting"]}, {"card": "Describe a habit you want to change.", "pts": ["what the habit is", "how long you have had it", "why you want to change it", "and explain how you plan to change it"]}, {"card": "Describe a time you were very busy.", "pts": ["when it was", "what you had to do", "how you managed your time", "and explain how you felt"]}, {"card": "Describe a website or app you find useful.", "pts": ["what it is", "how you found it", "what you use it for", "and explain why it is useful"]}, {"card": "Describe an outdoor activity you did recently.", "pts": ["what it was", "where you did it", "who you did it with", "and explain whether you would do it again"]}, {"card": "Describe a time you received good news.", "pts": ["what the news was", "how you received it", "who you shared it with", "and explain why it was important to you"]}, {"card": "Describe a skill you learned as a child.", "pts": ["what the skill is", "who taught you", "how you learned it", "and explain whether it is still useful"]}, {"card": "Describe a crowded place you have been to.", "pts": ["where it was", "why it was crowded", "what you did there", "and explain how you felt about the crowd"]}, {"card": "Describe a gift you gave to someone.", "pts": ["what the gift was", "who you gave it to", "why you chose it", "and explain how the person reacted"]}, {"card": "Describe a time you worked in a team.", "pts": ["what the task was", "who was in the team", "what your role was", "and explain whether the team worked well"]}, {"card": "Describe a place you would like to visit in the future.", "pts": ["where it is", "how you know about it", "what you would do there", "and explain why you want to go"]}, {"card": "Describe an environmental problem in your area.", "pts": ["what the problem is", "what causes it", "how it affects people", "and explain what could be done about it"]}, {"card": "Describe a time you waited a long time for something.", "pts": ["what you waited for", "where you were", "how long you waited", "and explain how you felt"]}, {"card": "Describe a song or piece of music that means a lot to you.", "pts": ["what it is", "when you first heard it", "when you listen to it", "and explain why it is meaningful"]}, {"card": "Describe a rule at school or work that you disagreed with.", "pts": ["what the rule was", "why it existed", "why you disagreed", "and explain what happened"]}, {"card": "Describe a time you tried something new.", "pts": ["what it was", "why you tried it", "how it went", "and explain whether you would do it again"]}, {"card": "Describe a friend you have known for a long time.", "pts": ["who the friend is", "how you met", "what you do together", "and explain why the friendship has lasted"]}, {"card": "Describe a news story that interested you.", "pts": ["what the story was", "where you saw it", "what happened", "and explain why it interested you"]}, {"card": "Describe a time you saved money for something.", "pts": ["what you saved for", "how long it took", "how you saved", "and explain whether it was worth it"]}];
 function gmTalk() {
   const T = UI.gt ||= { card: null, phase: "pick", el: 0, res: null }, st = gmSt("talk");
-  const cards = SP_BANK.p2 || [];
-  if (!T.card) T.card = cards[Math.floor(Math.random() * cards.length)];
+  const cards = [...(SP_BANK.p2 || []), ...GM_CARDS];
+  if (!T.card) T.card = deckPick("talk", cards, x => x.id ?? x.topic ?? x.q ?? JSON.stringify(x).slice(0, 60));
   const go = async () => {
     T.phase = "rec"; T.el = 0; render();
     try {
@@ -16384,7 +16394,7 @@ function gmQuick() {
   const Q = UI.gq ||= { phase: "start", streak: 0, q: null, cd: 0, msg: "" }, st = gmSt("quick");
   const all = (SP_BANK.p1 || []).flatMap(t => t.qs.map(x => x[0]));
   const ask = async () => {
-    Q.q = all[Math.floor(Math.random() * all.length)]; Q.phase = "think"; Q.cd = 5; render(); spSay(Q.q);
+    Q.q = deckPick("quick", all, String); Q.phase = "think"; Q.cd = 5; render(); spSay(Q.q);
     for (let s = 5; s > 0; s--) { Q.cd = s; const el = document.querySelector(".gm-cd"); if (el) el.textContent = s; await new Promise(r => setTimeout(r, 1000)); if (UI.gq !== Q) return; }
     Q.phase = "rec"; render();
     try {
@@ -16443,7 +16453,7 @@ function gmTone() {
   const box = h("div", { class: "stack", style: "gap:12px" });
   spvIndex().then(async ix => {
     const keys = Object.keys(ix).filter(k => { const n = k.split(" ").length; return n >= 5 && n <= 13; });
-    if (!N.key) N.key = keys[Math.floor(Math.random() * keys.length)];
+    if (!N.key) N.key = deckPick("tone", keys, String);
     const text = N.key.charAt(0).toUpperCase() + N.key.slice(1);
     const model = async () => { const gc = typeof gemClip === "function" ? await gemClip("sp", N.key).catch(() => null) : null; if (gc) return spTrim(await spDecode(gc)); const e = ix[N.key], ab = await spvShard(e[0]); return spTrim(await spDecode(new Blob([new Uint8Array(ab, e[1], e[2])], { type: "audio/mpeg" }))); };
     const judge = async (blob, say) => { say?.("Đang so giọng…"); const m = gmPitch(await model()), u = gmPitch(spTrim(await spDecode(blob))); if (u.filter(x => x.st != null).length < 5) throw { vn: "Chưa nghe rõ giọng bạn. Nói to và gần micro hơn." }; const r = gmCompare(m, u); N.res = { ...r, m, u }; if (r.score > (st.best || 0)) st.best = r.score; gmXp(Math.round(r.score / 10), "speaking", 1, "tone"); render(); };
@@ -16460,7 +16470,7 @@ function gmTone() {
 }
 
 /* Dừng mọi âm thanh đang phát (khi bấm Dừng, đổi mục hoặc chuyển trang) */
-function gmStopAll() { try { alStop(); } catch {} try { SPV.audio?.pause(); } catch {} try { speechSynthesis.cancel(); } catch {} try { stopTTS(); } catch {} }
+function gmStopAll() { try { if (UI.gc?.on && !UI.gc.res && !UI.gc.over) { UI.gc.paused = true; clearInterval(GM.tk); } } catch {} try { SHW.player?.pauseVideo(); } catch {} try { alStop(); } catch {} try { SPV.audio?.pause(); } catch {} try { speechSynthesis.cancel(); } catch {} try { stopTTS(); } catch {} }
 window.addEventListener("hashchange", gmStopAll);
 document.addEventListener("visibilitychange", () => { if (document.hidden) gmStopAll(); });
 const LS_GAMES = [["g-news", "🎮 Nhà báo điền tin", null, () => [gmNews()]], ["g-chase", "🎮 Đuổi giọng", null, () => [gmChase()]]];
