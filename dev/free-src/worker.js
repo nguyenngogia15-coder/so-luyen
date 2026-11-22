@@ -220,7 +220,7 @@ async function tts(req, env, b, fetchFn, uid) {
   const send = (mime, b64, hit, model) => new Response(b64, { status: 200, headers: { "content-type": "text/plain", "x-mime": mime, "x-cache": hit ? "hit" : "miss", "x-model": model || "", "access-control-expose-headers": "x-cache, x-model, x-mime", ...cors(env, req) } });
   if (key && env.AUDIO) { const hit = await env.AUDIO.getWithMetadata(key, "text"); if (hit?.value) return send(hit.metadata?.mime || "audio/wav", hit.value, true); }
   /* Mẻ câu của game và số/đánh vần: chưa có thì đọc ngay bằng model TTS bản nhẹ (nhiều lượt) */
-  if (b.gen && key && /^ls:vb-(gm|nd)-/.test(key)) {
+  if (b.gen && key && /^ls:vb-(gm|nd|gr)-/.test(key)) {
     const site = String(env.SITE_URL || (String(env.ALLOWED_ORIGIN || "").split(",")[0].trim().replace(/\/$/, "") + "/so-luyen/"));
     let plan = []; try { plan = await (await fetchFn(site + "voice/gem.json")).json(); } catch {}
     const bt = plan.find(x => kvAudioKey("vb-" + x.k) === key); if (!bt) return out(env, req, 404, { error: { code: "not_found" } });
@@ -343,7 +343,8 @@ Return ONLY JSON: {"title":"...","ctx":"one Vietnamese sentence describing the s
 /* Lời nhắc cho một mẻ câu ngắn (hoặc một bản tin) */
 function gemBatchBody(b) {
   const acc = b.acc === "gb" ? "British" : "American";
-  const text = b.news ? `Read this short local news bulletin aloud like a friendly radio presenter, in a clear ${acc} English accent at a natural pace. Letters separated by commas are spelled out one letter at a time.\n\n${b.lines[0]}`
+  /* Câu lẻ (thần chú, câu game): gửi đúng câu, không kèm lời dặn, vì model TTS bản nhẹ hay đọc luôn cả lời dặn */
+  const text = b.raw ? b.lines[0] : b.news ? `Read this short local news bulletin aloud like a friendly radio presenter, in a clear ${acc} English accent at a natural pace. Letters separated by commas are spelled out one letter at a time.\n\n${b.lines[0]}`
     : `Read each of the following lines aloud, one by one, in a clear, natural ${acc} English accent at a natural pace. After each line, stay completely silent for two full seconds before the next line. Read only the words in the lines, nothing else. Letters separated by commas are spelled out one letter at a time.\n\n` + b.lines.join("\n");
   return { contents: [{ role: "user", parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: b.v || "Kore" } } } } };
 }
