@@ -1176,6 +1176,8 @@ body.workmode .page-head{display:none}
 .topnav a .nav-ic{display:inline-flex}.topnav a .nav-ic svg{width:19px;height:19px}
 #acct{flex:none}#acct .acct-who{display:none}.acct-out{white-space:nowrap;font-size:.78rem;padding:6px 10px}}
 .sub-in{gap:6px;flex-wrap:wrap;margin-bottom:4px}.sub-in .opt{font-weight:600}
+.gm-skrow{gap:6px;flex-wrap:wrap}.gm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}.gm-card{display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;font:inherit;color:inherit}.gm-card:hover{transform:translate(-1px,-1px)}.gm-ic{font-size:1.8rem;line-height:1}
+.bottomnav{grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}.bottomnav a{font-size:.58rem;letter-spacing:-.01em}@media (max-width:480px){.bottomnav a{white-space:normal;text-align:center;line-height:1.05;font-size:.56rem;padding:5px 1px;overflow:hidden}}@media (max-width:480px){.bottomnav a[aria-current="page"] svg{padding:2px 6px;width:22px}}
 </style>
 </head>
 <body>
@@ -3666,6 +3668,7 @@ function renderInner() {
   else if (r === "ipa") node = pageIPA();
   else if (r === "errors") node = pageMistakes();
   else if (r === "mock") node = pageMock();
+  else if (r === "games") node = pageGames();
   else node = pageToday();
   const banner = !sample && sampleChecked && UI.route !== "today" ? aiNote() : null;
   $("#main").replaceChildren(...(banner ? [banner, node] : [node]));
@@ -5689,6 +5692,7 @@ function allT2() { return [...T2_PROMPTS.map(p => ({ id: p.id, text: p.text, cus
 const srcTag = x => !x.custom ? "" : x.source === "book" ? "[Sách] " : x.source === "mine" ? "[Tự nhập] " : "[AI] ";
 /* Lưới ô công cụ: bấm một ô thì công cụ mở ra bên dưới (thay cho dấu + thu gọn) */
 function toolGrid(key, tools, def) {
+  if (TOOL_HIDE[key]) { tools = tools.filter(t => !TOOL_HIDE[key].includes(t.id)); if (!tools.some(t => t.id === def)) def = tools[0]?.id; }
   const cur = tools.some(t => t.id === UI[key]) ? UI[key] : (UI[key] === "" ? null : def ?? null);
   const grid = h("div", { class: "tgrid" }, tools.map((t, i) => h("button", { type: "button", class: "tile" + (t.id === cur ? " on" : ""), "aria-pressed": t.id === cur ? "true" : "false", onclick: () => { UI[key] = t.id === cur ? "" : t.id; render(); } },
     h("span", { class: "tile-ic", "aria-hidden": "true" }, t.icon || i + 1), h("span", { class: "stack", style: "gap:3px;min-width:0" }, h("b", null, t.title), h("span", { class: "small muted" }, t.desc)),
@@ -5707,6 +5711,8 @@ const SUB_GROUPS = {
   spTab: [["test", "Thi thử & kết quả", "Phòng thi Speaking có AI chấm band, các lần nói đã chấm", ["test", "hist"]], ["games", "🎮 Game", "Đọc thần chú, Nói 1 phút, Phản xạ nhanh, Nhại ngữ điệu", id => /^g-/.test(id)]],
   vTab: [["use", "Luyện dùng từ", "Viết câu với từ mới, bài văn điền từ", ["sent", "read"]], ["games", "🎮 Game", "Game ghép từ, Game 3D", ["game", "g3d"]]]
 };
+const SUB_HIDE = { lsTab: id => /^g-/.test(id), spTab: id => /^g-/.test(id), vTab: id => id === "game" || id === "g3d", rTab: id => id === "drill" };
+const TOOL_HIDE = { wTool: ["game", "para"] };
 const subEff = key => UI[key + "__" + UI[key]] || UI[key];
 function subMerge(key, items) {
   const G = SUB_GROUPS[key]; if (!G) return items;
@@ -5722,6 +5728,7 @@ function subMerge(key, items) {
   return out.sort((a, b) => a[0] - b[0]).map(x => x[1]);
 }
 function subMenu(key, items) {
+  const hide = SUB_HIDE[key]; if (hide) items = items.filter(i => !hide(i[0]));
   items = subMerge(key, items);
   const cur = items.some(i => i[0] === UI[key]) ? UI[key] : items[0][0], it = items.find(i => i[0] === cur);
   const menu = h("details", { class: "tabmenu" }, h("summary", null, h("span", { class: "small muted" }, "Đang xem"), h("b", null, it[1]), h("span", { class: "tabmenu-car", "aria-hidden": "true" }, "▾")),
@@ -11682,7 +11689,7 @@ function wvTable(id, ta) {
 /* ---------- router + boot ---------- */
 function onRoute() {
   const raw = (location.hash || "").slice(1);
-  const ok = ["today", "plan", "grammar", "writing", "reading", "ipa", "vocab", "errors", "mock", "books"].includes(raw) || (raw.startsWith("lesson-") && lessonById(raw.slice(7))) || (raw.startsWith("rl-") && rlById(raw.slice(3))) || (raw.startsWith("wl-") && wlById(raw.slice(3)));
+  const ok = ["today", "plan", "grammar", "writing", "reading", "ipa", "vocab", "errors", "mock", "books", "games"].includes(raw) || (raw.startsWith("lesson-") && lessonById(raw.slice(7))) || (raw.startsWith("rl-") && rlById(raw.slice(3))) || (raw.startsWith("wl-") && wlById(raw.slice(3)));
   const r = ok ? raw : "today";
   if (r !== UI.route) { stopTTS(); document.body.classList.remove("zen"); UI.route = r; UI.anTried = false; UI.wView = null; UI.wSel = null; UI.review = null; UI.vEdit = null; UI.mReview = null; UI.rSel = null; UI.rSlice = null; UI.lSel = null; UI.mockSec = null; $("#lookup").hidden = true; render(); window.scrollTo(0, 0); }
 }
@@ -12056,6 +12063,36 @@ async function connectClaude() {
   try { const uid = user ? await user.id() : null; if (db && uid && store.kind !== "db") { await switchToDb(dbStore(db, uid)); return; } } catch (e) { console.warn(e); }
   render();
 }
+/* ===== Trang Game: mọi game ở một chỗ, chia theo kỹ năng ===== */
+const GAME_SK = [["L", "Nghe", "🎧"], ["S", "Nói", "🎙️"], ["R", "Đọc", "📖"], ["W", "Viết", "✍️"], ["V", "Từ vựng", "🔤"]];
+function gameReg() {
+  const own = [["R", "rgame", "🎮", "Game Đọc", "Kẻ giả danh, phiên tòa, đua tốc độ, mở khóa, nối ray. Có tim, combo, trùm.", () => readGameCard()],
+    ["R", "skim", "⚡", "Đọc lướt chọn heading", "Đọc nhanh từng đoạn rồi chọn tiêu đề đúng.", () => skimCard()],
+    ["W", "wgame", "🎮", "Game viết câu", "Nhìn biểu đồ hoặc ý tiếng Việt, viết câu tiếng Anh. Có màn và sao.", () => gameCard()],
+    ["W", "para", "⏱", "Paraphrase 60 giây", "Viết lại câu đề bằng cách khác, giữ nguyên nghĩa.", () => paraphraseCard()],
+    ["V", "vgame", "🧩", "Game ghép từ", "Ghép từ với nghĩa, bắn thiên thạch, câu cá.", () => vocabGameCard()],
+    ["V", "g3d", "🌌", "Game 3D", "Phiêu lưu 3D với từ trong sổ.", () => vocabGame3D()]];
+  const ext = [...(typeof LS_GAMES !== "undefined" ? LS_GAMES.map(g => ["L", ...g]) : []), ...(typeof SP_GAMES !== "undefined" ? SP_GAMES.map(g => ["S", ...g]) : [])]
+    .map(([sk, id, label, , fn]) => { const m = String(label).match(/^(\S+)\s+(.*)$/); return [sk, id, m ? m[1] : "🎮", m ? m[2] : label, SUB_DESC[(sk === "L" ? "lsTab:" : "spTab:") + id] || "", () => fn()]; });
+  return [...ext, ...own];
+}
+function pageGames() {
+  const all = gameReg(), sks = GAME_SK.filter(([k]) => all.some(g => g[0] === k));
+  const sk = sks.some(x => x[0] === UI.gmSk) ? UI.gmSk : sks[0]?.[0], list = all.filter(g => g[0] === sk), sel = list.find(g => g[1] === UI.gmPick);
+  const stop = () => { try { gmStopAll(); } catch {} try { stopTTS(); } catch {} };
+  const skRow = h("div", { class: "row gm-skrow", role: "tablist" }, sks.map(([k, name, ic]) => h("button", { type: "button", role: "tab", class: "opt", "aria-pressed": String(k === sk), onclick: () => { if (k === sk && !UI.gmPick) return; stop(); UI.gmSk = k; UI.gmPick = null; render(); } }, `${ic} ${name}`, h("span", { class: "subtab-b" }, all.filter(g => g[0] === k).length))));
+  if (sel) return h("div", { class: "stack", style: "gap:14px" }, pageHead("Game", sel[3], null, null), skRow,
+    h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" }, h("button", { class: "btn btn-quiet", type: "button", onclick: () => { stop(); UI.gmPick = null; render(); } }, "‹ Các game " + GAME_SK.find(x => x[0] === sk)[1]),
+      list.filter(g => g !== sel).map(g => h("button", { class: "btn btn-quiet small", type: "button", onclick: () => { stop(); UI.gmPick = g[1]; render(); } }, g[2] + " " + g[3]))),
+    ...[].concat(sel[5]()));
+  return h("div", { class: "stack", style: "gap:16px" }, pageHead("Game", "Chơi mà học", "Mọi game của 4 kỹ năng và từ vựng ở một chỗ. Chơi game cũng được tính vào nhiệm vụ ngày theo số câu đã làm.", null), skRow,
+    h("div", { class: "gm-grid" }, list.map(g => h("button", { type: "button", class: "card gm-card", onclick: () => { stop(); UI.gmPick = g[1]; render(); window.scrollTo(0, 0); } }, h("span", { class: "gm-ic" }, g[2]), h("b", null, g[3]), h("span", { class: "small muted" }, g[4])))));
+}
+(function () {
+  const at = NAV.findIndex(x => x[0] === "vocab"); NAV.splice(at + 1, 0, ["games", "Game", "M6 11h4M8 9v4M15 12h.01M18 10h.01M17.32 5H6.68a4 4 0 00-3.98 3.59L2 15a3 3 0 005.12 2.12L9 15h6l1.88 2.12A3 3 0 0022 15l-.7-6.41A4 4 0 0017.32 5z"]);
+  const _nt = navTab; navTab = r => r === "games" ? "games" : _nt(r);
+})();
+
 window.__bootApp = boot;
 </script>
 <style>
@@ -17429,6 +17466,8 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
     return n;
   };
 })();
+/* Trang Game: mở game Nghe/Nói thì chuẩn bị sẵn giọng Gemini cho game */
+(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); gemWarm("nd"); } catch {} } return _pg(); }; })();
 
 </script>
 

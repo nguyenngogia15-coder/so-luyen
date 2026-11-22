@@ -49,3 +49,5 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
     return n;
   };
 })();
+/* Trang Game: mở game Nghe/Nói thì chuẩn bị sẵn giọng Gemini cho game */
+(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); gemWarm("nd"); } catch {} } return _pg(); }; })();
