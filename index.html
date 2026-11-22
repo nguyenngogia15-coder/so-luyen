@@ -12213,7 +12213,10 @@ async function spDecode(blob) {
   const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC();
   const buf = await ac.decodeAudioData(await blob.arrayBuffer()); try { ac.close(); } catch {}
   const len = Math.ceil(buf.duration * 16000); const off = new OfflineAudioContext(1, Math.max(1, len), 16000);
-  const src = off.createBufferSource(); src.buffer = buf; src.connect(off.destination); src.start();
+  /* Cắt tiếng ù tần số thấp (quạt, điều hòa, gió phập vào micro) dưới khoảng 80 Hz, bậc 4: giọng nói gần như không đổi */
+  const src = off.createBufferSource(); src.buffer = buf;
+  const hp = [-5.33, 2.32].map(Q => { const f = off.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 80; f.Q.value = Q; return f; }); /* Q tính bằng dB: hai tầng Butterworth 0.54 và 1.31 */
+  src.connect(hp[0]); hp[0].connect(hp[1]); hp[1].connect(off.destination); src.start();
   const r = await off.startRendering(); return r.getChannelData(0).slice();
 }
 /* Khoảng ngừng theo năng lượng âm (khung 10 ms) */
