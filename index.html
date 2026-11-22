@@ -16326,7 +16326,7 @@ const GMOK = new Set(); let gmOkP = null;
 function gmOkLoad() { return gmOkP ||= (window.__gemHas ? window.__gemHas("vb-gm-").then(j => { for (const k of j.keys || []) GMOK.add(k.replace(/^vb-gm-/, "")); }).catch(() => {}) : Promise.resolve()); }
 function gmNews() {
   gmOkLoad();
-  const G = UI.gn ||= { lv: 1, lives: 3, score: 0, perfect: 0, item: null, ans: {}, plays: 0, res: null, over: false, seen: [] }, st = gmSt("news");
+  const G = UI.gn ||= { lv: Math.min(UI.gnLv || 1, gmSt("news").lv || 1), lives: 3, score: 0, perfect: 0, item: null, ans: {}, plays: 0, res: null, over: false, seen: [] }, st = gmSt("news");
   const box = h("div", { class: "stack", style: "gap:12px" }, h("p", { class: "muted" }, "Đang tải bản tin…"));
   Promise.all([gmIndex(), gmOkLoad()]).then(([D]) => {
     if (!G.item) { G.item = deckPick("news", D.news.filter(n => n.lv === G.lv && (D.ix[n.id] || GMOK.has(n.id)))); G.seen.push(G.item.id); G.ans = {}; G.plays = 0; G.res = null; }
@@ -16359,7 +16359,12 @@ function gmNews() {
     let k = 0; const text = h("p", { class: "gm-news" }, it.d.map(p => typeof p === "string" ? p : inputs[p.b]));
     box.replaceChildren(
       gmHead("Nhà báo điền tin", "Nghe bản tin, điền 5 chỗ trống (số, tên, ngày giờ). Sai một chỗ là mất 1 mạng. Đúng hết 2 bản liền thì lên cấp.", st.best),
-      h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(G.lives), h("b", null, `Điểm ${G.score}`), h("span", { class: "chip" }, ["", "Cấp 1 · chậm, nghe 2 lần", "Cấp 2 · bình thường, nghe 1 lần", "Cấp 3 · nhanh, nghe 1 lần"][G.lv]), again),
+      h("div", { class: "row", style: "gap:12px;flex-wrap:wrap;align-items:center" }, gmHearts(G.lives), h("b", null, `Điểm ${G.score}`), h("span", { class: "chip" }, ["", "Cấp 1 · chậm, nghe 2 lần", "Cấp 2 · bình thường, nghe 1 lần", "Cấp 3 · nhanh, nghe 1 lần"][G.lv]),
+        G.lv < 3 ? h("span", { class: "small gm-lvp", title: "Đúng hết 5/5 ở 2 bản tin liên tiếp thì lên cấp" }, "Lên cấp: ", h("b", null, [0, 1].map(k => k < G.perfect ? "●" : "○").join("")), ` (${G.perfect}/2 bản đúng hết)`) : h("span", { class: "small muted" }, "Cấp cao nhất"),
+        (st.lv || 1) > 1 ? h("span", { class: "row small", style: "gap:4px;align-items:center" }, h("span", { class: "muted" }, "Chơi từ cấp:"), [1, 2, 3].map(l => h("button", { type: "button", class: "opt small", "aria-pressed": String(G.lv === l), disabled: l > (st.lv || 1) || null, title: l > (st.lv || 1) ? "Chưa mở: lên được cấp này một lần là mở" : null, onclick: () => {
+          if (G.lv === l) return; if ((G.score || G.plays) && UI.gnAsk !== l) { UI.gnAsk = l; toast("Bấm lần nữa để chơi lại từ cấp " + l + " (ván này sẽ kết thúc)"); setTimeout(() => { if (UI.gnAsk === l) UI.gnAsk = null; }, 3000); return; }
+          UI.gnAsk = null; gmStopAll(); if (G.score > (st.best || 0)) { st.best = G.score; saveProfile(); } UI.gnLv = l; UI.gn = null; render(); } }, String(l)))) : null,
+        again),
       h("section", { class: "card stack", style: "gap:12px" }, h("span", { class: "eyebrow" }, "Bản tin: " + it.t),
         playRow,
         text, h("p", { class: "small muted", style: "margin:0" }, "Gõ số bằng chữ số (45, 8:30, £12). Tên riêng gõ đúng chính tả như được đánh vần."),
