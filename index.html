@@ -3449,6 +3449,7 @@ async function loadAll() {
   MOCKS = mk.sort((a, b) => a.created - b.created);
   BOOKS = (bk || []).sort((a, b) => (a.vol || 0) - (b.vol || 0));
   MIST = ms;
+  clearTimeout(UI.ddT); UI.ddT = setTimeout(() => vocabDedupe().then(n => { if (n) { toast(`Đã gộp ${n} từ bị trùng trong sổ`); render(); } }).catch(() => {}), 1500);
   VOCAB = v; WRIT = w.sort((a, b) => a.created - b.created); READS = r.sort((a, b) => b.created - a.created); READS.forEach(x => { if (Array.isArray(x.paragraphs) && x.lettered !== false && !x.bookId) x.paragraphs = x.paragraphs.map(stripLetter); }); TASKS = t.sort((a, b) => b.created - a.created);
 }
 async function switchToDb(s) {
@@ -6383,7 +6384,25 @@ function srsNext(c, g) {
   return { ...c, ease: +ease.toFixed(2), interval: iv, reps: reps + 1, lapses, due: addDays(t, iv), last: t };
 }
 const ivLabel = n => n === 0 ? "ôn lại ngay" : n < 30 ? `${n} ngày` : `${Math.round(n / 30)} tháng`;
+/* Từ trùng (cùng một từ nhưng khác mã, thường do thêm ở cả hai web rồi đồng bộ): gộp lại còn một thẻ, giữ thẻ đã học kỹ hơn */
+const vKey = w => String(w || "").toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, " ").trim();
+async function vocabDedupe() {
+  const groups = new Map(); for (const v of VOCAB) { const k = vKey(v.word); if (!k) continue; (groups.get(k) || groups.set(k, []).get(k)).push(v); }
+  let n = 0;
+  for (const list of groups.values()) {
+    if (list.length < 2) continue;
+    list.sort((a, b) => (b.reps || 0) - (a.reps || 0) || (b.interval || 0) - (a.interval || 0) || String(b.due || "").localeCompare(String(a.due || "")) || (a.created || 0) - (b.created || 0));
+    const keep = list[0], merged = { ...keep };
+    for (const o of list.slice(1)) { for (const f of ["pos", "ipa", "stress", "meaning", "def", "example", "topic"]) if (!merged[f] && o[f]) merged[f] = o[f]; merged.lapses = Math.max(merged.lapses || 0, o.lapses || 0); merged.created = Math.min(merged.created || Infinity, o.created || Infinity); }
+    try {
+      if (JSON.stringify(merged) !== JSON.stringify(keep)) { const { id, ...doc } = merged; await store.put("vocab", id, doc); Object.assign(keep, merged); }
+      for (const o of list.slice(1)) { await store.del("vocab", o.id); const i = VOCAB.indexOf(o); if (i >= 0) VOCAB.splice(i, 1); n++; }
+    } catch (e) { console.warn(e); }
+  }
+  return n;
+}
 async function addVocab(v) {
+  const dup = VOCAB.find(x => vKey(x.word) === vKey(v.word)); if (dup) return dup.id;
   const id = newId(); const doc = { word: v.word, pos: v.pos || "", ipa: v.ipa || "", stress: v.stress || "", meaning: v.meaning || "", def: v.def || "", example: v.example || "", topic: vtMap(v.topic), ease: 2.5, interval: 0, reps: 0, lapses: 0, due: today(), created: Date.now() };
   await putDoc("vocab", id, doc); VOCAB.push({ ...doc, id }); return id;
 }
@@ -11913,8 +11932,8 @@ async function syncApply(inc, mode) {
         if (!old || JSON.stringify(old) !== JSON.stringify(use)) { const { id, ...doc } = use; await store.put(c, d.id, doc); n++; }
       }
     }
-    await store.setProfile(prof); await loadAll();
-    SYNC.pre = null; SYNC.msg = `Đã ${mode === "replace" ? "thay bằng" : "gộp"} dữ liệu từ ${inc.from} (${n} mục được cập nhật).`;
+    await store.setProfile(prof); await loadAll(); const dd = await vocabDedupe().catch(() => 0);
+    SYNC.pre = null; SYNC.msg = `Đã ${mode === "replace" ? "thay bằng" : "gộp"} dữ liệu từ ${inc.from} (${n} mục được cập nhật${dd ? `, gộp ${dd} từ bị trùng` : ""}).`;
   } catch (e) { console.warn(e); SYNC.msg = "Chưa lưu được: " + (e?.message || e?.code || "lỗi"); }
   SYNC.busy = false; render();
 }

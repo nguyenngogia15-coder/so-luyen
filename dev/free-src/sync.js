@@ -49,8 +49,8 @@ async function syncApply(inc, mode) {
         if (!old || JSON.stringify(old) !== JSON.stringify(use)) { const { id, ...doc } = use; await store.put(c, d.id, doc); n++; }
       }
     }
-    await store.setProfile(prof); await loadAll();
-    SYNC.pre = null; SYNC.msg = `Đã ${mode === "replace" ? "thay bằng" : "gộp"} dữ liệu từ ${inc.from} (${n} mục được cập nhật).`;
+    await store.setProfile(prof); await loadAll(); const dd = await vocabDedupe().catch(() => 0);
+    SYNC.pre = null; SYNC.msg = `Đã ${mode === "replace" ? "thay bằng" : "gộp"} dữ liệu từ ${inc.from} (${n} mục được cập nhật${dd ? `, gộp ${dd} từ bị trùng` : ""}).`;
   } catch (e) { console.warn(e); SYNC.msg = "Chưa lưu được: " + (e?.message || e?.code || "lỗi"); }
   SYNC.busy = false; render();
 }
