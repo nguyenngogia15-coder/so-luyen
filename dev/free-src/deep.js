@@ -35,7 +35,8 @@ function lsDeepTab() {
       h("p", { style: "margin:0" }, "Làm nhiều đề chỉ đo được trình độ. Một Section làm kỹ theo 5 bước dạy bạn nhiều hơn 5 đề làm vội rồi dò đáp án, vì bạn biết chính xác mình trượt câu nào và vì sao."),
       dpStepBar(0),
       h("ul", { class: "small", style: "margin:0;padding-left:18px" },
-        h("li", null, h("b", null, "Biết bằng mắt khác biết bằng tai. "), "Nhiều bạn có 6.000 từ trên flashcard nhưng chỉ 2.000 từ trong đôi tai. Học từ mới thì học cả cách nó được nói trong câu."),
+        h("li", null, h("b", null, "Biết bằng mắt khác biết bằng tai. "), "Nhiều bạn có 6.000 từ trên flashcard nhưng chỉ 2.000 từ trong đôi tai. Học từ mới thì học cả cách nó được nói trong câu. Vốn từ giải thích khoảng một nửa chênh lệch điểm nghe; để hiểu 95% hội thoại thường cần khoảng 2.000–3.000 họ từ (use, used, useful là một họ), nhận ra được bằng tai."),
+        h("li", null, h("b", null, "Người nghe giỏi có bảng điều khiển trong đầu: "), "đoán trước, tự kiểm tra lúc nghe, lạc thì bỏ qua bắt lại nhịp, rút kinh nghiệm sau mỗi bài. Kỹ năng này dạy được, và người đang nghe yếu tiến bộ nhanh nhất."),
         h("li", null, h("b", null, "Nghe thêm ngoài giờ: "), "chọn thứ bạn hiểu khoảng 95% số từ, bật phụ đề tiếng Anh nếu cần, thấy ít nhìn phụ đề thì tắt đi, dễ rồi thì đổi sang thứ nhanh hơn."),
         h("li", null, h("b", null, "Mỗi tuần: "), "làm 1 đề đủ 4 phần liền 30 phút (mục Đề đầy đủ) để quen giữ tập trung suốt bài thi."))),
     h("section", { class: "card stack", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap" }, h("h2", { style: "margin:0" }, "Bản đồ lỗi của bạn"), h("span", { class: "small muted" }, `${dpLog().length} bài · ${tot} câu sai đã chẩn đoán`)),
@@ -146,3 +147,82 @@ function dpRun(s, D) {
 .dp-toks{line-height:2.2}.dp-tok{font:inherit;border:1px dashed var(--line);background:none;padding:1px 4px;margin:0 2px;cursor:pointer;color:inherit}.dp-tok.on{background:#ffe066;border-color:#e8590c;text-decoration:underline}.dp-in{width:9em}`));
 })();
 SUB_DESC["lsTab:deep"] = "Đoán trước, nghe 1 lần, chẩn đoán lỗi, sửa đúng chỗ, nghe lại";
+/* ===== Phần còn lại của video: phân loại lỗi tai khi nghe chép, săn cụm chuyển ý Part 4, nghe ngoài giờ theo nấc, đề đủ mỗi tuần, 3 điều ngày thi, so với bạn cùng nhóm ===== */
+const DP_FN = new Set("a an the of to in on at for and or but is are was were be been it its that this these those as by with from i you he she we they my your his her our their me him us them do does did have has had will would can could not no so if than then there".split(" "));
+/* Nghe chép: tách lỗi theo kiểu John Field (mất từ nhỏ, không tách được 2 từ dính nhau, nhầm số ít/số nhiều) */
+function dpDictKinds(want, typed) {
+  const W = t => spSpellKeep(t).toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean);
+  const w = W(want.join(" ")), got = W(typed), have = new Set(got), miss = w.map(x => !have.has(x));
+  const k = { small: 0, link: 0, plural: 0, other: 0 };
+  miss.forEach((m, i) => { if (!m) return; const x = w[i];
+    if (got.some(g => g + "s" === x || g === x + "s" || g + "es" === x || g === x + "es")) k.plural++;
+    else if (DP_FN.has(x)) k.small++;
+    else if (miss[i - 1] || miss[i + 1]) k.link++;
+    else k.other++; });
+  return k;
+}
+(function () {
+  const _d = lsDictTab;
+  lsDictTab = function () {
+    const n = _d(), D = UI.lsD; if (!D?.res) return n;
+    if (!D.res.kinds) { D.res.kinds = dpDictKinds(D.res.want, D.typed || ""); const T = (P.ls ||= {}).dictK ||= { small: 0, link: 0, plural: 0, other: 0 }; for (const [a, v] of Object.entries(D.res.kinds)) T[a] = (T[a] || 0) + v; saveProfile(); }
+    const k = D.res.kinds, T = P.ls?.dictK || {}, L = { small: "Mất từ nhỏ (a, the, of…)", link: "Không tách được từ dính nhau", plural: "Nhầm số ít / số nhiều", other: "Từ nội dung bị sót" };
+    const box = h("div", { class: "note small stack", style: "gap:4px" }, h("b", null, "Lỗi tai trong câu này"),
+      Object.values(k).some(Boolean) ? h("span", null, Object.entries(k).filter(([, v]) => v).map(([a, v]) => `${L[a]}: ${v}`).join(" · ")) : h("span", null, "Không sót từ nào 🎯"),
+      h("span", { class: "muted" }, "Cộng dồn: " + Object.entries(L).map(([a, t]) => `${t.split(" (")[0]} ${T[a] || 0}`).join(" · ") + ". Mỗi loại một cách sửa: từ nhỏ thì nhại theo để quen âm yếu, từ dính nhau thì nghe chậm 0.75× rồi nhại, số nhiều thì để ý đuôi -s trước khi gõ."));
+    (n.querySelector(".ls-dict-res")?.parentElement || n).append(box); return n;
+  };
+})();
+/* Săn cụm chuyển ý trong bài giảng Part 4 */
+function dpSignHunt() {
+  const H = UI.dpHunt ||= { id: LS_BANK.find(s => s.sec === 4)?.id, typed: "", res: null }, s = lsById(H.id); if (!s) return null;
+  lsPrepare(s);
+  const all0 = [...new Set(alSents(s).flatMap(x => (x.x.match(/[^,.;:!?]+/g) || []).flatMap(c => { const m = c.match(DP_SIGN); return m ? [c.trim().toLowerCase().split(/\s+/).slice(0, 4).join(" ").replace(/^(and|so|but|ok|okay|right|well) /, "")] : []; })))], all = all0.filter(x => !all0.some(y => y !== x && y.includes(x)));
+  const check = () => { const got = H.typed.toLowerCase().split(/\n|,|;/).map(x => x.trim()).filter(Boolean); H.res = all.map(x => [x, got.some(g => x.includes(g) || g.includes(x))]); const st = (P.ls ||= {}).hunt ||= {}; st[s.id] = Math.max(st[s.id] || 0, H.res.filter(r => r[1]).length); award("listening", 5); addAct("listening", 4); saveProfile(); render(); };
+  const ta = h("textarea", { rows: "3", placeholder: "Mỗi dòng một cụm, ví dụ: moving on to\nfinally", oninput: e => { H.typed = e.target.value; } }); ta.value = H.typed;
+  return h("section", { class: "card stack", style: "gap:10px" }, h("h2", { style: "margin:0" }, "Săn biển báo Part 4"),
+    h("p", { class: "small muted", style: "margin:0" }, "Bài giảng Part 4 có những cụm báo hiệu chuyển ý như biển báo trên cao tốc: “moving on to”, “another reason”, “finally”. Câu hỏi đi theo thứ tự bài nói, mỗi lần chuyển ý thường là sang nhóm câu mới. Nghe bài giảng và ghi ra mọi cụm chuyển ý bạn nghe được; vài tuần là tai tự bắt được chúng, lạc ở câu 34 vẫn nhảy về kịp câu 35."),
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("span", { class: "small muted" }, "Bài giảng:"), h("select", { onchange: e => { alStop(); try { LSA.el?.pause(); } catch {} UI.dpHunt = { id: e.target.value, typed: "", res: null }; render(); } }, LS_BANK.filter(x => x.sec === 4).map(x => h("option", { value: x.id, selected: x.id === s.id || null }, `Đề ${x.test} · ${x.title}`)))),
+    lsPlayer(s, false), ta, h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: check }, "So với lời thoại")),
+    H.res ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "chip " + (H.res.every(r => r[1]) ? "good" : "warn") }, `Bắt được ${H.res.filter(r => r[1]).length}/${H.res.length} cụm`), h("p", { class: "small", style: "margin:0" }, H.res.map(([x, ok]) => h("mark", { style: `margin-right:6px;${ok ? "" : "background:#ffc9c9"}` }, (ok ? "✓ " : "✗ ") + x)))) : null);
+}
+/* Nghe ngoài giờ theo nấc: có phụ đề tiếng Anh → không phụ đề → nhanh hơn */
+const DP_LAD = [["en", "Có phụ đề tiếng Anh"], ["none", "Không phụ đề"], ["fast", "Không phụ đề, nói nhanh hơn"]];
+function dpExtra() {
+  const X = (P.lsX ||= []), wk = weekOf(today()), mine = X.filter(x => weekOf(x.d) === wk), mins = mine.reduce((a, x) => a + x.m, 0);
+  const F = UI.dpX ||= { m: 20, lv: X.slice(-1)[0]?.lv || "en", pct: 95 };
+  const last5 = X.slice(-5), hint = last5.length >= 5 && last5.every(x => x.lv === F.lv && x.pct >= 95) ? (F.lv === "en" ? "5 lần gần nhất bạn hiểu ≥95% khi có phụ đề: thử tắt phụ đề đi." : F.lv === "none" ? "5 lần gần nhất hiểu ≥95% không cần phụ đề: thử chuyển sang thứ nói nhanh hơn." : "Bạn đang ở nấc cao nhất, giữ đều nhé.") : null;
+  const add = () => { X.push({ d: today(), m: Math.max(1, Math.min(240, +F.m || 0)), lv: F.lv, pct: +F.pct }); if (X.length > 300) X.splice(0, X.length - 300); saveProfile(); toast("Đã ghi " + F.m + " phút nghe ngoài giờ"); render(); };
+  return h("section", { class: "card stack", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap" }, h("h2", { style: "margin:0" }, "Nghe ngoài giờ"), h("span", { class: "small muted" }, `Tuần này: ${mins} phút`)),
+    h("p", { class: "small muted", style: "margin:0" }, "Mỗi ngày nghe thêm thứ bạn thích (podcast, YouTube, phim) ở mức hiểu khoảng 95% số từ. Dưới mức đó là nghe tiếng ồn, không học được gì. Phim tốc độ bản xứ không phụ đề khi mới 5.5 chỉ bắt được khoảng 60% từ. Leo từng nấc: phụ đề tiếng Anh (nối chữ “want to” mắt thấy với “wanna” tai nghe) → ít nhìn phụ đề thì tắt → dễ rồi thì đổi thứ nhanh hơn."),
+    h("div", { class: "row", style: "gap:6px;flex-wrap:wrap;align-items:center" }, h("input", { type: "number", min: "1", max: "240", value: String(F.m), style: "width:5em", oninput: e => { F.m = e.target.value; } }), h("span", { class: "small" }, "phút ·"),
+      DP_LAD.map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(F.lv === k), onclick: () => { F.lv = k; render(); } }, t))),
+    h("div", { class: "row", style: "gap:6px;flex-wrap:wrap;align-items:center" }, h("span", { class: "small" }, "Hiểu khoảng:"), [60, 80, 90, 95, 100].map(p => h("button", { type: "button", class: "opt", "aria-pressed": String(+F.pct === p), onclick: () => { F.pct = p; render(); } }, p + "%")), h("button", { class: "btn", type: "button", onclick: add }, "Ghi lại")),
+    +F.pct < 90 ? h("p", { class: "note warn small", style: "margin:0" }, "Dưới 90% là hơi khó: bật phụ đề tiếng Anh hoặc chọn thứ dễ hơn sẽ học được nhiều hơn.") : null,
+    hint ? h("p", { class: "note small", style: "margin:0" }, "⬆ " + hint) : null);
+}
+function dpWeekTest() {
+  const wk = weekOf(today()), done = Object.entries(P.lsTests || {}).filter(([, v]) => v?.date && weekOf(v.date) === wk);
+  return h("div", { class: "row note small", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" },
+    h("span", null, done.length ? `✓ Tuần này đã làm đề đầy đủ (band ${done.slice(-1)[0][1].band}). Giữ sức tập trung suốt 30 phút là kỹ năng riêng.` : "Tuần này chưa làm đề đủ 4 part liền 30 phút. Mỗi tuần một đề để quen giữ tập trung suốt bài thi."),
+    done.length ? null : h("button", { class: "btn btn-quiet", type: "button", onclick: () => { UI.lsTab = "test"; render(); } }, "Làm đề đầy đủ ›"));
+}
+function dpExamTips() {
+  return h("details", { class: "card" }, h("summary", null, h("b", null, "3 điều nhớ trong ngày thi")),
+    h("ol", { class: "small", style: "margin:8px 0 0;padding-left:20px" },
+      h("li", null, h("b", null, "Dùng hết thời gian đọc câu hỏi trước mỗi part. "), "Khoảng lặng đó chính là bước 1: gạch từ khóa, đoán loại thông tin cần điền."),
+      h("li", null, h("b", null, "Thi trên máy: gõ đúng chính tả ngay khi nghe. "), "Có tai nghe riêng là lợi thế, nhưng cuối bài chỉ có 2 phút xem lại, không có 10 phút chép đáp án như thi giấy."),
+      h("li", null, h("b", null, "Âm thanh có vấn đề thì giơ tay báo giám thị ngay "), "và nộp khiếu nại trước khi rời trung tâm thi. Sau ngày thi, khiếu nại về cách tổ chức gần như không còn được xử lý.")));
+}
+/* So với bạn cùng nhóm: ai đã luyện sâu cùng bài, được mấy điểm, hay lỗi gì */
+(function () {
+  const _pub = dqPublic; dqPublic = function () { const d = _pub(); d.dp = dpLog().slice(-8).map(r => ({ id: r.id, s: r.score, e: Object.entries(r.e || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || "" })); return d; };
+  const _tab = lsDeepTab;
+  lsDeepTab = function () {
+    const n = _tab(); if (UI.lsDp?.id) {
+      const D = UI.lsDp; if (D.step === 3) { const me = window.__grp?.uid, fr = (typeof G !== "undefined" ? G.list : []).filter(m => m.id !== me).map(m => [m, (m.dp || []).filter(x => x.id === D.id).slice(-1)[0]]).filter(x => x[1]);
+        if (fr.length) n.querySelector(".dp-q, .note")?.before(h("p", { class: "note small", style: "margin:0" }, "Bạn cùng nhóm đã làm bài này: " + fr.map(([m, r]) => `${m.name} ${r.s}/10${r.e ? " (hay " + DP_ERR.find(e => e[0] === r.e)?.[2].toLowerCase() + ")" : ""}`).join(", ") + ". Hỏi nhau xem ai hiểu khác ai và vì sao, đó là một phần của cách học này.")); }
+      return n; }
+    n.append(dpWeekTest(), dpSignHunt(), dpExtra(), dpExamTips()); return n;
+  };
+})();

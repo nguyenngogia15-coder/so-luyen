@@ -69,7 +69,12 @@ async function syncQuickCopy(btn) {
 async function syncQuickPaste() {
   let txt = ""; try { txt = await navigator.clipboard.readText(); } catch {}
   if (!/SLSYNC1:/.test(txt)) { SYNC.msg = "Không đọc được mã trong bộ nhớ tạm. Dán mã vào ô ở mục Đồng bộ cuối trang nhé."; render(); document.querySelector(".sync-card")?.setAttribute("open", ""); document.querySelector(".sync-card")?.scrollIntoView({ behavior: "smooth" }); return; }
-  try { const s = await syncDecode(txt); await syncApply(s, "merge"); toast("Đã gộp dữ liệu từ " + s.from); } catch (e) { toast("Mã không đọc được: " + (e?.message || "lỗi")); }
+  let s; try { s = await syncDecode(txt); } catch (e) { toast("Mã không đọc được: " + (e?.message || "lỗi")); return; }
+  const cnt = p => Object.values(p?.lessons || {}).filter(x => x?.done).length, before = cnt(P), age = Date.now() - (s.at || 0);
+  await syncApply(s, "merge");
+  const failed = /^Chưa lưu được/.test(SYNC.msg || ""), gained = cnt(P) - before, when = new Date(s.at || 0).toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" });
+  SYNC.msg = failed ? SYNC.msg + ". Mã tạo lúc " + when + "." : `Đã gộp mã từ ${s.from} tạo lúc ${when}: thêm ${gained} bài đã học (giờ có ${cnt(P)} bài).` + (age > 3 * 3600e3 ? " Mã này đã cũ hơn 3 tiếng, nếu bạn vừa học thêm ở web riêng thì bấm “Chép mã sang web ngoài” lần nữa rồi dán lại." : "");
+  toast(failed ? "Đồng bộ chưa thành công, xem chi tiết ở trang Hôm nay" : SYNC.msg); render();
 }
 function syncQuickBar() {
   if (!syncAllowed()) return null;
@@ -78,7 +83,7 @@ function syncQuickBar() {
     const b = h("button", { class: "btn btn-primary", type: "button", onclick: () => syncQuickCopy(b) }, "⇄ Chép mã sang web ngoài");
     return h("div", { class: "note row sync-quick", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px" }, h("span", { class: "small" }, "Bạn vừa học ở web riêng. Chép mã sang web ngoài để nhiệm vụ ngày và bảng nhóm được tính (làm trong hôm nay hoặc sáng mai)."), b);
   }
-  return h("div", { class: "row sync-quick", style: "justify-content:flex-end" }, h("button", { class: "btn btn-quiet", type: "button", onclick: syncQuickPaste }, "📋 Dán mã từ web riêng"));
+  return h("div", { class: "row sync-quick", style: "justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap" }, SYNC.msg ? h("span", { class: "small " + (/^Chưa/.test(SYNC.msg) ? "" : "muted"), style: "flex:1;min-width:0" }, SYNC.msg) : null, h("button", { class: "btn btn-quiet", type: "button", onclick: syncQuickPaste }, "📋 Dán mã từ web riêng"));
 }
 async function syncUndo() {
   const u = SYNC.undo; if (!u) return; SYNC.undo = null; await syncApply(u, "replace"); SYNC.undo = null; SYNC.msg = "Đã hoàn tác, dữ liệu trở lại như trước khi đồng bộ."; render();
