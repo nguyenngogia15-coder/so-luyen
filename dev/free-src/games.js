@@ -12,7 +12,7 @@ async function gmAudio(key, rate = 1) {
   AL_PLAY.a = a; AL_PLAY.url = url; await a.play(); return new Promise(res => { a.onended = () => res(); });
 }
 const gmXp = (n, skill, min, key) => { XP_CAP.game ??= 80; if (key) { const t = gmSt(key); t.n = (t.n || 0) + 1; } award("game", n); addAct(skill, min); try { achCheck(); } catch {} saveProfile(); };
-const gmHead = (title, sub, best) => h("div", { class: "row gm-head", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", { style: "margin:0" }, title), h("span", { class: "small muted" }, sub)), h("div", { class: "row", style: "gap:8px;align-items:center" }, h("button", { class: "btn btn-quiet small", type: "button", title: "Dừng mọi âm thanh đang phát", onclick: () => { gmStopAll(); render(); } }, "⏹ Dừng âm thanh"), best != null ? h("span", { class: "chip acc" }, "Kỷ lục: " + best) : null));
+const gmHead = (title, sub, best) => h("div", { class: "row gm-head", style: "justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px" }, h("div", { class: "stack", style: "gap:2px" }, h("h2", { style: "margin:0" }, title), h("span", { class: "small muted" }, sub)), h("div", { class: "row", style: "gap:8px;align-items:center;flex-wrap:wrap" }, typeof vNowChip === "function" ? vNowChip() : null, h("button", { class: "btn btn-quiet small", type: "button", title: "Dừng mọi âm thanh đang phát", onclick: () => { gmStopAll(); render(); } }, "⏹ Dừng âm thanh"), best != null ? h("span", { class: "chip acc" }, "Kỷ lục: " + best) : null));
 const gmHearts = n => h("span", { class: "gm-hearts", "aria-label": n + " mạng" }, "❤️".repeat(Math.max(0, n)) + "🖤".repeat(Math.max(0, 3 - n)));
 
 /* ----- Nhà báo điền tin ----- */
@@ -23,11 +23,15 @@ function gmNorm(s) {
   if (/^[\d\s.-]+$/.test(x) && x.replace(/\D/g, "").length >= 7) return x.replace(/\D/g, "");
   return x.replace(/\s+/g, "");
 }
+/* Bản tin mới chỉ có giọng Gemini (thu dần): chỉ đưa ra những bản đã có âm thanh */
+const GMOK = new Set(); let gmOkP = null;
+function gmOkLoad() { return gmOkP ||= (window.__gemHas ? window.__gemHas("vb-gm-").then(j => { for (const k of j.keys || []) GMOK.add(k.replace(/^vb-gm-/, "")); }).catch(() => {}) : Promise.resolve()); }
 function gmNews() {
+  gmOkLoad();
   const G = UI.gn ||= { lv: 1, lives: 3, score: 0, perfect: 0, item: null, ans: {}, plays: 0, res: null, over: false, seen: [] }, st = gmSt("news");
   const box = h("div", { class: "stack", style: "gap:12px" }, h("p", { class: "muted" }, "Đang tải bản tin…"));
-  gmIndex().then(D => {
-    if (!G.item) { G.item = deckPick("news", D.news.filter(n => n.lv === G.lv)); G.seen.push(G.item.id); G.ans = {}; G.plays = 0; G.res = null; }
+  Promise.all([gmIndex(), gmOkLoad()]).then(([D]) => {
+    if (!G.item) { G.item = deckPick("news", D.news.filter(n => n.lv === G.lv && (D.ix[n.id] || GMOK.has(n.id)))); G.seen.push(G.item.id); G.ans = {}; G.plays = 0; G.res = null; }
     const it = G.item, maxPlay = G.lv === 1 ? 2 : 1;
     const restart = () => { UI.gn = null; render(); };
     if (G.over) { box.replaceChildren(gmHead("Nhà báo điền tin", "Hết mạng rồi!", st.best), h("section", { class: "card stack gm-over", style: "gap:10px;align-items:center;text-align:center" }, h("span", { class: "gm-big" }, G.score), h("span", { class: "eyebrow" }, "điểm"), h("p", { style: "margin:0" }, G.score >= (st.best || 0) ? "Kỷ lục mới!" : `Kỷ lục của bạn: ${st.best}`), h("button", { class: "btn btn-primary", type: "button", onclick: restart }, "Chơi lại"))); return; }

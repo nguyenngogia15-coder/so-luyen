@@ -260,8 +260,8 @@ function gemHasLoad() { return GEMHAS.p ||= (window.__gemHas ? window.__gemHas("
 function gemTag(id) { gemHasLoad(); if (!GEMHAS.set) return null; return GEMHAS.set.has(id) ? h("span", { class: "chip good", style: "font-size:.7rem" }, "🎙 Gemini") : h("span", { class: "chip", style: "font-size:.7rem" }, "máy đọc"); }
 (function () {
   const _lc = lsCard; lsCard = function (s, href) { const n = _lc(s, href), t = gemTag(s.id); if (t) n.querySelector(".row")?.append(t); return n; };
-  const _sh = dpSignHunt; dpSignHunt = function () { const n = _sh(); const s = lsById(UI.dpHunt?.id); if (n && s) { n.querySelector(".ls-player")?.before(lsVoicePick(s)); n.querySelectorAll("select option").forEach(o => { if (GEMHAS.set?.has(o.value)) o.textContent += " · 🎙 Gemini"; }); } return n; };
-  const _run = dpRun; dpRun = function (s, D) { const n = _run(s, D); if (D.step === 2 || D.step === 5) n.querySelector(".ls-player")?.before(lsVoicePick(s)); return n; };
+  const _sh = dpSignHunt; dpSignHunt = function () { const n = _sh(); const s = lsById(UI.dpHunt?.id); if (n && s) { if (!n.querySelector(".ls-voice")) n.querySelector(".ls-player")?.before(lsVoicePick(s)); n.querySelectorAll("select option").forEach(o => { if (GEMHAS.set?.has(o.value)) o.textContent += " · 🎙 Gemini"; }); } return n; };
+  const _run = dpRun; dpRun = function (s, D) { const n = _run(s, D); if ((D.step === 2 || D.step === 5) && !n.querySelector(".ls-voice")) n.querySelector(".ls-player")?.before(lsVoicePick(s)); return n; };
   const _tab = lsDeepTab; lsDeepTab = function () { const n = _tab(); if (!UI.lsDp?.id) n.querySelectorAll(".dp-it").forEach((b, i) => { const s = LS_BANK[i], t = s && gemTag(s.id); if (t) b.append(t); }); return n; };
   /* Mở một video YouTube để nghe ngay tại chỗ, không lưu link */
   const _ex = dpExtra; dpExtra = function () {

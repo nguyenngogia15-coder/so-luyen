@@ -34,7 +34,7 @@ async function gemRun() {
   if (gemRunning) return; gemRunning = true;
   while (GEM_Q.length) {
     const b = GEM_Q.shift();
-    try { const blob = await window.__tts({ key: "vb-" + b.k, gen: true }); try { await (await caches.open("gem-v1")).put(new URL("__gem/" + b.k, location.href).href, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {} delete GEMV.miss[b.k]; delete GEMV.batches[b.k]; }
+    try { const blob = await window.__tts({ key: "vb-" + b.k, gen: true }); try { await (await caches.open("gem-v1")).put(new URL("__gem/" + b.k, location.href).href, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {} delete GEMV.miss[b.k]; delete GEMV.batches[b.k]; if (b.p === "gm" && typeof GMOK !== "undefined") b.ids.forEach(id => GMOK.add(id)); }
     catch (e) { if (e?.code === "rate_limited") { GEM_Q.length = 0; break; } }
     await new Promise(r => setTimeout(r, 6500));
   }
