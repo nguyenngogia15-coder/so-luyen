@@ -54,7 +54,7 @@ function dqFreeze() {
 }
 let dqBusy = false;
 function dqTick() {
-  if (dqBusy || !P) return; dqBusy = true;
+  if (dqBusy || !P || store.kind !== "db" || UI.dbSwitching) return; dqBusy = true;
   try {
     const q = dqS(), t = today(), st = dqToday(t);
     let ch = dqFreeze();
@@ -81,7 +81,7 @@ function dqPublic() {
     lv, xp: P.xp || 0, streak: dqStreak(q.days), frzLeft: q.frz[wid] ? 0 : 1, days, skd, td: { d: t, V: st.V, L: st.L, S: st.S, R: st.R, W: st.W, fin: q.fin[t] || null }, wx, tier: dqTier(q.days), joined: q.joined };
 }
 function dqPublish(now) {
-  if (!window.__grp) return;
+  if (!window.__grp || store.kind !== "db" || UI.dbSwitching) return;
   clearTimeout(G.pubT);
   G.pubT = setTimeout(() => {
     const d = dqPublic(), s = JSON.stringify(d); if (s === G.last) return;

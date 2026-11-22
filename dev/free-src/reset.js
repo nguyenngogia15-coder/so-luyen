@@ -5,6 +5,7 @@
 const RS = { at: 0, busy: false, sure: 0 };
 const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen", "pron", "shStat", "lsTests", "ls", "placement", "wscores", "ndStat", "ndSeen", "errAdvice", "lsQt", "placePend"];
 function rsApply(at) {
+  if (store.kind !== "db") return;
   for (const k of RS_KEYS) delete P[k];
   Object.assign(P, { xp: 0, xpDay: {}, wk: {}, badges: {}, rbadge: {}, log: {} });
   P.resetAt = at; saveProfile();
@@ -21,10 +22,11 @@ function rsApply(at) {
   setTimeout(() => { try { dqTick(); dqPublish(true); } catch {} render(); }, 300);
 }
 async function rsCheck() {
-  if (!window.__grp?.getCfg || !P) return;
+  /* Chỉ xét khi đã nạp xong dữ liệu trên mây; hồ sơ tạm trên trình duyệt lúc mới mở không có mốc đặt lại */
+  if (!window.__grp?.getCfg || !P || store.kind !== "db" || UI.dbSwitching) return;
   try { const c = await window.__grp.getCfg(); RS.at = +c?.at || 0; if (RS.at && (P.resetAt || 0) < RS.at) { rsApply(RS.at); toast("Chủ nhóm đã đặt lại tiến độ cả nhóm. Bắt đầu lại từ đầu nhé!"); } } catch {}
 }
-setTimeout(function w() { if (P && window.__grp) rsCheck(); else setTimeout(w, 1500); }, 2000);
+setTimeout(function w() { if (P && window.__grp && store.kind === "db" && !UI.dbSwitching) rsCheck(); else setTimeout(w, 1500); }, 2000);
 async function rsAll() {
   if (RS.busy) return; RS.busy = true; render();
   try { const at = Date.now(); await window.__grp.setCfg({ at }); RS.at = at; rsApply(at); toast("Đã đặt lại. Các bạn khác sẽ được đặt lại khi mở web."); }

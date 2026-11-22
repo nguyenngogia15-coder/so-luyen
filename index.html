@@ -3471,7 +3471,14 @@ async function switchToDb(s) {
     const lp = await store.getProfile();
     if (lp) { for (const c of COLS) for (const d of await store.list(c)) await s.put(c, d.id, d); await s.setProfile(lp); }
   }
-  store = s; await loadAll(); render();
+  /* Lúc đổi kho, hồ sơ P vẫn là bản tạm trên trình duyệt. Mọi lần lưu đang chờ hoặc phát sinh trước khi nạp xong bản trên mây
+     sẽ ghi đè dữ liệu thật bằng bản tạm, nên chặn hết cho tới khi loadAll() xong. */
+  clearTimeout(saveT); saveT = null; UI.dbSwitching = true;
+  let ready = false;
+  const hold = fn => (...a) => ready ? fn(...a) : Promise.resolve();
+  store = { ...s, setProfile: hold(s.setProfile), put: hold(s.put), del: hold(s.del) };
+  try { await loadAll(); } finally { clearTimeout(saveT); saveT = null; ready = true; store = s; UI.dbSwitching = false; }
+  render();
 }
 
 /* ---------- AI ---------- */
@@ -11962,6 +11969,7 @@ async function syncApply(inc, mode) {
   try {
     const cur = await syncSnapshot(); SYNC.undo = cur;
     const prof = mode === "replace" ? inc.profile : syncMerge(cur.profile, inc.profile);
+    if (cur.profile?.resetAt) prof.resetAt = Math.max(+prof.resetAt || 0, +cur.profile.resetAt);
     let n = 0;
     for (const c of COLS) {
       const mine = new Map((cur.cols[c] || []).map(d => [d.id, d]));
@@ -15537,7 +15545,7 @@ function dqFreeze() {
 }
 let dqBusy = false;
 function dqTick() {
-  if (dqBusy || !P) return; dqBusy = true;
+  if (dqBusy || !P || store.kind !== "db" || UI.dbSwitching) return; dqBusy = true;
   try {
     const q = dqS(), t = today(), st = dqToday(t);
     let ch = dqFreeze();
@@ -15564,7 +15572,7 @@ function dqPublic() {
     lv, xp: P.xp || 0, streak: dqStreak(q.days), frzLeft: q.frz[wid] ? 0 : 1, days, skd, td: { d: t, V: st.V, L: st.L, S: st.S, R: st.R, W: st.W, fin: q.fin[t] || null }, wx, tier: dqTier(q.days), joined: q.joined };
 }
 function dqPublish(now) {
-  if (!window.__grp) return;
+  if (!window.__grp || store.kind !== "db" || UI.dbSwitching) return;
   clearTimeout(G.pubT);
   G.pubT = setTimeout(() => {
     const d = dqPublic(), s = JSON.stringify(d); if (s === G.last) return;
@@ -16772,6 +16780,7 @@ function gemPlayBlob(blob, rate = 1) {
 const RS = { at: 0, busy: false, sure: 0 };
 const RS_KEYS = ["dq", "xp", "xpDay", "wk", "badges", "rbadge", "log", "gm", "e4", "mm", "petSeen", "pron", "shStat", "lsTests", "ls", "placement", "wscores", "ndStat", "ndSeen", "errAdvice", "lsQt", "placePend"];
 function rsApply(at) {
+  if (store.kind !== "db") return;
   for (const k of RS_KEYS) delete P[k];
   Object.assign(P, { xp: 0, xpDay: {}, wk: {}, badges: {}, rbadge: {}, log: {} });
   P.resetAt = at; saveProfile();
@@ -16788,10 +16797,11 @@ function rsApply(at) {
   setTimeout(() => { try { dqTick(); dqPublish(true); } catch {} render(); }, 300);
 }
 async function rsCheck() {
-  if (!window.__grp?.getCfg || !P) return;
+  /* Chỉ xét khi đã nạp xong dữ liệu trên mây; hồ sơ tạm trên trình duyệt lúc mới mở không có mốc đặt lại */
+  if (!window.__grp?.getCfg || !P || store.kind !== "db" || UI.dbSwitching) return;
   try { const c = await window.__grp.getCfg(); RS.at = +c?.at || 0; if (RS.at && (P.resetAt || 0) < RS.at) { rsApply(RS.at); toast("Chủ nhóm đã đặt lại tiến độ cả nhóm. Bắt đầu lại từ đầu nhé!"); } } catch {}
 }
-setTimeout(function w() { if (P && window.__grp) rsCheck(); else setTimeout(w, 1500); }, 2000);
+setTimeout(function w() { if (P && window.__grp && store.kind === "db" && !UI.dbSwitching) rsCheck(); else setTimeout(w, 1500); }, 2000);
 async function rsAll() {
   if (RS.busy) return; RS.busy = true; render();
   try { const at = Date.now(); await window.__grp.setCfg({ at }); RS.at = at; rsApply(at); toast("Đã đặt lại. Các bạn khác sẽ được đặt lại khi mở web."); }
