@@ -262,7 +262,7 @@ async function lsAlign(req, env, b) {
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
 async function ytCaps(req, env, b, fetchFn) {
   const id = (String(b.id || "").match(/^[\w-]{11}$/) || [])[0]; if (!id) return out(env, req, 400, { error: { code: "bad_request" } });
-  const ck = "yt2:" + id; if (env.AUDIO) { const hit = await env.AUDIO.get(ck, "json").catch(() => null); if (hit) return out(env, req, 200, hit); }
+  const ck = "yt2:" + id; if (env.AUDIO && !b.nocache) { const hit = await env.AUDIO.get(ck, "json").catch(() => null); if (hit) return out(env, req, 200, hit); }
   try {
     const html = await (await fetchFn(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: { "user-agent": UA, "accept-language": "en-US,en;q=0.9" } })).text();
     const m = html.match(/"captionTracks":(\[.*?\])/); if (!m) return out(env, req, 404, { error: { code: "no_captions", message: /consent|sorry|captcha/i.test(html) ? "YouTube chặn máy chủ" : "Video không có phụ đề" } });
@@ -277,7 +277,8 @@ async function ytCaps(req, env, b, fetchFn) {
     const res = { cues: main, asr: !man, lang: (man || asr).languageCode };
     /* Có cả hai: gửi thêm mốc từng từ của phụ đề tự động để căn câu cho đúng */
     if (man && asr) { try { const ac = await grab(asr), aw = []; for (const c of ac) (c.w || [[c.t, c.s]]).forEach(([w, t], k, arr) => aw.push([w, t, +(arr[k + 1] ? arr[k + 1][1] : c.e).toFixed(2)])); if (aw.length) res.aw = aw; } catch {} }
-    if (env.AUDIO) await env.AUDIO.put(ck, JSON.stringify(res), { expirationTtl: 60 * 86400 }).catch(() => {});
+    /* Lời bài hát có bản quyền: không lưu lại */
+    if (env.AUDIO && !b.nocache) await env.AUDIO.put(ck, JSON.stringify(res), { expirationTtl: 60 * 86400 }).catch(() => {});
     return out(env, req, 200, res);
   } catch (e) { return out(env, req, 502, { error: { code: "yt_failed", message: String(e?.message || e) } }); }
 }
