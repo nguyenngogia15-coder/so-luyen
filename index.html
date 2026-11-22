@@ -7433,7 +7433,7 @@ Chỉ trả lời JSON: {"items":[{"score":2,"fixed":"câu của học sinh đã
       const items = (Array.isArray(r?.items) ? r.items : []).slice(0, lv.items.length).map((x, i) => ({ score: Math.max(0, Math.min(2, Number(x?.score) || 0)), fixed: String(x?.fixed || ""), why: String(x?.why || ""), phrase: String(x?.phrase || "").slice(0, 80), phrase_vi: String(x?.phrase_vi || "").slice(0, 80), ans: ans[i] }));
       if (!items.length) throw { code: "invalid_json" };
       const stars = items.filter(x => x.score === 2).length;
-      (P.wgame ||= {})[lv.id] = Math.max(gmStars(lv.id), stars); saveProfile();
+      (P.wgame ||= {})[lv.id] = Math.max(gmStars(lv.id), stars); addAct("writing", Math.max(1, items.filter(x => x.ans).length));
       addErrors(items.filter(x => x.ans && x.score < 2 && x.fixed).map(x => ({ src: "game", front: x.ans, back: x.fixed, why: x.why, category: `Game viết câu Task ${lv.n} · ${chName}` })));
       G.res = { id: lv.id, items, stars }; render();
     } catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); go.disabled = false; }
@@ -7483,7 +7483,7 @@ function paraphraseCard() {
       if (S.res || S.busy) return; S.typed = ta.value; if (wc(S.typed) < 4) { out.replaceChildren(h("p", { class: "note warn small" }, "Viết cả câu nhé.")); return; }
       S.busy = true; out.replaceChildren(h("p", { class: "small muted" }, "AI đang chấm…"));
       try { const r = await ai(`Câu gốc (đề IELTS): "${S.src}"\nCâu học sinh viết lại (paraphrase): "${S.typed}"\nĐánh giá cho người Việt khoảng band 4–5. Chỉ trả lời JSON: {"score":0-10,"same_meaning":true,"changed_enough":true,"feedback":"1-2 câu tiếng Việt, nêu lỗi ngữ pháp nếu có","better":["2 cách viết lại tốt hơn bằng tiếng Anh"]}`, { json: true, tier: "quick" });
-        S.res = { score: Number(r.score) || 0, same: !!r.same_meaning, changed: !!r.changed_enough, feedback: String(r.feedback || ""), better: (Array.isArray(r.better) ? r.better : []).map(String).slice(0, 3) }; award("para", Math.round(S.res.score)); }
+        S.res = { score: Number(r.score) || 0, same: !!r.same_meaning, changed: !!r.changed_enough, feedback: String(r.feedback || ""), better: (Array.isArray(r.better) ? r.better : []).map(String).slice(0, 3) }; award("para", Math.round(S.res.score)); addAct("writing", 1); }
       catch (e) { out.replaceChildren(h("p", { class: "note bad small" }, aiMsg(e))); }
       S.busy = false; if (S.res) draw();
     };
@@ -7675,6 +7675,8 @@ function rgNext() {
 }
 function rgFinish() {
   const S = RGS, win = S.hearts > 0, st = win ? S.hearts : 0, rec = rgRec(S.lv.id), newBest = win && S.score > rec.best;
+  /* Tính phút cho nhiệm vụ Đọc: mỗi câu đã làm 1 phút; game nhanh (dưới 20 giây một câu) thì 2 câu mới tính 1 phút */
+  addAct("reading", (S.qi + 1) * (rgSec() <= 20 ? 0.5 : 1));
   if (win) { (P.rgame ||= {})[S.lv.id] = { st: Math.max(rec.st, st), best: Math.max(rec.best, S.score) }; saveProfile();
     if (S.lost === 0) rgBadge({ imp: "detective", lock: "locksmith", rail: "conductor" }[S.lv.g] || ""); if (S.lv.boss) rgBadge("boss"); }
   S.phase = "end"; S.win = win; S.st = st; S.newBest = newBest; S.mood = win ? (newBest ? "😸" : "😺") : "😿"; rgDraw();
@@ -7803,7 +7805,7 @@ Chỉ trả lời JSON: {"items":[{"paragraph":"...","headings":["...","...","..
   }
   const it = S.items[S.i], picked = S.i in S.picked;
   const tEl = h("span", { class: "timer" });
-  const choose = j => { if (S.i in S.picked) return; S.picked[S.i] = j; if (j === it.answer) award("skim", 3); render(); };
+  const choose = j => { if (S.i in S.picked) return; S.picked[S.i] = j; if (j === it.answer) award("skim", 3); addAct("reading", 1); render(); };
   card.append(h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, `Đoạn ${S.i + 1}/${S.items.length}`), picked ? null : tEl),
     h("p", { class: "model-text" }, it.paragraph),
     h("div", { class: "opts", style: "flex-direction:column;align-items:stretch;padding-left:0" }, it.headings.map((t, j) => h("button", { type: "button", class: "opt" + (picked ? (j === it.answer ? " right" : S.picked[S.i] === j ? " wrong" : "") : ""), style: "text-align:left", disabled: picked || null, onclick: () => choose(j) }, t))),
@@ -16280,7 +16282,7 @@ function gmChase() {
   const round = () => ndIndex().then(D => { const pool = D.items.filter(x => x.c !== "addr"); C.it = pool[Math.floor(Math.random() * pool.length)]; C.val = ""; C.res = null; C.t0 = Date.now() + 99e9; render(); ndPlay(C.it, C.rate).then(a => { a.onended = () => { C.t0 = Date.now(); }; }).catch(() => { C.t0 = Date.now(); }); });
   const judge = timeout => { if (C.res) return; const ok = !timeout && ndCheck(C.it, C.val); C.res = ok ? "ok" : timeout ? "time" : "bad";
     if (ok) { C.n++; C.rate = Math.min(1.8, +(C.rate + 0.07).toFixed(2)); C.lim = Math.max(7, C.lim - 0.5); } else C.lives--;
-    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(2, Math.round(C.n / 2)), "chase"); }
+    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(0.5, C.n * 0.5), "chase"); }
     render(); if (!C.over) setTimeout(() => { if (UI.gc === C && C.res) round(); }, ok ? 700 : 2200); };
   if (C.on && C.it && !C.res) { clearInterval(GM.tk); GM.tk = setInterval(() => { if (UI.gc !== C || C.res || !document.querySelector(".gm-chase")) return clearInterval(GM.tk); const left = C.lim - (Date.now() - C.t0) / 1000, bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.max(0, Math.min(100, left / C.lim * 100)) + "%"; if (left <= 0) { clearInterval(GM.tk); judge(true); } }, 100); }
   const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ điều bạn nghe…", value: C.val, disabled: !!C.res || null, oninput: e => { C.val = e.target.value; }, onkeydown: e => { if (e.key === "Enter") judge(false); } });
@@ -16337,7 +16339,7 @@ function gmTalk() {
       const blob = await autoRec({ maxSec: 60, quietSec: 3, idleSec: 6, onState: (s, x) => { if (x) { T.el = x.el; const el = document.querySelector(".gm-talk-t"); if (el) el.textContent = Math.floor(x.el) + " giây"; const bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.min(100, x.el / 60 * 100) + "%"; } } });
       const a = await spDecode(blob), z = spPauses(a), secs = Math.min(60, Math.round(a.length / 16000));
       T.res = { secs, win: secs >= 59, speech: z.speech, blob, words: null }; T.phase = "done";
-      if (secs > (st.best || 0)) st.best = secs; if (T.res.win) st.w = (st.w || 0) + 1; gmXp(T.res.win ? 25 : 5, "speaking", 2, "talk"); render();
+      if (secs > (st.best || 0)) st.best = secs; if (T.res.win) st.w = (st.w || 0) + 1; gmXp(T.res.win ? 25 : 5, "speaking", 1, "talk"); render();
     } catch (e) { T.phase = "pick"; toast(e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro." : "Chưa ghi âm được."); render(); }
   };
   const count = async () => { T.res.words = "…"; render(); try { const tr = await spTranscribe(await spDecode(T.res.blob)); const n = tr.text.split(/\s+/).filter(Boolean).length; T.res.words = n; T.res.wpm = Math.round(n / Math.max(1, T.res.secs) * 60); T.res.text = tr.text; } catch (e) { T.res.words = null; toast("Chưa đếm được từ"); } render(); };
@@ -16363,7 +16365,7 @@ function gmQuick() {
     try {
       const blob = await autoRec({ maxSec: 25, quietSec: 2, idleSec: 3 }), a = await spDecode(blob), z = spPauses(a);
       if (z.speech >= 4) { Q.streak++; Q.msg = `Tốt! Nói ${Math.round(z.speech)} giây.`; addAct("speaking", 1); ask(); }
-      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", 1, "quick"); render(); }
+      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", Math.max(0.5, (Q.n || Q.streak + 1) * 0.5), "quick"); render(); }
     } catch (e) { Q.phase = "start"; toast("Chưa ghi âm được."); render(); }
   };
   return h("div", { class: "stack", style: "gap:12px" },
@@ -16738,10 +16740,10 @@ function pl4Start(k) {
   const nextOf = L => (L || []).find(l => !P.lessons?.[l.id]?.done);
   const FAST = {
     V: { how: "Qua 1 bài trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Từ tự thêm vào sổ không tính.", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
-    L: { how: "Mỗi câu nghe chép tính 1 phút, mỗi lượt Số và đánh vần 4 phút, mỗi phần Section 8 phút. Không cần làm cả đề.", fast: () => ["Nghe chép 5 câu · khoảng 5 phút", "#listen", () => { UI.lsTab = "dict"; }] },
-    S: { how: "Mỗi câu shadowing tính 1 phút, 1 bài phát âm 5 phút là đủ luôn.", fast: () => ["1 bài Phát âm · khoảng 5 phút", "#speak", () => { UI.spTab = "pron"; }] },
-    R: { how: "1 bài trong khóa Đọc (tính 15 phút) hoặc 1 bài đọc bất kỳ (tính 20 phút) là đủ. Không cần làm cả đề.", fast: () => { const n = nextOf(typeof RL !== "undefined" ? RL : []); return n ? ["Bài tiếp theo khóa Đọc: " + n.title, "#rl-" + n.id, null] : ["1 bài đọc ngắn", "#reading", null]; } },
-    W: { how: "1 bài trong khóa Viết (tính 15 phút) là đủ. Không cần viết cả Task 1 hay Task 2.", fast: () => { const n = nextOf(typeof WL !== "undefined" ? WL : []); return n ? ["Bài tiếp theo khóa Viết: " + n.title, "#wl-" + n.id, null] : ["1 bài trong khóa Viết", "#writing", null]; } }
+    L: { how: "Mỗi câu nghe chép tính 1 phút, mỗi lượt Số và đánh vần 4 phút, mỗi phần Section 8 phút. Game: mỗi bản tin 2 phút, Đuổi giọng 2 câu = 1 phút.", fast: () => ["Nghe chép 5 câu · khoảng 5 phút", "#listen", () => { UI.lsTab = "dict"; }] },
+    S: { how: "Mỗi câu shadowing tính 1 phút, 1 bài phát âm 5 phút là đủ luôn. Game: Nói 1 phút = 1 phút, Nhại ngữ điệu mỗi câu 1 phút, Phản xạ nhanh 2 câu = 1 phút.", fast: () => ["1 bài Phát âm · khoảng 5 phút", "#speak", () => { UI.spTab = "pron"; }] },
+    R: { how: "1 bài trong khóa Đọc (tính 15 phút) hoặc 1 bài đọc bất kỳ (tính 20 phút) là đủ. Game Đọc: mỗi câu 1 phút, game bấm giờ nhanh thì 2 câu = 1 phút; đọc lướt chọn heading mỗi đoạn 1 phút.", fast: () => { const n = nextOf(typeof RL !== "undefined" ? RL : []); return n ? ["Bài tiếp theo khóa Đọc: " + n.title, "#rl-" + n.id, null] : ["1 bài đọc ngắn", "#reading", null]; } },
+    W: { how: "1 bài trong khóa Viết (tính 15 phút) là đủ. Game viết câu và Paraphrase 60 giây: mỗi câu 1 phút.", fast: () => { const n = nextOf(typeof WL !== "undefined" ? WL : []); return n ? ["Bài tiếp theo khóa Viết: " + n.title, "#wl-" + n.id, null] : ["1 bài trong khóa Viết", "#writing", null]; } }
   };
   for (const x of DQ_T) if (FAST[x.k]) x.how = FAST[x.k].how;
   const _row = dqRow;

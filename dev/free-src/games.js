@@ -75,7 +75,7 @@ function gmChase() {
   const round = () => ndIndex().then(D => { const pool = D.items.filter(x => x.c !== "addr"); C.it = pool[Math.floor(Math.random() * pool.length)]; C.val = ""; C.res = null; C.t0 = Date.now() + 99e9; render(); ndPlay(C.it, C.rate).then(a => { a.onended = () => { C.t0 = Date.now(); }; }).catch(() => { C.t0 = Date.now(); }); });
   const judge = timeout => { if (C.res) return; const ok = !timeout && ndCheck(C.it, C.val); C.res = ok ? "ok" : timeout ? "time" : "bad";
     if (ok) { C.n++; C.rate = Math.min(1.8, +(C.rate + 0.07).toFixed(2)); C.lim = Math.max(7, C.lim - 0.5); } else C.lives--;
-    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(2, Math.round(C.n / 2)), "chase"); }
+    if (C.lives <= 0) { C.over = true; C.on = false; if (C.n > (st.best || 0)) st.best = C.n; gmXp(Math.min(40, C.n * 3), "listening", Math.max(0.5, C.n * 0.5), "chase"); }
     render(); if (!C.over) setTimeout(() => { if (UI.gc === C && C.res) round(); }, ok ? 700 : 2200); };
   if (C.on && C.it && !C.res) { clearInterval(GM.tk); GM.tk = setInterval(() => { if (UI.gc !== C || C.res || !document.querySelector(".gm-chase")) return clearInterval(GM.tk); const left = C.lim - (Date.now() - C.t0) / 1000, bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.max(0, Math.min(100, left / C.lim * 100)) + "%"; if (left <= 0) { clearInterval(GM.tk); judge(true); } }, 100); }
   const inp = h("input", { type: "text", class: "fc-input", autocomplete: "off", spellcheck: "false", placeholder: "Gõ điều bạn nghe…", value: C.val, disabled: !!C.res || null, oninput: e => { C.val = e.target.value; }, onkeydown: e => { if (e.key === "Enter") judge(false); } });
@@ -132,7 +132,7 @@ function gmTalk() {
       const blob = await autoRec({ maxSec: 60, quietSec: 3, idleSec: 6, onState: (s, x) => { if (x) { T.el = x.el; const el = document.querySelector(".gm-talk-t"); if (el) el.textContent = Math.floor(x.el) + " giây"; const bar = document.querySelector(".gm-time i"); if (bar) bar.style.width = Math.min(100, x.el / 60 * 100) + "%"; } } });
       const a = await spDecode(blob), z = spPauses(a), secs = Math.min(60, Math.round(a.length / 16000));
       T.res = { secs, win: secs >= 59, speech: z.speech, blob, words: null }; T.phase = "done";
-      if (secs > (st.best || 0)) st.best = secs; if (T.res.win) st.w = (st.w || 0) + 1; gmXp(T.res.win ? 25 : 5, "speaking", 2, "talk"); render();
+      if (secs > (st.best || 0)) st.best = secs; if (T.res.win) st.w = (st.w || 0) + 1; gmXp(T.res.win ? 25 : 5, "speaking", 1, "talk"); render();
     } catch (e) { T.phase = "pick"; toast(e?.name === "NotAllowedError" ? "Bạn chưa cho phép dùng micro." : "Chưa ghi âm được."); render(); }
   };
   const count = async () => { T.res.words = "…"; render(); try { const tr = await spTranscribe(await spDecode(T.res.blob)); const n = tr.text.split(/\s+/).filter(Boolean).length; T.res.words = n; T.res.wpm = Math.round(n / Math.max(1, T.res.secs) * 60); T.res.text = tr.text; } catch (e) { T.res.words = null; toast("Chưa đếm được từ"); } render(); };
@@ -158,7 +158,7 @@ function gmQuick() {
     try {
       const blob = await autoRec({ maxSec: 25, quietSec: 2, idleSec: 3 }), a = await spDecode(blob), z = spPauses(a);
       if (z.speech >= 4) { Q.streak++; Q.msg = `Tốt! Nói ${Math.round(z.speech)} giây.`; addAct("speaking", 1); ask(); }
-      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", 1, "quick"); render(); }
+      else { Q.phase = "over"; Q.msg = z.speech < 0.5 ? "Bạn chưa kịp nói trong 3 giây." : `Trả lời quá ngắn (${z.speech.toFixed(1)} giây). Cần ít nhất 2 câu, khoảng 4 giây.`; if (Q.streak > (st.best || 0)) st.best = Q.streak; gmXp(Math.min(40, Q.streak * 4), "speaking", Math.max(0.5, (Q.n || Q.streak + 1) * 0.5), "quick"); render(); }
     } catch (e) { Q.phase = "start"; toast("Chưa ghi âm được."); render(); }
   };
   return h("div", { class: "stack", style: "gap:12px" },
