@@ -17608,6 +17608,16 @@ setTimeout(function w() {
   if (window.__isOwner && P && store.kind === "db" && !UI.dbSwitching) { try { fix1122(); } catch (e) { console.warn(e); } return; }
   setTimeout(w, 1500);
 }, 2500);
+/* Trả lại XP cho riêng tài khoản chủ trang: trước lỗi là Level 3 dư 20 XP (220 XP, đã gồm 20 XP nhiệm vụ 22/11 trả lại ở trên).
+   XP kiếm thêm sau lỗi vẫn giữ. */
+setTimeout(function w() {
+  if (window.__isOwner === false || P?.fixXp) return;
+  if (!(window.__isOwner && P && P.fix1122 && store.kind === "db" && !UI.dbSwitching)) { setTimeout(w, 1500); return; }
+  const before = P.xp || 0;
+  P.xp = P.rebuilt ? Math.max(before, 220) : Math.max(before + 200, 220);
+  P.fixXp = Date.now(); saveProfile(); try { dqPublish(true); } catch {}
+  toast(`Đã trả lại XP: ${P.xp} XP (Level ${levelOf(P.xp).L}).`); render();
+}, 3000);
 
 </script>
 
