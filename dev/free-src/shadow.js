@@ -156,33 +156,52 @@ function ytParsePaste(txt) {
   cues.forEach((c, i) => { if (c.e == null) c.e = cues[i + 1] ? cues[i + 1].s : c.s + 4; });
   return cues.filter(c => c.t);
 }
-function ytSentences(cues) {
+/* Phụ đề → danh sách từ có mốc. Phụ đề tự động (asr) có mốc từng từ; phụ đề người gõ chỉ có mốc từng dòng nên chia đều trong dòng */
+/* Một từ nói ra kéo dài cỡ bao lâu: mốc kết thúc của phụ đề tự động là lúc từ sau bắt đầu, có thể gồm cả khoảng lặng */
+const ytDur = w => 0.3 + 0.08 * String(w).replace(/[^a-z0-9]/gi, "").length;
+function ytWords(cues) {
   const words = [];
-  for (const c of cues) { if (c.w?.length) { c.w.forEach(([w, t], k) => words.push({ w, t, e: c.w[k + 1] ? c.w[k + 1][1] : c.e })); continue; }
+  for (const c of cues) { if (c.w?.length) { c.w.forEach(([w, t], k) => words.push({ w, t, e: Math.min(c.w[k + 1] ? c.w[k + 1][1] : c.e, t + ytDur(w)) })); continue; }
     const ws = c.t.split(/\s+/).filter(Boolean), len = ws.reduce((a, w) => a + w.length + 1, 0); let acc = 0;
     ws.forEach(w => { const t = c.s + (c.e - c.s) * acc / len; acc += w.length + 1; words.push({ w, t, e: c.s + (c.e - c.s) * acc / len }); }); }
+  return words;
+}
+/* Có cả phụ đề người gõ (chữ chuẩn, có dấu câu) và phụ đề tự động (mốc từng từ chính xác): lấy chữ của bản người gõ, mốc của bản tự động */
+function ytAlignWords(words, aw) {
+  const nz = w => String(w).toLowerCase().replace(/[^a-z0-9]/g, ""), A = aw.map(([w, t, e]) => ({ n: nz(w), t, e: Math.min(e, t + ytDur(w)) })); let j = 0; const hit = [];
+  words.forEach((m, i) => { const k = nz(m.w); if (!k) return; for (let q = j; q < Math.min(A.length, j + 12); q++) if (A[q].n === k && Math.abs(A[q].t - m.t) < 8) { m.t = A[q].t; m.e = A[q].e; hit.push(i); j = q + 1; return; } });
+  if (hit.length < 3) return words;
+  const H = new Set(hit);
+  for (let q = 0; q < words.length; q++) { if (H.has(q)) continue; let a = q - 1; while (a >= 0 && !H.has(a)) a--; let b = q + 1; while (b < words.length && !H.has(b)) b++;
+    if (a >= 0 && b < words.length) { const f = (q - a) / (b - a); words[q].t = words[a].e + (words[b].t - words[a].e) * f; words[q].e = Math.min(words[b].t, words[q].t + 0.5); } }
+  return words;
+}
+function ytSplit(words) {
   const punct = words.filter(x => /[.!?]["”]?$/.test(x.w)).length >= Math.max(2, words.length / 40), out = []; let cur = [];
   for (let k = 0; k < words.length; k++) {
     cur.push(words[k]); const nx = words[k + 1], gap = nx ? nx.t - words[k].e : 9;
     const end = punct ? (/[.!?]["”]?$/.test(words[k].w) && cur.length >= 3) || cur.length >= 28 : (gap > 0.55 && cur.length >= 4) || cur.length >= 14;
-    if (end || !nx) { out.push({ x: cur.map(z => z.w).join(" "), s: cur[0].t, e: Math.min(cur[cur.length - 1].e + 0.15, nx ? nx.t + 0.05 : 1e9) }); cur = []; }
+    if (end || !nx) { const last = cur[cur.length - 1]; out.push({ x: cur.map(z => z.w).join(" "), s: Math.max(0, cur[0].t - 0.12), e: nx ? Math.max(last.e, Math.min(last.e + 0.25, nx.t - 0.02)) : last.e + 0.3 }); cur = []; }
   }
   return out.filter(z => /[a-z]/i.test(z.x));
 }
+function ytSentences(cues) { return ytSplit(ytWords(cues)); }
+function ytSentencesBest(r) { const w = ytWords(r.cues); return ytSplit(!r.asr && r.aw?.length ? ytAlignWords(w, r.aw) : w); }
+function ytHow(r) { return r.asr ? "Phụ đề tự động của YouTube (mốc từng từ)" : r.aw?.length ? "Phụ đề của video, mốc căn theo từng từ" : "Phụ đề của video (mốc theo dòng, có thể lệch nhẹ: chỉnh bằng nút sớm/muộn)"; }
 function shadowYt(S) {
   const Y = S.yt ||= { url: "", id: null, sents: null, how: "", err: "", busy: "", adj: {} };
-  const urlIn = h("input", { type: "url", placeholder: "Dán link YouTube, ví dụ https://www.youtube.com/watch?v=…", value: Y.url, oninput: e => { Y.url = e.target.value; } });
+  const urlIn = h("input", { type: "url", placeholder: "Dán link YouTube, ví dụ https://www.youtube.com/watch?v=…", value: Y.url, style: "flex:1;min-width:0", oninput: e => { Y.url = e.target.value; } });
   const load = async () => {
     const id = ytId(Y.url); if (!id) { Y.err = "Link YouTube chưa đúng."; render(); return; }
     Object.assign(Y, { id, sents: null, err: "", busy: "Đang mở video…", how: "", adj: {} }); S.i = 0; S.res = null; render();
     try { await ytOpen(id); } catch (e) { Y.err = e.message; Y.busy = ""; render(); return; }
-    const cached = (() => { try { return JSON.parse(localStorage.getItem("yt:" + id) || "null"); } catch { return null; } })();
+    const cached = (() => { try { return JSON.parse(localStorage.getItem("yt2:" + id) || "null"); } catch { return null; } })();
     if (cached?.sents?.length) { Object.assign(Y, { sents: cached.sents, how: cached.how, adj: cached.adj || {}, busy: "" }); render(); return; }
     Y.busy = "Đang lấy phụ đề của video…"; render();
-    try { const r = await window.__yt?.(id); if (r?.cues?.length) { ytSet(Y, ytSentences(r.cues), r.asr ? "Phụ đề tự động của YouTube (mốc từng từ)" : "Phụ đề của video"); return; } } catch (e) { console.warn("yt captions", e); }
+    try { const r = await window.__yt?.(id); if (r?.cues?.length) { ytSet(Y, ytSentencesBest(r), ytHow(r)); return; } } catch (e) { console.warn("yt captions", e); }
     Y.busy = ""; Y.need = true; render();
   };
-  const ytSet = (Y, sents, how) => { if (!sents.length) { Y.err = "Không tách được câu nào."; Y.busy = ""; render(); return; } Object.assign(Y, { sents, how, busy: "", need: false, err: "" }); try { localStorage.setItem("yt:" + Y.id, JSON.stringify({ sents, how, adj: Y.adj })); } catch {} render(); };
+  const ytSet = (Y, sents, how) => { if (!sents.length) { Y.err = "Không tách được câu nào."; Y.busy = ""; render(); return; } Object.assign(Y, { sents, how, busy: "", need: false, err: "" }); try { localStorage.setItem("yt2:" + Y.id, JSON.stringify({ sents, how, adj: Y.adj })); } catch {} render(); };
   const pasteBox = h("textarea", { rows: "6", placeholder: "Dán bản chép lời có mốc thời gian (phụ đề .vtt/.srt, hoặc chép từ ô \"Hiện bản chép lời\" của YouTube)…" });
   const aiBtn = h("button", { class: "btn", type: "button", disabled: !sample || null, onclick: async () => {
     aiBtn.disabled = true; Y.busy = "Gemini đang xem video và chép lời (30–90 giây, tốn 1 lượt AI)…"; render();
@@ -200,7 +219,7 @@ function shadowYt(S) {
   const n = Y.sents.length, i = Math.min(S.i, n - 1), sn = Y.sents[i], ad = Y.adj[i] || [0, 0], s0 = sn.s + ad[0], e0 = sn.e + ad[1];
   S.key = "yt:" + Y.id;
   const best = (P.shadow || {})[S.key]?.best || {};
-  const nudge = (k, d) => { const a = Y.adj[i] ||= [0, 0]; a[k] = +(a[k] + d).toFixed(2); try { localStorage.setItem("yt:" + Y.id, JSON.stringify({ sents: Y.sents, how: Y.how, adj: Y.adj })); } catch {} render(); ytPlaySeg(sn.s + a[0], sn.e + a[1]); };
+  const nudge = (k, d) => { const a = Y.adj[i] ||= [0, 0]; a[k] = +(a[k] + d).toFixed(2); try { localStorage.setItem("yt2:" + Y.id, JSON.stringify({ sents: Y.sents, how: Y.how, adj: Y.adj })); } catch {} render(); ytPlaySeg(sn.s + a[0], sn.e + a[1]); };
   const extra = h("span", { class: "row small", style: "gap:4px" }, h("span", { class: "muted" }, "Chỉnh mốc:"), h("button", { class: "btn btn-quiet small", type: "button", title: "Bắt đầu sớm hơn", onclick: () => nudge(0, -0.2) }, "⇤ sớm"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(0, 0.2) }, "muộn ⇥"), h("span", { class: "muted" }, "|"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(1, -0.2) }, "cắt sớm"), h("button", { class: "btn btn-quiet small", type: "button", onclick: () => nudge(1, 0.2) }, "kéo dài"));
   return h("div", { class: "stack", style: "gap:12px" }, head,
     h("span", { class: "small muted" }, `${Y.how} · ${n} câu`),

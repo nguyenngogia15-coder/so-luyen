@@ -262,19 +262,21 @@ async function lsAlign(req, env, b) {
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
 async function ytCaps(req, env, b, fetchFn) {
   const id = (String(b.id || "").match(/^[\w-]{11}$/) || [])[0]; if (!id) return out(env, req, 400, { error: { code: "bad_request" } });
-  const ck = "yt:" + id; if (env.AUDIO) { const hit = await env.AUDIO.get(ck, "json").catch(() => null); if (hit) return out(env, req, 200, hit); }
+  const ck = "yt2:" + id; if (env.AUDIO) { const hit = await env.AUDIO.get(ck, "json").catch(() => null); if (hit) return out(env, req, 200, hit); }
   try {
     const html = await (await fetchFn(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: { "user-agent": UA, "accept-language": "en-US,en;q=0.9" } })).text();
     const m = html.match(/"captionTracks":(\[.*?\])/); if (!m) return out(env, req, 404, { error: { code: "no_captions", message: /consent|sorry|captcha/i.test(html) ? "YouTube chặn máy chủ" : "Video không có phụ đề" } });
-    const tracks = JSON.parse(m[1]).filter(t => /^en/.test(t.languageCode || "")), t = tracks.find(x => x.kind !== "asr") || tracks[0];
-    if (!t) return out(env, req, 404, { error: { code: "no_captions", message: "Video không có phụ đề tiếng Anh" } });
-    const j = await (await fetchFn(t.baseUrl + "&fmt=json3", { headers: { "user-agent": UA } })).json();
-    const cues = [];
-    for (const e of j.events || []) { if (!e.segs || e.aAppend) continue; const s = e.tStartMs / 1000, text = e.segs.map(x => x.utf8 || "").join("").replace(/\n/g, " ").trim(); if (!text) continue;
-      const w = e.segs.filter(x => (x.utf8 || "").trim()).map(x => [x.utf8.trim(), +(s + (x.tOffsetMs || 0) / 1000).toFixed(2)]);
-      cues.push({ s: +s.toFixed(2), e: +(s + (e.dDurationMs || 0) / 1000).toFixed(2), t: text, w: w.length > 1 ? w : undefined }); }
-    if (!cues.length) return out(env, req, 404, { error: { code: "no_captions", message: "Phụ đề trống" } });
-    const res = { cues, asr: t.kind === "asr", lang: t.languageCode };
+    const tracks = JSON.parse(m[1]).filter(t => /^en/.test(t.languageCode || "")), man = tracks.find(x => x.kind !== "asr"), asr = tracks.find(x => x.kind === "asr");
+    if (!man && !asr) return out(env, req, 404, { error: { code: "no_captions", message: "Video không có phụ đề tiếng Anh" } });
+    const grab = async t => { const j = await (await fetchFn(t.baseUrl + "&fmt=json3", { headers: { "user-agent": UA } })).json(); const cues = [];
+      for (const e of j.events || []) { if (!e.segs || e.aAppend) continue; const s = e.tStartMs / 1000, text = e.segs.map(x => x.utf8 || "").join("").replace(/\n/g, " ").trim(); if (!text) continue;
+        const w = e.segs.filter(x => (x.utf8 || "").trim()).map(x => [x.utf8.trim(), +(s + (x.tOffsetMs || 0) / 1000).toFixed(2)]);
+        cues.push({ s: +s.toFixed(2), e: +(s + (e.dDurationMs || 0) / 1000).toFixed(2), t: text, w: w.length > 1 ? w : undefined }); }
+      return cues; };
+    const main = await grab(man || asr); if (!main.length) return out(env, req, 404, { error: { code: "no_captions", message: "Phụ đề trống" } });
+    const res = { cues: main, asr: !man, lang: (man || asr).languageCode };
+    /* Có cả hai: gửi thêm mốc từng từ của phụ đề tự động để căn câu cho đúng */
+    if (man && asr) { try { const ac = await grab(asr), aw = []; for (const c of ac) (c.w || [[c.t, c.s]]).forEach(([w, t], k, arr) => aw.push([w, t, +(arr[k + 1] ? arr[k + 1][1] : c.e).toFixed(2)])); if (aw.length) res.aw = aw; } catch {} }
     if (env.AUDIO) await env.AUDIO.put(ck, JSON.stringify(res), { expirationTtl: 60 * 86400 }).catch(() => {});
     return out(env, req, 200, res);
   } catch (e) { return out(env, req, 502, { error: { code: "yt_failed", message: String(e?.message || e) } }); }
