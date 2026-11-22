@@ -138,6 +138,7 @@ export async function handle(req, env, fetchFn = fetch) {
 
   let b; try { b = await req.json(); } catch { return out(env, req, 400, { error: { code: "bad_request" } }); }
   if (url.pathname === "/tts") return tts(req, env, b, fetchFn, user.sub);
+  if (url.pathname === "/tts-has") { const pre = "ls:" + String(b.prefix || "").replace(/[^\w.-]/g, "").slice(0, 20), keys = []; let cur; if (env.AUDIO) for (let i = 0; i < 5; i++) { const r = await env.AUDIO.list({ prefix: pre, cursor: cur }); keys.push(...r.keys.map(k => k.name.slice(3))); if (r.list_complete) break; cur = r.cursor; } return out(env, req, 200, { keys }); }
   if (url.pathname === "/ls-pool") return lsPool(req, env);
   if (url.pathname === "/ls-al") return lsAlign(req, env, b);
   if (url.pathname === "/yt") return ytCaps(req, env, b, fetchFn);

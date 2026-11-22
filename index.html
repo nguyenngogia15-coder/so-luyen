@@ -1346,6 +1346,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
   };
   window.__alShare = async b => { const j = await post("/ls-al", b); return b.get ? j.item || null : j; };
   window.__yt = id => post("/yt", { id });
+  window.__gemHas = prefix => post("/tts-has", { prefix });
   /* Thông báo nhắc học */
   window.__push = { key: () => post("/push/key"), sub: (sub, name) => post("/push/sub", { sub, name }), unsub: () => post("/push/unsub"), status: b => post("/push/status", b), poke: (to, name) => post("/push/poke", { to, name }), test: () => post("/push/test") };
   window.__quota = () => post("/quota", {});
@@ -17143,6 +17144,31 @@ function dpExamTips() {
       return n; }
     n.append(dpWeekTest(), dpSignHunt(), dpExtra(), dpExamTips()); return n;
   };
+})();
+
+/* ===== Bài nào đã có giọng Gemini: hỏi Worker một lần, hiện nhãn ở danh sách bài; chọn giọng ngay trong Luyện sâu và Săn biển báo ===== */
+const GEMHAS = { set: null, p: null };
+function gemHasLoad() { return GEMHAS.p ||= (window.__gemHas ? window.__gemHas("t").then(j => { GEMHAS.set = new Set((j.keys || []).filter(k => /-g2$/.test(k)).map(k => k.slice(0, -3))); render(); }).catch(() => { GEMHAS.set = null; }) : Promise.resolve()); }
+function gemTag(id) { gemHasLoad(); if (!GEMHAS.set) return null; return GEMHAS.set.has(id) ? h("span", { class: "chip good", style: "font-size:.7rem" }, "🎙 Gemini") : h("span", { class: "chip", style: "font-size:.7rem" }, "máy đọc"); }
+(function () {
+  const _lc = lsCard; lsCard = function (s, href) { const n = _lc(s, href), t = gemTag(s.id); if (t) n.querySelector(".row")?.append(t); return n; };
+  const _sh = dpSignHunt; dpSignHunt = function () { const n = _sh(); const s = lsById(UI.dpHunt?.id); if (n && s) { n.querySelector(".ls-player")?.before(lsVoicePick(s)); n.querySelectorAll("select option").forEach(o => { if (GEMHAS.set?.has(o.value)) o.textContent += " · 🎙 Gemini"; }); } return n; };
+  const _run = dpRun; dpRun = function (s, D) { const n = _run(s, D); if (D.step === 2 || D.step === 5) n.querySelector(".ls-player")?.before(lsVoicePick(s)); return n; };
+  const _tab = lsDeepTab; lsDeepTab = function () { const n = _tab(); if (!UI.lsDp?.id) n.querySelectorAll(".dp-it").forEach((b, i) => { const s = LS_BANK[i], t = s && gemTag(s.id); if (t) b.append(t); }); return n; };
+  /* Mở một video YouTube để nghe ngay tại chỗ, không lưu link */
+  const _ex = dpExtra; dpExtra = function () {
+    const n = _ex(), Y = UI.dpYt ||= { url: "", id: "" };
+    const idOf = u => (String(u).match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/) || [])[1] || (/^[\w-]{11}$/.test(String(u).trim()) ? String(u).trim() : "");
+    const inp = h("input", { type: "url", placeholder: "Dán link YouTube để xem ngay tại đây", value: Y.url, style: "flex:1;min-width:0", oninput: e => { Y.url = e.target.value; }, onkeydown: e => { if (e.key === "Enter") open(); } });
+    const open = () => { const id = idOf(Y.url); if (!id) { toast("Link YouTube chưa đúng"); return; } Y.id = id; Y.t0 = Date.now(); render(); };
+    const box = h("div", { class: "stack", style: "gap:8px" }, h("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, inp, h("button", { class: "btn", type: "button", onclick: open }, "Mở video")),
+      Y.id ? h("div", { class: "dp-yt" }, h("iframe", { src: `https://www.youtube-nocookie.com/embed/${Y.id}?cc_load_policy=${UI.dpX?.lv === "en" ? 1 : 0}&cc_lang_pref=en&hl=en&rel=0&modestbranding=1`, title: "Video YouTube", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: "", referrerpolicy: "strict-origin-when-cross-origin" })) : null,
+      Y.id ? h("div", { class: "row small", style: "gap:8px;align-items:center;flex-wrap:wrap" }, h("span", { class: "muted" }, "Link chỉ để xem tại chỗ, không lưu lại. Phụ đề và tốc độ chỉnh ở nút ⚙ trong video."),
+        h("button", { class: "btn btn-quiet", type: "button", onclick: () => { const m = Math.max(1, Math.round((Date.now() - Y.t0) / 60000)); UI.dpX.m = m; Y.id = ""; Y.url = ""; render(); toast(`Đã điền ${m} phút, chọn mức hiểu rồi bấm Ghi lại`); } }, "Xem xong, điền số phút"),
+        h("button", { class: "btn btn-quiet", type: "button", onclick: () => { Y.id = ""; Y.url = ""; render(); } }, "Đóng video")) : null);
+    n.querySelector("h2")?.closest(".row")?.after(box); return n;
+  };
+  document.head.append(h("style", null, ".dp-yt{position:relative;width:100%;aspect-ratio:16/9;max-width:100%;background:#000}.dp-yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}"));
 })();
 
 </script>

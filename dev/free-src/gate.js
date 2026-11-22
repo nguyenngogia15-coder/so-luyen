@@ -110,6 +110,7 @@ if (!CFG.firebase || /DAN_VAO_DAY/.test(JSON.stringify(CFG))) {
   };
   window.__alShare = async b => { const j = await post("/ls-al", b); return b.get ? j.item || null : j; };
   window.__yt = id => post("/yt", { id });
+  window.__gemHas = prefix => post("/tts-has", { prefix });
   /* Thông báo nhắc học */
   window.__push = { key: () => post("/push/key"), sub: (sub, name) => post("/push/sub", { sub, name }), unsub: () => post("/push/unsub"), status: b => post("/push/status", b), poke: (to, name) => post("/push/poke", { to, name }), test: () => post("/push/test") };
   window.__quota = () => post("/quota", {});
