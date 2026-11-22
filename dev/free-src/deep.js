@@ -4,7 +4,7 @@ const DP_ERR = [
   ["sound", "👂", "Không nghe ra âm", "Biết từ đó nhưng lúc nghe không nhận ra", "Chép chính tả câu đó rồi nhại theo 3–5 lần"],
   ["word", "📕", "Không biết từ", "Từ mới, chưa gặp bao giờ", "Ghi cả câu chứa từ vào sổ và nghe lại cách nó được nói"],
   ["trap", "🪤", "Bị đánh lừa", "Người nói đổi ý, hoặc dùng từ đồng nghĩa", "Gạch ra đúng cụm từ đã lừa mình"],
-  ["focus", "🌀", "Mất tập trung, lạc nhịp", "Đang nghe thì lạc, mất luôn mấy câu sau", "Tập bắt cụm chuyển ý (moving on, now, finally…) để nhảy về đúng chỗ"],
+  ["focus", "🌀", "Mất tập trung, lạc nhịp", "Đang nghe thì lạc, mất luôn mấy câu sau", "Nghe lại từ vài câu trước để tập bắt lại nhịp; với bài giảng thì để ý cụm chuyển ý (moving on, finally…) để nhảy về đúng chỗ"],
   ["spell", "✏️", "Nghe đúng nhưng viết sai", "Sai chính tả, quên -s số nhiều, sai số", "Gõ lại đáp án đúng 3 lần, để ý đuôi -s và chính tả"]];
 const DP_PRED = [["num", "Số, ngày, giờ, giá"], ["name", "Tên riêng (đánh vần)"], ["sg", "Danh từ số ít"], ["pl", "Danh từ số nhiều"], ["oth", "Loại khác"]];
 const DP_SIGN = /\b(moving on|move on|now let'?s|let'?s (?:now )?(?:turn|look|move)|turning (?:now )?to|first(?:ly)?|second(?:ly)?|next|another|finally|in conclusion|to sum up|so,? to summari[sz]e|however|on the other hand|the (?:main|key|first|second|final) (?:point|thing|reason)|what i want to (?:stress|emphasi[sz]e)|i'?d like to)\b/gi;
@@ -13,7 +13,10 @@ function dpMap() { const m = Object.fromEntries(DP_ERR.map(e => [e[0], 0])); for
 /* Câu trong lời thoại chứa đáp án (với câu điền từ); câu hỏi chọn đáp án thì không dò được */
 function dpSentOf(s, it, g) {
   const S = alSents(s); if (g.type !== "gap") return -1;
-  for (const a of it.a) { const k = lsNorm(a); if (k.length < 2) continue; const i = S.findIndex(x => lsNorm(x.x).includes(k) || lsNorm(spSpellKeep(x.x)).includes(lsNorm(spSpellKeep(a)))); if (i >= 0) return i; }
+  const cp = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, "");
+  for (const a of it.a) { const k = lsNorm(a); if (k.length < 2) continue; let i = S.findIndex(x => lsNorm(x.x).includes(k) || lsNorm(spSpellKeep(x.x)).includes(lsNorm(spSpellKeep(a))));
+    if (i < 0 && cp(a).length >= 3) i = S.findIndex(x => cp(x.x).includes(cp(a)) || cp(spSpellKeep(x.x)).includes(cp(spSpellKeep(a))));
+    if (i >= 0) return i; }
   return -1;
 }
 function dpPlayer(s, i, label) {
@@ -87,6 +90,7 @@ function dpRun(s, D) {
     const fix = D.fix ||= {};
     body = h("section", { class: "card stack", style: "gap:12px" }, h("h2", { style: "margin:0" }, "Bước 4 · Sửa đúng chỗ hỏng"),
       h("p", { class: "small muted", style: "margin:0" }, "Mỗi loại lỗi một cách sửa. Khoảng 15 phút."),
+      h("ul", { class: "small dp-how" }, DP_ERR.filter(e => wrong.some(({ it }) => D.err[it.n] === e[0])).map(e => h("li", null, h("b", null, e[1] + " " + e[2] + ": "), e[4] + "."))),
       ...wrong.map(({ g, it }) => { const k = D.err[it.n], e = DP_ERR.find(x => x[0] === k), i = dpSentOf(s, it, g), sent = i >= 0 ? alSents(s)[i].x : "", ans = g.type === "gap" ? it.a[0] : it.a, F = fix[it.n] ||= {};
         let task;
         if (k === "sound") {
@@ -105,10 +109,15 @@ function dpRun(s, D) {
           task = sent ? h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, "Bấm vào những từ đã lừa bạn (chỗ đổi ý như actually, no wait, sorry; hoặc từ đồng nghĩa với từ trong câu hỏi)."), dpPlayer(s, i),
             h("p", { class: "dp-toks", style: "margin:0" }, toks.map((t, q) => h("button", { type: "button", class: "dp-tok" + ((F.mark || []).includes(q) ? " on" : ""), onclick: () => { F.mark ||= []; F.mark = F.mark.includes(q) ? F.mark.filter(z => z !== q) : [...F.mark, q]; render(); } }, t)))) : h("span", { class: "small muted" }, "Mở lời thoại ở bước 5, tìm chỗ người nói đổi ý hoặc nói vòng.");
         } else if (k === "focus") {
-          const S = alSents(s), around = i >= 0 ? S.slice(Math.max(0, i - 3), i + 1) : [], signs = S.map(x => x.x).join(" ").match(DP_SIGN) || [];
-          task = h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, "Khi lạc, đừng đứng hình. Nghe cụm chuyển ý là cách nhanh nhất nhảy về đúng chỗ, vì mỗi lần người nói chuyển ý thường là sang nhóm câu hỏi mới."),
-            signs.length ? h("p", { class: "small", style: "margin:0" }, "Cụm chuyển ý trong bài này: ", [...new Set(signs.map(x => x.toLowerCase()))].map(x => h("mark", { style: "margin-right:6px" }, x))) : null,
-            around.length ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "small muted" }, "Đoạn dẫn tới câu bạn lạc:"), around.map(x => h("p", { class: "small", style: "margin:0", html: esc(x.x).replace(DP_SIGN, "<mark>$&</mark>") })), dpPlayer(s, i)) : null);
+          const S = alSents(s), from = Math.max(0, i - 2), around = i >= 0 ? S.slice(from, i + 1) : [];
+          const src = lsSrcInfo(s), st = src ? lsSegs(s, src) : {}, a0 = i >= 0 ? lsSegAt(s, src, st, from) : null, a1 = i >= 0 ? lsSegAt(s, src, st, i) : null;
+          const pat = /^[a-z0-9]+$/i.test(String(ans).replace(/\s/g, "")) && String(ans).length > 3 ? String(ans).replace(/\s/g, "").split("").join("[^a-z0-9]{0,3}") : String(ans).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), mark = t => esc(t).replace(new RegExp("(" + pat + ")", "i"), "<mark>$1</mark>");
+          task = i < 0 ? h("span", { class: "small muted" }, "Mở lời thoại ở bước 5, tìm đoạn chứa đáp án và nghe lại từ vài câu trước đó.") : h("div", { class: "stack", style: "gap:8px" },
+            h("span", { class: "small" }, "Nghe lại từ 2 câu trước, giữ tập trung tới câu in đậm."),
+            h("div", { class: "dp-ctx" }, around.map((x, q) => h("p", { class: q === around.length - 1 ? "on" : "", html: q === around.length - 1 ? mark(x.x) : esc(x.x) }))),
+            h("div", { class: "row", style: "gap:6px", "data-lsseg": "1" }, h("button", { class: "btn btn-primary", type: "button", disabled: !(a0 && a1) || null, onclick: () => lsPlaySent(src, [a0[0], a1[1]], 1).catch(() => {}) }, "▶ Nghe lại đoạn này"), h("button", { class: "btn btn-quiet", type: "button", disabled: !(a0 && a1) || null, onclick: () => lsPlaySent(src, [a0[0], a1[1]], 0.75).catch(() => {}) }, "🐢 0.75×"),
+              h("span", { class: "small muted" }, "Lần này nghe ra chưa?"), ["Ra rồi", "Chưa"].map((t, q) => h("button", { type: "button", class: "opt", "aria-pressed": String(F.ok === q), onclick: () => { F.ok = q; render(); } }, t))),
+            F.ok === 1 ? h("p", { class: "small muted", style: "margin:0" }, "Vẫn chưa thì đây có thể là lỗi không nghe ra âm: chép chính tả câu in đậm ở mục Nghe chép.") : null);
         } else {
           const ok = (F.t || []).filter(x => lsNorm(x) === lsNorm(ans)).length;
           task = h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, `Gõ lại đúng “${ans}” 3 lần. Để ý đuôi -s, chữ hoa, số.`),
@@ -144,7 +153,7 @@ function dpRun(s, D) {
 .dp-timer{font-family:var(--font-mono);font-size:1.4rem}.dp-bar{display:grid;grid-template-columns:minmax(0,15em) 1fr 2.5em;gap:10px;align-items:center;font-size:.9rem}.dp-bar>i{height:12px;background:var(--line);display:block}.dp-bar>i>i{display:block;height:100%;background:#e8590c}.dp-bar b{text-align:right}
 @media (max-width:600px){.dp-bar{grid-template-columns:1fr 2.5em}.dp-bar>i{grid-column:1/-1;grid-row:2}}
 .dp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}.dp-it{display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px;border:2px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;color:inherit}.dp-it:hover{border-color:var(--edge,#111)}
-.dp-toks{line-height:2.2}.dp-tok{font:inherit;border:1px dashed var(--line);background:none;padding:1px 4px;margin:0 2px;cursor:pointer;color:inherit}.dp-tok.on{background:#ffe066;border-color:#e8590c;text-decoration:underline}.dp-in{width:9em}`));
+.dp-toks{line-height:2.2}.dp-tok{font:inherit;border:1px dashed var(--line);background:none;padding:1px 4px;margin:0 2px;cursor:pointer;color:inherit}.dp-tok.on{background:#ffe066;border-color:#e8590c;text-decoration:underline}.dp-in{width:9em}.dp-ctx{border-left:3px solid var(--line);padding-left:10px}.dp-ctx p{margin:2px 0;color:var(--muted)}.dp-ctx p.on{color:inherit;font-weight:600}.dp-how{margin:0;padding-left:18px}`));
 })();
 SUB_DESC["lsTab:deep"] = "Đoán trước, nghe 1 lần, chẩn đoán lỗi, sửa đúng chỗ, nghe lại";
 /* ===== Phần còn lại của video: phân loại lỗi tai khi nghe chép, săn cụm chuyển ý Part 4, nghe ngoài giờ theo nấc, đề đủ mỗi tuần, 3 điều ngày thi, so với bạn cùng nhóm ===== */
