@@ -3411,7 +3411,7 @@ const UI = { route: "today", wTask: 1, wSel: null, wView: null, rSel: null, rSta
 
 function newProfile() { return { v: 1, created: Date.now(), lessons: {}, log: {}, errors: {}, target: 6.5, seeded: false }; }
 let saveT = null;
-function saveProfile() { clearTimeout(saveT); saveT = setTimeout(() => { saveT = null; Promise.resolve(store.setProfile(P)).catch(e => { console.warn(e); toast("Chưa lưu được tiến độ, thử lại sau."); }); }, 400); }
+function saveProfile() { clearTimeout(saveT); saveT = setTimeout(() => { saveT = null; try { bakMaybe(); } catch {} Promise.resolve(store.setProfile(P)).catch(e => { console.warn(e); toast("Chưa lưu được tiến độ, thử lại sau."); }); }, 400); }
 async function saveProfileNow(key) {
   clearTimeout(saveT); saveT = null;
   const at = Date.now(); UI.saveMsg = { key, saving: true, at }; render();
@@ -3478,7 +3478,53 @@ async function switchToDb(s) {
   const hold = fn => (...a) => ready ? fn(...a) : Promise.resolve();
   store = { ...s, setProfile: hold(s.setProfile), put: hold(s.put), del: hold(s.del) };
   try { await loadAll(); } finally { clearTimeout(saveT); saveT = null; ready = true; store = s; UI.dbSwitching = false; }
-  render();
+  render(); bakInit().then(() => { bakMaybe(true); render(); });
+}
+
+/* ===== Sao lưu hồ sơ: mỗi ngày giữ một bản (tối đa 7 ngày) trong mục "bak" của chính tài khoản.
+   Không bao giờ ghi bản có ít XP hơn bản sao lưu mới nhất (trừ khi chủ nhóm đặt lại), nên lỡ hồ sơ bị xóa thì bản cũ vẫn còn. ===== */
+const BAK = { top: null, last: 0, busy: false, list: null, sure: "", msg: "" };
+const bakScore = p => ({ xp: +p?.xp || 0, n: Object.values(p?.lessons || {}).filter(x => x?.done).length, rs: +p?.resetAt || 0 });
+async function bakInit() {
+  if (store.kind !== "db") return;
+  try { const l = await store.list("bak"); BAK.list = l.sort((a, b) => a.id < b.id ? 1 : -1); BAK.top = BAK.list[0] ? bakScore(BAK.list[0]) : { xp: 0, n: 0, rs: 0 }; } catch (e) { console.warn(e); BAK.top = null; }
+}
+function bakMaybe(force) {
+  if (store.kind !== "db" || UI.dbSwitching || !P || !BAK.top || BAK.busy) return;
+  const sc = bakScore(P), top = BAK.top;
+  if (!sc.xp && !sc.n) return;
+  if (sc.rs <= top.rs && (sc.xp < top.xp || (sc.xp === top.xp && sc.n < top.n))) return;
+  if (!force && Date.now() - BAK.last < 10 * 60e3 && BAK.list?.[0]?.id === today()) return;
+  BAK.busy = true; BAK.last = Date.now();
+  const doc = { ...JSON.parse(JSON.stringify(P)), bakAt: Date.now() };
+  store.put("bak", today(), doc).then(async () => {
+    BAK.top = sc; BAK.list = [{ ...doc, id: today() }, ...(BAK.list || []).filter(x => x.id !== today())];
+    for (const x of BAK.list.slice(7)) await store.del("bak", x.id).catch(() => {});
+    BAK.list = BAK.list.slice(0, 7);
+  }).catch(e => console.warn("bak", e)).finally(() => { BAK.busy = false; });
+}
+async function bakRestore(b) {
+  BAK.msg = "Đang khôi phục…"; render();
+  try {
+    const { id, bakAt, ...doc } = b, prof = syncMerge(JSON.parse(JSON.stringify(P)), doc);
+    prof.resetAt = Math.max(+P.resetAt || 0, +doc.resetAt || 0) || undefined; if (!prof.resetAt) delete prof.resetAt;
+    await store.setProfile(prof); await loadAll();
+    try { typeof dqRecheck === "function" && dqRecheck(); } catch {}
+    BAK.msg = `Đã khôi phục bản ngày ${b.id.split("-").reverse().join("/")}. Giờ có ${P.xp || 0} XP.`; toast(BAK.msg);
+  } catch (e) { BAK.msg = "Chưa khôi phục được: " + (e?.message || e?.code || "lỗi"); }
+  BAK.sure = ""; render();
+}
+function bakCard() {
+  if (store.kind !== "db") return null;
+  const l = BAK.list || [], cur = bakScore(P);
+  return h("details", { class: "today-more bak-card", open: BAK.msg || BAK.sure ? true : null },
+    h("summary", null, h("b", null, "🛟 Bản sao lưu"), h("span", { class: "small muted" }, l.length ? `Tự lưu mỗi ngày, đang có ${l.length} bản` : "Tự lưu mỗi ngày, giữ 7 ngày gần nhất")),
+    h("div", { class: "stack", style: "gap:8px;margin-top:10px" },
+      h("p", { class: "small muted", style: "margin:0" }, "Web tự lưu một bản tiến độ (XP, bài đã học, chuỗi ngày, nhiệm vụ) mỗi ngày và cập nhật trong ngày khi bạn học thêm. Nếu tiến độ bị mất, bấm Khôi phục: bản cũ được gộp vào, phần mới hơn vẫn giữ."),
+      l.length ? h("div", { class: "qt-wrap" }, h("table", { class: "qt-tbl" }, h("thead", null, h("tr", null, h("th", null, "Ngày"), h("th", null, "Lưu lúc"), h("th", null, "XP"), h("th", null, "Bài đã học"), h("th", null, ""))),
+        h("tbody", null, l.map(b => { const s = bakScore(b), sure = BAK.sure === b.id; return h("tr", null, h("td", null, b.id.split("-").reverse().join("/")), h("td", null, b.bakAt ? new Date(b.bakAt).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) : "–"), h("td", null, String(s.xp)), h("td", null, String(s.n)),
+          h("td", null, h("button", { class: "btn" + (sure ? " btn-primary" : ""), type: "button", disabled: s.xp <= cur.xp && s.n <= cur.n && !sure ? true : null, title: s.xp <= cur.xp && s.n <= cur.n ? "Tiến độ hiện tại đã bằng hoặc hơn bản này" : "", onclick: () => { if (!sure) { BAK.sure = b.id; render(); return; } bakRestore(b); } }, sure ? "Bấm lần nữa" : "Khôi phục"))); })))) : h("p", { class: "small", style: "margin:0" }, "Chưa có bản nào. Bản đầu tiên sẽ được lưu sau lần lưu tiến độ tới."),
+      BAK.msg ? h("p", { class: "small", style: "margin:0" }, BAK.msg) : null));
 }
 
 /* ---------- AI ---------- */
@@ -12052,7 +12098,7 @@ function syncCard() {
 }
 (function () {
   const _pt = pageToday;
-  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); const qb = syncQuickBar(); if (qb) { const hd = n.firstElementChild; hd ? hd.after(qb) : n.prepend(qb); } return n; };
+  pageToday = function () { const n = _pt(), c = syncCard(); if (c) n.append(c); const bk = bakCard(); if (bk) n.append(bk); const qb = syncQuickBar(); if (qb) { const hd = n.firstElementChild; hd ? hd.after(qb) : n.prepend(qb); } return n; };
 })();
 
 async function boot() {
@@ -17483,6 +17529,67 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
 })();
 /* Trang Game: mở game Nghe/Nói thì chuẩn bị sẵn giọng Gemini cho game */
 (function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); gemWarm("nd"); } catch {} } return _pg(); }; })();
+
+/* ===== Tính lại tiến độ từ bài đã lưu: dùng một lần cho tài khoản bị mất hồ sơ (XP, nhiệm vụ, chuỗi ngày).
+   Bài viết, bài đọc, bài nói, đề thi thử, từ đã ôn lưu riêng nên vẫn còn; từ đó tính lại số phút theo kỹ năng của từng ngày,
+   đánh dấu ngày đủ nhiệm vụ, ước lượng XP. Chuỗi ngày thì người học nhập lại số ngày mình nhớ. ===== */
+const RQ = { scan: null, busy: false, streak: "", sure: false, hide: false };
+const rqDay = ts => ts ? new Date(+ts).toLocaleDateString("en-CA") : "";
+async function rqScan() {
+  const day = {}, add = (d, k, m) => { if (!d || d > today()) return; const o = day[d] ||= {}; o[k] = (o[k] || 0) + m; };
+  const c = { w: 0, r: 0, s: 0, m: 0, v: 0 }; let xp = 0;
+  for (const w of WRIT) { if (!w.created) continue; add(rqDay(w.created), "W", 12); xp += w.parent ? 30 : w.task === 1 ? 50 : 80; c.w++; }
+  for (const r of READS) for (const a of r.attempts || []) { add(a.date, "R", 12); xp += 40; c.r++; }
+  const sp = await store.list("speaks").catch(() => []);
+  for (const s of sp) { if (!s.created) continue; add(rqDay(s.created), "S", 6); xp += 40; c.s++; }
+  for (const m of MOCKS) {
+    const d = rqDay(m.created); let any = false;
+    if (m.listen?.done) { add(d, "L", 30); any = true; } if (m.read?.done) { add(d, "R", 30); any = true; } if (m.write?.done) { add(d, "W", 30); any = true; }
+    if (any) { xp += 100; c.m++; }
+  }
+  for (const v of VOCAB) if (v.last && (v.reps || 0) + (v.lapses || 0) > 0) { add(v.last, "V", 1); xp += 1; c.v++; }
+  return { day, xp, c, days: Object.keys(day).length };
+}
+function rqNeed() {
+  if (!P || P.rebuilt || RQ.hide || store.kind !== "db" || UI.dbSwitching) return false;
+  if (!RQ.scan) { if (!RQ.busy) { RQ.busy = true; rqScan().then(s => { RQ.scan = s; RQ.busy = false; render(); }, () => { RQ.busy = false; }); } return false; }
+  return RQ.scan.xp > (P.xp || 0) + 50 && RQ.scan.days >= 2;
+}
+function rqApply() {
+  const s = RQ.scan, q = dqS(), n = Math.max(0, Math.min(90, Math.round(+RQ.streak || 0)));
+  let done = 0, first = today();
+  for (const [d, est] of Object.entries(s.day)) {
+    if (d < first) first = d;
+    const lg = P.log[d] ||= { min: 0, acts: [] }, by = lg.by ||= {}; if (!by.f && lg.sk) by.f = { ...lg.sk }; const b = by.f ||= {};
+    let sum = 0; for (const k of ["L", "S", "R", "W"]) if (est[k]) { b[k] = Math.max(b[k] || 0, est[k]); sum += est[k]; }
+    if (est.V) { lg.vr ||= 1; sum += Math.min(10, est.V); }
+    lg.min = Math.max(+lg.min || 0, sum);
+  }
+  for (const d of Object.keys(s.day)) if (dqToday(d).ok && q.days[d] !== 1) { q.days[d] = 1; q.fin[d] ||= new Date(d + "T21:00:00").getTime(); done++; }
+  for (let i = 1; i <= n; i++) { const d = addDays(today(), -i); if (d < first) first = d; if (!q.days[d]) { q.days[d] = 1; q.fin[d] ||= new Date(d + "T21:00:00").getTime(); } }
+  if (first < (q.joined || today())) q.joined = first;
+  P.xp = Math.max(P.xp || 0, s.xp + done * 20);
+  P.rebuilt = Date.now(); saveProfile();
+  try { dqRecheck(); dqPublish(true); } catch {}
+  toast(`Đã tính lại: ${P.xp} XP, chuỗi ${dqStreak(q.days)} ngày.`); render();
+}
+function rqCard() {
+  if (!rqNeed()) return null;
+  const s = RQ.scan, inp = h("input", { type: "number", min: 0, max: 90, inputmode: "numeric", value: RQ.streak, placeholder: "vd 12", style: "width:90px", oninput: e => { RQ.streak = e.target.value; } });
+  return h("section", { class: "card stack rq-card", style: "gap:10px;border-color:var(--coral,#d9480f)" },
+    h("h2", { style: "margin:0" }, "🛟 Tiến độ của bạn bị mất? Tính lại từ bài đã lưu"),
+    h("p", { class: "small", style: "margin:0" }, "Một lỗi của web đã xóa XP, nhiệm vụ và chuỗi ngày của một số bạn (lỗi đã được sửa). Bài làm của bạn vẫn còn, web dùng chúng để tính lại."),
+    h("p", { class: "small muted", style: "margin:0" }, `Tìm thấy: ${s.c.w} bài viết, ${s.c.r} lần làm bài đọc, ${s.c.s} bài nói, ${s.c.m} đề thi thử, ${s.c.v} từ đã ôn, trải trên ${s.days} ngày. Ước tính khoảng ${s.xp} XP. Phần nghe và bài học ngữ pháp không lưu riêng nên không tính lại được.`),
+    h("label", { class: "row", style: "gap:8px;flex-wrap:wrap;align-items:center" }, h("span", { class: "small" }, "Chuỗi ngày của bạn trước khi mất (nếu nhớ, tính đến hôm qua):"), inp, h("span", { class: "small muted" }, "ngày")),
+    h("div", { class: "row", style: "gap:8px;flex-wrap:wrap" },
+      h("button", { class: "btn" + (RQ.sure ? " btn-primary" : ""), type: "button", onclick: () => { if (!RQ.sure) { RQ.sure = true; render(); return; } RQ.sure = false; rqApply(); } }, RQ.sure ? "Bấm lần nữa để tính lại" : "Tính lại tiến độ"),
+      h("button", { class: "btn btn-quiet", type: "button", onclick: () => { RQ.hide = true; render(); } }, "Để sau")),
+    h("span", { class: "small muted" }, "Chỉ dùng được một lần. Nếu có bản sao lưu ở cuối trang Hôm nay thì nên khôi phục bản đó trước."));
+}
+(function () {
+  const _pt = pageToday; pageToday = function () { const n = _pt(), c = rqCard(); if (c) { const hd = n.firstElementChild; hd ? hd.after(c) : n.prepend(c); } return n; };
+  const _pg = pageGroup; pageGroup = function () { const n = _pg(), c = rqCard(); if (c) { const hd = n.firstElementChild; hd ? hd.after(c) : n.prepend(c); } return n; };
+})();
 
 </script>
 
