@@ -1175,6 +1175,7 @@ body.workmode .page-head{display:none}
 .topnav a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px!important;font-size:.74rem;white-space:nowrap;line-height:1.1;flex:1;min-width:0}
 .topnav a .nav-ic{display:inline-flex}.topnav a .nav-ic svg{width:19px;height:19px}
 #acct{flex:none}#acct .acct-who{display:none}.acct-out{white-space:nowrap;font-size:.78rem;padding:6px 10px}}
+.sub-in{gap:6px;flex-wrap:wrap;margin-bottom:4px}.sub-in .opt{font-weight:600}
 </style>
 </head>
 <body>
@@ -5700,7 +5701,28 @@ function pageHead(eyebrow, title, sub, right) { return h("div", { class: "page-h
 const SUB_DESC = { "vTab:road": "25 chủ đề IELTS và A1→B2 theo CEFR, qua màn như game", "rTab:full": "3 passage · 40 câu · 60 phút, thi thử hoặc luyện tập", "wTab:full": "Task 1 + Task 2 trong 60 phút", "wTab:course": "Học từng kỹ năng, từng dạng đề", "rTab:course": "Học từng dạng câu hỏi", "wTab:write": "Chọn đề, bấm giờ, viết và nộp chấm", "wTab:drill": "Game viết câu, Paraphrase 60 giây, Nâng câu", "wTab:hist": "Bài đã chấm và phân tích tiến bộ",
   "rTab:list": "Bài đọc của bạn và tạo bài mới", "rTab:drill": "Game Đọc và đọc lướt chọn heading", "rTab:profile": "Bạn hay sai dạng nào, vì sao",
   "vTab:all": "Danh sách từ, tìm, lọc và gộp chủ đề", "vTab:add": "Thêm một từ, gói theo chủ đề, dán ghi chép", "vTab:read": "Đọc bài văn và điền từ đã học", "vTab:sent": "Dịch 3 câu, bắt buộc dùng từ trong sổ, AI chấm", "vTab:game": "Ghép từ với nghĩa, bấm giờ, không tốn lượt AI", "vTab:g3d": "Bắn thiên thạch, câu cá, thám tử suy luận" };
+/* Gộp các mục nhỏ trong menu "Đang xem" thành nhóm cho gọn: mỗi nhóm có hàng nút chọn bên trong */
+const SUB_GROUPS = {
+  lsTab: [["sec", "Luyện theo phần", "Section 1–4 thu sẵn, hoặc nhờ AI soạn bài mới", ["sec", "ai"]], ["detail", "Nghe chép & số", "Nghe chép từng câu, số điện thoại, giá tiền, đánh vần tên", ["dict", "nd"]], ["games", "🎮 Game", "Nhà báo điền tin, Đuổi giọng, Điền lời bài hát", id => /^g-/.test(id)]],
+  spTab: [["test", "Thi thử & kết quả", "Phòng thi Speaking có AI chấm band, các lần nói đã chấm", ["test", "hist"]], ["games", "🎮 Game", "Đọc thần chú, Nói 1 phút, Phản xạ nhanh, Nhại ngữ điệu", id => /^g-/.test(id)]],
+  vTab: [["use", "Luyện dùng từ", "Viết câu với từ mới, bài văn điền từ", ["sent", "read"]], ["games", "🎮 Game", "Game ghép từ, Game 3D", ["game", "g3d"]]]
+};
+const subEff = key => UI[key + "__" + UI[key]] || UI[key];
+function subMerge(key, items) {
+  const G = SUB_GROUPS[key]; if (!G) return items;
+  const inG = (g, id) => typeof g[3] === "function" ? g[3](id) : g[3].includes(id), out = [], used = new Set();
+  for (const g of G) { const m = items.filter(i => inG(g, i[0])); if (m.length < 2) continue; m.forEach(i => used.add(i[0]));
+    if (m.some(i => i[0] === UI[key])) { UI[key + "__" + g[0]] = UI[key]; UI[key] = g[0]; }
+    SUB_DESC[key + ":" + g[0]] = g[2];
+    const pos = items.indexOf(m[0]);
+    out.push([pos, [g[0], g[1], null, () => { const ik = key + "__" + g[0], cur = m.some(i => i[0] === UI[ik]) ? UI[ik] : m[0][0], it = m.find(i => i[0] === cur);
+      return [h("div", { class: "row sub-in", role: "tablist" }, m.map(([id, label, badge]) => h("button", { type: "button", class: "opt", role: "tab", "aria-pressed": String(id === cur), title: SUB_DESC[key + ":" + id] || null, onclick: () => { if (id === cur) return; UI[ik] = id; try { gmStopAll(); } catch {} try { alStop(); } catch {} render(); } }, label, badge != null ? h("span", { class: "subtab-b" }, badge) : null))), ...[].concat(it[3]())]; }]]);
+  }
+  items.forEach((i, k) => { if (!used.has(i[0])) out.push([k, i]); });
+  return out.sort((a, b) => a[0] - b[0]).map(x => x[1]);
+}
 function subMenu(key, items) {
+  items = subMerge(key, items);
   const cur = items.some(i => i[0] === UI[key]) ? UI[key] : items[0][0], it = items.find(i => i[0] === cur);
   const menu = h("details", { class: "tabmenu" }, h("summary", null, h("span", { class: "small muted" }, "Đang xem"), h("b", null, it[1]), h("span", { class: "tabmenu-car", "aria-hidden": "true" }, "▾")),
     h("div", { class: "tabmenu-pop", role: "menu" }, items.map(([id, label, badge]) => { const desc = SUB_DESC[key + ":" + id]; return h("button", { type: "button", role: "menuitem", class: id === cur ? "on" : null, onclick: () => { UI[key] = id; if (UI.gm) UI.gm.play = null; render(); window.scrollTo(0, 0); } },
@@ -13155,7 +13177,7 @@ function spChecks(l, an) {
 const splSt = id => (P.spl ||= {})[id] ||= {};
 function pageSpeak() {
   loadSpeaks();
-  if (UI.spTabSeen !== UI.spTab) { UI.spTabSeen = UI.spTab; UI.spView = null; try { gmStopAll(); } catch {} if (/^g-/.test(UI.spTab || "")) try { gemWarm("gm"); } catch {} }
+  if (UI.spTabSeen !== subEff("spTab")) { UI.spTabSeen = subEff("spTab"); UI.spView = null; try { gmStopAll(); } catch {} if (/^g-/.test(subEff("spTab") || "")) try { gemWarm("gm"); } catch {} }
   const T = subMenu("spTab", [["pron", "Phát âm", null, () => [spPronTab()]], ["path", "Lộ trình nói", null, () => [spPathTab()]], ["shadow", "Shadowing", null, () => [spShadowTab()]], ["bank", "Luyện đề", null, () => [spBankTab()]], ["test", "Thi thử", null, () => [spTestTab()]], ["hist", "Kết quả", null, () => [spHistTab()]], ...(typeof SP_GAMES !== "undefined" ? SP_GAMES : [])]);
   UI.spTabSeen = T.cur;
   return h("div", { class: "stack", style: "gap:18px" },
@@ -14381,7 +14403,7 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
-  if (UI.lsTabSeen !== UI.lsTab) { UI.lsTabSeen = UI.lsTab; try { gmStopAll(); } catch {} if (/^g-/.test(UI.lsTab || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
+  if (UI.lsTabSeen !== subEff("lsTab")) { UI.lsTabSeen = subEff("lsTab"); try { gmStopAll(); } catch {} if (/^g-/.test(subEff("lsTab") || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
   const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["deep", "Luyện sâu 5 bước", "mới", () => [typeof lsDeepTab === "function" ? lsDeepTab() : null]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
