@@ -111,7 +111,7 @@ function pageListen() {
   loadListens(); loadPool();
   if (UI.lsTabSeen !== UI.lsTab) { UI.lsTabSeen = UI.lsTab; try { gmStopAll(); } catch {} if (/^g-/.test(UI.lsTab || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
-  const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
+  const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["deep", "Luyện sâu 5 bước", "mới", () => [typeof lsDeepTab === "function" ? lsDeepTab() : null]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
     pageHead("Listening", "Luyện nghe IELTS", `${LS_BANK.length} phần thu sẵn (${new Set(LS_BANK.map(s => s.test)).size} đề đầy đủ, nhiều giọng Anh và Mỹ), chấm ngay không tốn lượt AI. Có thể đổi sang giọng Gemini tự nhiên hơn, nghe chép từng câu, hoặc nhờ AI soạn bài nghe mới. Đã làm ${done}/${LS_BANK.length} phần.`, T.menu), ...T.body);
 }
