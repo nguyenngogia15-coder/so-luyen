@@ -11,13 +11,29 @@ const DP_SIGN = /\b(moving on|move on|now let'?s|let'?s (?:now )?(?:turn|look|mo
 const dpLog = () => (P.lsDeep ||= []);
 function dpMap() { const m = Object.fromEntries(DP_ERR.map(e => [e[0], 0])); for (const r of dpLog()) for (const [k, v] of Object.entries(r.e || {})) m[k] = (m[k] || 0) + v; return m; }
 /* Câu trong lời thoại chứa đáp án (với câu điền từ); câu hỏi chọn đáp án thì không dò được */
+const DP_STOP = new Set("the a an of to in on at for and or but is are was were be been it its that this these those as by with from will would can could not no so if than then there they he she we you i do does did have has had more most very about which what why how who their them his her our your".split(" "));
+const dpWords = t => String(t).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter(w => w.length > 2 && !DP_STOP.has(w)).map(w => w.slice(0, 5));
+/* Đáp án hiển thị: câu điền từ là chữ cần điền; câu chọn là chữ cái kèm nội dung lựa chọn */
+function dpAns(g, it) {
+  if (g.type === "gap") return it.a[0];
+  const k = String(it.a).charCodeAt(0) - 65, t = g.type === "mcq" ? it.opts?.[k] : g.opts?.[k];
+  return t && t !== it.a ? `${it.a} (${t})` : String(it.a);
+}
+/* Câu trong lời thoại chứa đáp án. Câu điền từ: dò đúng chữ. Câu chọn: dò theo từ khóa của lựa chọn đúng (ước lượng). */
 function dpSentOf(s, it, g) {
-  const S = alSents(s); if (g.type !== "gap") return -1;
-  const cp = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, "");
-  for (const a of it.a) { const k = lsNorm(a); if (k.length < 2) continue; let i = S.findIndex(x => lsNorm(x.x).includes(k) || lsNorm(spSpellKeep(x.x)).includes(lsNorm(spSpellKeep(a))));
-    if (i < 0 && cp(a).length >= 3) i = S.findIndex(x => cp(x.x).includes(cp(a)) || cp(spSpellKeep(x.x)).includes(cp(spSpellKeep(a))));
-    if (i >= 0) return i; }
-  return -1;
+  const S = alSents(s), cp = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (g.type === "gap") {
+    for (const a of it.a) { const k = lsNorm(a); if (!k) continue;
+      let i = k.length < 2 ? (() => { const pw = String(it.pre || "").trim().split(/\s+/).pop() || ""; const re = new RegExp("\\b" + pw.replace(/[^a-z0-9]/gi, "") + "\\s+" + k + "\\b", "i"); return pw ? S.findIndex(x => re.test(x.x)) : -1; })()
+        : S.findIndex(x => lsNorm(x.x).includes(k) || lsNorm(spSpellKeep(x.x)).includes(lsNorm(spSpellKeep(a))));
+      if (i < 0 && cp(a).length >= 3) i = S.findIndex(x => cp(x.x).includes(cp(a)) || cp(spSpellKeep(x.x)).includes(cp(spSpellKeep(a))));
+      if (i >= 0) return i; }
+    return -1;
+  }
+  const k = String(it.a).charCodeAt(0) - 65, opt = g.type === "mcq" ? it.opts?.[k] : g.opts?.[k], ow = new Set(dpWords(opt || "")), qw = new Set(dpWords(it.q || ""));
+  let best = -1, bs = 0;
+  S.forEach((x, i) => { const w = new Set(dpWords(x.x)); let sc = 0; for (const z of ow) if (w.has(z)) sc += 2; for (const z of qw) if (w.has(z)) sc += 1; if (sc > bs) { bs = sc; best = i; } });
+  return bs >= 2 ? best : -1;
 }
 function dpPlayer(s, i, label) {
   const src = lsSrcInfo(s), st = src ? lsSegs(s, src) : { state: "loading" }, seg = i >= 0 ? lsSegAt(s, src, st, i) : null;
@@ -77,13 +93,13 @@ function dpRun(s, D) {
     const allTagged = wrong.every(({ it }) => D.err[it.n]);
     body = h("section", { class: "card stack", style: "gap:12px" }, h("div", { class: "row", style: "justify-content:space-between;align-items:center" }, h("h2", { style: "margin:0" }, "Bước 3 · Chấm và chẩn đoán"), h("span", { class: "band-big" }, `${D.score}/10`)),
       wrong.length ? h("p", { class: "small muted", style: "margin:0" }, "Với mỗi câu sai, nghe lại đúng câu chứa đáp án rồi tự nhận xem mình trượt vì đâu. Chọn thật lòng, đây là thứ quyết định bước sau bạn luyện gì.") : h("p", { class: "note good", style: "margin:0" }, "Đúng hết! Vẫn nên làm bước 5 để nghe lại trọn bài một lần nữa."),
-      ...wrong.map(({ g, it }) => { const i = dpSentOf(s, it, g), sent = i >= 0 ? alSents(s)[i].x : null, ans = g.type === "gap" ? it.a[0] : it.a;
+      ...wrong.map(({ g, it }) => { const i = dpSentOf(s, it, g), sent = i >= 0 ? alSents(s)[i].x : null, ans = dpAns(g, it);
         return h("div", { class: "dp-q stack", style: "gap:8px" },
           h("div", { class: "row", style: "gap:10px;flex-wrap:wrap;align-items:baseline" }, h("b", null, "Câu " + it.n), h("span", { class: "small" }, "Bạn ghi: ", h("s", null, W.ans[it.n] || "(bỏ trống)")), h("span", { class: "small" }, "Đáp án: ", h("b", null, ans)),
             D.pred[it.n] ? h("span", { class: "small muted" }, "Bạn đoán: " + DP_PRED.find(p => p[0] === D.pred[it.n])[1]) : null),
-          sent ? h("p", { class: "dp-sent", style: "margin:0" }, "“" + sent + "”") : h("span", { class: "small muted" }, "Câu chọn đáp án: mở lời thoại ở bước 5 để tìm đoạn chứa ý này."),
+          sent ? h("p", { class: "dp-sent", style: "margin:0" }, g.type !== "gap" ? h("span", { class: "small muted", style: "font-style:normal;display:block" }, "Đoạn có thể chứa ý đáp án (máy dò theo từ khóa):") : null, "“" + sent + "”") : h("span", { class: "small muted" }, "Chưa dò được câu chứa ý này: mở lời thoại ở bước 5 để tìm."),
           sent ? dpPlayer(s, i) : null,
-          h("div", { class: "row", style: "gap:4px;flex-wrap:wrap" }, DP_ERR.map(e => h("button", { type: "button", class: "opt", "aria-pressed": String(D.err[it.n] === e[0]), title: e[3], onclick: () => { D.err[it.n] = e[0]; render(); } }, e[1] + " " + e[2])))); }),
+          h("div", { class: "row", style: "gap:4px;flex-wrap:wrap" }, DP_ERR.filter(e => g.type === "gap" || e[0] !== "spell").map(e => h("button", { type: "button", class: "opt", "aria-pressed": String(D.err[it.n] === e[0]), title: e[3], onclick: () => { D.err[it.n] = e[0]; render(); } }, e[1] + " " + e[2])))); }),
       h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: !allTagged || null, onclick: () => go(wrong.length ? 4 : 5) }, wrong.length ? "Sang bước sửa ›" : "Sang bước 5 ›"), !allTagged ? h("span", { class: "small muted" }, "Chọn loại lỗi cho mọi câu sai trước đã") : null));
   } else if (D.step === 4) {
     const wrong = qs.filter(({ it }) => D.err[it.n]);
@@ -91,7 +107,7 @@ function dpRun(s, D) {
     body = h("section", { class: "card stack", style: "gap:12px" }, h("h2", { style: "margin:0" }, "Bước 4 · Sửa đúng chỗ hỏng"),
       h("p", { class: "small muted", style: "margin:0" }, "Mỗi loại lỗi một cách sửa. Khoảng 15 phút."),
       h("ul", { class: "small dp-how" }, DP_ERR.filter(e => wrong.some(({ it }) => D.err[it.n] === e[0])).map(e => h("li", null, h("b", null, e[1] + " " + e[2] + ": "), e[4] + "."))),
-      ...wrong.map(({ g, it }) => { const k = D.err[it.n], e = DP_ERR.find(x => x[0] === k), i = dpSentOf(s, it, g), sent = i >= 0 ? alSents(s)[i].x : "", ans = g.type === "gap" ? it.a[0] : it.a, F = fix[it.n] ||= {};
+      ...wrong.map(({ g, it }) => { const k = D.err[it.n], e = DP_ERR.find(x => x[0] === k), i = dpSentOf(s, it, g), sent = i >= 0 ? alSents(s)[i].x : "", ans = dpAns(g, it), F = fix[it.n] ||= {};
         let task;
         if (k === "sound") {
           const cmp = () => { const w = t => spSpellKeep(t).toLowerCase().replace(/[^a-z0-9' ]+/g, " ").split(/\s+/).filter(Boolean), want = w(sent), got = new Set(w(F.typed || "")); F.res = want.map(x => got.has(x)); F.pct = Math.round(F.res.filter(Boolean).length / Math.max(1, want.length) * 100); if (typeof e4Listen === "function") e4Listen(sent, sent.split(/\s+/).filter((x, q) => !F.res[q]), s.id + ":" + i, F.pct); render(); };
@@ -101,9 +117,11 @@ function dpRun(s, D) {
             h("b", { class: "small" }, "2. Nhại theo (shadowing) 3–5 lần"), h("span", { class: "small muted" }, "Mục tiêu là bắt được âm, chỗ nối, chỗ nuốt âm, chưa cần nói hay. Bấm nghe rồi nói đuổi theo gần như cùng lúc."),
             h("div", { class: "row" }, dpPlayer(s, i, "▶ Nghe và nói theo"), h("button", { class: "btn btn-quiet", type: "button", onclick: () => { F.sh = (F.sh || 0) + 1; render(); } }, `✓ Đã nhại ${F.sh || 0} lần`))) : h("span", { class: "small muted" }, "Mở lời thoại ở bước 5, tìm câu chứa đáp án và nghe lại vài lần.");
         } else if (k === "word") {
-          const add = async () => { F.busy = true; render(); try { if (!VOCAB.some(v => v.word.toLowerCase() === String(ans).toLowerCase())) { const d = await dictLook(String(ans)).catch(() => null); await addVocab({ word: String(ans), meaning: d?.[2] || "", pos: d?.[0] || "", ipa: d?.[1] || "", example: sent || d?.[3] || "", topic: "" }); } F.added = true; toast("Đã thêm vào sổ từ, kèm cả câu nghe được"); } catch (er) { toast("Chưa thêm được: " + (er?.message || "lỗi")); } F.busy = false; render(); };
-          task = h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, "Ghi cả câu chứa từ, không chỉ mặt chữ, rồi nghe lại cách nó được nói trong câu."), sent ? dpPlayer(s, i) : null,
-            h("div", { class: "row" }, h("button", { class: "btn", type: "button", disabled: F.added || F.busy || null, onclick: add }, F.added ? "✓ Đã thêm vào sổ từ" : `+ Thêm “${ans}” vào sổ từ kèm câu`)));
+          if (F.w == null) F.w = g.type === "gap" ? String(ans) : "";
+          const add = async () => { const w = String(F.w || "").trim(); if (!w) { toast("Gõ từ bạn chưa biết trước đã"); return; } F.busy = true; render(); try { if (!VOCAB.some(v => v.word.toLowerCase() === w.toLowerCase())) { const d = await dictLook(w).catch(() => null); await addVocab({ word: w, meaning: d?.[2] || "", pos: d?.[0] || "", ipa: d?.[1] || "", example: sent || d?.[3] || "", topic: "" }); } F.added = w; toast("Đã thêm “" + w + "” vào sổ từ, kèm cả câu nghe được"); } catch (er) { toast("Chưa thêm được: " + (er?.message || "lỗi")); } F.busy = false; render(); };
+          task = h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, "Ghi cả câu chứa từ, không chỉ mặt chữ, rồi nghe lại cách nó được nói trong câu."), sent ? h("p", { class: "dp-sent", style: "margin:0" }, "“" + sent + "”") : null, sent ? dpPlayer(s, i) : null,
+            h("div", { class: "row", style: "gap:6px;align-items:center" }, h("span", { class: "small" }, "Từ mới:"), h("input", { type: "text", class: "dp-in", value: F.w, placeholder: "gõ từ chưa biết", oninput: ev => { F.w = ev.target.value; } }),
+              h("button", { class: "btn", type: "button", disabled: F.busy || null, onclick: add }, F.added ? `✓ Đã thêm “${F.added}”` : "+ Thêm vào sổ từ kèm câu")));
         } else if (k === "trap") {
           const toks = (sent || "").split(/\s+/);
           task = sent ? h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, "Bấm vào những từ đã lừa bạn (chỗ đổi ý như actually, no wait, sorry; hoặc từ đồng nghĩa với từ trong câu hỏi)."), dpPlayer(s, i),
@@ -111,7 +129,7 @@ function dpRun(s, D) {
         } else if (k === "focus") {
           const S = alSents(s), from = Math.max(0, i - 2), around = i >= 0 ? S.slice(from, i + 1) : [];
           const src = lsSrcInfo(s), st = src ? lsSegs(s, src) : {}, a0 = i >= 0 ? lsSegAt(s, src, st, from) : null, a1 = i >= 0 ? lsSegAt(s, src, st, i) : null;
-          const pat = /^[a-z0-9]+$/i.test(String(ans).replace(/\s/g, "")) && String(ans).length > 3 ? String(ans).replace(/\s/g, "").split("").join("[^a-z0-9]{0,3}") : String(ans).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), mark = t => esc(t).replace(new RegExp("(" + pat + ")", "i"), "<mark>$1</mark>");
+          const pat = g.type !== "gap" ? "(?!x)x" : /^[a-z0-9]+$/i.test(String(ans).replace(/\s/g, "")) && String(ans).length > 3 ? String(ans).replace(/\s/g, "").split("").join("[^a-z0-9]{0,3}") : String(ans).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), mark = t => esc(t).replace(new RegExp("(" + pat + ")", "i"), "<mark>$1</mark>");
           task = i < 0 ? h("span", { class: "small muted" }, "Mở lời thoại ở bước 5, tìm đoạn chứa đáp án và nghe lại từ vài câu trước đó.") : h("div", { class: "stack", style: "gap:8px" },
             h("span", { class: "small" }, "Nghe lại từ 2 câu trước, giữ tập trung tới câu in đậm."),
             h("div", { class: "dp-ctx" }, around.map((x, q) => h("p", { class: q === around.length - 1 ? "on" : "", html: q === around.length - 1 ? mark(x.x) : esc(x.x) }))),
@@ -119,7 +137,7 @@ function dpRun(s, D) {
               h("span", { class: "small muted" }, "Lần này nghe ra chưa?"), ["Ra rồi", "Chưa"].map((t, q) => h("button", { type: "button", class: "opt", "aria-pressed": String(F.ok === q), onclick: () => { F.ok = q; render(); } }, t))),
             F.ok === 1 ? h("p", { class: "small muted", style: "margin:0" }, "Vẫn chưa thì đây có thể là lỗi không nghe ra âm: chép chính tả câu in đậm ở mục Nghe chép.") : null);
         } else {
-          const ok = (F.t || []).filter(x => lsNorm(x) === lsNorm(ans)).length;
+          const ok = (F.t || []).filter(x => (g.type === "gap" ? it.a : [ans]).some(z => lsNorm(z) === lsNorm(x))).length;
           task = h("div", { class: "stack", style: "gap:8px" }, h("span", { class: "small" }, `Gõ lại đúng “${ans}” 3 lần. Để ý đuôi -s, chữ hoa, số.`),
             h("div", { class: "row", style: "gap:6px" }, [0, 1, 2].map(q => h("input", { type: "text", class: "dp-in", value: (F.t || [])[q] || "", autocomplete: "off", spellcheck: "false", onchange: ev => { F.t ||= []; F.t[q] = ev.target.value; render(); } })), h("span", { class: "chip " + (ok >= 3 ? "good" : "") }, `${ok}/3`)));
         }
