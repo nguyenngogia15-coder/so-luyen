@@ -31,7 +31,7 @@ function recBox(onBlob, opts = {}) {
       if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") throw new Error("nomic");
       stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
       rec = new MediaRecorder(stream); const parts = []; rec.ondataavailable = e => e.data.size && parts.push(e.data);
-      try { ac = new (window.AudioContext || window.webkitAudioContext)(); const an = ac.createAnalyser(); an.fftSize = 512; ac.createMediaStreamSource(stream).connect(an); const buf = new Uint8Array(an.fftSize);
+      try { ac = new (window.AudioContext || window.webkitAudioContext)(); const an = ac.createAnalyser(); an.fftSize = 512; spHpChain(ac, ac.createMediaStreamSource(stream)).connect(an); const buf = new Uint8Array(an.fftSize);
         const loop = () => { an.getByteTimeDomainData(buf); let m = 0; for (const v of buf) m = Math.max(m, Math.abs(v - 128)); lvl.style.width = Math.min(100, m / 64 * 100) + "%"; raf = requestAnimationFrame(loop); }; loop(); meter.hidden = false; } catch {}
       rec.onstop = () => { clearInterval(tick); cancelAnimationFrame(raf); meter.hidden = true; try { ac?.close(); } catch {} stream.getTracks().forEach(t => t.stop()); const b = new Blob(parts, { type: rec.mimeType || "audio/webm" }); rec = null; btn.classList.remove("on"); btn.textContent = opts.label || "● Ghi âm"; info.textContent = "Đang xử lý…";
         Promise.resolve(onBlob(b, t => info.textContent = t)).then(() => { info.textContent = ""; }, e => { console.warn(e); info.textContent = e?.vn || "Lỗi: " + (e?.message || e); }); };

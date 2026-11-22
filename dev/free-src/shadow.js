@@ -6,7 +6,7 @@ const SHW = { api: null, player: null, vid: null, tm: null, rec: null, userUrl: 
 async function autoRec({ maxSec = 15, quietSec = 1.2, idleSec = 6, onState } = {}) {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
   const rec = new MediaRecorder(stream), parts = []; rec.ondataavailable = e => e.data.size && parts.push(e.data);
-  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 1024; ac.createMediaStreamSource(stream).connect(an);
+  const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 1024; spHpChain(ac, ac.createMediaStreamSource(stream)).connect(an);
   const buf = new Float32Array(an.fftSize); let noise = 0, nN = 0, spoke = false, quiet = 0; const t0 = Date.now();
   return new Promise((res, rej) => {
     const stop = () => { clearInterval(iv); try { rec.state === "recording" && rec.stop(); } catch {} };

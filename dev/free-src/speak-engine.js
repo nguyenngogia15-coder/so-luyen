@@ -80,6 +80,8 @@ async function spCached(need) {
   } catch { return false; }
 }
 /* Âm thanh: blob → Float32Array 16 kHz mono */
+/* Nối nguồn micro qua bộ cắt ù dưới 80 Hz trước khi đo âm lượng (để quạt, gió không làm máy tưởng bạn vẫn đang nói) */
+function spHpChain(ac, node) { let n = node; for (const Q of [-5.33, 2.32]) { const f = ac.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 80; f.Q.value = Q; n.connect(f); n = f; } return n; }
 async function spDecode(blob) {
   const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC();
   const buf = await ac.decodeAudioData(await blob.arrayBuffer()); try { ac.close(); } catch {}
