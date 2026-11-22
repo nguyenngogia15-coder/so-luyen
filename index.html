@@ -16639,7 +16639,7 @@ document.head.append(h("style", null, `.ach-g{border:2px solid var(--edge,#111);
    cắt mẻ thành từng câu theo khoảng lặng; chưa có thì vẫn dùng giọng máy thu sẵn như cũ. Mẻ đã tải được nhớ trong trình duyệt. ===== */
 const GEMV = { plan: null, map: {}, batches: {}, miss: {} };
 function gemPlan() {
-  return GEMV.plan ||= fetch("voice/gem.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(B => { for (const b of B) b.ids.forEach((id, i) => { GEMV.map[b.p + ":" + id] = [b, i]; }); return B; }).catch(() => { GEMV.plan = null; return []; });
+  return GEMV.plan ||= fetch("voice/gem.json", { cache: "no-cache" }).then(r => { if (!r.ok) throw 0; return r.json(); }).then(B => { for (const b of B) { if (b.p === "gm" && b.ids.length > 1) continue; /* câu game cũ thu theo mẻ dễ cắt lệch: bỏ, chỉ dùng bản thu từng câu */ b.ids.forEach((id, i) => { GEMV.map[b.p + ":" + id] = [b, i]; }); } return B; }).catch(() => { GEMV.plan = null; return []; });
 }
 function gemWav(f) {
   const n = f.length, buf = new ArrayBuffer(44 + n * 2), d = new DataView(buf), w = (o, s) => { for (let i = 0; i < s.length; i++) d.setUint8(o + i, s.charCodeAt(i)); };

@@ -2,13 +2,13 @@
 const W = "https://so-luyen-ai.nguyenngogia15.workers.dev";
 self.addEventListener("install", () => self.skipWaiting());
 /* Giữ một bản web và dữ liệu trong máy: mở ngay từ bản đã giữ, tải bản mới ở nền; trang khác bản cũ thì báo trang tải lại */
-const C = "sl-v1";
+const C = "sl-v2";
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 self.addEventListener("fetch", e => {
   const r = e.request, u = new URL(r.url), scope = new URL(self.registration.scope);
   if (r.method !== "GET" || u.origin !== scope.origin) return;
   const nav = r.mode === "navigate" && (u.pathname === scope.pathname || u.pathname === scope.pathname + "index.html");
-  const data = /\/(vr\/.*\.json|ls-bank\.json|sp-bank\.json|voice\/gm\/index\.json|voice\/gem\.json)$/.test(u.pathname);
+  const data = /\/(vr\/.*\.json|ls-bank\.json|sp-bank\.json|voice\/gm\/index\.json)$/.test(u.pathname);
   if (!nav && !data) return;
   e.respondWith((async () => {
     const c = await caches.open(C), key = nav ? scope.href : u.href, hit = await c.match(key);
