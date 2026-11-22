@@ -17590,6 +17590,24 @@ function rqCard() {
   const _pt = pageToday; pageToday = function () { const n = _pt(), c = rqCard(); if (c) { const hd = n.firstElementChild; hd ? hd.after(c) : n.prepend(c); } return n; };
   const _pg = pageGroup; pageGroup = function () { const n = _pg(), c = rqCard(); if (c) { const hd = n.firstElementChild; hd ? hd.after(c) : n.prepend(c); } return n; };
 })();
+/* Chỉnh một lần cho riêng tài khoản chủ trang: nhiệm vụ ngày 22/11/2026 đã làm đủ (Nghe, Nói, Đọc bằng game; Viết bằng khóa Viết;
+   Từ vựng: qua bài 1 chủ đề đầu tiên) nhưng bị lỗi xóa mất. */
+function fix1122() {
+  const d = "2026-11-22", q = dqS(), lg = P.log[d] ||= { min: 0, acts: [] }, by = lg.by ||= {};
+  if (!by.f && lg.sk) by.f = { ...lg.sk }; const b = by.f ||= {};
+  for (const [k, m] of [["L", 5], ["S", 5], ["R", 10], ["W", 15]]) b[k] = Math.max(b[k] || 0, m);
+  lg.vr = 1; lg.min = Math.max(+lg.min || 0, 35);
+  const s = vrL("topic-education", 0); s.c = 1; s.x = Math.max(s.x || 0, 3);
+  if (q.days[d] !== 1) { q.days[d] = 1; q.fin[d] ||= new Date(d + "T18:30:00").getTime(); P.xp = (P.xp || 0) + 20; const xd = (P.xpDay ||= {})[d] ||= {}; xd.daily = (xd.daily || 0) + 20; }
+  q.sk[d] = "VLSRW"; if (!q.joined || q.joined > d) q.joined = d;
+  P.fix1122 = Date.now(); saveProfile();
+  try { dqPublish(true); } catch {} render();
+}
+setTimeout(function w() {
+  if (window.__isOwner === false || P?.fix1122) return;
+  if (window.__isOwner && P && store.kind === "db" && !UI.dbSwitching) { try { fix1122(); } catch (e) { console.warn(e); } return; }
+  setTimeout(w, 1500);
+}, 2500);
 
 </script>
 
