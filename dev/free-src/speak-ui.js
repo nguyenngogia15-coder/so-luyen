@@ -199,7 +199,7 @@ function spChecks(l, an) {
   if (p.longMax != null) out.push([m.long <= p.longMax, `Ngừng dài (≥1 giây) không quá ${p.longMax} lần (bạn: ${m.long})`]);
   if (p.chunk) out.push([m.run >= p.chunk, `Trung bình từ ${p.chunk} từ mỗi cụm nói liền (bạn: ${m.run})`]);
   if (p.fillers != null) out.push([m.fillers <= p.fillers, `Từ đệm “ừm, à” không quá ${p.fillers} lần (bạn: ${m.fillers})`]);
-  for (const [label, k] of p.need || []) out.push([k === "linker2" ? (t.match(RX.linker) || []).length >= 2 : RX[k].test(t), label]);
+  for (const [label, k] of p.need || []) out.push([k === "linker2" ? (t.match(RX.linker) || []).length >= 2 : k === "notVague" ? !!t && (!RX.vague.test(t) || (RX.action.test(t) && RX.reason.test(t))) : RX[k].test(t), label]);
   return out;
 }
 const splSt = id => (P.spl ||= {})[id] ||= {};
@@ -217,6 +217,18 @@ function spPathTab() {
   const dn = SP_PATH.filter(l => splSt(l.id).done).length;
   return h("div", { class: "stack", style: "gap:12px" }, h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${dn / SP_PATH.length * 100}%` })), h("span", { class: "small muted" }, `${dn}/${SP_PATH.length} bài đạt`)),
     h("div", { class: "grid3" }, SP_PATH.map((l, i) => h("a", { class: "card lesson-card", href: "#sl-" + l.id }, h("span", { class: "num" }, i + 1), h("div", { class: "stack", style: "gap:4px" }, h("h3", null, l.t), h("span", { class: "small muted" }, l.part ? "Part " + l.part : "Kỹ năng chung"), h("div", { class: "row" }, splSt(l.id).done ? h("span", { class: "chip good" }, "Đã đạt") : h("span", { class: "chip" }, "Chưa đạt")))))));
+}
+/* Khối "Đào ý bằng vì sao": câu trả lời chung chung → bắt đầu bằng hành động → mỗi lần tự hỏi "vì sao, rồi sao" thêm một ý */
+function spDigCard(d, n) {
+  const cap = x => x.charAt(0).toUpperCase() + x.slice(1);
+  const full = d.full || [d.start, ...d.steps.map(x => cap(x[1]))].join(" ");
+  return h("section", { class: "card stack sp-dig", style: "gap:10px" }, secH(n, d.part === 3 ? "Đào ý bằng “vì sao” (tầm xã hội)" : "Đào ý bằng “vì sao”", d.part === 3 ? "Lý do chung, ví dụ chung, hệ quả, mặt kia" : "Mỗi lần tự hỏi là thêm một ý của riêng bạn"),
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("p", { class: "prompt", style: "margin:0;flex:1;min-width:0" }, d.q), sayBtn(d.q, "🔊", "btn")),
+    h("div", { class: "sp-dig-bad stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, "✗ Trả lời chung chung"), h("p", { style: "margin:0" }, d.bad.a), h("p", { class: "small", style: "margin:0", html: spMd(d.bad.why) })),
+    h("div", { class: "sp-dig-good stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, d.part === 3 ? "✓ Mở bằng một lý do chung" : "✓ Mở bằng hành động"), h("p", { style: "margin:0" }, d.start)),
+    h("ol", { class: "sp-dig-steps" }, d.steps.map(([ask, add]) => h("li", null, h("span", { class: "sp-dig-ask" }, "Tự hỏi: ", h("b", null, ask)), h("span", { class: "sp-dig-add" }, "→ ", add)))),
+    h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ghép lại"), h("p", { class: "model-text", style: "margin:0" }, full), h("div", { class: "row" }, sayBtn(full, "🔊 Nghe cả câu trả lời", "btn"))),
+    d.asks?.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Câu tự hỏi để có thêm ý"), h("div", { class: "row", style: "gap:6px;flex-wrap:wrap" }, d.asks.map(x => h("span", { class: "chip" }, x)))) : null);
 }
 function pageSpLesson(l) {
   const st = splSt(l.id), i = SP_PATH.indexOf(l), p = l.practice;
@@ -243,8 +255,9 @@ function pageSpLesson(l) {
     h("section", { class: "card stack", style: "gap:10px" }, secH(1, "Bản chất"), h("p", { style: "margin:0", html: spMd(l.idea) }),
       l.frame.length ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, "Khung trả lời"), h("ol", { class: "gex" }, l.frame.map(x => h("li", null, x)))) : null,
       l.phrases.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Cụm nên dùng"), h("div", { class: "row", style: "gap:6px" }, l.phrases.map(x => h("span", { class: "chip acc sp-phr" }, x, " ", sayBtn(x, "🔊", "sp-say-in"))))) : null),
-    h("section", { class: "card stack", style: "gap:8px" }, secH(2, "Bài mẫu band 7"), h("p", { class: "prompt", style: "margin:0" }, l.model.q), h("p", { class: "model-text", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe bài mẫu", "btn"))),
-    h("section", { class: "card stack", style: "gap:10px" }, secH(3, "Luyện và tự kiểm tra", "Máy kiểm tra trên máy bạn, không gọi AI"), practice));
+    l.dig ? spDigCard(l.dig, 2) : null,
+    h("section", { class: "card stack", style: "gap:8px" }, secH(l.dig ? 3 : 2, "Bài mẫu band 7"), h("p", { class: "prompt", style: "margin:0" }, l.model.q), h("p", { class: "model-text", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe bài mẫu", "btn"))),
+    h("section", { class: "card stack", style: "gap:10px" }, secH(l.dig ? 4 : 3, "Luyện và tự kiểm tra", "Máy kiểm tra trên máy bạn, không gọi AI"), practice));
 }
 function spBankTab() {
   const part = UI.bkPart ||= "p1";

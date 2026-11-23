@@ -12209,6 +12209,9 @@ window.__bootApp = boot;
 .room-step{font-size:1.15rem}
 .room-cue{border:2px dashed var(--ink);padding:12px 16px;max-width:560px;width:100%;background:var(--surface)}
 @media (prefers-reduced-motion:reduce){.room-orb.rec{animation:none}}
+
+.sp-dig-bad{border-left:4px solid #c62828;background:#fdecea;padding:10px 12px}.sp-dig-good{border-left:4px solid #2e7d32;background:#e8f5e9;padding:10px 12px}
+.sp-dig-steps{margin:0;padding-left:22px;display:grid;gap:8px}.sp-dig-steps li{display:grid;gap:2px}.sp-dig-ask{font-size:.92em;color:var(--muted,#555)}.sp-dig-add{font-style:italic}
 .ls-player{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .ls-seek{flex:1;min-width:160px;accent-color:var(--coral)}
 .ls-time{min-width:86px;font-variant-numeric:tabular-nums}
@@ -12883,7 +12886,7 @@ const PR_PASS = { word: 70, sent: 65, target: 50, quiz: 6 };
 
 /* ===== Lộ trình Speaking: mỗi bài có bản chất, khung trả lời, cụm hay, bài mẫu band 7 và bài luyện máy tự kiểm tra (không gọi AI) ===== */
 const RX = {
-  reason: /\b(because|since|as|so that|reason|that's why|which is why|due to)\b/i,
+  reason: /\b(because|since|as|so that|so i can|reason|that's why|which is why|due to|in order to|mainly to|just to|to help|to keep|to relax|to remember|to save|to learn|to practi[cs]e|to share|to show|to see|to check|to make)\b/i,
   example: /\b(for example|for instance|like when|such as|e\.g\.|one time|last (week|month|year|time)|when i was)\b/i,
   opener: /\b(well|actually|to be honest|honestly|i'd say|i would say|i guess|i suppose|definitely|absolutely|not really|oh,? )\b/i,
   linker: /\b(and also|also|besides|plus|apart from that|on top of that|what's more|so|but|although|however|because)\b/gi,
@@ -12894,15 +12897,26 @@ const RX = {
   opinion: /\b(i think|i believe|in my opinion|personally|from my point of view|i'd say|it seems to me|i feel)\b/i,
   general: /\b(generally|in general|tend to|most people|many people|nowadays|these days|on the whole)\b/i,
   predict: /\b(will probably|is likely to|are likely to|in the future|i expect|i imagine|might|may well)\b/i,
-  feeling: /\b(felt|feel|happy|excited|proud|nervous|surprised|relieved|grateful|amazed|disappointed)\b/i
+  feeling: /\b(felt|feel|happy|excited|proud|nervous|surprised|relieved|grateful|amazed|disappointed)\b/i,
+  /* Câu có hành động của chính mình: I + động từ (có thể kèm usually/often…), hoặc động từ quá khứ */
+  action: /\b(i|we)\s+(usually |often |always |sometimes |normally |just |mostly |still |even |also |'ve |have |had |used to )?(take|took|go|went|use|used|play|played|cook|cooked|watch|watched|read|visit|visited|walk|walked|ride|rode|spend|spent|buy|bought|listen|listened|write|wrote|make|made|eat|ate|call|called|meet|met|study|studied|practi[cs]e|practi[cs]ed|check|checked|save|saved|post|posted|share|shared|keep|kept|try|tried|stop|stopped|look|looked|send|sent|bring|brought|draw|drew|compare|compared|film|filmed|snap|snapped|upload|uploaded|print|printed|collect|collected|chat|chatted|get|got|work|worked|help|helped|join|joined|learn|learned|learnt|run|ran|sit|sat|show|showed|tell|told|plan|planned|ask|asked|search|searched|follow|followed|drive|drove|fix|fixed|grow|grew|teach|taught)\b/i,
+  /* Chi tiết cụ thể: khi nào, ở đâu, với ai, bao nhiêu */
+  detail: /\b(every (day|morning|evening|night|week|weekend|month)|on my way|at (night|home|school|work|university|the weekend)|in the (morning|afternoon|evening)|on (weekends|sundays|saturdays)|with my|near my|in my|last (week|weekend|month|year|night|summer)|yesterday|twice|once a|a few times|\d+)\b/i,
+  vague: /\b(i (just |really )?feel( like)?|(it'?s|it is|they'?re|they are|that'?s) (very |really |so |quite |pretty )?(nice|good|great|interesting|beautiful|amazing|fun|cool|wonderful|okay|ok)\b|i (don'?t|do not) know)/i
 };
 const SP_PATH = [
-  { id: "p1-are", part: 1, t: "Part 1: Trả lời + Lý do + Ví dụ",
-    idea: "Part 1 là những câu hỏi đời thường. Giám khảo không chấm đúng sai về nội dung, mà nghe bạn có *nói thêm được* hay không. Câu trả lời một chữ (“Yes, I do.”) làm mất điểm Fluency vì không có gì để nghe. Công thức an toàn là A-R-E: *Answer* trả lời thẳng, *Reason* nêu lý do, *Example* thêm một ví dụ hoặc chi tiết cá nhân. Ba câu là đủ, khoảng 20–30 giây.",
-    frame: ["Answer: trả lời thẳng vào câu hỏi trong một câu.", "Reason: because / since / the main reason is…", "Example: for example / like when… / last weekend I…"],
-    phrases: ["The main reason is that…", "For example, last weekend I…", "That's why I…", "I'd say it's mainly because…"],
-    model: { q: "Do you like reading books?", a: "Yes, I'd say I'm quite a big reader. The main reason is that books help me switch off after a long day of classes. For example, last weekend I finished a short novel about a family in Japan, and I couldn't put it down." },
-    practice: { qs: ["Do you like cooking?", "Do you prefer mornings or evenings?", "What do you usually do on weekends?"], min: 12, words: 30, need: [["Có lý do (because, since…)", "reason"], ["Có ví dụ (for example, last week…)", "example"]] } },
+  { id: "p1-are", part: 1, t: "Part 1: Hành động → Vì sao → Hỏi tiếp",
+    idea: "Part 1 là câu hỏi đời thường, giám khảo không chấm nội dung đúng sai mà nghe bạn *nói thêm được bao nhiêu ý của chính mình*. Lỗi hay gặp nhất là trả lời bằng *cảm xúc chung chung*: “I feel they're beautiful”, “It's interesting”. Câu đó đúng ngữ pháp nhưng *cụt*: cảm xúc thì khó tả thêm, giám khảo không biết hỏi tiếp gì, và bạn cũng không biết nói gì nữa. Cách thoát là trả lời bằng *hành động*: bạn *làm gì*, *khi nào*, *bao lâu một lần*. Hành động luôn có *lý do*, nên ngay sau đó tự hỏi mình “*Để làm gì? Vì sao?*”. Mỗi câu trả lời cho “vì sao” là một ý mới, và ý đó là của riêng bạn nên không ai giống ai. Hỏi “vì sao” một hai lần là đủ cho Part 1 (2–3 câu, khoảng 20–30 giây); nếu giám khảo hỏi vặn tiếp thì bạn đã có sẵn chuỗi lý do để nói.",
+    frame: ["Hành động: trả lời thẳng bằng việc bạn làm (I take… / I usually go… / I spend…), tránh “I feel / It's nice”.", "Vì sao, để làm gì: because… / so that I can… / mainly to…", "Chi tiết của riêng bạn: khi nào, ở đâu, với ai, bao nhiêu (every morning, on my way to class, with my roommate…)."],
+    phrases: ["Actually, I do that almost every day.", "I mainly do it to…", "The reason is that…", "…so that I can…", "Usually it's on my way to…"],
+    dig: { q: "Do you often take photos of tall buildings?",
+      bad: { a: "Yes, I do. I feel they are very beautiful.", why: "Chỉ có cảm xúc và tính từ chung chung. Không có hành động, không có lý do riêng, giám khảo khó hỏi tiếp, bạn cũng hết ý sau một câu." },
+      start: "Yes, actually I take photos of them almost every day.",
+      steps: [["Vì sao bạn chụp?", "because I'm studying construction, so I'm curious about how such tall buildings stay up."], ["Chụp xong để làm gì?", "I save them in a folder and sometimes compare the designs with what we learn in class."], ["Thường chụp lúc nào, ở đâu?", "Usually it's on my way to university, when I pass the new towers in the city centre."]],
+      full: "Yes, actually I take photos of them almost every day, usually on my way to university when I pass the new towers in the city centre. I mainly do it because I'm studying construction, so I'm curious about how such tall buildings stay up. I save the photos in a folder and sometimes compare the designs with what we learn in class.",
+      asks: ["Why? / Vì sao?", "What for? / Để làm gì?", "When? How often? / Khi nào, bao lâu một lần?", "Where? / Ở đâu?", "Who with? / Với ai?", "What happened then? / Rồi sao nữa?"] },
+    model: { q: "Do you like reading books?", a: "Yes, I read almost every night before bed, usually for about half an hour. I mainly do it to switch off after a long day of classes, because if I scroll on my phone instead, I can't fall asleep. Last week, for example, I finished a short novel about a family in Japan, and I kept thinking about it on the bus the next day." },
+    practice: { qs: ["Do you like cooking?", "Do you often take photos?", "What do you usually do on weekends?"], min: 12, words: 30, tip: "Trả lời bằng việc bạn làm, rồi tự hỏi “vì sao, để làm gì” và nói luôn câu trả lời. Tránh dừng ở “I feel… / It's nice”.", need: [["Có hành động của bạn (I take, I usually go…)", "action"], ["Có lý do (because, so that, to…)", "reason"], ["Có chi tiết cụ thể (khi nào, ở đâu, với ai…)", "detail"], ["Không dừng ở cảm xúc chung chung", "notVague"]] } },
   { id: "markers", part: 1, t: "Mở đầu tự nhiên và từ nối khi nói",
     idea: "Người bản xứ hiếm khi trả lời bằng một câu “sách vở” hoàn chỉnh ngay lập tức. Họ mở đầu bằng *Well, Actually, To be honest* để có nửa giây suy nghĩ, rồi nối ý bằng *and also, plus, but, so*. Những từ này không phải từ đệm vô nghĩa như “ừm, à”: chúng cho giám khảo thấy bạn đang dẫn dắt ý, nên được tính vào Fluency and Coherence.",
     frame: ["Mở đầu: Well, … / Actually, … / To be honest, …", "Ý chính, rồi nối thêm: and also… / plus… / but… / so…"],
@@ -12922,21 +12936,33 @@ const SP_PATH = [
     model: { q: "Did you play sports when you were a child?", a: "Yes, I did. When I was in primary school, I used to play badminton with my dad almost every evening in front of our house. We didn't have a proper net, so we just used a piece of string. I haven't played much since I started university, but I'd love to get back into it." },
     practice: { qs: ["Did you have a favorite toy when you were a child?", "What did you do last weekend?", "Will you travel somewhere next summer?"], min: 12, words: 30, need: [["Có động từ quá khứ (was, went, used to…)", "past"], ["Có thì tương lai (will, going to, I'd like…)", "future"]], tip: "Trả lời cả ba câu trong một lần ghi âm cũng được: câu 1–2 dùng quá khứ, câu 3 dùng tương lai." } },
   { id: "p2-plan", part: 2, t: "Part 2: Lập dàn ý trong 1 phút",
-    idea: "Part 2 cho bạn 1 phút chuẩn bị và giấy bút. Đừng viết câu: chỉ ghi *4–6 từ khóa*, mỗi gợi ý trên thẻ một từ khóa, cộng thêm một chi tiết “có hình ảnh” (màu sắc, âm thanh, cảm xúc). Khi nói, đi lần lượt theo gợi ý trên thẻ: thẻ chính là dàn ý có sẵn. Mục tiêu đầu tiên là nói được *trọn 1 phút* không bị tắc.",
+    idea: "Part 2 cho bạn 1 phút chuẩn bị và giấy bút. Cách đào ý giống Part 1 nhưng sâu hơn: với mỗi gợi ý trên thẻ, nghĩ *bạn đã làm gì*, rồi tự hỏi *vì sao, rồi sao nữa* 2–3 lần. Mỗi lần hỏi là thêm một ý, nên 2 phút không còn là dài. Đừng viết câu: chỉ ghi *4–6 từ khóa*, mỗi gợi ý trên thẻ một từ khóa, cộng thêm một chi tiết “có hình ảnh” (màu sắc, âm thanh, cảm xúc). Khi nói, đi lần lượt theo gợi ý trên thẻ: thẻ chính là dàn ý có sẵn. Mục tiêu đầu tiên là nói được *trọn 1 phút* không bị tắc.",
     frame: ["Câu mở: I'd like to talk about…", "Gợi ý 1 → 2 → 3, mỗi gợi ý 2–3 câu.", "Gợi ý cuối “and explain…”: nói cảm xúc, ý nghĩa.", "Câu kết: So that's why…"],
     phrases: ["I'd like to talk about…", "As for (where/when)…", "What I remember most is…", "So that's why it means so much to me."],
+    dig: { q: "Describe a place in your city that you enjoy visiting.", part: 2,
+      bad: { a: "I like a café near my university. It is very nice and beautiful. I feel relaxed there. I like it very much.", why: "Toàn cảm xúc và tính từ (nice, beautiful, relaxed), nói 20 giây là hết. Không có việc bạn làm ở đó, không có lý do, không có chi tiết để kể tiếp." },
+      start: "I'd like to talk about a small bookshop café near my university, where I go almost every Saturday morning.",
+      steps: [["Bạn làm gì ở đó?", "I usually pick a second-hand book from the shelves and read it while I drink a coffee."], ["Vì sao lại chọn chỗ đó?", "because my dorm is really noisy, and it's the only place nearby where I can concentrate."], ["Đi với ai, có chuyện gì nhớ không?", "I often go with my best friend, and once we stayed there until closing time because we were both stuck in the same novel."], ["Rồi nó có ý nghĩa gì với bạn?", "Now it's become a kind of weekly routine that helps me reset before a new week of classes."]],
+      full: "",
+      asks: ["Ở đó bạn làm gì? (hành động)", "Vì sao chọn chỗ đó, không phải chỗ khác?", "Đi với ai, lúc nào?", "Có lần nào đáng nhớ không? Chuyện gì xảy ra?", "Bây giờ nó có ý nghĩa gì với bạn?"] },
     model: { q: "Describe a place in your city that you enjoy visiting.", a: "I'd like to talk about a small bookshop café near my university. It's on a quiet street, hidden behind a row of tall trees, so a lot of people walk past without noticing it. Inside, there are old wooden shelves full of second-hand books, and you can read anything you like while you drink your coffee. I usually go there with my best friend on Saturday mornings, when it's not too crowded. What I enjoy most is the atmosphere. There's soft music, the smell of coffee and old paper, and everyone is just quietly reading. It feels like time slows down. In a city as noisy as mine, that's quite rare. So that's why I keep going back there whenever I need a break from studying." },
     practice: { qs: ["Describe a gift you gave to someone.", "Describe a teacher who helped you.", "Describe a place you visited that you liked."], min: 60, words: 100, prep: 60, need: [["Có chi tiết cảm xúc (felt, happy, proud…)", "feeling"]] } },
   { id: "p2-long", part: 2, t: "Part 2: Nói đủ 2 phút",
-    idea: "Band 6 trở lên cần nói *gần đủ 2 phút*. Bí quyết không phải là nói nhanh, mà là có đủ chất liệu: với mỗi gợi ý, trả lời thêm câu hỏi *who, where, when, what happened, how did you feel*. Kể như kể chuyện cho bạn nghe, dùng thì quá khứ cho sự việc đã xảy ra. Nếu hết ý, thêm một so sánh “trước và sau” hoặc một bài học rút ra.",
+    idea: "Band 6 trở lên cần nói *gần đủ 2 phút*. Bí quyết không phải là nói nhanh, mà là có đủ chất liệu: với mỗi gợi ý, kể *việc bạn đã làm* rồi tự hỏi *vì sao, rồi sao nữa*, và trả lời thêm *who, where, when, what happened*. Cảm xúc chỉ nên là câu chốt sau hành động (“…and honestly, I felt really proud”), đừng để cả đoạn chỉ là cảm xúc. Kể như kể chuyện cho bạn nghe, dùng thì quá khứ cho sự việc đã xảy ra. Nếu hết ý, thêm một so sánh “trước và sau” hoặc một bài học rút ra.",
     frame: ["Bối cảnh: who, where, when.", "Diễn biến: what happened, chi tiết cụ thể.", "Cảm xúc lúc đó và bây giờ.", "Bài học hoặc so sánh trước–sau."],
     phrases: ["It all started when…", "At first I thought…, but then…", "Looking back, I realize…", "If I compare it with…"],
     model: { q: "Describe a time you helped someone.", a: "I'd like to talk about the time I helped my younger cousin prepare for her high school entrance exam. It was about two years ago, during my summer holiday. My aunt was worried because my cousin was really weak at maths, and she couldn't afford a private tutor. So I offered to teach her for free, three evenings a week. At first it was quite frustrating. She was shy and wouldn't ask questions, and I realized I was explaining things too fast. So I changed my approach. I started using real examples, like calculating discounts when we went shopping, and suddenly she became much more interested. By the end of the summer, she could solve problems that she used to skip completely. When she passed the exam with a good score, she called me straight away, and honestly, I felt prouder than when I passed my own exams. Looking back, that experience taught me a lot about patience. It's also one of the reasons I enjoy explaining things to my classmates now." },
     practice: { qs: ["Describe a time you helped someone.", "Describe a difficult decision you made.", "Describe a trip that you remember well."], min: 90, words: 150, prep: 60, wpm: 90, longMax: 5, need: [["Có quá khứ (was, went, decided…)", "past"], ["Có cảm xúc", "feeling"]] } },
   { id: "p3-opinion", part: 3, t: "Part 3: Quan điểm, lý do và mặt trái",
-    idea: "Part 3 hỏi về xã hội, không hỏi về bạn. Câu trả lời tốt có bốn nhịp: *nêu quan điểm* rõ ràng, *giải thích lý do*, *ví dụ chung* (không cần chuyện cá nhân), và *nhìn mặt kia* (on the other hand…). Nhịp thứ tư là thứ phân biệt band 6 với band 7: nó cho thấy bạn suy nghĩ hai chiều.",
+    idea: "Part 3 hỏi về xã hội, không hỏi về bạn. Bạn vẫn đào ý bằng câu hỏi “*vì sao*”, nhưng lý do phải là của *xã hội* (people, young people, cities…), không phải chuyện riêng của bạn. Câu trả lời tốt có bốn nhịp: *nêu quan điểm* rõ ràng, *giải thích lý do*, *ví dụ chung* (không cần chuyện cá nhân), và *nhìn mặt kia* (on the other hand…). Nhịp thứ tư là thứ phân biệt band 6 với band 7: nó cho thấy bạn suy nghĩ hai chiều.",
     frame: ["Quan điểm: I think / In my opinion…", "Lý do: because / mainly because…", "Ví dụ chung: For example, in Vietnam…", "Mặt kia: On the other hand / That said…"],
     phrases: ["In my opinion, …", "The main reason is…", "Take Vietnam, for example: …", "On the other hand, …", "That said, …"],
+    dig: { q: "Why do people like taking photos of modern buildings?", part: 3,
+      bad: { a: "Because I think modern buildings are beautiful. I also like taking photos of them every day.", why: "Part 3 hỏi về *mọi người*, không hỏi về bạn. Câu này kể chuyện riêng và dừng ở “beautiful”, không có lý do xã hội nào." },
+      start: "I think people photograph modern buildings mainly because these buildings have become symbols of how fast a city is developing.",
+      steps: [["Vì sao lại là biểu tượng?", "In Vietnam, for example, new skyscrapers in Ho Chi Minh City appear on postcards and in tourism ads, so people see them as something to be proud of."], ["Điều đó dẫn tới gì?", "As a result, taking a photo of them and posting it online is a way of showing that you've been to a modern, exciting place."], ["Mặt kia thì sao?", "On the other hand, some people feel these towers all look the same, and they prefer photographing old buildings that have more history."]],
+      full: "",
+      asks: ["Vì sao mọi người lại làm vậy? (lý do xã hội)", "Ví dụ chung: ở Việt Nam, ở thành phố lớn…", "Điều đó dẫn tới gì? (hệ quả)", "Mặt kia: ai không như vậy, vì sao?"] },
     model: { q: "Is it better to learn a skill from a teacher or by yourself online?", a: "In my opinion, it really depends on the skill, but for most practical skills a teacher is still better. The main reason is that a teacher can spot your mistakes immediately. For example, if you're learning to swim or to play the guitar, a small mistake in technique can become a bad habit that's very hard to fix later. On the other hand, online learning is much more flexible and cheaper, so for things like basic coding or design software, I think learning by yourself is perfectly fine." },
     practice: { qs: ["Do you think children should learn to cook at school?", "Is it better to live in a city or in the countryside?", "Should university education be free?"], min: 30, words: 60, need: [["Có quan điểm (I think, in my opinion…)", "opinion"], ["Có mặt trái (on the other hand, however…)", "contrast"], ["Có lý do", "reason"]] } },
   { id: "p3-general", part: 3, t: "Part 3: Nói khái quát và dự đoán",
@@ -13277,7 +13303,7 @@ function spChecks(l, an) {
   if (p.longMax != null) out.push([m.long <= p.longMax, `Ngừng dài (≥1 giây) không quá ${p.longMax} lần (bạn: ${m.long})`]);
   if (p.chunk) out.push([m.run >= p.chunk, `Trung bình từ ${p.chunk} từ mỗi cụm nói liền (bạn: ${m.run})`]);
   if (p.fillers != null) out.push([m.fillers <= p.fillers, `Từ đệm “ừm, à” không quá ${p.fillers} lần (bạn: ${m.fillers})`]);
-  for (const [label, k] of p.need || []) out.push([k === "linker2" ? (t.match(RX.linker) || []).length >= 2 : RX[k].test(t), label]);
+  for (const [label, k] of p.need || []) out.push([k === "linker2" ? (t.match(RX.linker) || []).length >= 2 : k === "notVague" ? !!t && (!RX.vague.test(t) || (RX.action.test(t) && RX.reason.test(t))) : RX[k].test(t), label]);
   return out;
 }
 const splSt = id => (P.spl ||= {})[id] ||= {};
@@ -13295,6 +13321,18 @@ function spPathTab() {
   const dn = SP_PATH.filter(l => splSt(l.id).done).length;
   return h("div", { class: "stack", style: "gap:12px" }, h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${dn / SP_PATH.length * 100}%` })), h("span", { class: "small muted" }, `${dn}/${SP_PATH.length} bài đạt`)),
     h("div", { class: "grid3" }, SP_PATH.map((l, i) => h("a", { class: "card lesson-card", href: "#sl-" + l.id }, h("span", { class: "num" }, i + 1), h("div", { class: "stack", style: "gap:4px" }, h("h3", null, l.t), h("span", { class: "small muted" }, l.part ? "Part " + l.part : "Kỹ năng chung"), h("div", { class: "row" }, splSt(l.id).done ? h("span", { class: "chip good" }, "Đã đạt") : h("span", { class: "chip" }, "Chưa đạt")))))));
+}
+/* Khối "Đào ý bằng vì sao": câu trả lời chung chung → bắt đầu bằng hành động → mỗi lần tự hỏi "vì sao, rồi sao" thêm một ý */
+function spDigCard(d, n) {
+  const cap = x => x.charAt(0).toUpperCase() + x.slice(1);
+  const full = d.full || [d.start, ...d.steps.map(x => cap(x[1]))].join(" ");
+  return h("section", { class: "card stack sp-dig", style: "gap:10px" }, secH(n, d.part === 3 ? "Đào ý bằng “vì sao” (tầm xã hội)" : "Đào ý bằng “vì sao”", d.part === 3 ? "Lý do chung, ví dụ chung, hệ quả, mặt kia" : "Mỗi lần tự hỏi là thêm một ý của riêng bạn"),
+    h("div", { class: "row", style: "gap:8px;align-items:center" }, h("p", { class: "prompt", style: "margin:0;flex:1;min-width:0" }, d.q), sayBtn(d.q, "🔊", "btn")),
+    h("div", { class: "sp-dig-bad stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, "✗ Trả lời chung chung"), h("p", { style: "margin:0" }, d.bad.a), h("p", { class: "small", style: "margin:0", html: spMd(d.bad.why) })),
+    h("div", { class: "sp-dig-good stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, d.part === 3 ? "✓ Mở bằng một lý do chung" : "✓ Mở bằng hành động"), h("p", { style: "margin:0" }, d.start)),
+    h("ol", { class: "sp-dig-steps" }, d.steps.map(([ask, add]) => h("li", null, h("span", { class: "sp-dig-ask" }, "Tự hỏi: ", h("b", null, ask)), h("span", { class: "sp-dig-add" }, "→ ", add)))),
+    h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ghép lại"), h("p", { class: "model-text", style: "margin:0" }, full), h("div", { class: "row" }, sayBtn(full, "🔊 Nghe cả câu trả lời", "btn"))),
+    d.asks?.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Câu tự hỏi để có thêm ý"), h("div", { class: "row", style: "gap:6px;flex-wrap:wrap" }, d.asks.map(x => h("span", { class: "chip" }, x)))) : null);
 }
 function pageSpLesson(l) {
   const st = splSt(l.id), i = SP_PATH.indexOf(l), p = l.practice;
@@ -13321,8 +13359,9 @@ function pageSpLesson(l) {
     h("section", { class: "card stack", style: "gap:10px" }, secH(1, "Bản chất"), h("p", { style: "margin:0", html: spMd(l.idea) }),
       l.frame.length ? h("div", { class: "stack", style: "gap:4px" }, h("span", { class: "eyebrow" }, "Khung trả lời"), h("ol", { class: "gex" }, l.frame.map(x => h("li", null, x)))) : null,
       l.phrases.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Cụm nên dùng"), h("div", { class: "row", style: "gap:6px" }, l.phrases.map(x => h("span", { class: "chip acc sp-phr" }, x, " ", sayBtn(x, "🔊", "sp-say-in"))))) : null),
-    h("section", { class: "card stack", style: "gap:8px" }, secH(2, "Bài mẫu band 7"), h("p", { class: "prompt", style: "margin:0" }, l.model.q), h("p", { class: "model-text", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe bài mẫu", "btn"))),
-    h("section", { class: "card stack", style: "gap:10px" }, secH(3, "Luyện và tự kiểm tra", "Máy kiểm tra trên máy bạn, không gọi AI"), practice));
+    l.dig ? spDigCard(l.dig, 2) : null,
+    h("section", { class: "card stack", style: "gap:8px" }, secH(l.dig ? 3 : 2, "Bài mẫu band 7"), h("p", { class: "prompt", style: "margin:0" }, l.model.q), h("p", { class: "model-text", style: "margin:0" }, l.model.a), h("div", { class: "row" }, sayBtn(l.model.a, "🔊 Nghe bài mẫu", "btn"))),
+    h("section", { class: "card stack", style: "gap:10px" }, secH(l.dig ? 4 : 3, "Luyện và tự kiểm tra", "Máy kiểm tra trên máy bạn, không gọi AI"), practice));
 }
 function spBankTab() {
   const part = UI.bkPart ||= "p1";
