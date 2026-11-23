@@ -466,6 +466,7 @@ h2{font-size:1.15rem;letter-spacing:-.01em}
 .bank-gen h3{margin:0}.bank-genrow{align-items:flex-end;gap:12px}.bank-genrow .btn{margin-bottom:2px}
 .fb{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:var(--surface-2)}
 .fb-q{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--surface);font:inherit;color:var(--ink)}
+.bank-grp{border:2px solid var(--ink);background:var(--paper,#fff)}.bank-grp>summary{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:12px 14px;cursor:pointer;list-style:none}.bank-grp>summary::-webkit-details-marker{display:none}.bank-grp>summary::before{content:"▸";font-weight:700}.bank-grp[open]>summary::before{content:"▾"}.bank-gname{font-weight:700}.bank-gsub{flex:1;min-width:0}.bank-gcnt{margin-left:auto;font-family:var(--mono,monospace);font-size:13px;padding:2px 8px;border:1px solid var(--line,#ccc)}.bank-gcnt.done{background:#e3f4e8;border-color:#2e7d32;color:#1b5e20}.bank-grp>.bank-grid{padding:0 14px 14px}
 .fb-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:8px;align-items:center}
 .fb-l{font-size:.8rem;font-weight:700;color:var(--muted)}
 .fb-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -5819,26 +5820,36 @@ function wInfo(n, x) {
   const ws = WRIT.filter(w => w.task === n && w.promptId === x.id && w.result?.overall != null), best = ws.length ? Math.max(...ws.map(w => w.result.overall)) : null;
   return { kind: n === 1 ? x.data.type : t2Kind(x.text), src: SRC_NAME(x), done: ws.length > 0, best, title: n === 1 ? x.data.title : x.text };
 }
+/* Kho chia nhóm (không còn bộ lọc): mỗi nhóm một khối gập/mở, ghi số đã làm */
+function bankGroups(key, groups) {
+  const O = (UI.bgOpen ||= {})[key] ||= {}, live = groups.filter(g => g.items.length);
+  if (!live.length) return h("p", { class: "empty" }, "Chưa có bài nào.");
+  if (!Object.keys(O).length) { const g0 = live.find(g => g.done < g.items.length) || live[0]; O[g0.id] = true; }
+  return h("div", { class: "stack bank-groups", style: "gap:10px" }, live.map(g => {
+    const d = h("details", { class: "bank-grp", open: O[g.id] ? true : null },
+      h("summary", null, h("span", { class: "bank-gname" }, g.icon ? g.icon + " " : "", g.name), g.sub ? h("span", { class: "small muted bank-gsub" }, g.sub) : null,
+        h("span", { class: "bank-gcnt" + (g.done >= g.items.length ? " done" : "") }, `${g.done}/${g.items.length}`)),
+      h("div", { class: "bank-grid" }, g.items));
+    d.addEventListener("toggle", () => { O[g.id] = d.open; });
+    return d;
+  }));
+}
 function writingBank(n) {
-  const F = (UI.wf ||= {})[n] ||= {}, list = n === 1 ? allT1() : allT2(), info = new Map(list.map(x => [x.id, wInfo(n, x)]));
-  const kinds = n === 1 ? Object.entries(T1_TYPE).map(([k, [l]]) => [k, l, list.filter(x => info.get(x.id).kind === k).length]) : T2_KIND.map(([k, l]) => [k, l, list.filter(x => info.get(x.id).kind === k).length]);
-  const srcs = ["Có sẵn", "AI", "Sách", "Tự nhập"].map(s => [s, s, list.filter(x => info.get(x.id).src === s).length]);
-  const sts = [["todo", "Chưa viết", list.filter(x => !info.get(x.id).done).length], ["done", "Đã viết", list.filter(x => info.get(x.id).done).length]];
-  const grid = h("div", { class: "bank-grid" }), count = h("span", { class: "small muted" });
-  const shown = () => { const q = norm(F.q || ""); return list.filter(x => { const i = info.get(x.id); return (!F.kind || i.kind === F.kind) && (!F.src || i.src === F.src) && (!F.st || (F.st === "done") === i.done) && (!q || norm(i.title).includes(q)); }); };
-  const redraw = () => { const s = shown(); count.textContent = `${s.length}/${list.length} đề`;
-    grid.replaceChildren(...(s.length ? s.map(x => { const i = info.get(x.id), kl = n === 1 ? T1_TYPE[i.kind] || [i.kind, "▤"] : null;
-      return h("button", { type: "button", class: "bank-t", onclick: () => { UI.wSel = x.id; UI.wList = s.map(y => y.id); render(); window.scrollTo(0, 0); } },
-        h("div", { class: "bank-top" }, n === 1 ? h("span", { class: "bank-ic", "aria-hidden": "true" }, kl[1]) : null, h("span", { class: "chip" }, n === 1 ? "Biểu đồ " + kl[0].toLowerCase() : (T2_KIND.find(k => k[0] === i.kind) || [])[1]), x.custom ? h("span", { class: "chip acc" }, i.src) : null,
-          h("span", { class: "bank-st" + (i.done ? " done" : "") }, i.done ? (i.best != null ? "Band " + i.best.toFixed(1) : "Đã viết") : "Chưa viết")),
-        h("span", { class: "bank-title" + (n === 2 ? " t2" : "") }, i.title),
-        h("span", { class: "bank-go" }, "Vào phòng thi ›")); }) : [h("p", { class: "empty" }, "Không có đề nào khớp bộ lọc.")])); };
-  redraw();
+  const list = n === 1 ? allT1() : allT2(), info = new Map(list.map(x => [x.id, wInfo(n, x)]));
+  const card = (x, order) => { const i = info.get(x.id), kl = n === 1 ? T1_TYPE[i.kind] || [i.kind, "▤"] : null;
+    return h("button", { type: "button", class: "bank-t", onclick: () => { UI.wSel = x.id; UI.wList = order; render(); window.scrollTo(0, 0); } },
+      h("div", { class: "bank-top" }, n === 1 ? h("span", { class: "bank-ic", "aria-hidden": "true" }, kl[1]) : null, x.custom ? h("span", { class: "chip acc" }, i.src) : h("span", { class: "chip" }, i.src),
+        h("span", { class: "bank-st" + (i.done ? " done" : "") }, i.done ? (i.best != null ? "Band " + i.best.toFixed(1) : "Đã viết") : "Chưa viết")),
+      h("span", { class: "bank-title" + (n === 2 ? " t2" : "") }, i.title),
+      h("span", { class: "bank-go" }, "Vào phòng thi ›")); };
+  const kinds = n === 1 ? Object.entries(T1_TYPE).map(([k, [l, ic]]) => [k, "Biểu đồ " + l.toLowerCase(), ic]) : T2_KIND.map(([k, l]) => [k, l, ""]);
+  const groups = kinds.map(([k, name, icon]) => { const xs = list.filter(x => info.get(x.id).kind === k), order = xs.map(x => x.id);
+    return { id: k, name, icon, items: xs.map(x => card(x, order)), done: xs.filter(x => info.get(x.id).done).length }; });
+  const rest = list.filter(x => !kinds.some(k => k[0] === info.get(x.id).kind));
+  if (rest.length) groups.push({ id: "other", name: "Dạng khác", items: rest.map(x => card(x, rest.map(y => y.id))), done: rest.filter(x => info.get(x.id).done).length });
   return h("section", { class: "card stack", style: "gap:12px" },
-    h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, `Kho đề Task ${n}`), count),
-    h("div", { class: "fb" }, searchBox(F, "wq" + n, n === 1 ? "Tìm theo tên biểu đồ…" : "Tìm theo từ khoá trong đề…", redraw),
-      chipFilter(F, "kind", n === 1 ? "Dạng" : "Dạng đề", kinds, redraw), chipFilter(F, "src", "Nguồn", srcs, redraw), chipFilter(F, "st", "Trạng thái", sts, redraw)),
-    grid);
+    h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, `Kho đề Task ${n}`), h("span", { class: "small muted" }, `${list.filter(x => info.get(x.id).done).length}/${list.length} đề đã viết`)),
+    bankGroups("w" + n, groups));
 }
 function writingRoom(n, sel, tabs) {
   const order = (UI.wList || []).filter(id => (n === 1 ? allT1() : allT2()).some(x => x.id === id)), i = order.indexOf(sel.id);
@@ -5872,29 +5883,21 @@ function askReadMode(r) {
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
   document.body.append(dlg); dlg.showModal();
 }
+const R_GROUPS = [["cam", "Cambridge", "📘", "Đề Cambridge bạn nhập từ sách"], ["book", "Từ sách của tôi", "📚", "Bài lấy từ sách bạn nhập"], ["", "Bài mẫu", "📄", "Có sẵn trong web"], ["ai", "AI soạn", "✨", "Bài AI viết theo chủ đề bạn chọn"]];
 function readingBank(genCard) {
-  const F = UI.rf ||= {}, info = new Map(READS.map(r => { const last = r.attempts?.[r.attempts.length - 1]; return [r.id, { src: r.source === "book" ? "Sách" : r.source === "ai" ? "AI" : "Mẫu", lv: r.level || "", done: !!last, last, kinds: [...new Set((r.questions || []).map(q => RQ_SHORT[q.type] || q.type))] }]; }));
-  const cnt = f => READS.filter(r => f(info.get(r.id))).length;
-  const grid = h("div", { class: "bank-grid" }), count = h("span", { class: "small muted" });
-  const shown = () => { const q = norm(F.q || ""); return READS.filter(r => { const i = info.get(r.id); return (!F.src || i.src === F.src) && (!F.lv || i.lv === F.lv) && (!F.st || (F.st === "done") === i.done) && (!F.qt || i.kinds.includes(F.qt)) && (!q || norm(r.title).includes(q) || norm((r.paragraphs || []).join(" ")).includes(q)); }); };
-  const allKinds = [...new Set(READS.flatMap(r => info.get(r.id).kinds))];
-  const redraw = () => { const s = shown(); count.textContent = `${s.length}/${READS.length} bài`;
-    grid.replaceChildren(...(s.length ? s.map(r => { const i = info.get(r.id);
-      return h("button", { type: "button", class: "bank-t", onclick: () => askReadMode(r) },
-        h("div", { class: "bank-top" }, h("span", { class: "chip " + (i.src === "Sách" ? "warn" : i.src === "AI" ? "acc" : "") }, i.src), i.lv ? h("span", { class: "chip" }, LV_NAME[i.lv] || i.lv) : null,
-          h("span", { class: "bank-st" + (i.done ? " done" : "") }, i.done ? `${i.last.score}/${i.last.total}` : "Chưa làm")),
-        h("span", { class: "bank-title" }, r.title),
-        h("span", { class: "small muted" }, `${rTotal(r)} câu · ${i.kinds.join(", ")}`),
-        h("span", { class: "bank-go" }, "Vào phòng thi ›")); }) : [h("p", { class: "empty" }, READS.length ? "Không có bài nào khớp bộ lọc." : "Chưa có bài nào. Tạo bài mới ở ô trên.")])); };
-  redraw();
+  const info = new Map(READS.map(r => { const last = r.attempts?.[r.attempts.length - 1]; return [r.id, { lv: r.level || "", done: !!last, last, kinds: [...new Set((r.questions || []).map(q => RQ_SHORT[q.type] || q.type))] }]; }));
+  const card = r => { const i = info.get(r.id);
+    return h("button", { type: "button", class: "bank-t", onclick: () => askReadMode(r) },
+      h("div", { class: "bank-top" }, i.lv ? h("span", { class: "chip" }, LV_NAME[i.lv] || i.lv) : null,
+        h("span", { class: "bank-st" + (i.done ? " done" : "") }, i.done ? `${i.last.score}/${i.last.total}` : "Chưa làm")),
+      h("span", { class: "bank-title" }, r.title),
+      h("span", { class: "small muted" }, `${rTotal(r)} câu · ${i.kinds.join(", ")}`),
+      h("span", { class: "bank-go" }, "Vào phòng thi ›")); };
+  const srcOf = r => r.source === "cam" ? "cam" : r.source === "book" ? "book" : r.source === "ai" ? "ai" : "";
+  const groups = R_GROUPS.map(([k, name, icon, sub]) => { const xs = READS.filter(r => srcOf(r) === k); return { id: k || "base", name, icon, sub, items: xs.map(card), done: xs.filter(r => info.get(r.id).done).length }; });
   return [genCard, h("section", { class: "card stack", style: "gap:12px" },
-    h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kho bài đọc"), count),
-    h("div", { class: "fb" }, searchBox(F, "rq", "Tìm theo tên bài hoặc nội dung…", redraw),
-      chipFilter(F, "src", "Nguồn", ["Mẫu", "AI", "Sách"].map(s => [s, s, cnt(i => i.src === s)]), redraw),
-      chipFilter(F, "lv", "Độ khó", Object.entries(LV_NAME).map(([k, l]) => [k, l, cnt(i => i.lv === k)]), redraw),
-      chipFilter(F, "qt", "Dạng câu", allKinds.map(k => [k, k, cnt(i => i.kinds.includes(k))]), redraw),
-      chipFilter(F, "st", "Trạng thái", [["todo", "Chưa làm", cnt(i => !i.done)], ["done", "Đã làm", cnt(i => i.done)]], redraw)),
-    grid)];
+    h("div", { class: "row", style: "justify-content:space-between" }, h("h2", null, "Kho bài đọc"), h("span", { class: "small muted" }, `${READS.filter(r => info.get(r.id).done).length}/${READS.length} bài đã làm`)),
+    READS.length ? bankGroups("r", groups) : h("p", { class: "empty" }, "Chưa có bài nào. Tạo bài mới ở ô trên."))];
 }
 
 function pageWriting() {
