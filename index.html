@@ -3428,7 +3428,15 @@ function flushProfile() { if (!saveT || !P) return; clearTimeout(saveT); saveT =
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushProfile(); });
 window.addEventListener("pagehide", flushProfile);
 async function putDoc(c, id, d) { try { await store.put(c, id, d); } catch (e) { if (e?.code === "invalid_argument") { console.warn("doc quá lớn hoặc sai dạng", c, id, JSON.stringify(d).length); e.vn = `không lưu được (${c}, ${Math.round(JSON.stringify(d).length / 1024)} KB, giới hạn 256 KB)`; } console.warn(e); toast(e?.code === "quota_exceeded" ? "Bộ nhớ đã đầy, hãy xóa bớt bài cũ." : "Chưa lưu được, thử lại sau."); throw e; } }
-async function delDoc(c, id) { try { await store.del(c, id); } catch (e) { console.warn(e); toast("Chưa xóa được, thử lại sau."); } }
+/* Đồng bộ mang theo cả bài chấm ngắn (feedbacks: nhận xét câu/đoạn trong khóa Viết, chữa bài đọc). Xóa ở web nào thì ghi dấu xóa
+   vào hồ sơ để lần đồng bộ sau không mang bài đó quay lại, và web kia cũng xóa theo. */
+const SYNC_COLS = [...COLS, "feedbacks"];
+function syncTomb(c, id) {
+  if (!SYNC_COLS.includes(c) || !P) return; const t = P.delIds ||= {}; t[c + "/" + id] = Date.now();
+  const ks = Object.keys(t); if (ks.length > 800) for (const k of ks.sort((a, b) => t[a] - t[b]).slice(0, ks.length - 800)) delete t[k];
+  saveProfile();
+}
+async function delDoc(c, id) { try { await store.del(c, id); syncTomb(c, id); } catch (e) { console.warn(e); toast("Chưa xóa được, thử lại sau."); } }
 
 function addAct(type, min) {
   const t = today(); const lg = P.log[t] ||= { min: 0, acts: [] };
@@ -11994,7 +12002,7 @@ async function syncDecode(code) {
   return JSON.parse(await (await syncGz(buf, "d")).text());
 }
 async function syncSnapshot() {
-  const cols = {}; for (const c of COLS) cols[c] = await store.list(c).catch(() => []);
+  const cols = {}; for (const c of SYNC_COLS) cols[c] = await store.list(c).catch(() => []);
   return { v: 1, at: Date.now(), from: syncIsFree() ? "web ngoài" : "web riêng", profile: JSON.parse(JSON.stringify(P)), cols };
 }
 /* Gộp: số lấy giá trị lớn hơn, ngày lấy ngày mới hơn, mảng gộp không trùng, đối tượng gộp từng khóa */
@@ -12007,7 +12015,7 @@ function syncMerge(a, b) {
   if (typeof a === "string" && typeof b === "string" && /^\d{4}-\d{2}-\d{2}/.test(a) && /^\d{4}-\d{2}-\d{2}/.test(b)) return a > b ? a : b;
   return a;
 }
-const syncStamp = d => Math.max(+d.updated || 0, +d.reviewed || 0, +d.created || 0, +d.lastSeen || 0);
+const syncStamp = d => Math.max(+d.updated || 0, +d.reviewed || 0, +d.created || 0, +d.lastSeen || 0, +d.at || 0);
 const syncPick = (a, b) => { const sa = syncStamp(a), sb = syncStamp(b); if (sa !== sb) return sb > sa ? b : a; return JSON.stringify(b).length > JSON.stringify(a).length ? b : a; };
 function syncCount(s) { return { vocab: s.cols.vocab?.length || 0, writings: s.cols.writings?.length || 0, readings: s.cols.readings?.length || 0, xp: s.profile?.xp || 0 }; }
 async function syncApply(inc, mode) {
@@ -12017,15 +12025,19 @@ async function syncApply(inc, mode) {
     const prof = mode === "replace" ? inc.profile : syncMerge(cur.profile, inc.profile);
     if (cur.profile?.resetAt) prof.resetAt = Math.max(+prof.resetAt || 0, +cur.profile.resetAt);
     let n = 0;
-    for (const c of COLS) {
+    const tbIn = inc.profile?.delIds || {}, tbMine = cur.profile?.delIds || {}, gone = (tb, c, d) => { const t = tb[c + "/" + d.id]; return t && syncStamp(d) <= t; };
+    for (const c of SYNC_COLS) {
       const mine = new Map((cur.cols[c] || []).map(d => [d.id, d]));
       if (mode === "replace") for (const d of cur.cols[c] || []) if (!(inc.cols[c] || []).some(x => x.id === d.id)) await store.del(c, d.id);
+      if (mode !== "replace") for (const d of cur.cols[c] || []) if (gone(tbIn, c, d)) { await store.del(c, d.id); mine.delete(d.id); n++; }
       for (const d of inc.cols[c] || []) {
+        if (mode !== "replace" && gone(tbMine, c, d)) continue;
         const old = mine.get(d.id), use = mode === "replace" || !old ? d : syncPick(old, d);
         if (!old || JSON.stringify(old) !== JSON.stringify(use)) { const { id, ...doc } = use; await store.put(c, d.id, doc); n++; }
       }
     }
     await store.setProfile(prof); await loadAll(); const dd = await vocabDedupe().catch(() => 0);
+    UI.fb = {}; UI.rrev = {}; UI.tan = {}; UI.vread = undefined;
     SYNC.pre = null; SYNC.msg = `Đã ${mode === "replace" ? "thay bằng" : "gộp"} dữ liệu từ ${inc.from} (${n} mục được cập nhật${dd ? `, gộp ${dd} từ bị trùng` : ""}).`;
   } catch (e) { console.warn(e); SYNC.msg = "Chưa lưu được: " + (e?.message || e?.code || "lỗi"); }
   SYNC.busy = false; render();
