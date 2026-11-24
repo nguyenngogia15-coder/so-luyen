@@ -4,7 +4,7 @@
 (function () {
   const nextOf = L => (L || []).find(l => !P.lessons?.[l.id]?.done);
   const FAST = {
-    V: { how: "Qua 1 bài trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Từ tự thêm vào sổ không tính.", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
+    V: { how: "Qua 1 bài MỚI trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Ôn lại bài cũ và từ tự thêm vào sổ không tính (ôn lại chỉ tính khi đã học hết cả hai lộ trình).", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
     L: { how: "Mỗi câu nghe chép tính 1 phút, mỗi lượt Số và đánh vần 4 phút, mỗi phần Section 8 phút. Game: mỗi bản tin 2 phút, Đuổi giọng 2 câu = 1 phút.", fast: () => ["Nghe chép 5 câu · khoảng 5 phút", "#listen", () => { UI.lsTab = "dict"; }] },
     S: { how: "Mỗi câu shadowing tính 1 phút, 1 bài phát âm 5 phút là đủ luôn. Game: Nói 1 phút = 1 phút, Nhại ngữ điệu mỗi câu 1 phút, Phản xạ nhanh 2 câu = 1 phút.", fast: () => ["1 bài Phát âm · khoảng 5 phút", "#speak", () => { UI.spTab = "pron"; }] },
     R: { how: "1 bài trong khóa Đọc (tính 15 phút) hoặc 1 bài đọc bất kỳ (tính 20 phút) là đủ. Game Đọc: mỗi câu 1 phút, game bấm giờ nhanh thì 2 câu = 1 phút; đọc lướt chọn heading mỗi đoạn 1 phút.", fast: () => { const n = nextOf(typeof RL !== "undefined" ? RL : []); return n ? ["Bài tiếp theo khóa Đọc: " + n.title, "#rl-" + n.id, null] : ["1 bài đọc ngắn", "#reading", null]; } },

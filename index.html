@@ -11866,7 +11866,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lookup")
    Học thẻ 1★ → Bài tập 3★ (bắt buộc, sai 1 câu là làm lại từ đầu) ; luyện thêm Nghe viết 3★, Phát âm 3★.
    Dữ liệu đặt cạnh trang: vr/index.json và vr/<phần>.json ===== */
 const VR = { idx: null, parts: {} };
-function vrIndex() { return VR.idx ||= fetch("vr/index.json").then(r => { if (!r.ok) throw new Error("vr " + r.status); return r.json(); }).catch(e => { VR.idx = null; throw e; }); }
+function vrIndex() { return VR.idx ||= fetch("vr/index.json").then(r => { if (!r.ok) throw new Error("vr " + r.status); return r.json(); }).then(ix => (VR.ixv = ix)).catch(e => { VR.idx = null; throw e; }); }
 function vrPart(id) { return VR.parts[id] ||= fetch("vr/" + id + ".json").then(r => { if (!r.ok) throw new Error("vr " + r.status); return r.json(); }).catch(e => { delete VR.parts[id]; throw e; }); }
 const vrSt = pid => ((P.vr ||= {})[pid] ||= { l: {} });
 const vrL = (pid, i) => (vrSt(pid).l[i] ||= {});
@@ -11885,7 +11885,11 @@ const VR_POS = { noun: "danh từ", verb: "động từ", adjective: "tính từ
 const vrPos = p => VR_POS[p] || p;
 function vrSay(w) { try { speakWord(w); } catch { try { speak(w); } catch {} } }
 function vrSayText(t) { try { stopTTS(); const u = new SpeechSynthesisUtterance(t); u.lang = "en-GB"; u.rate = 0.95; speechSynthesis.speak(u); } catch {} }
-/* Đánh dấu hôm nay đã học Lộ trình từ vựng (cho nhiệm vụ hằng ngày; ôn lại bài cũ cũng tính) */
+/* Đánh dấu hôm nay đã học Lộ trình từ vựng (cho nhiệm vụ hằng ngày) */
+/* Ôn lại (ôn đầu ngày, Ôn từ hay sai, làm lại bài đã qua, nghe viết) chỉ tính nhiệm vụ ngày khi đã học hết cả hai lộ trình
+   (Từ vựng chủ đề và Từ vựng CEFR); trước đó nhiệm vụ Từ vựng phải là qua một bài mới. */
+function vrAllDone() { const ix = VR.ixv; if (!ix) return false; const ps = [...(ix.topic || []), ...(ix.cefr || [])]; return ps.length > 0 && ps.every(p => vrDoneN(p) >= p.lessons); }
+function vrMarkReview() { if (vrAllDone()) vrMarkDay(); }
 function vrMarkDay() { const lg = P.log[today()] ||= { min: 0, acts: [] }; if (!lg.vr) { lg.vr = 1; saveProfile(); } }
 /* Ôn từ hay sai: từ làm sai hoặc đánh dấu Cần ôn trong Lộ trình được đưa vào lịch ôn ngắt quãng riêng (khác Sổ từ tự thêm).
    Đúng thì giãn lịch 1 → 3 → 7 → 16 → 35 ngày; sai thì ôn lại ngày mai. Đúng 5 lần liền là thuộc, rời khỏi lịch. */
@@ -11916,7 +11920,7 @@ async function vrGate(ix) {
   const head = h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "× Thoát"), h("span", { class: "small muted" }, "Ôn bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `Đã đúng ${R.done}/${R.total}`));
   const cur = R.q[0];
   if (!cur) {
-    if (P.vrGate !== today()) { P.vrGate = today(); if (R.total) { award("vocab", 15); addAct("vocab", 5); vrMarkDay(); } saveProfile(); }
+    if (P.vrGate !== today()) { P.vrGate = today(); if (R.total) { award("vocab", 15); addAct("vocab", 5); vrMarkReview(); } saveProfile(); }
     return h("div", { class: "stack", style: "gap:14px" }, head,
       vrDone("Ôn xong bài cũ", `Đúng hết ${R.total} câu` + (R.miss ? ` (có ${R.miss} lần trả lời sai phải làm lại; các từ đó đã vào lịch Ôn từ hay sai).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái.",
         [then ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = then; render(); window.scrollTo(0, 0); } }, "Học bài mới →") : null, h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")]));
@@ -11954,7 +11958,7 @@ function vrPage() {
     const due = vrRevDue().length, all = Object.keys(vrRev()).length;
     box.replaceChildren(
       all ? h("section", { class: "card row vr-rev", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" },
-        h("div", { class: "stack", style: "gap:2px" }, h("b", null, due ? `Ôn từ hay sai: ${due} từ đến hạn hôm nay` : "Ôn từ hay sai: hôm nay đã ôn xong"), h("span", { class: "small muted" }, `${all} từ trong lịch ôn. Từ làm sai và từ đánh dấu Cần ôn tự vào đây; ôn xong cũng tính là nhiệm vụ từ vựng của ngày.`)),
+        h("div", { class: "stack", style: "gap:2px" }, h("b", null, due ? `Ôn từ hay sai: ${due} từ đến hạn hôm nay` : "Ôn từ hay sai: hôm nay đã ôn xong"), h("span", { class: "small muted" }, `${all} từ trong lịch ôn. Từ làm sai và từ đánh dấu Cần ôn tự vào đây; ôn xong chỉ tính là nhiệm vụ từ vựng của ngày khi bạn đã học hết cả hai lộ trình.`)),
         due ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "rev" }; render(); window.scrollTo(0, 0); } }, "Ôn ngay →") : null) : null,
       h("div", { class: "row vr-modes" }, [["topic", "Từ vựng chủ đề"], ["cefr", "Từ vựng CEFR"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(V.mode === k), onclick: () => { V.mode = k; V.part = null; render(); } }, t))),
       h("div", { class: "vr-layout" },
@@ -12038,7 +12042,7 @@ function vrQuiz(part, data, items, v, head, back) {
   const q = Q.list[Q.i];
   if (!q) {
     const s = vrL(part.id, v.i), got = Q.round === 1 ? 3 : Q.round === 2 ? 2 : 1, first = !s.x; s.x = Math.max(s.x || 0, got); if (first) s.pd = today();
-    if (first) { award("vocab", 15); addAct("vocab", Math.max(3, Math.round(items.length / 3))); } saveProfile(); vrMarkDay();
+    if (first) { award("vocab", 15); addAct("vocab", Math.max(3, Math.round(items.length / 3))); } saveProfile(); if (first) vrMarkDay(); else vrMarkReview();
     const nx = v.i + 1 < part.lessons ? v.i + 1 : null;
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Qua bài · " + "★".repeat(got), `Bạn trả lời đúng hết ${items.length} câu` + (Q.round > 1 ? ` sau ${Q.round} lượt.` : " ngay lượt đầu."), [nx != null ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.vr.view = { k: "cards", i: nx }; render(); } }, "Học bài tiếp →") : null, h("button", { class: "btn", type: "button", onclick: () => { UI.vr.view = { k: "dict", i: v.i }; render(); } }, "Luyện nghe viết"), h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "Về lộ trình")]));
   }
@@ -12058,7 +12062,7 @@ function vrDict(part, items, v, head, back) {
   const D = v.d ||= { i: 0, list: vrShuf(items), err: 0, typed: "", res: null };
   const it = D.list[D.i];
   if (!it) {
-    const got = D.err === 0 ? 3 : D.err <= 2 ? 2 : 1, s = vrL(part.id, v.i); s.d = Math.max(s.d || 0, got); award("vocab", 5); addAct("vocab", 3); saveProfile(); vrMarkDay();
+    const got = D.err === 0 ? 3 : D.err <= 2 ? 2 : 1, s = vrL(part.id, v.i); s.d = Math.max(s.d || 0, got); award("vocab", 5); addAct("vocab", 3); saveProfile(); vrMarkReview();
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Nghe viết · " + "★".repeat(got), `Sai ${D.err} lần trên ${items.length} từ.`, [h("button", { class: "btn", type: "button", onclick: () => { v.d = null; render(); } }, "Làm lại"), h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình")]));
   }
   if (!D.played) { D.played = true; setTimeout(() => vrSay(it.w), 150); }
@@ -12116,7 +12120,7 @@ async function vrReview(ix) {
   const head = h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "× Thoát"), h("span", { class: "small muted" }, "Ôn từ hay sai"), h("span", { class: "small muted" }, `${Math.min(R.i + 1, R.list.length)}/${R.list.length}`));
   const cur = R.list[R.i];
   if (!cur) {
-    if (R.list.length && !R.done) { R.done = 1; award("vocab", Math.min(20, R.list.length * 2)); addAct("vocab", Math.max(2, Math.round(R.list.length / 3))); vrMarkDay(); saveProfile(); }
+    if (R.list.length && !R.done) { R.done = 1; award("vocab", Math.min(20, R.list.length * 2)); addAct("vocab", Math.max(2, Math.round(R.list.length / 3))); vrMarkReview(); saveProfile(); }
     return h("div", { class: "stack", style: "gap:14px" }, head, vrDone("Ôn xong", R.list.length ? `Đúng ${R.ok}/${R.list.length} từ. Từ đúng được giãn lịch ôn, từ sai sẽ gặp lại ngày mai.` : "Không có từ nào đến hạn.", [h("button", { class: "btn btn-primary", type: "button", onclick: back }, "Về lộ trình")]));
   }
   const q = cur.q;
@@ -15798,7 +15802,7 @@ pagePlan = function () {
 /* ===== Nhóm học: nhiệm vụ bắt buộc mỗi ngày (4 kỹ năng + từ vựng/ngữ pháp), bảng cả nhóm, chuỗi cá nhân và chuỗi nhóm,
    vé đóng băng, level, xếp hạng tuần, game pass tháng, chọc bạn, tổng kết tuần, đổi tên và ảnh đại diện ===== */
 const DQ_T = [
-  { k: "V", name: "Từ vựng / Ngữ pháp", need: 1, unit: "", href: "#vocab", go: () => { UI.vTab = "road"; }, how: "Qua 1 bài tập trong Lộ trình từ vựng (bài mới hoặc ôn lại bài cũ), ôn xong phần Ôn từ hay sai, hoặc qua 1 bài ngữ pháp. Từ tự thêm vào sổ không tính." },
+  { k: "V", name: "Từ vựng / Ngữ pháp", need: 1, unit: "", href: "#vocab", go: () => { UI.vTab = "road"; }, how: "Qua 1 bài MỚI trong Lộ trình từ vựng hoặc qua 1 bài ngữ pháp. Ôn lại bài cũ, Ôn từ hay sai và từ tự thêm vào sổ không tính; khi đã học hết cả hai lộ trình (chủ đề và CEFR) thì ôn lại mới được tính." },
   { k: "L", name: "Nghe", need: 5, unit: "phút", href: "#listen", how: "Làm bài nghe, nghe chép, số và đánh vần." },
   { k: "S", name: "Nói", need: 5, unit: "phút", href: "#speak", how: "Shadowing, bài phát âm, luyện nói hoặc phòng thi Speaking." },
   { k: "R", name: "Đọc", need: 10, unit: "phút", href: "#reading", how: "Làm 1 bài đọc hoặc 1 bài trong khóa Đọc." },
@@ -17168,7 +17172,7 @@ function pl4Start(k) {
 (function () {
   const nextOf = L => (L || []).find(l => !P.lessons?.[l.id]?.done);
   const FAST = {
-    V: { how: "Qua 1 bài trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Từ tự thêm vào sổ không tính.", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
+    V: { how: "Qua 1 bài MỚI trong Lộ trình từ vựng hoặc 1 bài ngữ pháp. Ôn lại bài cũ và từ tự thêm vào sổ không tính (ôn lại chỉ tính khi đã học hết cả hai lộ trình).", fast: () => ["1 bài Lộ trình từ vựng · khoảng 5 phút", "#vocab", () => { UI.vTab = "road"; }] },
     L: { how: "Mỗi câu nghe chép tính 1 phút, mỗi lượt Số và đánh vần 4 phút, mỗi phần Section 8 phút. Game: mỗi bản tin 2 phút, Đuổi giọng 2 câu = 1 phút.", fast: () => ["Nghe chép 5 câu · khoảng 5 phút", "#listen", () => { UI.lsTab = "dict"; }] },
     S: { how: "Mỗi câu shadowing tính 1 phút, 1 bài phát âm 5 phút là đủ luôn. Game: Nói 1 phút = 1 phút, Nhại ngữ điệu mỗi câu 1 phút, Phản xạ nhanh 2 câu = 1 phút.", fast: () => ["1 bài Phát âm · khoảng 5 phút", "#speak", () => { UI.spTab = "pron"; }] },
     R: { how: "1 bài trong khóa Đọc (tính 15 phút) hoặc 1 bài đọc bất kỳ (tính 20 phút) là đủ. Game Đọc: mỗi câu 1 phút, game bấm giờ nhanh thì 2 câu = 1 phút; đọc lướt chọn heading mỗi đoạn 1 phút.", fast: () => { const n = nextOf(typeof RL !== "undefined" ? RL : []); return n ? ["Bài tiếp theo khóa Đọc: " + n.title, "#rl-" + n.id, null] : ["1 bài đọc ngắn", "#reading", null]; } },
