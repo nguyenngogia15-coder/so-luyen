@@ -118,13 +118,19 @@ const PR_GATE_MIX = { listen: 6, word: 5, sent: 3 };
 const prOld = () => PR_LESSONS.filter(l => { const d = (P.pr || {})[l.id]?.done; return d && d < today(); });
 const prGateNeed = () => P.prGate !== today() && prOld().length > 0;
 const prShuf = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+/* Xếp lại để hai mục liền nhau không cùng một bài (nếu được), cho trộn đều */
+function gateSpread(arr, key) { const left = arr.slice(), out = []; while (left.length) { const k = out.length ? left.findIndex(x => key(x) !== key(out[out.length - 1])) : 0; out.push(left.splice(k < 0 ? 0 : k, 1)[0]); } return out; }
 function prGateBuild() {
-  const old = prShuf(prOld()), take = (n, src) => { const out = []; for (let r = 0; out.length < n && r < 40; r++) for (const l of old) { if (out.length >= n) break; const x = src(l); if (x) out.push(x); } return out; };
-  const pick = a => a[Math.floor(Math.random() * a.length)];
-  const L = take(PR_GATE_MIX.listen, l => l.pairs.length ? (pr => ({ t: "listen", l, pair: pr, w: pr[Math.random() < 0.5 ? 0 : 1] }))(pick(l.pairs)) : null);
-  const seenW = new Set(), W = take(PR_GATE_MIX.word, l => { const w = pick(l.words); if (seenW.has(w)) return null; seenW.add(w); return { t: "word", l, w }; });
-  const seenS = new Set(), S = take(PR_GATE_MIX.sent, l => { const x = pick(l.sents || []); if (!x || seenS.has(x)) return null; seenS.add(x); return { t: "sent", l, w: x }; });
-  return prShuf([...L, ...W, ...S]);
+  const old = prShuf(prOld()), pick = a => a[Math.floor(Math.random() * a.length)], used = new Set(), quota = { ...PR_GATE_MIX }, items = [];
+  const make = (l, t) => {
+    if (t === "listen") { if (!l.pairs.length) return null; const pr = pick(l.pairs), w = pr[Math.random() < 0.5 ? 0 : 1]; return used.has("l|" + w) ? null : (used.add("l|" + w), { t, l, pair: pr, w }); }
+    const src = t === "word" ? l.words : l.sents || []; const pool = src.filter(x => !used.has(t + "|" + x)); if (!pool.length) return null; const w = pick(pool); used.add(t + "|" + w); return { t, l, w };
+  };
+  /* 1) Mỗi bài đã đạt có ít nhất một mục, dạng nào còn chỗ thì lấy dạng đó */
+  for (const l of old) { if (items.length >= 20) break; for (const t of prShuf(["listen", "word", "sent"]).sort((a, b) => quota[b] - quota[a])) { const x = make(l, t); if (x) { items.push(x); quota[t]--; break; } } }
+  /* 2) Lấp đủ số mục mỗi dạng, xoay vòng qua tất cả các bài */
+  for (const t of ["listen", "word", "sent"]) for (let r = 0; quota[t] > 0 && r < 30; r++) for (const l of prShuf(old)) { if (quota[t] <= 0) break; const x = make(l, t); if (x) { items.push(x); quota[t]--; } }
+  return gateSpread(prShuf(items), x => x.l.id);
 }
 function prGateView(l) {
   const G = UI.prG && UI.prG.day === today() && UI.prG.for === l.id ? UI.prG : (UI.prG = { day: today(), for: l.id, q: prGateBuild(), total: 0, done: 0, miss: 0, picked: null, res: null });
@@ -157,7 +163,7 @@ function prGateView(l) {
   }
   return h("div", { class: "stack", style: "gap:14px" }, back,
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngày mới · ôn bài cũ"), h("h1", null, "Ôn lại trước khi học bài mới"),
-      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${G.total} mục trộn từ tất cả bài bạn đã đạt: ${PR_GATE_MIX.listen} câu nghe và chọn, ${PR_GATE_MIX.word} từ đọc, ${PR_GATE_MIX.sent} câu đọc. Mục nào sai hoặc chưa đủ điểm sẽ được trộn lại để làm tiếp, đúng hết mới xong cho cả hôm nay.`)),
+      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${G.total} mục trộn từ tất cả ${prOld().length} bài bạn đã đạt (bài nào cũng có), gồm nghe và chọn, đọc từ, đọc câu. Mục nào sai hoặc chưa đủ điểm sẽ được trộn lại để làm tiếp, đúng hết mới xong cho cả hôm nay.`)),
     h("div", { class: "row", style: "gap:10px" }, h("div", { class: "meter", style: "flex:1" }, h("i", { style: `width:${G.done / G.total * 100}%` })), h("span", { class: "small muted" }, `Đã đúng ${G.done}/${G.total}` + (G.q.length > G.total - G.done ? "" : ""))),
     h("section", { class: "card stack sp-lesson", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, kindName), h("span", { class: "small muted" }, "Bài " + cur.l.t)), ...body));
 }
