@@ -467,6 +467,7 @@ h2{font-size:1.15rem;letter-spacing:-.01em}
 .fb{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:var(--surface-2)}
 .fb-q{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--surface);font:inherit;color:var(--ink)}
 .bank-grp{border:2px solid var(--ink);background:var(--paper,#fff)}.bank-grp>summary{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:12px 14px;cursor:pointer;list-style:none}.bank-grp>summary::-webkit-details-marker{display:none}.bank-grp>summary::before{content:"▸";font-weight:700}.bank-grp[open]>summary::before{content:"▾"}.bank-gname{font-weight:700}.bank-gsub{flex:1;min-width:0}.bank-gcnt{margin-left:auto;font-family:var(--mono,monospace);font-size:13px;padding:2px 8px;border:1px solid var(--line,#ccc)}.bank-gcnt.done{background:#e3f4e8;border-color:#2e7d32;color:#1b5e20}.bank-grp>.bank-grid{padding:0 14px 14px}
+.gr-gtbl-wrap{overflow-x:auto}.gr-gtbl{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}.gr-gtbl th,.gr-gtbl td{border:1px solid var(--line,#ddd);padding:8px;vertical-align:top;text-align:left}.gr-gtbl th{background:var(--paper2,#f3f1ec);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.gr-gtbl td.gr-o{color:#a33}.gr-gtbl td.gr-c{color:#1b6b3a}.gr-prompt{white-space:pre-wrap;font-size:12.5px;background:var(--paper2,#f3f1ec);padding:10px;margin:0;border:1px solid var(--line,#ddd);max-height:260px;overflow:auto}.gr-prac{margin:0;padding-left:22px;display:grid;gap:10px}.gr-self>summary{cursor:pointer;font-weight:600}
 .fb-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:8px;align-items:center}
 .fb-l{font-size:.8rem;font-weight:700;color:var(--muted)}
 .fb-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -6015,6 +6016,9 @@ BÀI LÀM (${words} từ):
 """${essay}"""
 
 Yêu cầu:
+- CHỈ góp ý dựa trên câu có thật trong bài: mọi "quote" và "original" phải trích NGUYÊN VĂN từ bài. Không bịa lỗi, không suy ra lỗi từ chỗ bài không viết.
+- Phân biệt LỖI THẬT (sai ngữ pháp, sai nghĩa, sai từ, không đáp ứng đề) với KHÁC BIỆT VĂN PHONG: câu đã đúng thì không đưa vào "fixes" hay "marks", kể cả khi bạn sẽ viết khác.
+- Mỗi điểm yếu gắn đúng một trong 4 tiêu chí và nói vì sao nó làm mất điểm theo mô tả band; band chỉ là kết luận cuối, dựa trên các dẫn chứng đó.
 - "comment": nhận xét mỗi tiêu chí bằng tiếng Việt, 1–3 câu, nói rõ bài đáp ứng hoặc chưa đáp ứng đặc điểm nào của band đã cho, dẫn chứng từ bài.
 - "to_next": việc cụ thể (1 câu, tiếng Việt) để tiêu chí đó lên band kế tiếp theo mô tả band.
 ${task.n === 1 ? '- "has_overview": true nếu bài có câu tổng quan (overview) nêu xu hướng hoặc đặc điểm chính, ngược lại false.\n' : ""}
@@ -6030,14 +6034,23 @@ ${lessonListText()}
 Chỉ trả lời một đối tượng JSON đúng dạng:
 {"criteria":[{"name":"${c1}","band":5,"comment":"...","to_next":"..."},{"name":"Coherence and Cohesion","band":5,"comment":"...","to_next":"..."},{"name":"Lexical Resource","band":5,"comment":"...","to_next":"..."},{"name":"Grammatical Range and Accuracy","band":5,"comment":"...","to_next":"..."}],"has_overview":true,"checks":[{"item":"...","ok":true,"note":"..."}],"fixes":[{"original":"...","corrected":"...","why":"...","category":"Thì","lesson":"l2"}],"marks":[{"quote":"...","crit":"GRA","title":"...","why":"...","better":"..."}],"strengths":["..."],"next_step":"...","model":"..."}`;
 }
-function normalizeResult(r, n) {
+/* Chống "bịa lỗi": góp ý nào trích câu không có trong bài thì bỏ */
+const qNorm = t => String(t || "").toLowerCase().replace(/[‘’`]/g, "'").replace(/[“”]/g, '"').replace(/[^a-z0-9' ]+/g, " ").replace(/\s+/g, " ").trim();
+function quoteIn(essay, q) {
+  const E = qNorm(essay), Q = qNorm(q); if (!Q) return false; if (E.includes(Q)) return true;
+  const w = Q.split(" "); if (w.length < 6) return false;
+  return E.includes(w.slice(0, Math.ceil(w.length / 2)).join(" ")) || E.includes(w.slice(Math.floor(w.length / 2)).join(" "));
+}
+function normalizeResult(r, n, essay) {
   if (!r || !Array.isArray(r.criteria) || r.criteria.length < 4) throw { code: "invalid_json" };
   const crit = r.criteria.slice(0, 4).map(c => ({ name: String(c.name || ""), band: Math.max(0, Math.min(9, Math.round(Number(c.band) || 0))), comment: String(c.comment || ""), to_next: String(c.to_next || "") }));
   const overall = roundBand(crit.reduce((a, c) => a + c.band, 0) / 4);
   const fixes = (Array.isArray(r.fixes) ? r.fixes : []).slice(0, 3).map(f => ({ original: String(f.original || ""), corrected: String(f.corrected || ""), why: String(f.why || ""), category: f.category ? String(f.category).slice(0, 40) : "", lesson: typeof f.lesson === "string" ? f.lesson : null }));
   const checks = (Array.isArray(r.checks) ? r.checks : []).filter(c => c && c.item).slice(0, 14).map(c => ({ item: String(c.item).slice(0, 60), ok: c.ok !== false, note: String(c.note || "").slice(0, 300) }));
   const marks = (Array.isArray(r.marks) ? r.marks : []).filter(m => m && m.quote).slice(0, 8).map(m => { let c = String(m.crit || "").toUpperCase(); if (c === "TA" || c === "TR") c = n === 1 ? "TA" : "TR"; if (!["TA", "TR", "CC", "LR", "GRA"].includes(c)) c = "GRA"; return { quote: String(m.quote).slice(0, 200), crit: c, title: String(m.title || "").slice(0, 60), why: String(m.why || "").slice(0, 300), better: String(m.better || "").slice(0, 300) }; });
-  return { overall, marks, task: n, has_overview: n === 1 ? r.has_overview === true : null, criteria: crit, fixes, checks, strengths: (Array.isArray(r.strengths) ? r.strengths : []).map(String).slice(0, 3), next_step: String(r.next_step || ""), model: String(r.model || "") };
+  let dropped = 0;
+  if (essay) { const keep = x => quoteIn(essay, x) || (dropped++, false); fixes.splice(0, fixes.length, ...fixes.filter(f => keep(f.original))); marks.splice(0, marks.length, ...marks.filter(m => keep(m.quote))); }
+  return { overall, marks, dropped, task: n, has_overview: n === 1 ? r.has_overview === true : null, criteria: crit, fixes, checks, strengths: (Array.isArray(r.strengths) ? r.strengths : []).map(String).slice(0, 3), next_step: String(r.next_step || ""), model: String(r.model || "") };
 }
 /* Kết quả chấm Writing: band + 4 thanh tiêu chí, mục lục 1–6, lỗi đánh dấu ngay trong bài */
 const CRIT_C = { TA: ["Task Achievement", "#2F6FB5"], TR: ["Task Response", "#2F6FB5"], CC: ["Coherence & Cohesion", "#7B4BC4"], LR: ["Lexical Resource", "#1F9D57"], GRA: ["Grammar", "#D14B3C"] };
@@ -6051,17 +6064,104 @@ function placeMarks(text, marks) {
   });
   return ranges.sort((a, b) => a.s - b.s);
 }
+/* ----- Phân tích ngữ pháp riêng (bảng 5 cột, 3 lỗi lặp lại, 5 câu luyện) + câu lệnh để tự chữa bằng AI khác ----- */
+function gramPrompt(essay) {
+  return `Bạn là giáo viên IELTS Writing. Phân tích LỖI NGỮ PHÁP trong bài viết của một sinh viên Việt Nam.
+Quy tắc:
+- Chỉ nêu lỗi ngữ pháp THẬT. Câu đã đúng ngữ pháp thì không đưa vào, kể cả khi bạn sẽ viết khác: khác biệt văn phong không phải lỗi.
+- "original" trích NGUYÊN VĂN câu (hoặc vế câu) có lỗi từ bài. Không bịa câu không có trong bài.
+- Mỗi lỗi một dòng; một câu có hai lỗi thì hai dòng. Tối đa 15 dòng, ưu tiên lỗi làm sai nghĩa hoặc lặp lại.
+
+BÀI LÀM:
+"""${essay}"""
+
+Danh sách bài ngữ pháp trong web (dùng id ở trường "lesson" nếu khớp):
+${lessonListText()}
+
+Chỉ trả lời JSON:
+{"rows":[{"original":"...","error":"tên lỗi ngắn, tiếng Việt","explain":"vì sao sai, 1–2 câu tiếng Việt","corrected":"câu đã sửa, tiếng Anh","rule":"điểm ngữ pháp cần ôn, tiếng Việt","lesson":"l2 hoặc null"}],
+"top":[{"name":"lỗi lặp lại nhiều nhất","count":2,"tip":"1 câu tiếng Việt: cách tránh"}],
+"practice":[{"q":"câu luyện MỚI (không lấy từ bài): một câu sai để sửa hoặc câu có chỗ trống ___","a":"đáp án","why":"giải thích ngắn tiếng Việt"}]}
+"top": đúng 3 lỗi lặp lại nhiều nhất (ít hơn nếu bài ít lỗi). "practice": đúng 5 câu, nhắm vào các lỗi trong "top".`;
+}
+const AI_SELF_PROMPTS = [
+  ["Nhận xét theo 4 tiêu chí, không chấm điểm", `You are an experienced IELTS Writing teacher. Review my essay against the four official IELTS Writing criteria: Task Response (Task Achievement for Task 1), Coherence and Cohesion, Lexical Resource, and Grammatical Range and Accuracy.
+For each criterion:
+1. Tell me what I did well.
+2. Point out concrete weaknesses, quoting the exact sentence from my essay.
+3. Explain why each weakness loses marks.
+4. Suggest a fix that suits my current level.
+Do not give me a band score and do not invent errors that are not in my essay. Focus on feedback that helps me improve on my own.
+
+Task: [dán đề bài]
+My essay: [dán bài làm]`],
+  ["Bảng lỗi ngữ pháp + bài luyện", `Find the grammar mistakes in my IELTS Writing essay and put them in a table with five columns:
+1. Original sentence
+2. The grammar mistake
+3. Explanation in Vietnamese
+4. Corrected sentence
+5. Grammar point I should review
+Only list real grammar mistakes, not differences in style. Do not rewrite sentences that are already correct.
+Then name the three mistakes I make most often and write five new practice questions to help me fix them.
+
+My essay: [dán bài làm]`]];
+function copyBtn(text, label) {
+  return h("button", { class: "btn", type: "button", onclick: async e => { const b = e.currentTarget; try { await navigator.clipboard.writeText(text); b.textContent = "Đã chép ✓"; } catch { const t = b.parentElement?.parentElement?.querySelector("pre"); if (t) { const r = document.createRange(); r.selectNodeContents(t); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); } b.textContent = "Bấm Ctrl+C để chép"; } setTimeout(() => { b.textContent = label; }, 2000); } }, label);
+}
+function gramNode(w) {
+  const G = w.gram, busy = UI.busy?.["gram-" + w.id];
+  const selfAi = h("details", { class: "card gr-self" }, h("summary", null, "Tự chữa bằng AI khác (ChatGPT, Gemini…) cho đúng cách"),
+    h("div", { class: "stack", style: "gap:10px;margin-top:10px" },
+      h("p", { class: "small", style: "margin:0" }, "Chỉ dán bài rồi hỏi “chấm giúp mấy điểm” thì AI dễ bịa ra một con số nghe rất thuyết phục mà không có cơ sở. Muốn góp ý đáng tin: (1) đưa đủ dữ liệu: đề bài, bài làm, và nếu được thì cả bảng Band Descriptors chính thức của IELTS; (2) hỏi AI ", h("b", null, "bài sai ở đâu"), ", bắt nó trích nguyên câu sai, giải thích vì sao chưa tốt và thuộc tiêu chí nào, thay vì hỏi điểm."),
+      AI_SELF_PROMPTS.map(([t, pr]) => h("div", { class: "stack", style: "gap:6px" }, h("div", { class: "row", style: "justify-content:space-between;gap:8px" }, h("b", { class: "small" }, t), copyBtn(pr, "Chép câu lệnh")), h("pre", { class: "gr-prompt" }, pr)))));
+  let body;
+  if (!G) {
+    const st = h("span", { class: "small muted" });
+    body = h("div", { class: "stack", style: "gap:8px" },
+      h("p", { class: "small", style: "margin:0" }, "AI lập bảng từng câu sai ngữ pháp: câu gốc, lỗi gì, vì sao sai, câu sửa và điểm ngữ pháp cần ôn. Sau đó chỉ ra 3 lỗi bạn hay mắc nhất và soạn 5 câu luyện riêng cho 3 lỗi đó. Câu đúng sẵn sẽ không bị sửa."),
+      h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", disabled: busy ? true : null, onclick: async e => {
+        const b = e.currentTarget; b.disabled = true; (UI.busy ||= {})["gram-" + w.id] = 1; st.textContent = "AI đang đọc từng câu…";
+        try {
+          const r = await ai(gramPrompt(w.essay), { json: true, tier: "default", onText: ({ text }) => st.textContent = `AI đang lập bảng lỗi… (${text.length} ký tự)` });
+          let dropped = 0;
+          const rows = (Array.isArray(r?.rows) ? r.rows : []).filter(x => x && x.original).slice(0, 15).map(x => ({ original: String(x.original).slice(0, 400), error: String(x.error || "").slice(0, 80), explain: String(x.explain || "").slice(0, 400), corrected: String(x.corrected || "").slice(0, 400), rule: String(x.rule || "").slice(0, 120), lesson: typeof x.lesson === "string" ? x.lesson : null }))
+            .filter(x => quoteIn(w.essay, x.original) || (dropped++, false)).filter(x => qNorm(x.original) !== qNorm(x.corrected));
+          const top = (Array.isArray(r?.top) ? r.top : []).slice(0, 3).map(x => ({ name: String(x.name || ""), count: Math.max(1, Math.round(+x.count || 1)), tip: String(x.tip || "") }));
+          const practice = (Array.isArray(r?.practice) ? r.practice : []).filter(x => x && x.q).slice(0, 5).map(x => ({ q: String(x.q), a: String(x.a || ""), why: String(x.why || "") }));
+          if (!rows.length && !top.length) throw { code: "invalid_json" };
+          w.gram = { rows, top, practice, dropped, at: Date.now() };
+          const { id, ...doc } = w; await putDoc("writings", w.id, JSON.parse(JSON.stringify(doc))).catch(() => {});
+          const W = WRIT.find(x => x.id === w.id); if (W && W !== w) W.gram = w.gram;
+          addErrors(rows.map(x => ({ src: "writing", front: x.original, back: x.corrected, why: x.explain, category: x.error, lesson: x.lesson })));
+          addAct("writing", 5); saveProfile(); render();
+        } catch (err) { st.textContent = aiMsg(err); b.disabled = false; }
+        finally { delete UI.busy["gram-" + w.id]; }
+      } }, "Phân tích lỗi ngữ pháp (1 lượt AI)"), st));
+  } else {
+    body = h("div", { class: "stack", style: "gap:14px" },
+      G.rows.length ? h("div", { class: "gr-gtbl-wrap" }, h("table", { class: "gr-gtbl" },
+        h("thead", null, h("tr", null, ["Câu gốc", "Lỗi", "Vì sao sai", "Câu sửa", "Cần ôn"].map(t => h("th", null, t)))),
+        h("tbody", null, G.rows.map(x => h("tr", null, h("td", { class: "gr-o" }, x.original), h("td", null, h("b", null, x.error)), h("td", null, x.explain), h("td", { class: "gr-c" }, x.corrected),
+          h("td", null, x.lesson && lessonById(x.lesson) ? h("a", { href: "#lesson-" + x.lesson }, x.rule || lessonById(x.lesson).title) : x.rule)))))) : h("p", { class: "note" }, "Không tìm thấy lỗi ngữ pháp thật nào trong bài."),
+      G.dropped ? h("p", { class: "small muted", style: "margin:0" }, `Đã bỏ ${G.dropped} góp ý vì câu được trích không có trong bài của bạn.`) : null,
+      G.top.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "3 lỗi bạn hay mắc nhất"), h("div", { class: "gr-crits" }, G.top.map((t, i) => h("div", { class: "gr-ct", style: "--c:#D14B3C" }, h("b", null, `${i + 1}. ${t.name}`, h("span", { class: "small muted" }, ` · ${t.count} lần`)), h("p", { class: "small" }, t.tip))))) : null,
+      G.practice.length ? h("div", { class: "stack", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Luyện riêng cho các lỗi này"),
+        h("ol", { class: "gr-prac" }, G.practice.map(x => h("li", null, h("p", { style: "margin:0" }, x.q), h("details", null, h("summary", { class: "small" }, "Xem đáp án"), h("p", { class: "gr-c", style: "margin:6px 0 2px" }, x.a), x.why ? h("p", { class: "small muted", style: "margin:0" }, x.why) : null))))) : null,
+      h("p", { class: "small muted", style: "margin:0" }, "Các câu sai trong bảng đã được thêm vào Sổ lỗi để ôn lại."));
+  }
+  return h("div", { class: "stack", style: "gap:12px" }, body, selfAi);
+}
 function resultNode(res, w) {
   const keys = [res.task === 1 ? "TA" : "TR", "CC", "LR", "GRA"];
   const marks = (res.marks && res.marks.length ? res.marks : (res.fixes || []).map(f => ({ quote: f.original, crit: fixCrit(f.category, res.task), title: f.category || "Cần sửa", why: f.why, better: f.corrected })));
   const sec = (id, n, title, right, ...body) => h("section", { class: "gr-sec", id }, h("div", { class: "gr-sh" }, h("span", { class: "gr-num" }, n), h("h2", null, title), right ? h("span", { class: "small muted" }, right) : null), ...body);
-  const secs = [["gr-fix", "Sửa trước"], ["gr-err", "Lỗi trong bài"], ["gr-crit", "Nhận xét tiêu chí"], res.checks?.length ? ["gr-chk", "Bảng kiểm tra"] : null, ["gr-plan", "Kế hoạch"], res.model ? ["gr-model", "Bài mẫu"] : null].filter(Boolean);
+  const secs = [["gr-fix", "Sửa trước"], ["gr-err", "Lỗi trong bài"], w?.id && w?.essay ? ["gr-gram", "Ngữ pháp"] : null, ["gr-crit", "Nhận xét tiêu chí"], res.checks?.length ? ["gr-chk", "Bảng kiểm tra"] : null, ["gr-plan", "Kế hoạch"], res.model ? ["gr-model", "Bài mẫu"] : null].filter(Boolean);
   const hero = h("div", { class: "gr-hero card" },
     h("div", { class: "gr-ring", style: `--p:${res.overall / 9 * 100}%` }, h("div", null, h("b", null, res.overall.toFixed(1)), h("span", null, "Band ước tính"))),
     h("div", { class: "gr-bars" }, res.criteria.map((c, i) => { const [nm, col] = CRIT_C[keys[i]];
       return h("div", { class: "gr-bar" }, h("span", { class: "gr-bn" }, h("i", { style: `background:${col}` }), nm),
         h("span", { class: "gr-seg", style: `--c:${col}`, "aria-label": `${nm}: band ${c.band}` }, Array.from({ length: 9 }, (_, k) => h("i", { class: k < c.band ? "on" : null }))), h("b", null, c.band.toFixed(1))); }),
-      h("p", { class: "small muted", style: "margin:4px 0 0" }, `Mục tiêu band ${P.target}. Điểm do AI ước tính, chỉ để tham khảo.`)));
+      h("p", { class: "small muted", style: "margin:4px 0 0" }, `Mục tiêu band ${P.target}. Band chỉ là ước tính để định hướng; phần đáng tin hơn là các câu sai được trích nguyên văn bên dưới.`)));
   const nav = h("nav", { class: "gr-nav", "aria-label": "Các phần kết quả" }, secs.map(([id, t], i) => h("button", { type: "button", onclick: () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }) }, h("span", null, i + 1), t)));
   const num = id => secs.findIndex(s => s[0] === id) + 1;
   // 1. Sửa trước
@@ -6102,7 +6202,8 @@ function resultNode(res, w) {
     res.next_step ? h("div", { class: "gr-ct", style: "--c:var(--accent)" }, h("b", null, "Luyện tiếp"), h("p", { class: "small" }, res.next_step)) : null,
     h("a", { class: "gr-ct", href: "#errors", style: "--c:var(--warn);text-decoration:none;color:inherit" }, h("b", null, "Luyện lỗi"), h("p", { class: "small" }, "Các lỗi ở mục Sửa trước đã vào Sổ lỗi. Mở Sổ lỗi để ôn lại ›"))));
   const modelSec = res.model ? sec("gr-model", num("gr-model"), "Bài mẫu", "khoảng band 7", h("details", { class: "card" }, h("summary", null, "Xem bài mẫu"), h("p", { class: "model-text", style: "margin-top:10px;white-space:pre-wrap" }, res.model))) : null;
-  return h("div", { class: "stack gr", style: "gap:22px" }, hero, nav, fixSec, errSec, critSec, chkSec, planSec, modelSec);
+  const gramSec = w?.id && w?.essay ? sec("gr-gram", num("gr-gram"), "Phân tích ngữ pháp", w.gram ? `${w.gram.rows.length} câu sai` : "bảng lỗi + bài luyện riêng", gramNode(w)) : null;
+  return h("div", { class: "stack gr", style: "gap:22px" }, hero, nav, fixSec, errSec, gramSec, critSec, chkSec, planSec, modelSec);
 }
 /* Reading */
 function pageReading() {
@@ -7225,7 +7326,7 @@ function mistakeReview() {
 async function submitGrade(o) {
   const task = { n: o.n, promptText: o.promptText, data: o.data };
   const r = await ai(gradePrompt(task, o.essay, o.words), { json: true, tier: "default", signal: o.signal, onText: ({ text }) => o.status.textContent = `AI đang viết nhận xét… (${text.length} ký tự)` });
-  const res = normalizeResult(r, o.n);
+  const res = normalizeResult(r, o.n, o.essay);
   const id = newId();
   const doc = { task: o.n, promptId: o.promptId, title: o.title || null, promptText: o.promptText, data: o.data || null, essay: o.essay, words: o.words, result: res, created: Date.now(), parent: o.parent || null, version: o.version || 1 };
   await putDoc("writings", id, doc).catch(() => {});
