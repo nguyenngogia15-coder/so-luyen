@@ -11893,45 +11893,45 @@ const VR_IV = [1, 3, 7, 16, 35];
 const vrRev = () => (P.vrr ||= {});
 function vrRevAdd(pid, w) { const k = pid + "|" + w, r = vrRev()[k]; if (r) { r.n = 0; r.due = addDays(today(), 1); } else vrRev()[k] = { pid, w, n: 0, due: addDays(today(), 1) }; saveProfile(); }
 const vrRevDue = () => Object.entries(vrRev()).filter(([, r]) => r.due <= today());
-/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu mở một bài CHƯA qua, phải làm 8 câu ôn nhanh từ các bài đã qua
-   từ hôm trước (ưu tiên từ đến hạn ôn và bài qua lâu nhất). Đúng từ 5/8 là xong cho cả ngày. */
-const VR_GATE_N = 8, VR_GATE_OK = 5;
-function vrOldLessons() { const out = []; for (const [pid, st] of Object.entries(P.vr || {})) for (const [i, l] of Object.entries(st.l || {})) if (vrPassed(l) && (l.pd || "") < today()) out.push({ pid, i: +i, pd: l.pd || "", stars: vrStars(l) }); return out; }
+/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu mở một bài CHƯA qua, làm 20 câu trắc nghiệm trộn TẤT CẢ bài đã qua
+   từ hôm trước (gồm cả từ đến hạn trong Ôn từ hay sai). Câu sai được trộn lại vào hàng chờ, đúng hết mới xong cho cả ngày. */
+const VR_GATE_N = 20;
+function vrOldLessons() { const out = []; for (const [pid, st] of Object.entries(P.vr || {})) for (const [i, l] of Object.entries(st.l || {})) if (vrPassed(l) && (l.pd || "") < today()) out.push({ pid, i: +i }); return out; }
 const vrGateNeed = () => P.vrGate !== today() && vrOldLessons().length > 0;
 async function vrGate(ix) {
   const V = UI.vr, then = V.view.then, back = () => { V.view = null; render(); window.scrollTo(0, 0); };
   const R = V.view.r ||= await (async () => {
     const list = [], used = new Set(), parts = [...(ix.topic || []), ...(ix.cefr || [])];
-    for (const [k, r] of vrRevDue().slice(0, 3)) { const data = await vrPart(r.pid).catch(() => []), it = data.find(x => x.w === r.w); if (it && !used.has(r.pid + "|" + it.w)) { used.add(r.pid + "|" + it.w); list.push({ k, pid: r.pid, q: vrQ(it, data) }); } }
-    const old = vrShuf(vrOldLessons()).sort((a, b) => a.pd < b.pd ? -1 : a.pd > b.pd ? 1 : a.stars - b.stars).slice(0, 3);
+    for (const [k, r] of vrRevDue().slice(0, 5)) { const data = await vrPart(r.pid).catch(() => []), it = data.find(x => x.w === r.w); if (it && !used.has(r.pid + "|" + it.w)) { used.add(r.pid + "|" + it.w); list.push({ k, pid: r.pid, it, data }); } }
     const pools = [];
-    for (const o of old) { const part = parts.find(p => p.id === o.pid); if (!part) continue; const data = await vrPart(o.pid).catch(() => null); if (!data) continue; pools.push({ pid: o.pid, data, items: vrShuf(vrLesson(part, data, o.i)) }); }
-    for (let r = 0; list.length < VR_GATE_N && pools.some(p => p.items.length); r++) for (const p of pools) { if (list.length >= VR_GATE_N) break; const it = p.items.shift(); if (!it || used.has(p.pid + "|" + it.w)) continue; used.add(p.pid + "|" + it.w); list.push({ k: null, pid: p.pid, q: vrQ(it, p.data.length >= 8 ? p.data : p.items) }); }
-    return { i: 0, list: vrShuf(list), ok: 0, picked: null };
+    for (const o of vrShuf(vrOldLessons())) { const part = parts.find(p => p.id === o.pid); if (!part) continue; const data = await vrPart(o.pid).catch(() => null); if (!data) continue; pools.push({ pid: o.pid, data, items: vrShuf(vrLesson(part, data, o.i)) }); }
+    while (list.length < VR_GATE_N && pools.some(p => p.items.length)) for (const p of vrShuf(pools)) { if (list.length >= VR_GATE_N) break; const it = p.items.shift(); if (!it || used.has(p.pid + "|" + it.w)) continue; used.add(p.pid + "|" + it.w); list.push({ k: null, pid: p.pid, it, data: p.data }); }
+    const q = vrShuf(list).map(x => ({ ...x, q: vrQ(x.it, x.data) }));
+    return { q, total: q.length, done: 0, miss: 0, picked: null, wrong: new Set() };
   })();
-  const head = h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "× Thoát"), h("span", { class: "small muted" }, "Ôn bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${Math.min(R.i + 1, R.list.length)}/${R.list.length}`));
-  const cur = R.list[R.i];
+  const head = h("div", { class: "row", style: "justify-content:space-between" }, h("button", { class: "btn btn-quiet", type: "button", onclick: back }, "× Thoát"), h("span", { class: "small muted" }, "Ôn bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `Đã đúng ${R.done}/${R.total}`));
+  const cur = R.q[0];
   if (!cur) {
-    const pass = !R.list.length || R.ok >= Math.min(VR_GATE_OK, R.list.length);
-    if (pass && P.vrGate !== today()) { P.vrGate = today(); if (R.list.length) { award("vocab", 8); addAct("vocab", 2); vrMarkDay(); } saveProfile(); }
-    return h("div", { class: "stack", style: "gap:14px" }, head, pass
-      ? vrDone("Ôn xong bài cũ", `Đúng ${R.ok}/${R.list.length} câu. Từ sai đã vào lịch Ôn từ hay sai. Hôm nay bạn học bài mới thoải mái.`, [then ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = then; render(); window.scrollTo(0, 0); } }, "Học bài mới →") : null, h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")])
-      : vrDone("Chưa đủ", `Đúng ${R.ok}/${R.list.length} câu, cần ${VR_GATE_OK}. Ôn thêm một lượt ngắn nữa nhé, các từ sai đã vào lịch Ôn từ hay sai.`, [h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "gate", then }; render(); } }, "Ôn lượt mới"), h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")]));
+    if (P.vrGate !== today()) { P.vrGate = today(); if (R.total) { award("vocab", 15); addAct("vocab", 5); vrMarkDay(); } saveProfile(); }
+    return h("div", { class: "stack", style: "gap:14px" }, head,
+      vrDone("Ôn xong bài cũ", `Đúng hết ${R.total} câu` + (R.miss ? ` (có ${R.miss} lần trả lời sai phải làm lại; các từ đó đã vào lịch Ôn từ hay sai).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái.",
+        [then ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = then; render(); window.scrollTo(0, 0); } }, "Học bài mới →") : null, h("button", { class: "btn", type: "button", onclick: back }, "Về lộ trình")]));
   }
   const q = cur.q;
   if (q.auto && !q.played) { q.played = true; setTimeout(() => vrSay(q.it.w), 150); }
   const choose = o => {
-    if (R.picked) return; R.picked = o; if (o.ok) R.ok++;
-    const r = cur.k ? vrRev()[cur.k] : null;
-    if (r) { if (o.ok) { r.n++; if (r.n >= VR_IV.length) delete vrRev()[cur.k]; else r.due = addDays(today(), VR_IV[r.n]); } else { r.n = 0; r.due = addDays(today(), 1); } saveProfile(); }
-    else if (!o.ok) vrRevAdd(cur.pid, q.it.w);
-    render(); setTimeout(() => { if (UI.vr.view?.r === R && R.list[R.i] === cur) { R.i++; R.picked = null; render(); } }, o.ok ? 600 : 1800);
+    if (R.picked) return; R.picked = o;
+    const r = cur.k ? vrRev()[cur.k] : null, first = !R.wrong.has(cur.pid + "|" + q.it.w);
+    if (o.ok && first && r) { r.n++; if (r.n >= VR_IV.length) delete vrRev()[cur.k]; else r.due = addDays(today(), VR_IV[r.n]); saveProfile(); }
+    if (!o.ok) { R.miss++; R.wrong.add(cur.pid + "|" + q.it.w); if (r) { r.n = 0; r.due = addDays(today(), 1); saveProfile(); } else vrRevAdd(cur.pid, q.it.w); }
+    render();
+    setTimeout(() => { if (UI.vr.view?.r !== R || R.q[0] !== cur) return; R.q.shift(); if (o.ok) R.done++; else { const k = 2 + Math.floor(Math.random() * Math.max(1, R.q.length - 1)); R.q.splice(Math.min(k, R.q.length), 0, { ...cur, q: vrQ(cur.it, cur.data) }); } R.picked = null; render(); }, o.ok ? 600 : 1800);
   };
   UI.keyH = e => { if (e.target.closest("input,textarea")) return; const n = +e.key; if (n >= 1 && n <= q.opts.length) choose(q.opts[n - 1]); };
-  return h("div", { class: "stack", style: "gap:14px" }, head, h("div", { class: "meter" }, h("i", { style: `width:${R.i / R.list.length * 100}%` })),
-    R.i === 0 && !R.picked ? h("p", { class: "note", style: "margin:0" }, `Ngày mới: ôn nhanh ${R.list.length} câu từ các bài đã học trước khi sang bài mới. Đúng từ ${VR_GATE_OK} câu là xong cho cả hôm nay.`) : null,
+  return h("div", { class: "stack", style: "gap:14px" }, head, h("div", { class: "meter" }, h("i", { style: `width:${R.done / Math.max(1, R.total) * 100}%` })),
+    R.done === 0 && !R.miss && !R.picked ? h("p", { class: "note", style: "margin:0" }, `Ngày mới: ${R.total} câu trắc nghiệm trộn từ tất cả bài bạn đã qua. Câu sai sẽ được trộn lại để làm tiếp, đúng hết mới xong cho cả hôm nay.`) : null,
     h("section", { class: "card vr-q" }, q.ask, h("div", { class: "vr-opts" }, q.opts.map((o, k) => h("button", { type: "button", class: "vr-o" + (R.picked ? (o.ok ? " right" : o === R.picked ? " wrong" : "") : ""), disabled: R.picked || null, onclick: () => choose(o) }, h("span", { class: "vr-k" }, k + 1), o.t))),
-      R.picked && !R.picked.ok ? h("p", { class: "note bad", style: "margin:0" }, `Đáp án: ${q.it.w} (${vrPos(q.it.p)}) = ${q.it.vi}. ${q.it.e[0][0]}`) : null));
+      R.picked && !R.picked.ok ? h("p", { class: "note bad", style: "margin:0" }, `Đáp án: ${q.it.w} (${vrPos(q.it.p)}) = ${q.it.vi}. ${q.it.e[0][0]} Câu này sẽ quay lại sau.`) : null));
 }
 /* Bài i của phần: các mục từ */
 function vrLesson(part, data, i) { let a = 0; for (let k = 0; k < i; k++) a += part.sizes[k]; return data.slice(a, a + part.sizes[i]); }
@@ -11970,7 +11970,7 @@ function vrLessonList(part) {
   return h("div", { class: "stack", style: "gap:14px;min-width:0" },
     h("div", { class: "row", style: "justify-content:space-between;align-items:baseline" }, h("div", { class: "stack", style: "gap:2px" }, h("span", { class: "eyebrow" }, part.sub || ""), h("h2", null, part.title)), h("span", { class: "small muted" }, `${Object.values(st.l).filter(vrPassed).length}/${part.lessons} bài · ${total}/${part.lessons * (canPron ? 10 : 7)} ★`)),
     st.open ? h("p", { class: "note", style: "margin:0" }, "Bạn đã vượt cấp: mọi bài của phần này đã mở.") : h("div", { class: "card vr-skip" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Thi vượt cấp"), h("span", { class: "small muted" }, "30 câu: 25 câu bài tập và 5 câu nghe viết. Đúng từ 25 câu là mở khóa mọi bài của phần này.")), h("button", { class: "btn", type: "button", onclick: () => { V.view = { k: "exam" }; render(); } }, "Làm bài thi →")),
-    vrGateNeed() ? h("section", { class: "card row vr-gate", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${VR_GATE_N} câu lấy từ các bài bạn đã qua, khoảng 1–2 phút. Bài đã qua vẫn mở để luyện thêm bình thường.`)),
+    vrGateNeed() ? h("section", { class: "card row vr-gate", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${VR_GATE_N} câu trắc nghiệm trộn từ tất cả bài bạn đã qua; câu sai làm lại đến khi đúng hết. Bài đã qua vẫn mở để luyện thêm bình thường.`)),
       h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "gate", then: null }; render(); window.scrollTo(0, 0); } }, "Ôn ngay →")) : null,
     Array.from({ length: part.lessons }, (_, i) => { const s = vrL(part.id, i), open = vrOpen(part.id, i), pass = vrPassed(s), go = k => () => { V.view = !pass && (k === "cards" || k === "quiz") && vrGateNeed() ? { k: "gate", then: { k, i } } : { k, i }; render(); window.scrollTo(0, 0); };
       return h("section", { class: "card vr-lesson" + (open ? "" : " lock") },
@@ -13349,7 +13349,7 @@ function pagePron() {
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Phát âm"), h("h1", null, "Lộ trình phát âm IPA"),
       h("p", { class: "muted", style: "max-width:66ch" }, `${PR_LESSONS.length} bài, đi từ nguyên âm, phụ âm, âm cuối tới đọc câu tự nhiên (giọng Mỹ). Mỗi bài: hiểu cách đặt miệng → nghe và chọn → đọc từng từ → đọc cả câu. Máy chấm từng âm ngay trên máy bạn. Đạt ${PR_PASS.word} điểm phần từ và ${PR_PASS.sent} điểm phần câu là mở khóa bài sau.`),
       h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${done / PR_LESSONS.length * 100}%` })), h("span", { class: "small muted" }, `${done}/${PR_LESSONS.length} bài`), next ? h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, done ? "Học tiếp" : "Bắt đầu") : null, h("a", { class: "btn", href: "#ipa-chart" }, "Bảng 44 âm"))),
-    prGateNeed() && next ? h("section", { class: "card row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${PR_GATE_N} câu nghe và chọn từ các bài đã đạt, khoảng 1 phút. Bài đã đạt vẫn mở để luyện lại bình thường.`)), h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, "Ôn ngay →")) : null,
+    prGateNeed() && next ? h("section", { class: "card row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${PR_GATE_MIX.listen + PR_GATE_MIX.word + PR_GATE_MIX.sent} mục trộn từ tất cả bài đã đạt: nghe và chọn, đọc từ, đọc câu. Đúng hết mới xong. Bài đã đạt vẫn mở để luyện lại bình thường.`)), h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, "Ôn ngay →")) : null,
     weak.length ? h("section", { class: "card stack", style: "gap:6px" }, h("h2", null, "Âm bạn hay sai"), h("div", { class: "row", style: "gap:6px" }, weak.map(([b, v]) => h("span", { class: "chip bad" }, `/${phIpa(b)}/ sai ${Math.round(v[1] / v[0] * 100)}%`)))) : null,
     PR_STAGES.map((s, si) => { const ls = s.lessons, dn = ls.filter(prDone).length;
       return h("section", { class: "stack", style: "gap:10px" },
@@ -13359,37 +13359,55 @@ function pagePron() {
             h("div", { class: "row" }, st?.done ? h("span", { class: "chip good" }, "Đã đạt") : open ? h("span", { class: "chip" }, st && (Object.keys(st.w).length || st.quiz) ? "Đang học" : "Chưa học") : h("span", { class: "chip" }, "Khóa")))];
           return open ? h("a", { class: "card lesson-card", href: "#pr-" + l.id }, inner) : h("div", { class: "card lesson-card sp-locked", title: "Hoàn thành bài trước để mở" }, inner); }))); }));
 }
-/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu vào một bài CHƯA đạt, nghe và chọn 8 câu lấy từ các bài đã đạt
-   từ hôm trước (ưu tiên âm bạn hay sai và bài học lâu nhất). Đúng từ 6/8 là xong cho cả ngày. */
-const PR_GATE_N = 8, PR_GATE_OK = 6;
-const prOld = () => PR_LESSONS.filter(l => { const d = (P.pr || {})[l.id]?.done; return d && d < today() && l.pairs.length; });
+/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu vào một bài CHƯA đạt, làm một lượt ôn trộn TẤT CẢ bài đã đạt từ hôm trước:
+   6 câu nghe và chọn, 5 từ đọc, 3 câu đọc (14 mục). Mục nào sai hoặc chưa đạt điểm thì bị trộn lại vào hàng chờ,
+   đúng hết mới xong cho cả ngày. */
+const PR_GATE_MIX = { listen: 6, word: 5, sent: 3 };
+const prOld = () => PR_LESSONS.filter(l => { const d = (P.pr || {})[l.id]?.done; return d && d < today(); });
 const prGateNeed = () => P.prGate !== today() && prOld().length > 0;
+const prShuf = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+function prGateBuild() {
+  const old = prShuf(prOld()), take = (n, src) => { const out = []; for (let r = 0; out.length < n && r < 40; r++) for (const l of old) { if (out.length >= n) break; const x = src(l); if (x) out.push(x); } return out; };
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const L = take(PR_GATE_MIX.listen, l => l.pairs.length ? (pr => ({ t: "listen", l, pair: pr, w: pr[Math.random() < 0.5 ? 0 : 1] }))(pick(l.pairs)) : null);
+  const seenW = new Set(), W = take(PR_GATE_MIX.word, l => { const w = pick(l.words); if (seenW.has(w)) return null; seenW.add(w); return { t: "word", l, w }; });
+  const seenS = new Set(), S = take(PR_GATE_MIX.sent, l => { const x = pick(l.sents || []); if (!x || seenS.has(x)) return null; seenS.add(x); return { t: "sent", l, w: x }; });
+  return prShuf([...L, ...W, ...S]);
+}
 function prGateView(l) {
-  const G = UI.prG && UI.prG.day === today() && UI.prG.for === l.id ? UI.prG : (UI.prG = { day: today(), for: l.id, qs: null, i: 0, ok: 0, picked: null });
-  if (!G.qs) {
-    const weak = x => x.ph.reduce((a, b) => { const v = (P.pron || {})[b]; return Math.max(a, v && v[0] ? v[1] / v[0] : 0); }, 0);
-    const old = prOld().map(x => ({ l: x, w: weak(x), d: P.pr[x.id].done })).sort((a, b) => b.w - a.w || (a.d < b.d ? -1 : 1)).slice(0, 3);
-    G.qs = Array.from({ length: PR_GATE_N }, (_, k) => { const L = old[k % old.length].l, pair = L.pairs[Math.floor(Math.random() * L.pairs.length)]; return { l: L, pair, w: pair[Math.random() < 0.5 ? 0 : 1] }; });
-  }
-  const back = h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình");
-  const cur = G.qs[G.i];
+  const G = UI.prG && UI.prG.day === today() && UI.prG.for === l.id ? UI.prG : (UI.prG = { day: today(), for: l.id, q: prGateBuild(), total: 0, done: 0, miss: 0, picked: null, res: null });
+  if (!G.total) G.total = G.q.length;
+  const back = h("a", { class: "btn btn-quiet", href: "#ipa", style: "align-self:flex-start" }, "‹ Lộ trình");
+  const cur = G.q[0];
   if (!cur) {
-    const pass = G.ok >= PR_GATE_OK;
-    if (pass && P.prGate !== today()) { P.prGate = today(); award("speaking", 5); addAct("speaking", 2); saveProfile(); }
+    if (P.prGate !== today()) { P.prGate = today(); award("speaking", 10); addAct("speaking", 5); saveProfile(); }
     return h("div", { class: "stack", style: "gap:14px" }, back,
-      h("section", { class: "card stack", style: "gap:10px;align-items:flex-start" }, h("span", { class: "eyebrow" }, pass ? "Ôn xong bài cũ" : "Chưa đủ"),
-        h("p", { style: "margin:0" }, pass ? `Đúng ${G.ok}/${PR_GATE_N} câu. Hôm nay bạn học bài mới thoải mái.` : `Đúng ${G.ok}/${PR_GATE_N} câu, cần ${PR_GATE_OK}. Nghe thêm một lượt ngắn nữa nhé.`),
-        h("div", { class: "row" }, pass ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); window.scrollTo(0, 0); } }, "Vào bài " + l.t + " →") : h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); } }, "Ôn lượt mới"))));
+      h("section", { class: "card stack", style: "gap:10px;align-items:flex-start" }, h("span", { class: "eyebrow" }, "Ôn xong bài cũ"),
+        h("p", { style: "margin:0" }, `Đúng hết ${G.total} mục` + (G.miss ? ` (có ${G.miss} lần phải làm lại).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái."),
+        h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); window.scrollTo(0, 0); } }, "Vào bài " + l.t + " →")));
   }
-  if (!cur.played) { cur.played = true; setTimeout(() => spSay(cur.w), 120); }
+  /* Sai thì trộn lại vào hàng chờ, ở vị trí ngẫu nhiên phía sau */
+  const next = ok => { const it = G.q.shift(); if (ok) G.done++; else { G.miss++; const k = 1 + Math.floor(Math.random() * Math.max(1, G.q.length)); G.q.splice(Math.min(k, G.q.length), 0, { ...it, played: false }); } G.picked = null; G.res = null; render(); };
+  const kindName = { listen: "Nghe và chọn", word: "Đọc từ", sent: "Đọc cả câu" }[cur.t];
+  let body;
+  if (cur.t === "listen") {
+    if (!cur.played) { cur.played = true; setTimeout(() => spSay(cur.w), 120); }
+    body = [h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, "Chọn từ bạn nghe được")),
+      h("div", { class: "opts" }, cur.pair.map(x => h("button", { type: "button", class: "opt" + (G.picked ? (x === cur.w ? " right" : x === G.picked ? " wrong" : "") : ""), disabled: G.picked || null, onclick: () => { G.picked = x; render(); } }, x))),
+      G.picked ? h("div", { class: "row" }, h("span", { class: "small" }, G.picked === cur.w ? "Đúng." : `Từ vừa đọc là “${cur.w}”. Mục này sẽ quay lại sau.`), h("button", { class: "btn btn-primary", type: "button", onclick: () => next(G.picked === cur.w) }, "Tiếp ›")) : null];
+  } else {
+    const need = cur.t === "word" ? PR_PASS.word : PR_PASS.sent;
+    const judge = async (blob, say) => { await spLoad("phx"); const r = await spCheckText(blob, cur.w, say); const sc = cur.t === "word" ? r.words[0]?.score : r.score; if (sc == null) throw { vn: "Máy chưa nghe rõ, đọc lại nhé." }; pronStat(r.words); G.res = { r, sc, ok: sc >= need }; render(); };
+    body = [h("p", { class: "prompt", style: "margin:0;font-size:" + (cur.t === "word" ? "1.6rem" : "1.15rem") }, cur.w), h("div", { class: "row" }, sayBtn(cur.w, "🔊 Nghe mẫu", "btn"), h("span", { class: "small muted" }, `Cần ${need} điểm`)),
+      spModelCard(["phx"]), spReady(["phx"]) && !G.res ? recBox(judge, { max: cur.t === "word" ? 6 : 15 }) : null,
+      G.res ? resultView(G.res.r, { label: G.res.ok ? `Đạt (${G.res.sc})` : `Chưa đạt (${G.res.sc}/${need}), mục này sẽ quay lại sau` }) : null,
+      G.res ? h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => next(G.res.ok) }, "Tiếp ›")) : null];
+  }
   return h("div", { class: "stack", style: "gap:14px" }, back,
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngày mới · ôn bài cũ"), h("h1", null, "Ôn nhanh trước khi học bài mới"),
-      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${PR_GATE_N} câu nghe và chọn, lấy từ các bài bạn đã đạt (ưu tiên âm bạn hay sai). Đúng từ ${PR_GATE_OK} câu là xong cho cả hôm nay, khoảng 1 phút.`)),
-    h("div", { class: "meter" }, h("i", { style: `width:${G.i / PR_GATE_N * 100}%` })),
-    h("section", { class: "card stack", style: "gap:10px" },
-      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, `Câu ${G.i + 1}/${PR_GATE_N} · đúng ${G.ok} · bài ${cur.l.t}`)),
-      h("div", { class: "opts" }, cur.pair.map(x => h("button", { type: "button", class: "opt" + (G.picked ? (x === cur.w ? " right" : x === G.picked ? " wrong" : "") : ""), disabled: G.picked || null, onclick: () => { G.picked = x; if (x === cur.w) G.ok++; render(); } }, x))),
-      G.picked ? h("div", { class: "row" }, h("span", { class: "small" }, G.picked === cur.w ? "Đúng." : `Từ vừa đọc là “${cur.w}”.`), h("button", { class: "btn btn-primary", type: "button", onclick: () => { G.i++; G.picked = null; render(); } }, G.i + 1 < PR_GATE_N ? "Câu tiếp ›" : "Xem kết quả")) : null));
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngày mới · ôn bài cũ"), h("h1", null, "Ôn lại trước khi học bài mới"),
+      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${G.total} mục trộn từ tất cả bài bạn đã đạt: ${PR_GATE_MIX.listen} câu nghe và chọn, ${PR_GATE_MIX.word} từ đọc, ${PR_GATE_MIX.sent} câu đọc. Mục nào sai hoặc chưa đủ điểm sẽ được trộn lại để làm tiếp, đúng hết mới xong cho cả hôm nay.`)),
+    h("div", { class: "row", style: "gap:10px" }, h("div", { class: "meter", style: "flex:1" }, h("i", { style: `width:${G.done / G.total * 100}%` })), h("span", { class: "small muted" }, `Đã đúng ${G.done}/${G.total}` + (G.q.length > G.total - G.done ? "" : ""))),
+    h("section", { class: "card stack sp-lesson", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, kindName), h("span", { class: "small muted" }, "Bài " + cur.l.t)), ...body));
 }
 function pagePrLesson(l) {
   if (prUnlocked(l) && !prDone(l) && prGateNeed()) return prGateView(l);

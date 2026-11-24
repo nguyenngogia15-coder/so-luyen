@@ -101,7 +101,7 @@ function pagePron() {
     h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Phát âm"), h("h1", null, "Lộ trình phát âm IPA"),
       h("p", { class: "muted", style: "max-width:66ch" }, `${PR_LESSONS.length} bài, đi từ nguyên âm, phụ âm, âm cuối tới đọc câu tự nhiên (giọng Mỹ). Mỗi bài: hiểu cách đặt miệng → nghe và chọn → đọc từng từ → đọc cả câu. Máy chấm từng âm ngay trên máy bạn. Đạt ${PR_PASS.word} điểm phần từ và ${PR_PASS.sent} điểm phần câu là mở khóa bài sau.`),
       h("div", { class: "row" }, h("div", { class: "meter", style: "flex:1;max-width:320px" }, h("i", { style: `width:${done / PR_LESSONS.length * 100}%` })), h("span", { class: "small muted" }, `${done}/${PR_LESSONS.length} bài`), next ? h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, done ? "Học tiếp" : "Bắt đầu") : null, h("a", { class: "btn", href: "#ipa-chart" }, "Bảng 44 âm"))),
-    prGateNeed() && next ? h("section", { class: "card row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${PR_GATE_N} câu nghe và chọn từ các bài đã đạt, khoảng 1 phút. Bài đã đạt vẫn mở để luyện lại bình thường.`)), h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, "Ôn ngay →")) : null,
+    prGateNeed() && next ? h("section", { class: "card row", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" }, h("div", { class: "stack", style: "gap:2px" }, h("b", null, "Ngày mới: ôn nhanh bài cũ trước khi học bài mới"), h("span", { class: "small muted" }, `${PR_GATE_MIX.listen + PR_GATE_MIX.word + PR_GATE_MIX.sent} mục trộn từ tất cả bài đã đạt: nghe và chọn, đọc từ, đọc câu. Đúng hết mới xong. Bài đã đạt vẫn mở để luyện lại bình thường.`)), h("a", { class: "btn btn-primary", href: "#pr-" + next.id }, "Ôn ngay →")) : null,
     weak.length ? h("section", { class: "card stack", style: "gap:6px" }, h("h2", null, "Âm bạn hay sai"), h("div", { class: "row", style: "gap:6px" }, weak.map(([b, v]) => h("span", { class: "chip bad" }, `/${phIpa(b)}/ sai ${Math.round(v[1] / v[0] * 100)}%`)))) : null,
     PR_STAGES.map((s, si) => { const ls = s.lessons, dn = ls.filter(prDone).length;
       return h("section", { class: "stack", style: "gap:10px" },
@@ -111,37 +111,55 @@ function pagePron() {
             h("div", { class: "row" }, st?.done ? h("span", { class: "chip good" }, "Đã đạt") : open ? h("span", { class: "chip" }, st && (Object.keys(st.w).length || st.quiz) ? "Đang học" : "Chưa học") : h("span", { class: "chip" }, "Khóa")))];
           return open ? h("a", { class: "card lesson-card", href: "#pr-" + l.id }, inner) : h("div", { class: "card lesson-card sp-locked", title: "Hoàn thành bài trước để mở" }, inner); }))); }));
 }
-/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu vào một bài CHƯA đạt, nghe và chọn 8 câu lấy từ các bài đã đạt
-   từ hôm trước (ưu tiên âm bạn hay sai và bài học lâu nhất). Đúng từ 6/8 là xong cho cả ngày. */
-const PR_GATE_N = 8, PR_GATE_OK = 6;
-const prOld = () => PR_LESSONS.filter(l => { const d = (P.pr || {})[l.id]?.done; return d && d < today() && l.pairs.length; });
+/* Ôn bài cũ trước khi học bài mới: mỗi ngày, lần đầu vào một bài CHƯA đạt, làm một lượt ôn trộn TẤT CẢ bài đã đạt từ hôm trước:
+   6 câu nghe và chọn, 5 từ đọc, 3 câu đọc (14 mục). Mục nào sai hoặc chưa đạt điểm thì bị trộn lại vào hàng chờ,
+   đúng hết mới xong cho cả ngày. */
+const PR_GATE_MIX = { listen: 6, word: 5, sent: 3 };
+const prOld = () => PR_LESSONS.filter(l => { const d = (P.pr || {})[l.id]?.done; return d && d < today(); });
 const prGateNeed = () => P.prGate !== today() && prOld().length > 0;
+const prShuf = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+function prGateBuild() {
+  const old = prShuf(prOld()), take = (n, src) => { const out = []; for (let r = 0; out.length < n && r < 40; r++) for (const l of old) { if (out.length >= n) break; const x = src(l); if (x) out.push(x); } return out; };
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const L = take(PR_GATE_MIX.listen, l => l.pairs.length ? (pr => ({ t: "listen", l, pair: pr, w: pr[Math.random() < 0.5 ? 0 : 1] }))(pick(l.pairs)) : null);
+  const seenW = new Set(), W = take(PR_GATE_MIX.word, l => { const w = pick(l.words); if (seenW.has(w)) return null; seenW.add(w); return { t: "word", l, w }; });
+  const seenS = new Set(), S = take(PR_GATE_MIX.sent, l => { const x = pick(l.sents || []); if (!x || seenS.has(x)) return null; seenS.add(x); return { t: "sent", l, w: x }; });
+  return prShuf([...L, ...W, ...S]);
+}
 function prGateView(l) {
-  const G = UI.prG && UI.prG.day === today() && UI.prG.for === l.id ? UI.prG : (UI.prG = { day: today(), for: l.id, qs: null, i: 0, ok: 0, picked: null });
-  if (!G.qs) {
-    const weak = x => x.ph.reduce((a, b) => { const v = (P.pron || {})[b]; return Math.max(a, v && v[0] ? v[1] / v[0] : 0); }, 0);
-    const old = prOld().map(x => ({ l: x, w: weak(x), d: P.pr[x.id].done })).sort((a, b) => b.w - a.w || (a.d < b.d ? -1 : 1)).slice(0, 3);
-    G.qs = Array.from({ length: PR_GATE_N }, (_, k) => { const L = old[k % old.length].l, pair = L.pairs[Math.floor(Math.random() * L.pairs.length)]; return { l: L, pair, w: pair[Math.random() < 0.5 ? 0 : 1] }; });
-  }
-  const back = h("a", { class: "btn btn-quiet", href: "#ipa" }, "‹ Lộ trình");
-  const cur = G.qs[G.i];
+  const G = UI.prG && UI.prG.day === today() && UI.prG.for === l.id ? UI.prG : (UI.prG = { day: today(), for: l.id, q: prGateBuild(), total: 0, done: 0, miss: 0, picked: null, res: null });
+  if (!G.total) G.total = G.q.length;
+  const back = h("a", { class: "btn btn-quiet", href: "#ipa", style: "align-self:flex-start" }, "‹ Lộ trình");
+  const cur = G.q[0];
   if (!cur) {
-    const pass = G.ok >= PR_GATE_OK;
-    if (pass && P.prGate !== today()) { P.prGate = today(); award("speaking", 5); addAct("speaking", 2); saveProfile(); }
+    if (P.prGate !== today()) { P.prGate = today(); award("speaking", 10); addAct("speaking", 5); saveProfile(); }
     return h("div", { class: "stack", style: "gap:14px" }, back,
-      h("section", { class: "card stack", style: "gap:10px;align-items:flex-start" }, h("span", { class: "eyebrow" }, pass ? "Ôn xong bài cũ" : "Chưa đủ"),
-        h("p", { style: "margin:0" }, pass ? `Đúng ${G.ok}/${PR_GATE_N} câu. Hôm nay bạn học bài mới thoải mái.` : `Đúng ${G.ok}/${PR_GATE_N} câu, cần ${PR_GATE_OK}. Nghe thêm một lượt ngắn nữa nhé.`),
-        h("div", { class: "row" }, pass ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); window.scrollTo(0, 0); } }, "Vào bài " + l.t + " →") : h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); } }, "Ôn lượt mới"))));
+      h("section", { class: "card stack", style: "gap:10px;align-items:flex-start" }, h("span", { class: "eyebrow" }, "Ôn xong bài cũ"),
+        h("p", { style: "margin:0" }, `Đúng hết ${G.total} mục` + (G.miss ? ` (có ${G.miss} lần phải làm lại).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái."),
+        h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); window.scrollTo(0, 0); } }, "Vào bài " + l.t + " →")));
   }
-  if (!cur.played) { cur.played = true; setTimeout(() => spSay(cur.w), 120); }
+  /* Sai thì trộn lại vào hàng chờ, ở vị trí ngẫu nhiên phía sau */
+  const next = ok => { const it = G.q.shift(); if (ok) G.done++; else { G.miss++; const k = 1 + Math.floor(Math.random() * Math.max(1, G.q.length)); G.q.splice(Math.min(k, G.q.length), 0, { ...it, played: false }); } G.picked = null; G.res = null; render(); };
+  const kindName = { listen: "Nghe và chọn", word: "Đọc từ", sent: "Đọc cả câu" }[cur.t];
+  let body;
+  if (cur.t === "listen") {
+    if (!cur.played) { cur.played = true; setTimeout(() => spSay(cur.w), 120); }
+    body = [h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, "Chọn từ bạn nghe được")),
+      h("div", { class: "opts" }, cur.pair.map(x => h("button", { type: "button", class: "opt" + (G.picked ? (x === cur.w ? " right" : x === G.picked ? " wrong" : "") : ""), disabled: G.picked || null, onclick: () => { G.picked = x; render(); } }, x))),
+      G.picked ? h("div", { class: "row" }, h("span", { class: "small" }, G.picked === cur.w ? "Đúng." : `Từ vừa đọc là “${cur.w}”. Mục này sẽ quay lại sau.`), h("button", { class: "btn btn-primary", type: "button", onclick: () => next(G.picked === cur.w) }, "Tiếp ›")) : null];
+  } else {
+    const need = cur.t === "word" ? PR_PASS.word : PR_PASS.sent;
+    const judge = async (blob, say) => { await spLoad("phx"); const r = await spCheckText(blob, cur.w, say); const sc = cur.t === "word" ? r.words[0]?.score : r.score; if (sc == null) throw { vn: "Máy chưa nghe rõ, đọc lại nhé." }; pronStat(r.words); G.res = { r, sc, ok: sc >= need }; render(); };
+    body = [h("p", { class: "prompt", style: "margin:0;font-size:" + (cur.t === "word" ? "1.6rem" : "1.15rem") }, cur.w), h("div", { class: "row" }, sayBtn(cur.w, "🔊 Nghe mẫu", "btn"), h("span", { class: "small muted" }, `Cần ${need} điểm`)),
+      spModelCard(["phx"]), spReady(["phx"]) && !G.res ? recBox(judge, { max: cur.t === "word" ? 6 : 15 }) : null,
+      G.res ? resultView(G.res.r, { label: G.res.ok ? `Đạt (${G.res.sc})` : `Chưa đạt (${G.res.sc}/${need}), mục này sẽ quay lại sau` }) : null,
+      G.res ? h("div", { class: "row" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => next(G.res.ok) }, "Tiếp ›")) : null];
+  }
   return h("div", { class: "stack", style: "gap:14px" }, back,
-    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngày mới · ôn bài cũ"), h("h1", null, "Ôn nhanh trước khi học bài mới"),
-      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${PR_GATE_N} câu nghe và chọn, lấy từ các bài bạn đã đạt (ưu tiên âm bạn hay sai). Đúng từ ${PR_GATE_OK} câu là xong cho cả hôm nay, khoảng 1 phút.`)),
-    h("div", { class: "meter" }, h("i", { style: `width:${G.i / PR_GATE_N * 100}%` })),
-    h("section", { class: "card stack", style: "gap:10px" },
-      h("div", { class: "row" }, h("button", { class: "btn", type: "button", onclick: () => spSay(cur.w) }, "🔊 Nghe lại"), h("span", { class: "small muted" }, `Câu ${G.i + 1}/${PR_GATE_N} · đúng ${G.ok} · bài ${cur.l.t}`)),
-      h("div", { class: "opts" }, cur.pair.map(x => h("button", { type: "button", class: "opt" + (G.picked ? (x === cur.w ? " right" : x === G.picked ? " wrong" : "") : ""), disabled: G.picked || null, onclick: () => { G.picked = x; if (x === cur.w) G.ok++; render(); } }, x))),
-      G.picked ? h("div", { class: "row" }, h("span", { class: "small" }, G.picked === cur.w ? "Đúng." : `Từ vừa đọc là “${cur.w}”.`), h("button", { class: "btn btn-primary", type: "button", onclick: () => { G.i++; G.picked = null; render(); } }, G.i + 1 < PR_GATE_N ? "Câu tiếp ›" : "Xem kết quả")) : null));
+    h("div", { class: "stack page-banner", style: "gap:6px" }, h("span", { class: "eyebrow" }, "Ngày mới · ôn bài cũ"), h("h1", null, "Ôn lại trước khi học bài mới"),
+      h("p", { class: "muted", style: "margin:0;max-width:66ch" }, `${G.total} mục trộn từ tất cả bài bạn đã đạt: ${PR_GATE_MIX.listen} câu nghe và chọn, ${PR_GATE_MIX.word} từ đọc, ${PR_GATE_MIX.sent} câu đọc. Mục nào sai hoặc chưa đủ điểm sẽ được trộn lại để làm tiếp, đúng hết mới xong cho cả hôm nay.`)),
+    h("div", { class: "row", style: "gap:10px" }, h("div", { class: "meter", style: "flex:1" }, h("i", { style: `width:${G.done / G.total * 100}%` })), h("span", { class: "small muted" }, `Đã đúng ${G.done}/${G.total}` + (G.q.length > G.total - G.done ? "" : ""))),
+    h("section", { class: "card stack sp-lesson", style: "gap:10px" }, h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, kindName), h("span", { class: "small muted" }, "Bài " + cur.l.t)), ...body));
 }
 function pagePrLesson(l) {
   if (prUnlocked(l) && !prDone(l) && prGateNeed()) return prGateView(l);
