@@ -17064,7 +17064,10 @@ function gemBatch(b) {
       catch (e) { gemGen(b); throw e; }
       try { await (await caches.open("gem-v1")).put(url, new Response(blob, { headers: { "content-type": "audio/wav" } })); } catch {}
     }
-    const a = await spDecode(blob), segs = b.ids.length === 1 ? [[0, a.length]] : gemSplit(a, b.ids.length, b.lines);
+    const a = await spDecode(blob);
+    /* Kiểm độ dài: câu lẻ mà dài hoặc ngắn bất thường so với số chữ thì coi là thu hỏng (đọc nhầm lời dặn, bỏ câu), dùng giọng máy */
+    if (b.ids.length === 1) { const words = String(b.lines[0] || "").split(/\s+/).filter(Boolean).length, sec = a.length / 16000, exp = words / 2.6; if (sec > exp * 1.9 + 2.5 || sec < exp * 0.4) { GEMV.bad = (GEMV.bad || 0) + 1; throw 0; } }
+    const segs = b.ids.length === 1 ? [[0, a.length]] : gemSplit(a, b.ids.length, b.lines);
     if (!segs) throw 0;
     return segs.map(([s, e]) => gemWav(spTrim(a.subarray(s, e))));
   })().catch(() => { GEMV.miss[b.k] = Date.now(); delete GEMV.batches[b.k]; return null; });
