@@ -138,10 +138,11 @@ function prGateView(l) {
   const back = h("a", { class: "btn btn-quiet", href: "#ipa", style: "align-self:flex-start" }, "‹ Lộ trình");
   const cur = G.q[0];
   if (!cur) {
-    if (P.prGate !== today()) { P.prGate = today(); award("speaking", 10); addAct("speaking", 5); saveProfile(); }
+    /* Ôn lại không tính vào nhiệm vụ Nói của ngày, trừ khi đã đạt hết lộ trình phát âm */
+    if (P.prGate !== today()) { P.prGate = today(); award("speaking", 10); if (PR_LESSONS.every(prDone)) addAct("speaking", 5); saveProfile(); }
     return h("div", { class: "stack", style: "gap:14px" }, back,
       h("section", { class: "card stack", style: "gap:10px;align-items:flex-start" }, h("span", { class: "eyebrow" }, "Ôn xong bài cũ"),
-        h("p", { style: "margin:0" }, `Đúng hết ${G.total} mục` + (G.miss ? ` (có ${G.miss} lần phải làm lại).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái."),
+        h("p", { style: "margin:0" }, `Đúng hết ${G.total} mục` + (G.miss ? ` (có ${G.miss} lần phải làm lại).` : " ngay lần đầu.") + " Hôm nay bạn học bài mới thoải mái."), PR_LESSONS.every(prDone) ? null : h("p", { class: "small muted", style: "margin:0" }, "Phần ôn lại không tính vào nhiệm vụ Nói của ngày. Học xong bài mới thì nhiệm vụ mới được tính."),
         h("button", { class: "btn btn-primary", type: "button", onclick: () => { UI.prG = null; render(); window.scrollTo(0, 0); } }, "Vào bài " + l.t + " →")));
   }
   /* Sai thì trộn lại vào hàng chờ, ở vị trí ngẫu nhiên phía sau */
