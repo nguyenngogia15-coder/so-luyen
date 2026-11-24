@@ -22,6 +22,9 @@ async function ndPlay(it, rate = 1) {
 /* ----- Chấm: chuẩn hóa theo từng loại, chỉ một đáp án đúng ----- */
 const MON = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const ndNum = s => { const t = String(s).toLowerCase().replace(/[,£$%]|pounds?|per ?cent|percent/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim(); if (/^\d+(\.\d+)?$/.test(t)) return +t; for (let n = 0; n <= 100000; n += n < 1000 ? 1 : n < 10000 ? 10 : 100) if (numWords(n).replace(/-/g, " ") === t || numWords(n).replace(/ and /g, " ") === t) return n; return null; };
+/* Ngày viết bằng chữ: "eighteenth", "twenty first", "the third of" */
+const ND_ORD = ["", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth"];
+function ndOrd(t) { const m = t.match(/\b(twenty|thirty)?\s*(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eighteenth|nineteenth|twentieth|thirtieth)\b/); if (!m) return null; if (m[2] === "thirtieth") return 30; const b = ND_ORD.indexOf(m[2]); return (m[1] === "twenty" ? 20 : m[1] === "thirty" ? 30 : 0) + b; }
 function ndCheck(it, v) {
   const x = String(v || "").trim(); if (!x) return false; const a = it.a;
   switch (it.c) {
@@ -29,7 +32,7 @@ function ndCheck(it, v) {
     case "spell": return x.toLowerCase().replace(/[^a-z]/g, "") === a.toLowerCase();
     case "teen": case "num": { if (a.endsWith("%") && /[a-z]/i.test(x) && !/per ?cent/i.test(x)) return false; const n = ndNum(x); return n != null && n === parseFloat(a); }
     case "price": { const m = x.toLowerCase().replace(/[£$,]|pounds?/g, " ").trim().match(/^(\d+)(?:[.\s](\d{1,2}))?\s*p?$/); if (!m) return false; return Math.abs(+m[1] + (m[2] ? +m[2].padEnd(2, "0") / 100 : 0) - parseFloat(a.slice(1))) < 0.001; }
-    case "date": { const t = x.toLowerCase(), d = t.match(/\b(\d{1,2})(st|nd|rd|th)?\b/), mi = MON.findIndex(m => new RegExp("\\b" + m.slice(0, 3) + "(" + m.slice(3) + ")?\\b").test(t)); const [ad, am] = a.split(" "); return !!d && +d[1] === +ad && mi === MON.indexOf(am.toLowerCase()); }
+    case "date": { const t = x.toLowerCase().replace(/-/g, " "), d = t.match(/\b(\d{1,2})(st|nd|rd|th)?\b/), day = d ? +d[1] : ndOrd(t), mi = MON.findIndex(m => new RegExp("\\b" + m.slice(0, 3) + "(" + m.slice(3) + ")?\\b").test(t)); const [ad, am] = a.split(" "); return day != null && day === +ad && mi === MON.indexOf(am.toLowerCase()); }
     case "time": { const m = x.toLowerCase().replace(/\s*(am|pm|a\.m\.|p\.m\.)$/, "").match(/^(\d{1,2})(?:[:.h\s](\d{2}))?$/); if (!m) return false; const [ah, am] = a.split(":").map(Number); return (+m[1] % 12 || 12) === (ah % 12 || 12) && +(m[2] || 0) === am; }
     case "addr": { const n = t => t.toLowerCase().replace(/[.,]/g, " ").replace(/\brd\b/g, "road").replace(/\bst\b/g, "street").replace(/\bave?\b/g, "avenue").replace(/\bln\b/g, "lane").replace(/\s+/g, " ").trim(); return n(x) === n(a); }
   }

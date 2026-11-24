@@ -51,7 +51,7 @@ async function gemRun() {
   gemRunning = false;
 }
 /* Đọc trước các mẻ của game khi mở game */
-async function gemWarm(pack) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack)) gemBatch(b); }
+async function gemWarm(pack, ids) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack && (!ids || b.ids.some(i => ids.includes(i))))) gemBatch(b); }
 function gemBatch(b) {
   if (GEMV.miss[b.k] && Date.now() - GEMV.miss[b.k] < 1800e3) return Promise.resolve(null);
   return GEMV.batches[b.k] ||= (async () => {

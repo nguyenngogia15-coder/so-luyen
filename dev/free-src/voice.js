@@ -37,7 +37,7 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
   const _nd = ndPlay; ndPlay = async function (it, rate) { const g = await gemClip("nd", it.id).catch(() => null); vNowSet(g ? "gem" : "k"); return _nd(it, rate); };
   const _gm = gmAudio; gmAudio = async function (key, rate) { const g = await gemClip("gm", key).catch(() => null); vNowSet(g ? "gem" : "k"); return _gm(key, rate); };
   const _sp = spSay; spSay = async function (text, rate) { const g = await gemClip("sp", spvKey(text)).catch(() => null); vNowSet(g ? "gem" : "k"); return _sp(text, rate); };
-  const _ndt = lsNdTab; lsNdTab = function () { const n = _ndt(); try { gemWarm("nd"); } catch {} n.prepend(h("div", { class: "row" }, vNowChip())); return n; };
+  const _ndt = lsNdTab; lsNdTab = function () { const n = _ndt(); try { gemWarm("nd", UI.nd?.round || []); } catch {} n.prepend(h("div", { class: "row" }, vNowChip())); return n; };
   /* Nghe chép bài có sẵn: hiện giọng đang dùng, tự thu Gemini nếu bài chưa có */
   const _dict = lsDictTab; lsDictTab = function () {
     const n = _dict(); if ((UI.dSrc || "bank") !== "bank") return n;
@@ -50,4 +50,4 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
   };
 })();
 /* Trang Game: mở game Nghe/Nói thì chuẩn bị sẵn giọng Gemini cho game */
-(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); gemWarm("nd"); } catch {} } return _pg(); }; })();
+(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); } catch {} } return _pg(); }; })();

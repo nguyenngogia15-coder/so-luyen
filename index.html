@@ -14759,7 +14759,7 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
-  if (UI.lsTabSeen !== subEff("lsTab")) { UI.lsTabSeen = subEff("lsTab"); try { gmStopAll(); } catch {} if (/^g-/.test(subEff("lsTab") || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
+  if (UI.lsTabSeen !== subEff("lsTab")) { UI.lsTabSeen = subEff("lsTab"); try { gmStopAll(); } catch {} if (/^g-/.test(subEff("lsTab") || "")) try { gemWarm("gm"); } catch {} }
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
   const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["deep", "Luyện sâu 5 bước", "mới", () => [typeof lsDeepTab === "function" ? lsDeepTab() : null]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
@@ -15372,6 +15372,9 @@ async function ndPlay(it, rate = 1) {
 /* ----- Chấm: chuẩn hóa theo từng loại, chỉ một đáp án đúng ----- */
 const MON = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const ndNum = s => { const t = String(s).toLowerCase().replace(/[,£$%]|pounds?|per ?cent|percent/g, "").replace(/-/g, " ").replace(/\s+/g, " ").trim(); if (/^\d+(\.\d+)?$/.test(t)) return +t; for (let n = 0; n <= 100000; n += n < 1000 ? 1 : n < 10000 ? 10 : 100) if (numWords(n).replace(/-/g, " ") === t || numWords(n).replace(/ and /g, " ") === t) return n; return null; };
+/* Ngày viết bằng chữ: "eighteenth", "twenty first", "the third of" */
+const ND_ORD = ["", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth"];
+function ndOrd(t) { const m = t.match(/\b(twenty|thirty)?\s*(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eighteenth|nineteenth|twentieth|thirtieth)\b/); if (!m) return null; if (m[2] === "thirtieth") return 30; const b = ND_ORD.indexOf(m[2]); return (m[1] === "twenty" ? 20 : m[1] === "thirty" ? 30 : 0) + b; }
 function ndCheck(it, v) {
   const x = String(v || "").trim(); if (!x) return false; const a = it.a;
   switch (it.c) {
@@ -15379,7 +15382,7 @@ function ndCheck(it, v) {
     case "spell": return x.toLowerCase().replace(/[^a-z]/g, "") === a.toLowerCase();
     case "teen": case "num": { if (a.endsWith("%") && /[a-z]/i.test(x) && !/per ?cent/i.test(x)) return false; const n = ndNum(x); return n != null && n === parseFloat(a); }
     case "price": { const m = x.toLowerCase().replace(/[£$,]|pounds?/g, " ").trim().match(/^(\d+)(?:[.\s](\d{1,2}))?\s*p?$/); if (!m) return false; return Math.abs(+m[1] + (m[2] ? +m[2].padEnd(2, "0") / 100 : 0) - parseFloat(a.slice(1))) < 0.001; }
-    case "date": { const t = x.toLowerCase(), d = t.match(/\b(\d{1,2})(st|nd|rd|th)?\b/), mi = MON.findIndex(m => new RegExp("\\b" + m.slice(0, 3) + "(" + m.slice(3) + ")?\\b").test(t)); const [ad, am] = a.split(" "); return !!d && +d[1] === +ad && mi === MON.indexOf(am.toLowerCase()); }
+    case "date": { const t = x.toLowerCase().replace(/-/g, " "), d = t.match(/\b(\d{1,2})(st|nd|rd|th)?\b/), day = d ? +d[1] : ndOrd(t), mi = MON.findIndex(m => new RegExp("\\b" + m.slice(0, 3) + "(" + m.slice(3) + ")?\\b").test(t)); const [ad, am] = a.split(" "); return day != null && day === +ad && mi === MON.indexOf(am.toLowerCase()); }
     case "time": { const m = x.toLowerCase().replace(/\s*(am|pm|a\.m\.|p\.m\.)$/, "").match(/^(\d{1,2})(?:[:.h\s](\d{2}))?$/); if (!m) return false; const [ah, am] = a.split(":").map(Number); return (+m[1] % 12 || 12) === (ah % 12 || 12) && +(m[2] || 0) === am; }
     case "addr": { const n = t => t.toLowerCase().replace(/[.,]/g, " ").replace(/\brd\b/g, "road").replace(/\bst\b/g, "street").replace(/\bave?\b/g, "avenue").replace(/\bln\b/g, "lane").replace(/\s+/g, " ").trim(); return n(x) === n(a); }
   }
@@ -17049,7 +17052,7 @@ async function gemRun() {
   gemRunning = false;
 }
 /* Đọc trước các mẻ của game khi mở game */
-async function gemWarm(pack) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack)) gemBatch(b); }
+async function gemWarm(pack, ids) { const B = await gemPlan(); for (const b of B.filter(x => x.p === pack && (!ids || b.ids.some(i => ids.includes(i))))) gemBatch(b); }
 function gemBatch(b) {
   if (GEMV.miss[b.k] && Date.now() - GEMV.miss[b.k] < 1800e3) return Promise.resolve(null);
   return GEMV.batches[b.k] ||= (async () => {
@@ -17780,7 +17783,7 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
   const _nd = ndPlay; ndPlay = async function (it, rate) { const g = await gemClip("nd", it.id).catch(() => null); vNowSet(g ? "gem" : "k"); return _nd(it, rate); };
   const _gm = gmAudio; gmAudio = async function (key, rate) { const g = await gemClip("gm", key).catch(() => null); vNowSet(g ? "gem" : "k"); return _gm(key, rate); };
   const _sp = spSay; spSay = async function (text, rate) { const g = await gemClip("sp", spvKey(text)).catch(() => null); vNowSet(g ? "gem" : "k"); return _sp(text, rate); };
-  const _ndt = lsNdTab; lsNdTab = function () { const n = _ndt(); try { gemWarm("nd"); } catch {} n.prepend(h("div", { class: "row" }, vNowChip())); return n; };
+  const _ndt = lsNdTab; lsNdTab = function () { const n = _ndt(); try { gemWarm("nd", UI.nd?.round || []); } catch {} n.prepend(h("div", { class: "row" }, vNowChip())); return n; };
   /* Nghe chép bài có sẵn: hiện giọng đang dùng, tự thu Gemini nếu bài chưa có */
   const _dict = lsDictTab; lsDictTab = function () {
     const n = _dict(); if ((UI.dSrc || "bank") !== "bank") return n;
@@ -17793,7 +17796,7 @@ function vNowChip() { const el = h("span", { class: "chip voice-now" }); vNowPai
   };
 })();
 /* Trang Game: mở game Nghe/Nói thì chuẩn bị sẵn giọng Gemini cho game */
-(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); gemWarm("nd"); } catch {} } return _pg(); }; })();
+(function () { const _pg = pageGames; pageGames = function () { if (/^g-/.test(UI.gmPick || "") && UI.gmWarm !== UI.gmPick) { UI.gmWarm = UI.gmPick; try { gemWarm("gm"); } catch {} } return _pg(); }; })();
 
 /* ===== Tính lại tiến độ từ bài đã lưu: dùng một lần cho tài khoản bị mất hồ sơ (XP, nhiệm vụ, chuỗi ngày).
    Bài viết, bài đọc, bài nói, đề thi thử, từ đã ôn lưu riêng nên vẫn còn; từ đó tính lại số phút theo kỹ năng của từng ngày,
