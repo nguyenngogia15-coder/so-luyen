@@ -3470,6 +3470,7 @@ async function loadAll() {
   MOCKS = mk.sort((a, b) => a.created - b.created);
   BOOKS = (bk || []).sort((a, b) => (a.vol || 0) - (b.vol || 0));
   MIST = ms;
+  clearTimeout(UI.vmT); UI.vmT = setTimeout(() => vrMigrate().catch(e => console.warn('vrMigrate', e)), 800);
   clearTimeout(UI.ddT); UI.ddT = setTimeout(() => vocabDedupe().then(n => { if (n) { toast(`Đã gộp ${n} từ bị trùng trong sổ`); render(); } }).catch(() => {}), 1500);
   VOCAB = v; WRIT = w.sort((a, b) => a.created - b.created); READS = r.sort((a, b) => b.created - a.created); READS.forEach(x => { if (Array.isArray(x.paragraphs) && x.lettered !== false && !x.bookId) x.paragraphs = x.paragraphs.map(stripLetter); }); TASKS = t.sort((a, b) => b.created - a.created);
 }
@@ -11892,6 +11893,32 @@ function vrSayText(t) { try { stopTTS(); const u = new SpeechSynthesisUtterance(
    (Từ vựng chủ đề và Từ vựng CEFR); trước đó nhiệm vụ Từ vựng phải là qua một bài mới. */
 function vrAllDone() { const ix = VR.ixv; if (!ix) return false; const ps = [...(ix.topic || []), ...(ix.cefr || [])]; return ps.length > 0 && ps.every(p => vrDoneN(p) >= p.lessons); }
 function vrMarkReview() { if (vrAllDone()) vrMarkDay(); }
+/* Lộ trình đã rút gọn (bản 2: chỉ giữ từ thông dụng). Tiến độ cũ được chuyển theo từ: bài mới nào có từ 60% số từ
+   nằm trong các bài cũ đã qua thì tính là đã qua. Từ bị bỏ thì rời khỏi lịch Ôn từ hay sai. */
+async function vrMigrate() {
+  if (!P || P.vrVer === 2 || UI.dbSwitching || UI.vrMig) return;
+  const has = Object.values(P.vr || {}).some(st => Object.keys(st.l || {}).length);
+  if (!has) { P.vrVer = 2; saveProfile(); return; }
+  UI.vrMig = true;
+  try {
+    const [ix, old] = await Promise.all([vrIndex(), fetch("vr/migr-v1.json").then(r => { if (!r.ok) throw new Error("migr " + r.status); return r.json(); })]);
+    const parts = Object.fromEntries([...(ix.topic || []), ...(ix.cefr || [])].map(p => [p.id, p]));
+    for (const [pid, st] of Object.entries(P.vr || {})) {
+      const o = old[pid], part = parts[pid]; if (!o || !part) continue;
+      const pass = new Map(); let a = 0;
+      o.sizes.forEach((n, i) => { const l = st.l?.[i]; if (l && vrPassed(l)) for (const w of o.w.slice(a, a + n)) pass.set(w, l); a += n; });
+      const data = await vrPart(pid), nl = {};
+      for (let i = 0; i < part.lessons; i++) {
+        const ws = vrLesson(part, data, i).map(x => x.w), hit = ws.map(w => pass.get(w)).filter(Boolean);
+        if (ws.length && hit.length / ws.length >= 0.6) nl[i] = { c: 1, x: Math.max(1, Math.min(...hit.map(l => l.x || 1))), pd: hit.map(l => l.pd || "").sort().pop() || undefined };
+      }
+      st.l = nl;
+    }
+    const keep = new Set(); for (const pid of Object.keys(parts)) { const d = await vrPart(pid).catch(() => null); if (d) for (const x of d) keep.add(pid + "|" + x.w); }
+    for (const [k, r] of Object.entries(vrRev())) if (!keep.has(r.pid + "|" + r.w)) delete vrRev()[k];
+    P.vrVer = 2; saveProfile(); render();
+  } finally { UI.vrMig = false; }
+}
 function vrMarkDay() { const lg = P.log[today()] ||= { min: 0, acts: [] }; if (!lg.vr) { lg.vr = 1; saveProfile(); } }
 /* Ôn từ hay sai: từ làm sai hoặc đánh dấu Cần ôn trong Lộ trình được đưa vào lịch ôn ngắt quãng riêng (khác Sổ từ tự thêm).
    Đúng thì giãn lịch 1 → 3 → 7 → 16 → 35 ngày; sai thì ôn lại ngày mai. Đúng 5 lần liền là thuộc, rời khỏi lịch. */
@@ -12179,6 +12206,7 @@ async function syncApply(inc, mode) {
   SYNC.busy = true; SYNC.msg = "Đang lưu…"; render();
   try {
     const cur = await syncSnapshot(); SYNC.undo = cur;
+    if ((inc.profile?.vrVer || 1) !== (cur.profile?.vrVer || 1)) { if ((inc.profile?.vrVer || 1) < (cur.profile?.vrVer || 1)) { delete inc.profile.vr; delete inc.profile.vrVer; } else { delete cur.profile.vr; } } /* lộ trình từ vựng khác phiên bản: giữ bản mới */
     const prof = mode === "replace" ? inc.profile : syncMerge(cur.profile, inc.profile);
     if (cur.profile?.resetAt) prof.resetAt = Math.max(+prof.resetAt || 0, +cur.profile.resetAt);
     let n = 0;
