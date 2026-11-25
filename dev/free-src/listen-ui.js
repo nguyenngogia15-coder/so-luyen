@@ -109,7 +109,7 @@ function lsTranscript(s) {
 const lsSt = id => (P.ls ||= {})[id] ||= {};
 function pageListen() {
   loadListens(); loadPool();
-  if (UI.lsTabSeen !== subEff("lsTab")) { UI.lsTabSeen = subEff("lsTab"); try { gmStopAll(); } catch {} if (/^g-/.test(subEff("lsTab") || "")) try { gemWarm("gm"); gemWarm("nd"); } catch {} }
+  if (UI.lsTabSeen !== subEff("lsTab")) { UI.lsTabSeen = subEff("lsTab"); try { gmStopAll(); } catch {} if (/^g-/.test(subEff("lsTab") || "")) try { gemWarm("gm"); } catch {} }
   const done = LS_BANK.filter(s => lsSt(s.id).score != null).length;
   const T = subMenu("lsTab", [["path", "Lộ trình", null, () => [lpTab()]], ["deep", "Luyện sâu 5 bước", "mới", () => [typeof lsDeepTab === "function" ? lsDeepTab() : null]], ["sec", "Luyện theo phần", LS_BANK.length, () => [lsSecTab()]], ["test", "Đề đầy đủ", null, () => [lsTestTab()]], ["nd", "Số & đánh vần", null, () => [lsNdTab()]], ["dict", "Nghe chép", null, () => [lsDictTab()]], ["ai", "Bài mới (AI)", null, () => [lsAiTab()]], ...(typeof LS_GAMES !== "undefined" ? LS_GAMES : [])]);
   return h("div", { class: "stack", style: "gap:18px" },
