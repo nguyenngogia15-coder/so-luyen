@@ -63,13 +63,13 @@ const twTime = f => f <= 10 ? 0 : Math.max(8, 30 - Math.floor(f / 4));
 let TW_GR = null;
 function twGram() { return TW_GR ||= [...LESSONS, ...G_A, ...G_V, ...G_M, ...G_X, ...G_T].flatMap(l => (l.ex || []).filter(e => (e.t === "choice" || e.t === "fill") && !e.ds)); }
 async function twMake(f) {
-  const kinds = ["vt", "pr"]; if (f >= 4) kinds.push("gr"); if (f >= 8) kinds.push("nd"); if (f >= 15) kinds.push("bk", "bk"); if (f >= 25) kinds.push("vc");
+  const kinds = ["vt", "pr"]; if (f >= 4) kinds.push("gr"); if (f >= 8) kinds.push("nd"); if (f >= 15) kinds.push("bk", "bk"); if (f >= 25) kinds.push("vc", "vc");
   const out = [], used = new Set();
   for (let k = 0, guard = 0; out.length < twNum(f) && guard < 40; guard++) {
     const kind = twPick(kinds); let q = null;
     try {
       if (kind === "vt" || kind === "vc") {
-        const ix = await vrIndex(), parts = kind === "vt" ? ix.topic : ix.cefr, part = kind === "vt" ? twPick(parts) : parts[Math.min(parts.length - 1, Math.floor((f - 25) / 12) + 1)] || twPick(parts);
+        const ix = await vrIndex(), parts = kind === "vt" ? ix.topic : ix.cefr, part = kind === "vt" ? twPick(parts) : parts[Math.min(parts.length - 1, 1 + Math.floor((f - 25) / 15))] || twPick(parts) /* tầng 25: A2, 40: B1, 55: B2, 70: C1, 85 trở lên: C2 */;
         const data = await vrPart(part.id), it = twPick(data); if (!it || used.has("v" + it.w)) continue; used.add("v" + it.w);
         const v = vrQ(it, data); q = { sk: "V", tag: "Từ vựng", ask: v.ask, opts: v.opts, play: v.auto ? () => vrSay(it.w) : null, auto: !!v.auto, why: `${it.w} = ${it.vi}` };
       } else if (kind === "pr") {

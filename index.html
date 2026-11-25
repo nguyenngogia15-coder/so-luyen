@@ -11961,7 +11961,7 @@ function vrPage() {
     box.replaceChildren(
       all ? h("section", { class: "card row vr-rev", style: "justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px" },
         h("div", { class: "stack", style: "gap:2px" }, h("b", null, due ? `Ôn từ hay sai: ${due} từ đến hạn hôm nay` : "Ôn từ hay sai: hôm nay đã ôn xong"), h("span", { class: "small muted" }, `${all} từ trong lịch ôn. Từ làm sai và từ đánh dấu Cần ôn tự vào đây; ôn xong chỉ tính là nhiệm vụ từ vựng của ngày khi bạn đã học hết cả hai lộ trình.`)),
-        due ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "rev" }; render(); window.scrollTo(0, 0); } }, "Ôn ngay →") : null) : null,
+        due ? h("button", { class: "btn btn-primary", type: "button", onclick: () => { V.view = { k: "rev" }; render(); window.scrollTo(0, 0); } }, "Ôn ngay →") : null) : "",
       h("div", { class: "row vr-modes" }, [["topic", "Từ vựng chủ đề"], ["cefr", "Từ vựng CEFR"]].map(([k, t]) => h("button", { type: "button", class: "opt", "aria-pressed": String(V.mode === k), onclick: () => { V.mode = k; V.part = null; render(); } }, t))),
       h("div", { class: "vr-layout" },
         h("aside", { class: "vr-parts" }, h("span", { class: "eyebrow" }, V.mode === "topic" ? `${parts.length} chủ đề · ${parts.reduce((a, p) => a + p.n, 0)} mục từ` : `Chuẩn CEFR · ${parts.length} phần`),
@@ -17965,13 +17965,13 @@ const twTime = f => f <= 10 ? 0 : Math.max(8, 30 - Math.floor(f / 4));
 let TW_GR = null;
 function twGram() { return TW_GR ||= [...LESSONS, ...G_A, ...G_V, ...G_M, ...G_X, ...G_T].flatMap(l => (l.ex || []).filter(e => (e.t === "choice" || e.t === "fill") && !e.ds)); }
 async function twMake(f) {
-  const kinds = ["vt", "pr"]; if (f >= 4) kinds.push("gr"); if (f >= 8) kinds.push("nd"); if (f >= 15) kinds.push("bk", "bk"); if (f >= 25) kinds.push("vc");
+  const kinds = ["vt", "pr"]; if (f >= 4) kinds.push("gr"); if (f >= 8) kinds.push("nd"); if (f >= 15) kinds.push("bk", "bk"); if (f >= 25) kinds.push("vc", "vc");
   const out = [], used = new Set();
   for (let k = 0, guard = 0; out.length < twNum(f) && guard < 40; guard++) {
     const kind = twPick(kinds); let q = null;
     try {
       if (kind === "vt" || kind === "vc") {
-        const ix = await vrIndex(), parts = kind === "vt" ? ix.topic : ix.cefr, part = kind === "vt" ? twPick(parts) : parts[Math.min(parts.length - 1, Math.floor((f - 25) / 12) + 1)] || twPick(parts);
+        const ix = await vrIndex(), parts = kind === "vt" ? ix.topic : ix.cefr, part = kind === "vt" ? twPick(parts) : parts[Math.min(parts.length - 1, 1 + Math.floor((f - 25) / 15))] || twPick(parts) /* tầng 25: A2, 40: B1, 55: B2, 70: C1, 85 trở lên: C2 */;
         const data = await vrPart(part.id), it = twPick(data); if (!it || used.has("v" + it.w)) continue; used.add("v" + it.w);
         const v = vrQ(it, data); q = { sk: "V", tag: "Từ vựng", ask: v.ask, opts: v.opts, play: v.auto ? () => vrSay(it.w) : null, auto: !!v.auto, why: `${it.w} = ${it.vi}` };
       } else if (kind === "pr") {
