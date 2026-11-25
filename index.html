@@ -16133,7 +16133,7 @@ function chestBar() {
 
 /* ----- Boss tuần: cả nhóm cùng đánh, mỗi XP là 1 sát thương ----- */
 const BOSSES = [["Bóng Ma Trì Hoãn", "#6c5ce7"], ["Quỷ Lướt Điện Thoại", "#e17055"], ["Khổng Lồ Band 5.0", "#00897b"], ["Nhện Câu Bị Động", "#5d4037"], ["Golem Từ Quên", "#607d8b"], ["Phù Thủy Phát Âm Sai", "#ad1457"], ["Sứa Mất Tập Trung", "#0288d1"], ["Trùm Ngủ Nướng", "#f57c00"]];
-const BOSS_HP_PER = 1500; /* khoảng 5 ngày học chăm của mỗi người, để boss thật sự là boss tuần */
+const BOSS_HP_PER = 3500; /* nhóm đang kiếm khoảng 500 XP/người/ngày: 3500 là khoảng một tuần học đều */
 function bossOf(wid) { const n = Math.round(new Date(wid + "T00:00:00").getTime() / 6048e5); const [name, col] = BOSSES[((n % BOSSES.length) + BOSSES.length) % BOSSES.length]; return { name, col }; }
 function bossSvg(col, dead, hurt) {
   const eyes = dead ? `<path d="M40 52l10 10M50 52l-10 10M70 52l10 10M80 52l-10 10" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/>` : `<path d="M36 46l16 6M84 46l-16 6" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/><circle cx="46" cy="60" r="7" fill="#fff" stroke="#1d1d1d" stroke-width="3"/><circle cx="74" cy="60" r="7" fill="#fff" stroke="#1d1d1d" stroke-width="3"/><circle cx="47" cy="61" r="3" fill="#1d1d1d"/><circle cx="73" cy="61" r="3" fill="#1d1d1d"/>`;
