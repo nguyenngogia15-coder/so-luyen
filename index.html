@@ -15883,9 +15883,13 @@ const dqMonth = () => today().slice(0, 7);
 const dqTier = (days, m = dqMonth()) => Object.entries(days || {}).filter(([d, v]) => v === 1 && d.startsWith(m)).length;
 /* Vé đóng băng: mỗi tuần 1 vé, tự dùng để nối chuỗi khi lỡ đúng 1 ngày */
 function dqFreeze() {
-  const q = dqS(), y = addDays(today(), -1), w = weekOf(y);
-  if (!q.days[y] && q.days[addDays(y, -1)] && !q.frz[w] && y >= q.joined) { q.days[y] = 2; q.frz[w] = y; return true; }
-  return false;
+  /* Xét cả 7 ngày qua, không chỉ hôm qua: lỡ một ngày rồi vài hôm sau mới mở web vẫn được dùng vé của tuần đó */
+  const q = dqS(); let ch = false;
+  for (let k = 7; k >= 1; k--) {
+    const y = addDays(today(), -k), w = weekOf(y);
+    if (!q.days[y] && q.days[addDays(y, -1)] && !q.frz[w] && y >= q.joined) { q.days[y] = 2; q.frz[w] = y; ch = true; }
+  }
+  return ch;
 }
 let dqBusy = false;
 function dqTick() {
@@ -15985,7 +15989,15 @@ function grpWeekStat(m, wid) {
   const done = ds.filter(d => m.days?.[d] === 1).length, fz = ds.filter(d => m.days?.[d] === 2).length;
   return { done, fz, el: ds.length, pct: ds.length ? Math.round(done / ds.length * 100) : 0, xp: m.wx?.[wid] || 0 };
 }
-function grpMine() { const me = window.__grp?.uid, pub = dqPublic(); return [{ ...pub, id: me }, ...G.list.filter(m => m.id !== me)]; }
+/* Bạn trong nhóm lỡ 1 ngày mà chưa mở web lại thì vé đóng băng của bạn ấy chưa kịp dùng: trang Nhóm tự tính trước
+   (ngày lỡ đầu tiên trong tuần này, sau một ngày đã xong, khi bạn ấy còn vé tuần này) để chuỗi nhóm không đứt oan */
+function grpVDays(m) {
+  if (!m?.days || m.frzLeft === 0) return m;
+  const t = today(), wid = weekOf(t), days = { ...m.days };
+  for (let d = wid; d < t; d = addDays(d, 1)) if (!days[d] && days[addDays(d, -1)] && d >= (m.joined || d)) { days[d] = 2; return { ...m, days, frzLeft: 0 }; }
+  return m;
+}
+function grpMine() { const me = window.__grp?.uid, pub = dqPublic(); return [{ ...pub, id: me }, ...G.list.filter(m => m.id !== me).map(grpVDays)]; }
 function grpBoard(list) {
   const t = today();
   const order = list.slice().sort((a, b) => (a.td?.d === t && a.td.fin ? a.td.fin : 9e15) - (b.td?.d === t && b.td.fin ? b.td.fin : 9e15));
